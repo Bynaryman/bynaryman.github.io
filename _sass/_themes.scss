@@ -4,6 +4,8 @@
 
 :root {
   --global-bg-color: #{$white-color};
+  --global-bg-path-light: url("../wallpaper.png");
+  --global-bg-path-dark: url("../wallpaper.png");
   --global-code-bg-color: #{$code-bg-color-light};
   --global-text-color: #{$black-color};
   --global-text-color-light: #{$grey-color};
@@ -67,6 +69,7 @@
 
 html[data-theme="dark"] {
   --global-bg-color: #{$grey-color-dark};
+  --global-bg-path: var(--global-bg-path-dark);
   --global-code-bg-color: #{$code-bg-color-dark};
   --global-text-color: #{$grey-color-light};
   --global-text-color-light: #{$grey-color};
@@ -125,6 +128,7 @@ html[data-theme-setting="dark"] {
 }
 
 html[data-theme-setting="light"] {
+  --global-bg-path: var(--global-bg-path-light);
   #light-toggle-system {
     display: none;
   }

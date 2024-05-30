@@ -1,11 +1,12 @@
 /******************************************************************************
  * Content
  ******************************************************************************/
-
 body {
   padding-bottom: 70px;
   color: var(--global-text-color);
-  background-color: var(--global-bg-color);
+  background: var(--global-bg-path);
+  background-size: cover;
+  background-repeat: no-repeat;
 
   h1,
   h2,
