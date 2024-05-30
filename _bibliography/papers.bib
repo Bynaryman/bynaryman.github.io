@@ -1,113 +1,180 @@
----
----
 
-@string{aps = {American Physical Society,}}
-
-@book{einstein1920relativity,
-  title={Relativity: the Special and General Theory},
-  author={Einstein, Albert},
-  year={1920},
-  publisher={Methuen & Co Ltd},
-  html={relativity.html}
+@inproceedings{ledoux_generator_2022,
+	title = {A {Generator} of {Numerically}-{Tailored} and {High}-{Throughput} {Accelerators} for {Batched} {GEMMs}},
+	doi = {10.1109/FCCM53951.2022.9786164},
+	abstract = {We propose a hardware generator of GEMM accelerators. Our generator produces vendor-agnostic HDL describing highly customizable systolic arrays guided by accuracy and energy efficiency goals. The generated arrays have three main novel aspects. First, the accelerators handle a large variety of computer number formats using intermediate representations based on our Sign Scale Significand (S3) format. Second, the processing elements perform all intermediate dot-product arithmetic operations required by the GEMM kernel without any intermediate rounding, which makes it possible to deliver better energy efficiency than state-of-the-art approaches while offering more accuracy and reproducible results. Third, our accelerators feature the Half-Speed Sink Down (HSSD) mechanism, which maximizes the overlap of host-accelerator data transfers with GEMM computations.We evaluate our automatically generated designs in a cutting-edge setup composed of a POWER9 host, CAPI (Coherent Accelerator Processor Interface) link, and a Virtex Ultrascale Plus FPGA. Arrays can operate at the speed of the link and saturate it to reach a 13GB/s throughput. Our fine-grain customization approach allows to cover a wide range of accuracy versus efficiency scenarios and can reach 0.65GOps/s/W while producing 1024 accurate bits or 148.7GOps/s/W with 6 accurate bits. Our configurations achieve up to 1613GOps/s system performance and power efficiencies of up to 240GOps/s/W for the FPGA. This automatic generator is the first being able to produce such a variety of designs. We improve the single-precision energy efficiency of state-of-the-art FPGA GEMM accelerators by 1.86×.},
+	booktitle = {2022 {IEEE} 30th {Annual} {International} {Symposium} on {Field}-{Programmable} {Custom} {Computing} {Machines} ({FCCM})},
+	author = {Ledoux, Louis and Casas, Marc},
+	month = may,
+	year = {2022},
+	note = {ISSN: 2576-2621},
+	keywords = {Energy efficiency, Generators, Hardware, Space exploration, System performance, Systolic arrays, Throughput},
+	pages = {1--10},
 }
 
-@book{einstein1956investigations,
-  bibtex_show={true},
-  title={Investigations on the Theory of the Brownian Movement},
-  author={Einstein, Albert},
-  year={1956},
-  publisher={Courier Corporation},
-  preview={brownian-motion.gif}
+
+@inproceedings{ledoux_framework_2023,
+	title = {An {Open}-{Source} {Framework} for {Efficient} {Numerically}-{Tailored} {Computations}},
+	url = {https://ieeexplore.ieee.org/document/10296314},
+	doi = {10.1109/FPL60245.2023.00011},
+	abstract = {We present a versatile open-source framework designed to facilitate efficient, numerically-tailored Matrix-Matrix Multiplications (MMMs). The framework offers two primary contributions: first, a fine-tuned, automated pipeline for arithmetic datapath generation, enabling highly customizable systolic MMM kernels; second, seamless integration of the generated kernels into user code, irrespective of the programming language employed, without necessitating modifications. We employ this framework within a cutting-edge platform, comprising a Power9 host, an OpenCAPI link, and a Xilinx Virtex UltraScale+ FPGA. The framework demonstrates a systematic enhancement in accuracy per energy cost across diverse High Performance Computing (HPC) workloads displaying a variety of numerical requirements, such as Artificial Intelligence (AI) inference and Sea Surface Height (SSH) computation. For AI inference, we consider a set of state-of-the-art neural network models, namely ResNetl8, ResNet34, ResNet50, DenseNet121, DenseNet161, DenseNet169, and VGG11, in conjunction with two datasets, two computer formats, and 27 distinct intermediate arithmetic datapaths. Our approach consistently reduces energy consumption across all cases, with a notable example being the reduction by factors of 3.3x for IEEE754-32 and 1.4x for Bfloat16 during ImageNet inference with ResNet50. This is accomplished while maintaining accuracies of 82.3\% and 86\%, comparable to those achieved with conventional Floating-Point Units (FPUs). In the context of SSH computation, our method achieves fully-reproducible results using double-precision words, surpassing the accuracy of conventional double- and quad-precision arithmetic in FPUs. Our approach enhances SSH computation accuracy by a minimum of 5× and 27× compared to IEEE754-64 and IEEE754-128, respectively, resulting in 5.6× and 15.1 × improvements in accuracy per power cost.},
+	booktitle = {2023 33rd {International} {Conference} on {Field}-{Programmable} {Logic} and {Applications} ({FPL})},
+	author = {Ledoux, Louis and Casas, Marc},
+	month = sep,
+	year = {2023},
+	note = {ISSN: 1946-1488},
+	pages = {19--26},
 }
 
-@article{einstein1950meaning,
-  abbr={AJP},
-  bibtex_show={true},
-  title={The meaning of relativity},
-  author={Einstein, Albert and Taub, AH},
-  journal={American Journal of Physics},
-  volume={18},
-  number={6},
-  pages={403--404},
-  year={1950},
-  publisher={American Association of Physics Teachers}
+@misc{ledoux_open-source_2023,
+	title = {An {Open}-{Source} {Framework} for {Efficient} {Numerically}-{Tailored} {Computations}},
+	url = {https://hal.science/hal-04094835},
+	abstract = {Many scientific computing problems can be reduced to Matrix-Matrix Multiplications (MMM), making the General Matrix Multiply (GEMM) kernels in the Basic Linear Algebra Subroutine (BLAS) of interest to the high-performance computing community.
+However, these workloads have a wide range of numerical requirements.
+Ill-conditioned linear systems require high-precision arithmetic to ensure correct and reproducible results.
+In contrast, emerging workloads such as deep neural networks, which can have millions up to billions of parameters, have shown resilience to arithmetic tinkering and precision lowering.},
+	author = {Ledoux, Louis and Casas, Marc},
+	month = may,
+	year = {2023},
+	note = {Publisher: Barcelona Supercomputing Center
+Published: BSCSymposium23},
+	keywords = {approximate/trans/extended precision, automated pipeline, flopoco, full stack framework, GEMMs, High Performance Computing, matrix-matrix-multiply, OpenBLAS, OpenCAPI},
 }
 
-@article{PhysRev.47.777,
-  abbr={PhysRev},
-  title={Can Quantum-Mechanical Description of Physical Reality Be Considered Complete?},
-  author={Einstein, A. and Podolsky, B. and Rosen, N.},
-  abstract={In a complete theory there is an element corresponding to each element of reality. A sufficient condition for the reality of a physical quantity is the possibility of predicting it with certainty, without disturbing the system. In quantum mechanics in the case of two physical quantities described by non-commuting operators, the knowledge of one precludes the knowledge of the other. Then either (1) the description of reality given by the wave function in quantum mechanics is not complete or (2) these two quantities cannot have simultaneous reality. Consideration of the problem of making predictions concerning a system on the basis of measurements made on another system that had previously interacted with it leads to the result that if (1) is false then (2) is also false. One is thus led to conclude that the description of reality as given by a wave function is not complete.},
-  journal={Phys. Rev.},
-  location={New Jersey},
-  volume={47},
-  issue={10},
-  pages={777--780},
-  numpages={0},
-  year={1935},
-  month={May},
-  publisher=aps,
-  doi={10.1103/PhysRev.47.777},
-  url={http://link.aps.org/doi/10.1103/PhysRev.47.777},
-  html={https://journals.aps.org/pr/abstract/10.1103/PhysRev.47.777},
-  pdf={example_pdf.pdf},
-  altmetric={248277},
-  dimensions={true},
-  google_scholar_id={qyhmnyLat1gC},
-  video={https://www.youtube-nocookie.com/embed/aqz-KE-bpKQ},
-  additional_info={. *More Information* can be [found here](https://github.com/alshedivat/al-folio/)},
-  selected={true}
+@misc{ledoux2023opensource,
+      title={Open-Source GEMM Hardware Kernels Generator: Toward Numerically-Tailored Computations},
+      author={Louis Ledoux and Marc Casas},
+      year={2023},
+      eprint={2305.18328},
+      archivePrefix={arXiv},
+      primaryClass={cs.AR}
 }
 
-@article{einstein1905molekularkinetischen,
-  title={{\"U}ber die von der molekularkinetischen Theorie der W{\"a}rme geforderte Bewegung von in ruhenden Fl{\"u}ssigkeiten suspendierten Teilchen},
-  author={Einstein, A.},
-  journal={Annalen der physik},
-  volume={322},
-  number={8},
-  pages={549--560},
-  year={1905},
-  publisher={Wiley Online Library}
+@inproceedings{ledoux_accelerating_2019,
+	address = {Lyon, France},
+	title = {Accelerating {DL} inference with ({Open}){CAPI} and posit numbers},
+	url = {https://hal.science/hal-04094850},
+	abstract = {In order to tackle the communication-bound problems in heterogeneous systems, Louis discussed how intrinsic arithmetics can have significant impacts on energy and throughputs.
+
+Thanks to the denser representation offered by the posit arithmetic BSC can:
+- significantly divide bandwidth needed (PCIE: HOST - FPGA)
+- maintain all weights on chip
+- save power consumption},
+	booktitle = {{OpenPOWER} summit 2019},
+	publisher = {linux foundation},
+	author = {Ledoux, Louis and Casas, Marc},
+	month = oct,
+	year = {2019},
+	keywords = {acceleration, CAPI, CAPI2, FPGA, PCIE, posit, POWER9}
 }
 
-@article{einstein1905movement,
-  abbr={Ann. Phys.},
-  title={Un the movement of small particles suspended in statiunary liquids required by the molecular-kinetic theory 0f heat},
-  author={Einstein, A.},
-  journal={Ann. Phys.},
-  volume={17},
-  pages={549--560},
-  year={1905}
-}
-
-@article{einstein1905electrodynamics,
-  title={On the electrodynamics of moving bodies},
-  author={Einstein, A.},
-  year={1905}
-}
-
-@Article{einstein1905photoelectriceffect,
-  bibtex_show={true},
-  abbr={Ann. Phys.},
-  title="{{\"U}ber einen die Erzeugung und Verwandlung des Lichtes betreffenden heuristischen Gesichtspunkt}",
-  author={Albert Einstein},
-  abstract={This is the abstract text.},
-  journal={Ann. Phys.},
-  volume={322},
-  number={6},
-  pages={132--148},
-  year={1905},
-  doi={10.1002/andp.19053220607},
-  award={Albert Einstein receveid the **Nobel Prize in Physics** 1921 *for his services to Theoretical Physics, and especially for his discovery of the law of the photoelectric effect*},
-  award_name={Nobel Prize}
-}
-
-@book{przibram1967letters,
-  bibtex_show={true},
-  title={Letters on wave mechanics},
-  author={Einstein, Albert and Schrödinger, Erwin and Planck, Max and Lorentz, Hendrik Antoon and Przibram, Karl},
-  year={1967},
-  publisher={Vision},
-  preview={wave-mechanics.gif},
-  abbr={Vision}
-}
+#@string{aps = {American Physical Society,}}
+#
+#@book{einstein1920relativity,
+#  title={Relativity: the Special and General Theory},
+#  author={Einstein, Albert},
+#  year={1920},
+#  publisher={Methuen & Co Ltd},
+#  html={relativity.html}
+#}
+#
+#@book{einstein1956investigations,
+#  bibtex_show={true},
+#  title={Investigations on the Theory of the Brownian Movement},
+#  author={Einstein, Albert},
+#  year={1956},
+#  publisher={Courier Corporation},
+#  preview={brownian-motion.gif}
+#}
+#
+#@article{einstein1950meaning,
+#  abbr={AJP},
+#  bibtex_show={true},
+#  title={The meaning of relativity},
+#  author={Einstein, Albert and Taub, AH},
+#  journal={American Journal of Physics},
+#  volume={18},
+#  number={6},
+#  pages={403--404},
+#  year={1950},
+#  publisher={American Association of Physics Teachers}
+#}
+#
+#@article{PhysRev.47.777,
+#  abbr={PhysRev},
+#  title={Can Quantum-Mechanical Description of Physical Reality Be Considered Complete?},
+#  author={Einstein, A. and Podolsky, B. and Rosen, N.},
+#  abstract={In a complete theory there is an element corresponding to each element of reality. A sufficient condition for the reality of a physical quantity is the possibility of predicting it with certainty, without disturbing the system. In quantum mechanics in the case of two physical quantities described by non-commuting operators, the knowledge of one precludes the knowledge of the other. Then either (1) the description of reality given by the wave function in quantum mechanics is not complete or (2) these two quantities cannot have simultaneous reality. Consideration of the problem of making predictions concerning a system on the basis of measurements made on another system that had previously interacted with it leads to the result that if (1) is false then (2) is also false. One is thus led to conclude that the description of reality as given by a wave function is not complete.},
+#  journal={Phys. Rev.},
+#  location={New Jersey},
+#  volume={47},
+#  issue={10},
+#  pages={777--780},
+#  numpages={0},
+#  year={1935},
+#  month={May},
+#  publisher=aps,
+#  doi={10.1103/PhysRev.47.777},
+#  url={http://link.aps.org/doi/10.1103/PhysRev.47.777},
+#  html={https://journals.aps.org/pr/abstract/10.1103/PhysRev.47.777},
+#  pdf={example_pdf.pdf},
+#  altmetric={248277},
+#  dimensions={true},
+#  google_scholar_id={qyhmnyLat1gC},
+#  video={https://www.youtube-nocookie.com/embed/aqz-KE-bpKQ},
+#  additional_info={. *More Information* can be [found here](https://github.com/alshedivat/al-folio/)},
+#  selected={true}
+#}
+#
+#@article{einstein1905molekularkinetischen,
+#  title={{\"U}ber die von der molekularkinetischen Theorie der W{\"a}rme geforderte Bewegung von in ruhenden Fl{\"u}ssigkeiten suspendierten Teilchen},
+#  author={Einstein, A.},
+#  journal={Annalen der physik},
+#  volume={322},
+#  number={8},
+#  pages={549--560},
+#  year={1905},
+#  publisher={Wiley Online Library}
+#}
+#
+#@article{einstein1905movement,
+#  abbr={Ann. Phys.},
+#  title={Un the movement of small particles suspended in statiunary liquids required by the molecular-kinetic theory 0f heat},
+#  author={Einstein, A.},
+#  journal={Ann. Phys.},
+#  volume={17},
+#  pages={549--560},
+#  year={1905}
+#}
+#
+#@article{einstein1905electrodynamics,
+#  title={On the electrodynamics of moving bodies},
+#  author={Einstein, A.},
+#  year={1905}
+#}
+#
+#@Article{einstein1905photoelectriceffect,
+#  bibtex_show={true},
+#  abbr={Ann. Phys.},
+#  title="{{\"U}ber einen die Erzeugung und Verwandlung des Lichtes betreffenden heuristischen Gesichtspunkt}",
+#  author={Albert Einstein},
+#  abstract={This is the abstract text.},
+#  journal={Ann. Phys.},
+#  volume={322},
+#  number={6},
+#  pages={132--148},
+#  year={1905},
+#  doi={10.1002/andp.19053220607},
+#  award={Albert Einstein receveid the **Nobel Prize in Physics** 1921 *for his services to Theoretical Physics, and especially for his discovery of the law of the photoelectric effect*},
+#  award_name={Nobel Prize}
+#}
+#
+#@book{przibram1967letters,
+#  bibtex_show={true},
+#  title={Letters on wave mechanics},
+#  author={Einstein, Albert and Schrödinger, Erwin and Planck, Max and Lorentz, Hendrik Antoon and Przibram, Karl},
+#  year={1967},
+#  publisher={Vision},
+#  preview={wave-mechanics.gif},
+#  abbr={Vision}
+#}
