@@ -2,11 +2,20 @@ github_users:
   - Bynaryman
 
 github_repos:
+  - Bynaryman/OSFNTC
+  - Bynaryman/SUF
+  - Bynaryman/POF
+  - Bynaryman/riffa
   - Bynaryman/asic_watch
+  - Bynaryman/wrapped_teras
   - Bynaryman/binary_instruments
+  - Bynaryman/oc-accel
+  - Bynaryman/plots_paper_instrumented_adder
+  - YosysHQ/yosys
+  - ghdl/ghdl
+  - ghdl/ghdl-yosys-plugin
   - Bynaryman/bynaryman.github.io
   - Bynaryman/capi2-bsp
-  - Bynaryman/fpga_template
   - Bynaryman/Le-RetrOrchestre
   - Bynaryman/libxsmm
   - Bynaryman/LLMMM_extended_abstract
@@ -15,15 +24,9 @@ github_repos:
   - Bynaryman/mnist-3lnn
   - Bynaryman/mpw-multi-project-harness
   - Bynaryman/NFC
-  - Bynaryman/oc-accel
-  - Bynaryman/OSFNTC
-  - Bynaryman/plots_paper_instrumented_adder
-  - Bynaryman/POF
-  - Bynaryman/riffa
   - Bynaryman/serverNodeRaspPi
-  - Bynaryman/SUF
   - Bynaryman/teras
   - Bynaryman/TinyMLP
   - Bynaryman/vh2v
   - Bynaryman/wrapped_asic_watch
-  - Bynaryman/wrapped_teras
+  - Bynaryman/fpga_template
