@@ -16,4 +16,8 @@ selected_papers: true # includes a list of papers marked as "selected={true}"
 social: false # includes social icons at the bottom of the page
 ---
 
-I am Louis Ledoux (or Luis Eduardo Yves Ledoux Pardo) and ..
+Hey there, I am Louis Ledoux (or Luis Eduardo Yves Ledoux Pardo for completeness), a PhD student at the [Barcelona Supercomputing Center (BSC)](https://www.bsc.es) and [Universitat Politècnica de Catalunya (UPC)](https://www.upc.edu).
+
+My academic focus is on floating-point arithmetic paradigms, spanning from high-level problems down to silicon implementation.
+
+On a more daily basis, my hobbies include DJ-ing, producing music, and generally fusing art and science. As Ovid said, *"ars similis cassus."* I am also the lucky partner of the cutest cat ever, [Ada](https://en.wikipedia.org/wiki/Ada_Lovelace).
