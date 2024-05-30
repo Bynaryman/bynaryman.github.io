@@ -28,18 +28,6 @@ body.sticky-bottom-footer {
   padding-bottom: 0;
 }
 
-html[data-theme-setting="dark"] body {
-  background-image: url("../wallpaper.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-
-html[data-theme-setting="light"] body {
-  background-image: url("../wallpaper.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-
 .container {
   max-width: $max-content-width;
 }
