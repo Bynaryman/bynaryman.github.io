@@ -106,8 +106,8 @@ whatsapp_number: # your WhatsApp number (full phone number in international form
 wikidata_id: # your wikidata id
 wikipedia_id: # your wikipedia id (Case sensitive)
 work_url: https://www.bsc.es/ledoux-louis # work page URL
-x_username: @L0u1s73doux # your X handle
-youtube_id: @bynaryman # your youtube channel id (youtube.com/@<youtube_id>)
+x_username: L0u1s73doux # your X handle
+youtube_id: bynaryman # your youtube channel id (youtube.com/@<youtube_id>)
 zotero_username: binaryman # your zotero username
 
 contact_note: >
