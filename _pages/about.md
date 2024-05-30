@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: *"Post Hoc Ergo Propter Hoc."*
+subtitle: "Post Hoc Ergo Propter Hoc."
 
 profile:
   align: right
