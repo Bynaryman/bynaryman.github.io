@@ -1,12 +1,29 @@
 github_users:
-  - torvalds
-  - alshedivat
+  - Bynaryman
 
 github_repos:
-  - alshedivat/al-folio
-  - twbs/bootstrap
-  - jekyll/jekyll
-  - jquery/jquery
-  - FortAwesome/Font-Awesome
-  - jpswalsh/academicons
-  - mathjax/MathJax
+  - Bynaryman/asic_watch
+  - Bynaryman/binary_instruments
+  - Bynaryman/bynaryman.github.io
+  - Bynaryman/capi2-bsp
+  - Bynaryman/fpga_template
+  - Bynaryman/Le-RetrOrchestre
+  - Bynaryman/libxsmm
+  - Bynaryman/LLMMM_extended_abstract
+  - Bynaryman/mem_allocate
+  - Bynaryman/MMM_SA_2by2_posit_4_0
+  - Bynaryman/mnist-3lnn
+  - Bynaryman/mpw-multi-project-harness
+  - Bynaryman/NFC
+  - Bynaryman/oc-accel
+  - Bynaryman/OSFNTC
+  - Bynaryman/plots_paper_instrumented_adder
+  - Bynaryman/POF
+  - Bynaryman/riffa
+  - Bynaryman/serverNodeRaspPi
+  - Bynaryman/SUF
+  - Bynaryman/teras
+  - Bynaryman/TinyMLP
+  - Bynaryman/vh2v
+  - Bynaryman/wrapped_asic_watch
+  - Bynaryman/wrapped_teras
