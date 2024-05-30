@@ -122,11 +122,6 @@ html[data-theme-setting="dark"] {
     color: var(--global-back-to-top-text-color);
     background: var(--global-back-to-top-bg-color);
   }
-  body {
-    background-image: url("../wallpaper.png");
-    background-size: cover;
-    background-repeat: no-repeat;
-  }
 }
 
 html[data-theme-setting="light"] {
@@ -142,11 +137,5 @@ html[data-theme-setting="light"] {
     padding-left: 10px;
     padding-top: 12px;
     display: block;
-  }
-
-  body {
-    background-image: url("../wallpaper.png");
-    background-size: cover;
-    background-repeat: no-repeat;
   }
 }
