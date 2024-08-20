@@ -130,7 +130,7 @@ bing_site_verification: # out your bing-site-verification ID (Bing Webmaster)
 # -----------------------------------------------------------------------------
 
 blog_name: Vita Variabilis # blog_name will be displayed in your blog page
-blog_description: Narrationes de rebus magnis et minutis — The stories of great and small things in life (but of my liking).
+blog_description: Narrationes de rebus magnis et minutis — The great and small stories of my timeline.
 permalink: /blog/:year/:title/
 lsi: false # produce an index for related posts
 
