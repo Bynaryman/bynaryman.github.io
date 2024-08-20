@@ -2,8 +2,8 @@
   "basics": {
     "name": "Louis Ledoux",
     "label": "Researcher",
-    "email": "i.f.lledoux@gmail.com",
-    "phone": "+33 7 70 49 11 98",
+    "email": "i.f.lledoux[at]gmail.com",
+    "phone": "+33 [seven] 70 49 11 98",
     "url": "https://bynaryman.github.io/",
     "summary": "A Computer Architect with a focus on Arithmetic and Floating-Points.",
     "location": {
@@ -50,29 +50,33 @@
       "endDate": "Now",
       "summary": "Conducting research in computer architecture, arithmetic, and HPC. Exploring co-designed hardware/software acceleration of posit arithmetic, developing Kulisch/Quire accumulators, and designing Systolic Array architecture for HPC workloads.",
       "highlights": [
+	"Thesis: Floating-Point Arithmetic Paradigms for High-Performance Computing: Software Algorithms and Hardware Designs.",
         "Co-designed hardware/software acceleration of posit arithmetic.",
         "Developed Kulisch/Quire accumulators for any floating-point representation.",
-        "Designed Systolic Array architecture for HPC workloads."
+        "Designed Systolic Array architecture for HPC workloads.",
+        "Explored very slow but very little floating-point division designs for SIMD/Vector paradigms."
       ]
     },
     {
       "name": "b<>com",
       "position": "Hardware Engineer",
-      "url": "",
-      "startDate": "2017-01-01",
-      "endDate": "2018-01-01",
+      "url": "https://b-com.com/",
+      "startDate": "2017-08-01",
+      "endDate": "2018-07-01",
       "summary": "Engaged in R&D focused on FPGA acceleration in the cloud. Successfully integrated an IP for real-time SDR to HDR video conversion, developed the IP integration using HDLs, and tweaked PCI-e drivers to maximize bandwidth.",
       "highlights": [
-        "Integrated an IP for real-time SDR to HDR video conversion.",
-        "Maximized PCIe bandwidth to approximately 15.8 GB/s."
-      ]
+  	"Deployed a custom IP core for real-time SDR to HDR video conversion on cloud-based FPGAs.",
+  	"Optimized PCI-e drivers, achieving sustained data transfer rates of up to 15.8 GB/s, maximizing hardware utilization and performance.",
+  	"Evaluated nascent FPGA cloud platforms such as Amazon AWS f1 with a focus on virtualization and partial reconfiguration.",
+	"Integrated with OpenCL with pipelining of nvme writing/reading, FPGA writing/reading with multithreaded FIFOs."
+]
     },
     {
       "name": "WaryMe",
       "position": "Back End Developer",
-      "url": "",
+      "url": "https://www.waryme.com/",
       "startDate": "2017-07-01",
-      "endDate": "2017-07-31",
+      "endDate": "2017-08-31",
       "summary": "Developed the entire back end of a people security application. Ensured secure data transmission and deployed the application on AWS.",
       "highlights": [
         "Developed backend services and APIs.",
@@ -85,10 +89,13 @@
       "url": "",
       "startDate": "2016-07-01",
       "endDate": "2016-07-31",
-      "summary": "Developed an automated CLI tool for publishing surveys on popular platforms.",
+      "summary": "During this summer internship, I developed an automated CLI tool for publishing surveys on popular platforms.",
       "highlights": [
-        "Developed an automated CLI tool for publishing surveys."
+	"Designed a REST API in Node.js to handle event-driven, asynchronous processes efficiently.",
+	"Implemented Test-Driven Development (TDD) using frameworks like Jasmine, ensuring flow verification in an environment-agnostic manner with a focus on mock and stub methodologies.",
+	"Enhanced security by deploying HTTPS with Let's Encrypt for secure data transmission."
       ]
+
     },
     {
       "name": "Radio Electronique Rennaise (R.E.R)",
@@ -98,7 +105,7 @@
       "endDate": "2014-07-31",
       "summary": "Responsible for repairing various electronic devices, with an emphasis on audio equipment.",
       "highlights": [
-        "Repaired various electronic devices, focusing on audio equipment.",
+        "Repaired various electronic devices, focusing on audio equipmenters.",
         "Soldered and reverse engineered amplifier circuits."
       ]
     }
@@ -107,7 +114,7 @@
     {
       "institution": "Universitat Politècnica de Catalunya (UPC)",
       "location": "Barcelona, Spain",
-      "url": "https://www.upc.edu/ca",
+      "url": "https://futur.upc.edu/LuisEduardoLedouxPardo",
       "area": "Computer Architecture",
       "studyType": "PhD",
       "startDate": "2018-08-16",
