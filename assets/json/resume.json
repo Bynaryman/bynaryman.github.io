@@ -186,47 +186,6 @@
       "summary": "Methods to accelerate deep learning inference using (Open)CAPI and posit numbers."
     }
   ],
-  "skills": [
-    {
-      "name": "Physics",
-      "level": "Master",
-      "keywords": [
-        "Quantum Mechanics",
-        "Quantum Computing",
-        "Quantum Information",
-        "Quantum Cryptography",
-        "Quantum Communication",
-        "Quantum Teleportation"
-      ]
-    }
-  ],
-  "languages": [
-    {
-      "language": "French",
-      "fluency": "Native speaker"
-    },
-    {
-      "language": "Spanish",
-      "fluency": "Native speaker (with an honest French accent)"
-    },
-    {
-      "language": "English",
-      "fluency": "Full Proficiency"
-    }
-  ],
-  "interests": [
-    {
-      "name": "Physics",
-      "keywords": [
-        "Quantum Mechanics",
-        "Quantum Computing",
-        "Quantum Information",
-        "Quantum Cryptography",
-        "Quantum Communication",
-        "Quantum Teleportation"
-      ]
-    }
-  ],
   "projects": [
     {
       "name": "MPW 5",
@@ -271,14 +230,57 @@
       "url": "https://github.com/Bynaryman/binary_instruments/blob/main/undae.png"
     }
   ],
-  "references": [
+  "languages": [
     {
-      "name": "Professor John Doe",
-      "reference": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam condimentum, diam quis convallis euismod, arcu mi ullamcorper lorem, a vestibulum nunc magna at sem."
+      "language": "French",
+      "fluency": "Native speaker"
     },
     {
-      "name": "Professor John Doe",
-      "reference": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam condimentum, diam quis convallis euismod, arcu mi ullamcorper lorem, a vestibulum nunc magna at sem."
+      "language": "Spanish",
+      "fluency": "Native speaker (with an honest French accent)"
+    },
+    {
+      "language": "English",
+      "fluency": "Full Proficiency"
     }
-  ]
+  ],
+  "skills": [
+  {
+    "name": "Scripting",
+    "keywords": ["Python", "Bash", "Shell", "Linux", "Tcl"]
+  },
+  {
+    "name": "Dissemination",
+    "keywords": ["LaTeX", "Matplotlib", "Inkscape", "Top-tier conferences article"]
+  },
+  {
+    "name": "FPGA",
+    "keywords": ["AMD", "Altera", "VHDL", "Verilog", "SystemVerilog", "Manual Floorplaning", "AmaranthHDL", "Automated Pipeline", "Automated circuit generation", "FloPoCo", "SDAccel", "AWS F1", "PCIe"]
+  },
+  {
+    "name": "GPU",
+    "keywords": ["CUDA 8", "CUDA 9", "OpenCL"]
+  },
+  {
+    "name": "Programming and Computer Science",
+    "keywords": [
+      "C",
+      "C++",
+      "Java",
+      "Scala",
+      "Algorithm Complexity",
+      "Pipeline Overlapping",
+      "Parallel Computing",
+      "Hardware Acceleration",
+      "Performance Optimization",
+      "Numerical Methods",
+      "High-Performance Computing (HPC)",
+      "Low-Level Programming"
+    ]
+  },
+  {
+    "name": "Version Control",
+    "keywords": ["Git", "GitHub", "GitLab", "SVN", "Pull Requests"]
+  }
+]
 }
