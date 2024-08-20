@@ -246,22 +246,6 @@
   ],
   "skills": [
   {
-    "name": "Scripting",
-    "keywords": ["Python", "Bash", "Shell", "Linux", "Tcl"]
-  },
-  {
-    "name": "Dissemination",
-    "keywords": ["LaTeX", "Matplotlib", "Inkscape", "Top-tier conferences article"]
-  },
-  {
-    "name": "FPGA",
-    "keywords": ["AMD", "Altera", "VHDL", "Verilog", "SystemVerilog", "Manual Floorplaning", "AmaranthHDL", "Automated Pipeline", "Automated circuit generation", "FloPoCo", "SDAccel", "AWS F1", "PCIe"]
-  },
-  {
-    "name": "GPU",
-    "keywords": ["CUDA 8", "CUDA 9", "OpenCL"]
-  },
-  {
     "name": "Programming and Computer Science",
     "keywords": [
       "C",
@@ -279,8 +263,44 @@
     ]
   },
   {
+    "name": "Computer Architecture",
+    "keywords": [
+	"Execution Stage",
+	"Floating-Point Unit",
+	"Kulich Accumulators",
+	"Design-Specific Architecture",
+	"Power/energy Budgeting",
+	"Data-Aware Designs",
+	"Workload-Accuracy tailored circuits",
+	"SIMD",
+	"Vector",
+	"VLIW",
+	"Systolic Arrays",
+	"Near-/In- Memory Computing",
+	"Processor Design",
+	"Out-of-Order",
+	"RISC-V"
+    ]
+  },
+  {
+    "name": "Scripting",
+    "keywords": ["Python", "Bash", "Shell", "Linux", "Tcl"]
+  },
+  {
+    "name": "Dissemination",
+    "keywords": ["LaTeX", "Matplotlib", "Inkscape", "Top-tier conferences article"]
+  },
+  {
+    "name": "FPGA",
+    "keywords": ["AMD", "Altera", "VHDL", "Verilog", "SystemVerilog", "Manual Floorplaning", "AmaranthHDL", "Automated Pipeline", "Automated circuit generation", "FloPoCo", "SDAccel", "AWS F1", "PCIe"]
+  },
+  {
+    "name": "GPU",
+    "keywords": ["CUDA 8", "CUDA 9", "OpenCL", "Warp", "MIMD", "SIMT", "Branch divergence", "Coalesced Access Patterns", "PTX", "Tensor Cores"]
+  },
+  {
     "name": "Version Control",
-    "keywords": ["Git", "GitHub", "GitLab", "SVN", "Pull Requests"]
+    "keywords": ["Git", "GitHub", "GitLab", "SVN", "Pull Requests", "branches", "rebases"]
   }
 ]
 }
