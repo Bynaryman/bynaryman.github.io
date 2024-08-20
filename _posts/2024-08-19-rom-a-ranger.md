@@ -1,10 +1,10 @@
 ---
 layout: post
 title: ROM à ranger
-date: 2024-08-20 21:01:00
+date: 2024-08-19 19:00:00
 description: "I have been experimenting with unveiling and sorting frame pixels to showcase the Teras design."
 tags: videos art taepout raytracing sorting
-categories: Artistic Science
+categories: sample-posts
 ---
 
 Raytracing..
