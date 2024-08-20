@@ -180,7 +180,7 @@ collections:
   news:
     defaults:
       layout: post
-    output: true
+    output: false
     permalink: /news/:path/
   projects:
     output: true
@@ -621,10 +621,5 @@ jsonresume:
   - education
   - publications
   - projects
-  - volunteer
-  - awards
-  - certificates
   - skills
   - languages
-  - interests
-  - references
