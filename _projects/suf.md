@@ -1,13 +1,11 @@
 ---
 layout: page
 title: SUF
-description: a project with a background image and giscus comments
+description: a graft approach to enhance OpenROAD
 img: assets/img/SUF.png
 importance: 2
 category: work
 ---
-
-# SUF
 
 **SUF** is a Superset Framework for [OpenROAD](https://github.com/The-OpenROAD-Project) that acts as an enhancement graft by augmenting the original capabilities. This repository and documentation are works in progress (WIP), especially as I will soon provide example scripts to demonstrate the capabilities of this framework with multi-parallel PDK compilation.
 

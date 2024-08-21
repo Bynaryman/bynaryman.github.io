@@ -1,7 +1,7 @@
 ---
 layout: page
 title: OSFNTC
-description: "This project is 'An Open-Source Framework for Efficient Numerically-Tailored Computations', hence the acronym 'OSFNTC'"
+description: "An Open-Source Framework for Efficient Numerically-Tailored Computations"
 img: assets/img/runtime.jpg
 importance: 1
 category: work
