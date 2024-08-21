@@ -40,7 +40,14 @@ In the context of SSH computation, our methodology obtains fully reproducible re
 The two phases framework is depicted by the following image. On the left we observe the runtime execution flow, whereas the rightmost part depicts the a priori hardware generation flow:
 
 
-![image](https://github.com/Bynaryman/OSFNTC/assets/937470/d24f3f4b-1615-4bed-b0f2-75b6d18dc985)
+<div class="row">
+    <div class="col-sm mt-3 mt-md-0">
+        {% include figure.liquid loading="eager" path="https://github.com/Bynaryman/OSFNTC/assets/937470/d24f3f4b-1615-4bed-b0f2-75b6d18dc985" title="Two phases framework" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="caption">
+The 2 phases of the framework: right, the a priori Hardware generation flow, and left, the runtime execution flow.
+</div>
 
 
 ## Project Structure
@@ -177,14 +184,44 @@ Here, we briefly summarize the two big families of HPC code that we evaluated, e
 
 Sea Surface Height (SSH) is a crucial metric in ocean circulation model development, aiding in the tracking of ocean currents, eddies, and climate changes. SSH represents sea surface volume, derived from the product of integrated sea surface area and height.
 
+<div class="row">
+    <div class="col-sm mt-3 mt-md-0">
+        <b>Reverse Longitude First SSH Calculation</b><br>
+        {% highlight python %}
+for j=128 to 1: # longitude
+    for i=1 to 64:  # latitude
+        sum = sum + ssh(i,j)
+    end
+end
+print(sum)  # 32.302734375
+        {% endhighlight %}
+    </div>
+    <div class="col-sm mt-3 mt-md-0">
+        <b>Latitude First SSH Calculation</b><br>
+        {% highlight python %}
+for i=1 to 64:  # latitude
+    for j=1 to 128: # longitude
+        sum = sum + ssh(i,j)
+    end
+end
+print(sum)  # 0.6732654571533203
+        {% endhighlight %}
+    </div>
+</div>
+
 To reduce errors and approximate the correct result, several techniques are utilized. Self-Compensated and Double-Compensated Summations (SCS and DCS) estimate the round-off error at each step and subtract it in subsequent steps. Sorting the values in decreasing magnitude order is also effective, especially where values alternate signs.
 
 This study focuses on the effectiveness of hardware units, comparing our Fused Dot Products (FDPs) to the double- and quad-precision FMAs found in computational systems. The units compared are the IEEE-754 double-precision FMA, the IEEE-754 quad-precision FMA, and our 91-bit FDP fed with IEEE754-64 words.
 
 We assessed average, relative standard deviation (RSD), accuracy, and power cost per accurate bit of SSH variable for different vector sizes.
-<p align="center">
-<img src="https://github.com/Bynaryman/OSFNTC/assets/937470/338d6221-c4e1-4b67-9e35-685b3abec5ba" width="50%">
-</p>
+<div class="row">
+    <div class="col-sm mt-3 mt-md-0">
+        {% include figure.liquid loading="eager" path="https://github.com/Bynaryman/OSFNTC/assets/937470/338d6221-c4e1-4b67-9e35-685b3abec5ba" title="SSH results" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="caption">
+Sea Surface Height computation comparing IEEE-754 double-, quad- precision FMAs and a 91-bit FDP with four metrics.
+</div>
 
 The 64-bit and 128-bit FPUs showed decreased reproducibility as vector size increased, while our 91-bit FDP maintained reproducibility across all vector sizes. Quad-precision FPUs improved numerical quality over double-precision FPUs but didn't offer reproducibility.
 
@@ -202,10 +239,25 @@ We use popular neural network models such as ResNet18, ResNet34, ResNet50, Dense
 
 The following Figure shows Top1 Score VS. the energy cost of infering the whole validation set. In some instances, we observe that adjusting the accumulator by just a few bits can save an amount of energy equivalent to that required for a 3-year-old toddler to climb a 3-meter hill.
 
-![image](https://github.com/Bynaryman/OSFNTC/assets/937470/fa832531-fa79-44b9-ac37-308847355bf6)
+<div class="row">
+    <div class="col-sm mt-3 mt-md-0">
+        {% include figure.liquid loading="eager" path="https://github.com/Bynaryman/OSFNTC/assets/937470/fa832531-fa79-44b9-ac37-308847355bf6" title="AI results 1" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="caption">
+Top1 Accuracy vs. energy cost of inferring validation datasets with various model, computer format, and accumulators.
+</div>
 
 The following Figure depicts the myriad of evaluated configurations in terms of Top1/Top5 scores and score cost.
-![image](https://github.com/Bynaryman/OSFNTC/assets/937470/75293628-a9ff-4bc9-8f50-ef14fc2ce061)
+
+<div class="row">
+    <div class="col-sm mt-3 mt-md-0">
+        {% include figure.liquid loading="eager" path="https://github.com/Bynaryman/OSFNTC/assets/937470/75293628-a9ff-4bc9-8f50-ef14fc2ce061" title="AI results 2" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="caption">
+Top1/Top5 Accuracies and Top1/Top5 Accuracy Costs for various datasets, models, computer formats, and accumulators.
+</div>
 
 
 ## ASIC Tapeout
@@ -216,7 +268,14 @@ Special thanks to [@mattvenn](https://github.com/mattvenn) of the Zero To ASIC c
 
 The image below showcases a ray-tracing render of the 3D view of the GDS file. We replaced the metal with glass to achieve this stunning, glowing visual effect. The featured design is a 3x3 Systolic Array that uses posit<8,0> arithmetic and exact accumulators, also known as Quires.
 
-![image](https://github.com/Bynaryman/OSFNTC/assets/937470/9fafa062-419e-4111-8377-8ad016256fdc)
+<div class="row">
+    <div class="col-sm mt-3 mt-md-0">
+        {% include figure.liquid loading="eager" path="https://github.com/Bynaryman/OSFNTC/assets/937470/9fafa062-419e-4111-8377-8ad016256fdc" title="Raytracing" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="caption">
+Artistic raytracing rendering of the polygons from the GDS file describing the chip.
+</div>
 
 We invite you to explore the following links for a deeper understanding of this project. They will guide you to the code that generated this chip, and offer additional valuable insights into this open-source PDK (Process Development Kit) collaboration.
 
