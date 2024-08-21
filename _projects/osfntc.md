@@ -2,7 +2,7 @@
 layout: page
 title: OSFNTC
 description: "This project is 'An Open-Source Framework for Efficient Numerically-Tailored Computations', hence the acronym 'OSFNTC'"
-img: assets/img/fpl.png
+img: assets/img/runtime.png
 importance: 1
 category: work
 related_publications: true
@@ -54,7 +54,7 @@ The 2 phases of the framework: right, the a priori Hardware generation flow, and
 
 The repository is organized as follows:
 
-```bash
+```text
 OSFNTC/
 ├── OpenBLAS/              # Custom OpenBLAS library directory
 ├── PySigmoid/             # Custom PySigmoid library directory
