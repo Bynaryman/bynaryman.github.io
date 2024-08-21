@@ -3,6 +3,17 @@
   <!-- Head -->
   <head>
     <meta name="google-site-verification" content="2DNN7Qe_ITQlGo6IlOVkP5TAiA-B2ZvRJ25-20k7hQo" />
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YSY28GB5L4"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-YSY28GB5L4');
+    </script>
+
     {% if page.redirect %}
       {% if page.redirect == true %}
         {% assign redirect = site.baseurl | append: '/' %}
