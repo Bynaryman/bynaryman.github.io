@@ -1,7 +1,7 @@
 {
   "basics": {
     "name": "Louis Ledoux",
-    "label": "Researcher",
+    "label": "Philosophiae Doctor",
     "email": "i.f.lledoux[at]gmail.com",
     "phone": "+33 [seven] 70 49 11 98",
     "url": "https://bynaryman.github.io/",
@@ -118,8 +118,8 @@
       "area": "Computer Architecture",
       "studyType": "PhD",
       "startDate": "2018-08-16",
-      "endDate": "Now",
-      "summary": "Thesis: Floating-Point Arithmetic Paradigms for High-Performance Computing: Software Algorithms and Hardware Designs"
+      "endDate": "2024-08-03",
+      "summary": "Thesis: Floating-Point Arithmetic Paradigms for High-Performance Computing: Software Algorithms and Hardware Designs. Thesis tutor: Marc Casas. Jury attributed the grade of excellent."
     },
     {
       "institution": "Université de Rennes",
