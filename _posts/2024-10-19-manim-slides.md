@@ -7,6 +7,8 @@ tags: videos, science, communication, mathematics
 categories: science
 ---
 
+### Introduction
+
 Manim, short for **Math Animation**, might not be immediately recognizable to everyone.
 However, if I mention **3Blue1Brown** (3b1b), it may ring a bell.
 If not, I highly recommend exploring the incredible collection of videos produced by **3Blue1Brown**, where advanced mathematics is beautifully presented through dynamic, intuitive visualizations.
@@ -15,18 +17,19 @@ These videos demonstrate a compelling way to **teach**, **illustrate**, **animat
 Even if mathematics isn’t your passion, the framework and concepts that **Grant Sanderson (the creator of 3b1b)** has developed are awe-inspiring.
 From transformations to visual storytelling, Manim makes abstract concepts accessible in a visually engaging way.
 
-### Three Video Examples with Liquid Integration
+### Three Video Examples
 <div class="row mt-5">
     <div class="col-sm mt-3 mt-md-0">
-        {% include video.liquid path="https://youtu.be/9-Jl0dxWQs8?si=MD8rODoS4fzLUWgq" class="img-fluid rounded z-depth-2" controls=true autoplay=false %}
+        {% include video.liquid path="https://www.youtube.com/embed/9-Jl0dxWQs8?si=7YPqnVakTd28nSzW" class="img-fluid rounded z-depth-2" controls=true autoplay=false %}
     </div>
     <div class="col-sm mt-3 mt-md-0">
-        {% include video.liquid path="https://youtu.be/pQa_tWZmlGs?si=STULp4fFBZ5lLWFZ" class="img-fluid rounded z-depth-2" controls=true autoplay=false %}
+        {% include video.liquid path="https://www.youtube.com/embed/pQa_tWZmlGs?si=STULp4fFBZ5lLWFZ" class="img-fluid rounded z-depth-2" controls=true autoplay=false %}
     </div>
     <div class="col-sm mt-3 mt-md-0">
-        {% include video.liquid path="https://youtu.be/r6sGWTCMz2k?si=ZayrqQk3PMveKUp6" class="img-fluid rounded z-depth-2" controls=true autoplay=false %}
+        {% include video.liquid path="https://www.youtube.com/embed/r6sGWTCMz2k?si=ZayrqQk3PMveKUp6" class="img-fluid rounded z-depth-2" controls=true autoplay=false %}
     </div>
 </div>
+
 
 <div class="caption">
     Above are three examples of Manim animations showcasing different aspects of visual mathematics, all generated using Manim and rendered directly on the web.
