@@ -18,7 +18,7 @@ An intro text I will redact.
         height="100%"
         allowfullscreen
         allow="autoplay"
-        src="assets/html/iframe.html">
+        src="/assets/html/iframe.html">
     </iframe>
     </div>
 </div>
