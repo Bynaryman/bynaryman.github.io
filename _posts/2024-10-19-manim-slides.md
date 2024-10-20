@@ -11,14 +11,20 @@ An intro text I will redact.
 
 <div class="row mt-5">
     <div class="col-sm mt-3 mt-md-0">
-        <iframe
-        style="width:100%;height:100%;position:absolute;left:0px;top:0px;"
-        frameborder="0"
-        width="100%"
-        height="100%"
-        allowfullscreen
-        allow="autoplay"
-        src="/assets/html/iframe.html">
-    </iframe>
+        <div style="position:relative;padding-bottom:56.25%;">
+            <iframe
+                style="width:100%;height:100%;position:absolute;left:0px;top:0px;"
+                frameborder="0"
+                width="100%"
+                height="100%"
+                allowfullscreen
+                allow="autoplay"
+                src="/assets/html/iframe.html">
+            </iframe>
+        </div>
     </div>
+</div>
+
+<div class="caption">
+    These are interactive slides with animations rendered in python + manim from 3b1b.
 </div>
