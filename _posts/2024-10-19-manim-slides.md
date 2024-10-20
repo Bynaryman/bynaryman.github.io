@@ -1,7 +1,7 @@
 ---
 layout: post
 title: My take on Manim Slides
-date: 2024-10-20 19:00:00
+date: 2024-10-19 19:00:00
 description: "I am currently trying to generate manim slides and to embed them in an Iframe for website rendering."
 tags: videos science communication
 categories: science
