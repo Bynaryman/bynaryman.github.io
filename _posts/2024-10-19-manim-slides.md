@@ -11,8 +11,9 @@ An intro text I will redact.
 
 <div class="row mt-5">
     <div class="col-sm mt-3 mt-md-0">
-        <div style="position:relative; padding-bottom:56.25%;" class="img-fluid rounded z-depth-1">
+        <div style="position:relative; padding-bottom:56.25%;">
             <iframe
+                class="img-fluid rounded z-depth-2"
                 style="width:100%; height:100%; position:absolute; left:0; top:0;"
                 frameborder="0"
                 allowfullscreen

@@ -11,7 +11,7 @@ With a final objective that diverges from this, i.e., building a mega drone out 
 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
-        {% include video.liquid path="assets/video/rotation_movie.mp4" class="img-fluid rounded z-depth-1" controls=true autoplay=true loop=true %}
+        {% include video.liquid path="assets/video/rotation_movie.mp4" class="img-fluid rounded z-depth-2" controls=true autoplay=true loop=true %}
     </div>
 </div>
 <div class="caption text-center mt-2">
@@ -22,7 +22,7 @@ Another nice objective was to be able to use the wavetable in a music production
 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/ableton_waveforms.jpg" class="img-fluid rounded z-depth-1" zoomable=true %}
+        {% include figure.liquid loading="eager" path="assets/img/ableton_waveforms.jpg" class="img-fluid rounded z-depth-2" zoomable=true %}
     </div>
 </div>
 <div class="caption text-center mt-2">

@@ -11,7 +11,7 @@ Exploring the 2D projection of a ray-traced render of one of my taped-out chips,
 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
-        {% include video.liquid path="assets/video/merged_output_video.mp4" class="img-fluid rounded z-depth-1" controls=true autoplay=true loop=true%}
+        {% include video.liquid path="assets/video/merged_output_video.mp4" class="img-fluid rounded z-depth-2" controls=true autoplay=true loop=true%}
     </div>
 </div>
 <div class="caption">
