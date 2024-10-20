@@ -11,12 +11,10 @@ An intro text I will redact.
 
 <div class="row mt-5">
     <div class="col-sm mt-3 mt-md-0">
-        <div style="position:relative;padding-bottom:56.25%;">
+        <div style="position:relative; padding-bottom:56.25%;" class="img-fluid rounded z-depth-1">
             <iframe
-                style="width:100%;height:100%;position:absolute;left:0px;top:0px;"
+                style="width:100%; height:100%; position:absolute; left:0; top:0;"
                 frameborder="0"
-                width="100%"
-                height="100%"
                 allowfullscreen
                 allow="autoplay"
                 src="/assets/html/iframe.html">
