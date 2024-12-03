@@ -15,6 +15,8 @@ github_repos:
   - ghdl/ghdl
   - ghdl/ghdl-yosys-plugin
   - Bynaryman/bynaryman.github.io
+  - Bynaryman/taran_12_24_slides
+  - Bynaryman/plots_paper_intrumented_adder
   - Bynaryman/capi2-bsp
   - Bynaryman/Le-RetrOrchestre
   - Bynaryman/libxsmm
