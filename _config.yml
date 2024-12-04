@@ -323,6 +323,8 @@ scholar:
   group_by: type, year
   group_order: descending
 
+  type_names: { misc: Posters, techreports: Invited talks and Seminars}
+
 # Display different badges withs stats for your publications
 enable_publication_badges:
   altmetric: true # Altmetric badge (https://www.altmetric.com/products/altmetric-badges/)
