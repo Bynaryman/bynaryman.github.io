@@ -323,7 +323,7 @@ scholar:
   group_by: type, year
   group_order: descending
 
-  type_names: { misc: Posters, techreports: Invited talks and Seminars}
+  type_names: { misc: Posters, techreport: Invited talks and Seminars}
 
 # Display different badges withs stats for your publications
 enable_publication_badges:
