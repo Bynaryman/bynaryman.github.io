@@ -28,7 +28,7 @@ back_to_top: true # set to false to disable the back to top button
 # -----------------------------------------------------------------------------
 
 # repo color theme
-repo_theme_light: light  # https://github.com/anuraghazra/github-readme-stats/blob/master/themes/README.md
+repo_theme_light: solarized-light  # https://github.com/anuraghazra/github-readme-stats/blob/master/themes/README.md
 repo_theme_dark: dark # https://github.com/anuraghazra/github-readme-stats/blob/master/themes/README.md
 repo_trophies:
   enabled: true
@@ -325,7 +325,8 @@ scholar:
 
   # I use misc for posters, and techreports for invited talks and seminars
   # type_aliases: {} useful to merge types
-  type_order: [thesis, inproceedings, articles, misc, techreport]
+  #type_order: [thesis, inproceedings, articles, misc, techreport]
+  type_order: [techreport, misc, articles, inproceedings, thesis]
   type_names: { misc: Posters, techreport: Invited talks and Seminars}
 
 # Display different badges withs stats for your publications
