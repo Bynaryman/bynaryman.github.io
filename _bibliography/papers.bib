@@ -132,3 +132,15 @@ Thanks to the denser representation offered by the posit arithmetic BSC can:
 	preview = {posit_mlp_preview_small.png},
 	html = {https://hal.science/hal-04094850},
 }
+
+@techreport{ledoux_taran_dark_era_2024,
+	address = {Rennes, France},
+	title = {The Walls and the Dark Silicon Era: An Arithmetic Perspective},
+	abstract = {The memory wall, power wall, dark silicon, and even the adage "communication dominates arithmetic" are persistent challenges for computer architects and the High Performance Computing (HPC) community. The term "computer," derived from the Latin computare ("to calculate"), implies that computation is central to its purpose. However, HPC systems and supercomputers perform numerous non-arithmetic tasks, such as synchronization, data movement, and operating system management. Given the general-purpose nature of these HPC tasks and the emphasis on efficiency, careful attention must be paid to the design of arithmetic units. This creates a high-dimensional parameter space, and the sparsity of numerical requirements in scientific workloads further broadens the design space, allowing for extensive exploration of arithmetic architectures and number representations. This presentation addresses software and hardware solutions aimed at optimizing these architectural choices while tackling the challenges posed by the various computational barriers. Specifically, we focus on two major trade-offs: (1) accuracy (precision) versus energy efficiency, considering numerical requirements, and (2) parallelism versus latency in the context of SIMD/vector floating-point operations. Additionally, we may explore topics such as custom arithmetic ASIC design flows or the use of Multi-Level Intermediate Representations (MLIR) to enhance flexibility and efficiency across this design space.},
+	author = {Ledoux, Louis},
+	month = dec,
+	year = {2024},
+	keywords = {dark silicon, arithmetic, float, posit, llm, gemm, accuracy, energy},
+	bibtex_show = {true},
+	preview = {looped.png}
+}
