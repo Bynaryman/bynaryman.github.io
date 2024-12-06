@@ -194,7 +194,8 @@
       "url": "https://hc32.hotchips.org/",
       "startDate": "2020-04-16",
       "endDate": "2020-04-18",
-      "summary": "Assisted with digital entrance management, conference link distribution, and attendee support during the event."
+      "summary": "Assisted with digital entrance management, conference link distribution, and attendee support during the event.",
+      "highlights": ["t", "t"]
     },
     {
       "organization": "FPL 2019 (Field-Programmable Logic Conference)",
@@ -203,7 +204,8 @@
       "url": "https://fpl2019.bsc.es/",
       "startDate": "2019-09-09",
       "endDate": "2019-09-13",
-      "summary": "Managed reception desk activities, including badge distribution and providing microphones for speakers during presentations."
+      "summary": "Managed reception desk activities, including badge distribution and providing microphones for speakers during presentations.",
+      "highlights": ["t", "t"]
     }
   ],
   "projects": [
