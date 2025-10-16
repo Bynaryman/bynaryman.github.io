@@ -8,10 +8,10 @@
     "summary": "A Computer Architect with a focus on Arithmetic and Floating-Points.",
     "location": {
       "address": "",
-      "postalCode": "08014",
-      "city": "Barcelona",
-      "countryCode": "ESP",
-      "region": "Catalunya"
+      "postalCode": "69100",
+      "city": "Lyon",
+      "countryCode": "FRA",
+      "region": "Auvergne-Rhône-Alpes"
     },
     "profiles": [
       {
@@ -43,11 +43,24 @@
   },
   "work": [
     {
+      "name": "INSA/INRIA – Emeraude",
+      "position": "Postdoctoral Researcher",
+      "url": "https://www.citi-lab.fr/",
+      "startDate": "2025-01-01",
+      "endDate": "Now",
+      "summary": "Postdoctoral research on arithmetic-aware compilation integrating MLIR and FloPoCo.",
+      "highlights": [
+        "Multi-level arithmetic transformations from real to fixed-point approximations for ASIC/FPGA.",
+        "Custom MLIR dialects for arithmetic abstraction, reasoning, and approximation.",
+        "Automated generation of hardware architectures from DSP-oriented code (e.g., Faust)."
+      ]
+    },
+    {
       "name": "Barcelona Supercomputing Center (BSC) - RoMoL/CAOS/SONAR",
       "position": "Researcher",
       "url": "https://www.bsc.es/ledoux-louis",
       "startDate": "2018-08-16",
-      "endDate": "Now",
+      "endDate": "2024-12-31",
       "summary": "Conducting research in computer architecture, arithmetic, and HPC. Exploring co-designed hardware/software acceleration of posit arithmetic, developing Kulisch/Quire accumulators, and designing Systolic Array architecture for HPC workloads.",
       "highlights": [
 	"Thesis: Floating-Point Arithmetic Paradigms for High-Performance Computing: Software Algorithms and Hardware Designs.",
@@ -144,6 +157,27 @@
   ],
   "publications": [
     {
+      "name": "Design-Space Exploration of Serialized Floating-Point Division for DLP Architectures",
+      "publisher": "28th Euromicro Conference Series on Digital System Design (DSD) 2025",
+      "releaseDate": "2025",
+      "url": "",
+      "summary": "Explores serialized floating-point division units tailored for data-level parallel architectures."
+    },
+    {
+      "name": "Towards Optimized Arithmetic Circuits with MLIR",
+      "publisher": "28th Euromicro Conference Series on Digital System Design (DSD) 2025",
+      "releaseDate": "2025",
+      "url": "",
+      "summary": "Presents MLIR-based approaches for optimizing arithmetic circuits across multiple abstraction levels."
+    },
+    {
+      "name": "Towards Multi-Level Arithmetic Optimizations",
+      "publisher": "EuroLLVM 2025",
+      "releaseDate": "2025",
+      "url": "https://hal.science/hal-05063466",
+      "summary": "Poster on multi-level arithmetic optimization strategies integrating compiler and circuit design."
+    },
+    {
       "name": "A Generator of Numerically-Tailored and High-Throughput Accelerators for Batched GEMMs",
       "publisher": "2022 IEEE 30th Annual International Symposium on Field-Programmable Custom Computing Machines (FCCM)",
       "releaseDate": "2022-05",
@@ -214,6 +248,12 @@
       "summary": "Taped out a Systolic Array for Matrix Multiplication with Posit numbers and Quires accumulators.",
       "highlights": ["Posit Numbers", "Quires Accumulators"],
       "url": "https://github.com/Bynaryman/wrapped_teras"
+    },
+    {
+      "name": "Artistic OpenROAD",
+      "summary": "Modified the OpenROAD replace tool to visualize electrostatic fields and explore chip sonification; taught concepts in Matt Venn’s Zero to ASIC course.",
+      "highlights": ["OpenROAD", "Electrostatic Visualization", "Chip Sonification"],
+      "url": "https://github.com/Bynaryman/gpl"
     },
     {
       "name": "MPW 1",
@@ -289,7 +329,7 @@
     "keywords": [
 	"Execution Stage",
 	"Floating-Point Unit",
-	"Kulich Accumulators",
+	"Kulisch Accumulators",
 	"Design-Specific Architecture",
 	"Power/energy Budgeting",
 	"Data-Aware Designs",
@@ -298,7 +338,7 @@
 	"Vector",
 	"VLIW",
 	"Systolic Arrays",
-	"Near-/In- Memory Computing",
+	"Near-/In-Memory Computing",
 	"Processor Design",
 	"Out-of-Order",
 	"RISC-V"
