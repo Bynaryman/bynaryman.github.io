@@ -1,11 +1,8 @@
+{% assign frame_title = include.title | default: "terminal" %}
 <div class="terminal-frame">
   <div class="terminal-frame__header">
-    <span class="terminal-frame__light terminal-frame__light--red"></span>
-    <span class="terminal-frame__light terminal-frame__light--amber"></span>
-    <span class="terminal-frame__light terminal-frame__light--green"></span>
-    {% if include.title %}
-      <span class="terminal-title">{{ include.title }}</span>
-    {% endif %}
+    <span class="terminal-frame__prompt">{{ frame_title }}</span>
+    <span class="terminal-frame__status">RUN</span>
   </div>
   <div class="terminal-frame__body scanline-layer">
     {{ include.content }}

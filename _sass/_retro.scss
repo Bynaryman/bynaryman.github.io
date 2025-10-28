@@ -11,11 +11,11 @@
 }
 
 :root {
-  --retro-bg: #11131a;
-  --retro-panel: rgba(8, 10, 16, 0.92);
-  --retro-panel-border: rgba(128, 255, 219, 0.35);
-  --retro-text: #aaf7d1;
-  --retro-text-soft: #7edbb3;
+  --retro-bg: #0a0c13;
+  --retro-panel: rgba(7, 10, 17, 0.82);
+  --retro-panel-border: rgba(136, 255, 222, 0.35);
+  --retro-text: #b7ffe3;
+  --retro-text-soft: #81d6bb;
   --retro-accent: #6fffe9;
   --retro-accent-strong: #2de2d3;
   --retro-link-visited: #a567ff;
@@ -23,6 +23,11 @@
   --retro-selection-bg: rgba(111, 255, 233, 0.35);
   --retro-code-bg: rgba(0, 0, 0, 0.45);
   --retro-divider: rgba(111, 255, 233, 0.15);
+  --retro-type-stack: "VT323 Retro", "Fira Code", "Cascadia Code", "Courier New", monospace;
+  --retro-mono-stack: "Press Start Retro", "VT323 Retro", "Fira Code", "Courier New", monospace;
+
+  --bs-body-font-family: var(--retro-type-stack);
+  --bs-font-monospace: var(--retro-mono-stack);
 
   --global-bg-color: var(--retro-bg);
   --global-bg-path-light: none;
@@ -56,15 +61,22 @@
   --global-danger-block-title: #ff8989;
 }
 
+html,
 body {
-  background: var(--retro-bg);
+  font-family: var(--retro-type-stack);
+  background-color: var(--retro-bg);
+}
+
+body {
   color: var(--retro-text);
-  font-family: "VT323 Retro", "Fira Code", "Cascadia Code", "Courier New", monospace;
   font-size: 19px;
   line-height: 1.65;
   text-shadow: 0 0 6px rgba(111, 255, 233, 0.25);
   letter-spacing: 0.5px;
   position: relative;
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
 }
 
 body::before {
@@ -73,7 +85,30 @@ body::before {
   position: fixed;
   inset: 0;
   z-index: 0;
-  background: linear-gradient(180deg, rgba(10, 12, 18, 0.8) 0%, rgba(16, 18, 24, 0.8) 100%);
+  background-image:
+    linear-gradient(180deg, rgba(7, 9, 14, 0.92) 0%, rgba(3, 5, 9, 0.94) 100%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(111, 255, 233, 0.08) 0,
+      rgba(111, 255, 233, 0.08) 2px,
+      transparent 2px,
+      transparent 4px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(9, 14, 18, 0.4) 0,
+      rgba(9, 14, 18, 0.4) 80px,
+      rgba(111, 255, 233, 0.08) 80px,
+      rgba(111, 255, 233, 0.08) 82px
+    ),
+    url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27320%27%20height%3D%27320%27%3E%3Crect%20width%3D%27320%27%20height%3D%27320%27%20fill%3D%27transparent%27%20/%3E%3Cg%20fill%3D%27%236fffe9%27%20font-family%3D%27monospace%27%20font-size%3D%2718%27%20opacity%3D%270.22%27%3E%3Ctext%20x%3D%2724%27%20y%3D%2736%27%3E%3E%20boot%20seq%20init%3C/text%3E%3Ctext%20x%3D%2724%27%20y%3D%2772%27%3E%3E%20loading%20rom...%20ok%3C/text%3E%3Ctext%20x%3D%2724%27%20y%3D%27108%27%3E%3E%20mounting%20/dev/chip%3C/text%3E%3Ctext%20x%3D%2724%27%20y%3D%27144%27%3E%3E%20compiling%20scene%3C/text%3E%3Ctext%20x%3D%2724%27%20y%3D%27180%27%3E%3E%20ray%20dispatch%20engaged%3C/text%3E%3Ctext%20x%3D%2724%27%20y%3D%27216%27%3E%3E%20frame%20buffer%20ready%3C/text%3E%3C/g%3E%3C/svg%3E"),
+    radial-gradient(circle at 15% 20%, rgba(47, 80, 70, 0.2), transparent 55%),
+    radial-gradient(circle at 80% 65%, rgba(39, 88, 88, 0.18), transparent 60%);
+  background-size: 100% 100%, 100% 12px, 160px 100%, 320px 320px, 420px 420px, 520px 520px;
+  background-repeat: repeat;
+  background-attachment: fixed;
+  animation: terminal-scroll 24s linear infinite;
+  opacity: 0.75;
 }
 
 body::after {
@@ -84,14 +119,14 @@ body::after {
   z-index: 1;
   background: repeating-linear-gradient(
       to bottom,
-      rgba(5, 7, 12, 0.05),
-      rgba(5, 7, 12, 0.05) 2px,
-      rgba(8, 10, 14, 0.25) 2px,
-      rgba(8, 10, 14, 0.25) 4px
+      rgba(5, 7, 12, 0.04),
+      rgba(5, 7, 12, 0.04) 2px,
+      rgba(8, 10, 14, 0.22) 2px,
+      rgba(8, 10, 14, 0.22) 4px
     );
-  mix-blend-mode: screen;
+  mix-blend-mode: soft-light;
   animation: scanlines 6s infinite linear;
-  opacity: 0.35;
+  opacity: 0.28;
 }
 
 @keyframes scanlines {
@@ -100,6 +135,26 @@ body::after {
   }
   100% {
     background-position: 0 8px;
+  }
+}
+
+@keyframes terminal-scroll {
+  0% {
+    background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0;
+  }
+  100% {
+    background-position: 0 0, 0 -240px, 0 -480px, 0 -360px, 0 -120px, 0 -200px;
+  }
+}
+
+@keyframes status-blink {
+  0%,
+  60% {
+    opacity: 1;
+  }
+  60.01%,
+  100% {
+    opacity: 0.2;
   }
 }
 
@@ -127,7 +182,7 @@ a:visited {
 
 code,
 pre {
-  font-family: "Press Start Retro", "VT323 Retro", "Fira Code", "Courier New", monospace;
+  font-family: var(--retro-mono-stack);
   background: var(--retro-code-bg);
   color: var(--retro-warning);
   border: 1px solid rgba(111, 255, 233, 0.3);
@@ -176,7 +231,7 @@ hr {
 
 .navbar .navbar-brand,
 .navbar .nav-link {
-  font-family: "Press Start Retro", "VT323 Retro", "Fira Code", "Courier New", monospace;
+  font-family: var(--retro-mono-stack);
   font-size: 15px;
   letter-spacing: 1.5px;
 }
@@ -192,13 +247,13 @@ hr {
 }
 
 .post,
-.page,
-.terminal-frame {
-  background: var(--retro-panel);
+.page {
+  background: rgba(6, 9, 15, 0.78);
   border: 1px solid var(--retro-panel-border);
-  border-radius: 10px;
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.65);
-  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.65);
+  padding: 2.25rem;
+  backdrop-filter: blur(18px) saturate(140%);
 }
 
 .post-title,
@@ -208,7 +263,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Press Start Retro", "VT323 Retro", "Fira Code", "Courier New", monospace;
+  font-family: var(--retro-mono-stack);
   color: var(--retro-accent-strong);
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -225,46 +280,82 @@ h6 {
 }
 
 .terminal-frame {
+  background: rgba(5, 8, 14, 0.82);
+  border: 1px solid var(--retro-panel-border);
+  border-radius: 12px;
+  box-shadow: 0 26px 55px rgba(0, 0, 0, 0.68);
   padding: 0;
   overflow: hidden;
+  backdrop-filter: blur(20px) saturate(150%);
 }
 
 .terminal-frame__header {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1rem;
-  background: rgba(10, 13, 18, 0.95);
+  justify-content: space-between;
+  padding: 0.65rem 1.1rem;
+  background: linear-gradient(180deg, rgba(4, 6, 11, 0.92) 0%, rgba(2, 4, 9, 0.95) 100%);
   border-bottom: 1px solid var(--retro-panel-border);
+  font-family: var(--retro-mono-stack);
+  font-size: 12px;
+  letter-spacing: 1.4px;
+  color: var(--retro-text-soft);
+  text-transform: uppercase;
+  position: relative;
+  overflow: hidden;
 }
 
-.terminal-frame__light {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  box-shadow: 0 0 6px currentColor;
+.terminal-frame__header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(111, 255, 233, 0.05),
+    transparent 40%,
+    transparent 60%,
+    rgba(111, 255, 233, 0.05)
+  );
+  opacity: 0.35;
+  pointer-events: none;
 }
 
-.terminal-frame__light--red {
-  color: #ff5f56;
+.terminal-frame__prompt {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--retro-text-soft);
+  letter-spacing: 0.8px;
+  text-transform: none;
 }
 
-.terminal-frame__light--amber {
-  color: #ffbd2e;
+.terminal-frame__prompt::before {
+  content: ">";
+  color: var(--retro-warning);
 }
 
-.terminal-frame__light--green {
-  color: #27c93f;
+.terminal-frame__prompt::after {
+  content: "_";
+  color: var(--retro-warning);
+  animation: status-blink 1.8s steps(2, start) infinite;
+}
+
+.terminal-frame__status {
+  font-size: 11px;
+  color: var(--retro-warning);
+  letter-spacing: 0.8px;
+  animation: none;
 }
 
 .terminal-frame__body {
   position: relative;
-  padding: 2rem;
+  padding: 2.15rem 2.35rem;
   background: linear-gradient(
-      135deg,
-      rgba(10, 15, 20, 0.95) 0%,
-      rgba(6, 8, 12, 0.95) 100%
-    );
+    135deg,
+    rgba(7, 10, 16, 0.78) 0%,
+    rgba(4, 6, 12, 0.82) 100%
+  );
+  backdrop-filter: blur(12px);
 }
 
 .terminal-frame__body::before {
@@ -272,9 +363,9 @@ h6 {
   pointer-events: none;
   position: absolute;
   inset: 0;
-  border: 1px solid rgba(111, 255, 233, 0.12);
+  border: 1px solid rgba(111, 255, 233, 0.18);
   border-radius: 6px;
-  opacity: 0.6;
+  opacity: 0.5;
 }
 
 .terminal-frame__body::after {
@@ -289,19 +380,11 @@ h6 {
       rgba(12, 15, 20, 0) 1px,
       rgba(12, 15, 20, 0) 2px
     );
-  mix-blend-mode: screen;
-  opacity: 0.25;
-}
-
-.terminal-title {
-  font-size: 14px;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  color: var(--retro-text-soft);
+  opacity: 0.18;
 }
 
 .ascii-banner {
-  font-family: "Press Start Retro", "VT323 Retro", "Fira Code", "Courier New", monospace;
+  font-family: var(--retro-mono-stack);
   font-size: 13px;
   letter-spacing: 1px;
   line-height: 1.2;
@@ -385,7 +468,7 @@ footer.footer a:hover {
       transparent 1px,
       transparent 3px
     );
-  opacity: 0.18;
+  opacity: 0.12;
 }
 
 html[data-theme="dark"],
