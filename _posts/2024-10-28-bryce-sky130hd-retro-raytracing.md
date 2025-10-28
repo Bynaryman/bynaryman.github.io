@@ -7,14 +7,14 @@ tags: silicon art raytracing retro bryce
 categories: arte-science
 ---
 
-{: .lead }
+<!-- {: .lead }
 One slice of **SKY130HD** silicon, a detour through Blender, and a **Bryce 7.1** sky generator later, and the full adder starts looking like a vaporwave artefact.
 
 > #### Pipeline Highlights
 > - GDS export via [`gdsiistl`](https://github.com/Bynaryman/gdsiistl) for automated layer-to-STL conversion  
 > - Layer-by-layer offsets in **Blender** to fake an exploded stack  
 > - 4:5 **Bryce** renders with randomized skies and minimal 90s landscapes
-{: .block-tip }
+{: .block-tip } -->
 
 ### From GDS to STL
 
