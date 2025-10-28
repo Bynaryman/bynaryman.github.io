@@ -7,24 +7,32 @@ tags: silicon art raytracing retro bryce
 categories: arte-science
 ---
 
+{: .lead }
+One slice of **SKY130HD** silicon, a detour through Blender, and a **Bryce 7.1** sky generator later, and the full adder starts looking like a vaporwave artefact.
+
+> **Pipeline highlights**
+> - GDS export via [`gdsiistl`](https://github.com/Bynaryman/gdsiistl) for automated layer-to-STL conversion  
+> - Layer-by-layer offsets in **Blender** to fake an exploded stack  
+> - 4:5 **Bryce** renders with randomized skies and minimal 90s landscapes
+
 ### From GDS to STL
 
-I started with the final SKY130HD full adder GDS and pushed it through [`gdsiistl`](https://github.com/Bynaryman/gdsiistl).  
-The converter splits the layout per layer and hands me neat STL slices that preserve the real routing without any manual remodeling.
+I started with the final **SKY130HD full adder** GDS and pushed it through [`gdsiistl`](https://github.com/Bynaryman/gdsiistl).  
+The converter splits the layout per layer and hands me neat STL slices that preserve the actual routing without any manual remodeling.
 
 ### Blender Exploded Slice
 
-Those STLs went straight into Blender.  
-Each layer stayed on its own object so I could randomize the Z offsets and build a gentle exploded stack of the cell.  
-A few manual tweaks on vertices kept it from looking too uniform, and per-layer materials lined up the palette I wanted before export.
+Those STLs went straight into **Blender**.  
+Each layer stayed on its own object, which let me randomize the Z offsets and build a gentle exploded stack of the cell.  
+A few hand-tuned vertex edits kept it from looking too uniform, and per-layer materials lined up the palette before export.
 
 ### Bryce Render Deck
 
-Blender exported the assembly as OBJ and Bryce 7.1 did the rest.  
-I kept everything in a 4:5 aspect ratio and cycled through metal, colored glass, and matte materials while occasionally deforming the mesh to grab another angle of the adder.  
-Bryce's random sky generator handled the lighting.  
-A minimal 90s water-and-sky plane landscape reflects straight into the silicon, which is exactly the vibe I was aiming for.  
-Letting the Bryce sky engine do the "magic" felt right; the ASIC software already had its turn.
+Blender exported the assembly as OBJ and **Bryce 7.1** took over.  
+I rendered everything in a **4:5 aspect ratio**, cycling between chrome, glass, and matte materials while occasionally deforming the mesh to grab different silhouettes of the adder.  
+Bryce's **random sky generator**—with the default preset sprinkled in for contrast—handled the lighting.  
+A minimal 90s water-and-sky plane landscape reflects straight into the silicon, which is exactly the nostalgia hit I was aiming for.  
+Letting the Bryce sky engine do the “magic” felt right; the ASIC software already had its turn.
 
 <div class="row mt-4">
     <div class="col-sm mt-3 mt-md-0">
@@ -49,6 +57,6 @@ Letting the Bryce sky engine do the "magic" felt right; the ASIC software alread
 
 ### What Is Next
 
-Next up is animating the sky so the reflections slide over the lifted layers -- simple camera lock, Bryce sky drifting, and a short loop back into Blender for grading.  
+Next up is animating the sky so the reflections slide over the lifted layers—simple camera lock, Bryce sky drifting, and a short loop back into Blender for grading.  
 Once that is in place I will share the video and bundle the OBJ for anyone who wants to remix the cell further.
 
