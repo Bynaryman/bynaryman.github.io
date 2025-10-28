@@ -23,6 +23,37 @@
   --retro-selection-bg: rgba(111, 255, 233, 0.35);
   --retro-code-bg: rgba(0, 0, 0, 0.45);
   --retro-divider: rgba(111, 255, 233, 0.15);
+
+  --global-bg-color: var(--retro-bg);
+  --global-bg-path-light: none;
+  --global-bg-path-dark: none;
+  --global-code-bg-color: var(--retro-code-bg);
+  --global-text-color: var(--retro-text);
+  --global-text-color-light: var(--retro-text-soft);
+  --global-theme-color: var(--retro-accent);
+  --global-hover-color: var(--retro-accent-strong);
+  --global-hover-text-color: #02100f;
+  --global-footer-bg-color: rgba(10, 12, 18, 0.9);
+  --global-footer-text-color: var(--retro-text-soft);
+  --global-footer-link-color: var(--retro-accent);
+  --global-distill-app-color: var(--retro-text-soft);
+  --global-divider-color: var(--retro-divider);
+  --global-card-bg-color: var(--retro-panel);
+  --global-highlight-color: var(--retro-warning);
+  --global-back-to-top-bg-color: rgba(111, 255, 233, 0.15);
+  --global-back-to-top-text-color: var(--retro-accent-strong);
+  --global-tip-block: #42b983;
+  --global-tip-block-bg: rgba(66, 185, 131, 0.18);
+  --global-tip-block-text: var(--retro-text);
+  --global-tip-block-title: var(--retro-accent-strong);
+  --global-warning-block: #f9f871;
+  --global-warning-block-bg: rgba(249, 248, 113, 0.15);
+  --global-warning-block-text: #fdfcbf;
+  --global-warning-block-title: var(--retro-warning);
+  --global-danger-block: #ff6f6f;
+  --global-danger-block-bg: rgba(255, 111, 111, 0.12);
+  --global-danger-block-text: #ffb6b6;
+  --global-danger-block-title: #ff8989;
 }
 
 body {
@@ -355,4 +386,37 @@ footer.footer a:hover {
       transparent 3px
     );
   opacity: 0.18;
+}
+
+html[data-theme="dark"],
+html[data-theme-setting="dark"] {
+  --global-bg-color: var(--retro-bg);
+  --global-bg-path: none;
+  --global-code-bg-color: var(--retro-code-bg);
+  --global-text-color: var(--retro-text);
+  --global-text-color-light: var(--retro-text-soft);
+  --global-theme-color: var(--retro-accent);
+  --global-hover-color: var(--retro-accent-strong);
+  --global-hover-text-color: #02100f;
+  --global-footer-bg-color: rgba(10, 12, 18, 0.9);
+  --global-footer-text-color: var(--retro-text-soft);
+  --global-footer-link-color: var(--retro-accent);
+  --global-distill-app-color: var(--retro-text-soft);
+  --global-divider-color: var(--retro-divider);
+  --global-card-bg-color: var(--retro-panel);
+  --global-highlight-color: var(--retro-warning);
+  --global-back-to-top-bg-color: rgba(111, 255, 233, 0.15);
+  --global-back-to-top-text-color: var(--retro-accent-strong);
+  --global-tip-block: #42b983;
+  --global-tip-block-bg: rgba(66, 185, 131, 0.18);
+  --global-tip-block-text: var(--retro-text);
+  --global-tip-block-title: var(--retro-accent-strong);
+  --global-warning-block: #f9f871;
+  --global-warning-block-bg: rgba(249, 248, 113, 0.15);
+  --global-warning-block-text: #fdfcbf;
+  --global-warning-block-title: var(--retro-warning);
+  --global-danger-block: #ff6f6f;
+  --global-danger-block-bg: rgba(255, 111, 111, 0.12);
+  --global-danger-block-text: #ffb6b6;
+  --global-danger-block-title: #ff8989;
 }
