@@ -1,0 +1,358 @@
+@font-face {
+  font-family: "VT323 Retro";
+  src: url("/assets/fonts/VT323-Regular.woff2") format("woff2");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Press Start Retro";
+  src: url("/assets/fonts/PressStart2P-Regular.woff2") format("woff2");
+  font-display: swap;
+}
+
+:root {
+  --retro-bg: #11131a;
+  --retro-panel: rgba(8, 10, 16, 0.92);
+  --retro-panel-border: rgba(128, 255, 219, 0.35);
+  --retro-text: #aaf7d1;
+  --retro-text-soft: #7edbb3;
+  --retro-accent: #6fffe9;
+  --retro-accent-strong: #2de2d3;
+  --retro-link-visited: #a567ff;
+  --retro-warning: #f9f871;
+  --retro-selection-bg: rgba(111, 255, 233, 0.35);
+  --retro-code-bg: rgba(0, 0, 0, 0.45);
+  --retro-divider: rgba(111, 255, 233, 0.15);
+}
+
+body {
+  background: var(--retro-bg);
+  color: var(--retro-text);
+  font-family: "VT323 Retro", "Fira Code", "Cascadia Code", "Courier New", monospace;
+  font-size: 19px;
+  line-height: 1.65;
+  text-shadow: 0 0 6px rgba(111, 255, 233, 0.25);
+  letter-spacing: 0.5px;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(180deg, rgba(10, 12, 18, 0.8) 0%, rgba(16, 18, 24, 0.8) 100%);
+}
+
+body::after {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  background: repeating-linear-gradient(
+      to bottom,
+      rgba(5, 7, 12, 0.05),
+      rgba(5, 7, 12, 0.05) 2px,
+      rgba(8, 10, 14, 0.25) 2px,
+      rgba(8, 10, 14, 0.25) 4px
+    );
+  mix-blend-mode: screen;
+  animation: scanlines 6s infinite linear;
+  opacity: 0.35;
+}
+
+@keyframes scanlines {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 8px;
+  }
+}
+
+a {
+  color: var(--retro-accent);
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(111, 255, 233, 0.4);
+}
+
+a:hover,
+a:focus {
+  color: var(--retro-accent-strong);
+  text-shadow: 0 0 12px rgba(111, 255, 233, 0.65);
+  border-bottom-color: rgba(111, 255, 233, 0.7);
+}
+
+a:visited {
+  color: var(--retro-link-visited);
+}
+
+::selection {
+  background: var(--retro-selection-bg);
+  color: #0b0f15;
+}
+
+code,
+pre {
+  font-family: "Press Start Retro", "VT323 Retro", "Fira Code", "Courier New", monospace;
+  background: var(--retro-code-bg);
+  color: var(--retro-warning);
+  border: 1px solid rgba(111, 255, 233, 0.3);
+  border-radius: 3px;
+  text-shadow: none;
+}
+
+pre {
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  position: relative;
+}
+
+pre::after {
+  content: "█";
+  position: absolute;
+  bottom: 0.75rem;
+  right: 0.75rem;
+  color: rgba(111, 255, 233, 0.6);
+  animation: blink 1.2s steps(2, start) infinite;
+}
+
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  50.01%,
+  100% {
+    opacity: 0;
+  }
+}
+
+table,
+hr {
+  border-color: var(--retro-divider);
+}
+
+.navbar,
+.navbar.navbar-light {
+  background: rgba(14, 17, 25, 0.85);
+  border-bottom: 1px solid rgba(111, 255, 233, 0.25);
+  box-shadow: 0 3px 25px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+}
+
+.navbar .navbar-brand,
+.navbar .nav-link {
+  font-family: "Press Start Retro", "VT323 Retro", "Fira Code", "Courier New", monospace;
+  font-size: 15px;
+  letter-spacing: 1.5px;
+}
+
+.navbar .nav-link:hover,
+.navbar .navbar-brand:hover {
+  color: var(--retro-accent-strong) !important;
+}
+
+.container {
+  position: relative;
+  z-index: 2;
+}
+
+.post,
+.page,
+.terminal-frame {
+  background: var(--retro-panel);
+  border: 1px solid var(--retro-panel-border);
+  border-radius: 10px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.65);
+  padding: 2rem;
+}
+
+.post-title,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Press Start Retro", "VT323 Retro", "Fira Code", "Courier New", monospace;
+  color: var(--retro-accent-strong);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.post-meta,
+.post-tags {
+  color: var(--retro-text-soft);
+}
+
+.post-meta i,
+.post-tags i {
+  color: var(--retro-accent);
+}
+
+.terminal-frame {
+  padding: 0;
+  overflow: hidden;
+}
+
+.terminal-frame__header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: rgba(10, 13, 18, 0.95);
+  border-bottom: 1px solid var(--retro-panel-border);
+}
+
+.terminal-frame__light {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  box-shadow: 0 0 6px currentColor;
+}
+
+.terminal-frame__light--red {
+  color: #ff5f56;
+}
+
+.terminal-frame__light--amber {
+  color: #ffbd2e;
+}
+
+.terminal-frame__light--green {
+  color: #27c93f;
+}
+
+.terminal-frame__body {
+  position: relative;
+  padding: 2rem;
+  background: linear-gradient(
+      135deg,
+      rgba(10, 15, 20, 0.95) 0%,
+      rgba(6, 8, 12, 0.95) 100%
+    );
+}
+
+.terminal-frame__body::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(111, 255, 233, 0.12);
+  border-radius: 6px;
+  opacity: 0.6;
+}
+
+.terminal-frame__body::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+      to bottom,
+      rgba(111, 255, 233, 0.04),
+      rgba(111, 255, 233, 0.04) 1px,
+      rgba(12, 15, 20, 0) 1px,
+      rgba(12, 15, 20, 0) 2px
+    );
+  mix-blend-mode: screen;
+  opacity: 0.25;
+}
+
+.terminal-title {
+  font-size: 14px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--retro-text-soft);
+}
+
+.ascii-banner {
+  font-family: "Press Start Retro", "VT323 Retro", "Fira Code", "Courier New", monospace;
+  font-size: 13px;
+  letter-spacing: 1px;
+  line-height: 1.2;
+  white-space: pre;
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(111, 255, 233, 0.25);
+  color: var(--retro-warning);
+  text-shadow: none;
+}
+
+.post-content {
+  position: relative;
+  z-index: 2;
+}
+
+.post-content ul,
+.post-content ol {
+  padding-left: 1.5rem;
+}
+
+.post-content blockquote {
+  font-style: normal;
+  border-left: 3px solid var(--retro-accent);
+  padding-left: 1rem;
+  color: var(--retro-text-soft);
+}
+
+.post-content img {
+  filter: grayscale(40%) contrast(115%) brightness(110%);
+  border: 1px solid rgba(111, 255, 233, 0.2);
+  border-radius: 4px;
+}
+
+.badge {
+  background: var(--retro-accent);
+  color: #0e141d;
+}
+
+.btn-primary {
+  background: linear-gradient(180deg, var(--retro-accent) 0%, var(--retro-accent-strong) 100%);
+  color: #02100f;
+  border: none;
+  box-shadow: 0 0 8px rgba(111, 255, 233, 0.45);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  filter: brightness(1.1);
+  color: #01080a;
+}
+
+footer.footer {
+  background: rgba(10, 12, 18, 0.9);
+  color: var(--retro-text-soft);
+  border-top: 1px solid rgba(111, 255, 233, 0.2);
+}
+
+footer.footer a {
+  color: var(--retro-accent);
+}
+
+footer.footer a:hover {
+  color: var(--retro-accent-strong);
+}
+
+.scanline-layer {
+  position: relative;
+}
+
+.scanline-layer::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+      to bottom,
+      rgba(111, 255, 233, 0.04),
+      rgba(111, 255, 233, 0.04) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+  opacity: 0.18;
+}
