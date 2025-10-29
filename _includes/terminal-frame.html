@@ -1,6 +1,6 @@
 {% assign frame_title = include.title | default: "terminal" %}
 <div class="terminal-frame">
-  <div class="terminal-frame__header">
+  <div class="terminal-frame__header" data-title="{{ frame_title }}">
     <span class="terminal-frame__prompt">{{ frame_title }}</span>
     <span class="terminal-frame__status">RUN</span>
   </div>
