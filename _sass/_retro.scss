@@ -267,13 +267,13 @@ hr {
 .terminal-background__scroll {
   position: absolute;
   left: max(8vw, 60px);
-  top: -120%;
+  top: -80%;
   width: min(84vw, 980px);
   display: flex;
   flex-direction: column;
   gap: 3rem;
   font-family: var(--retro-mono-stack);
-  font-size: 18px;
+  font-size: 20px;
   line-height: 1.35;
   color: rgba(111, 255, 233, 0.82);
   text-shadow: 0 0 20px rgba(111, 255, 233, 0.55);
@@ -432,38 +432,11 @@ h6 {
 
 .terminal-frame__body {
   position: relative;
-  padding: 2.15rem 2.35rem;
-  background: linear-gradient(
-    135deg,
-    rgba(7, 10, 16, 0.78) 0%,
-    rgba(4, 6, 12, 0.82) 100%
-  );
-  backdrop-filter: blur(12px);
-}
-
-.terminal-frame__body::before {
-  content: "";
-  pointer-events: none;
-  position: absolute;
-  inset: 0;
-  border: 1px solid rgba(111, 255, 233, 0.18);
-  border-radius: 6px;
-  opacity: 0.5;
-}
-
-.terminal-frame__body::after {
-  content: "";
-  pointer-events: none;
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-      to bottom,
-      rgba(111, 255, 233, 0.04),
-      rgba(111, 255, 233, 0.04) 1px,
-      rgba(12, 15, 20, 0) 1px,
-      rgba(12, 15, 20, 0) 2px
-    );
-  opacity: 0.18;
+  padding: 2.35rem 2.6rem;
+  background: rgba(5, 9, 15, 0.82);
+  border: 1px solid rgba(111, 255, 233, 0.28);
+  border-radius: 14px;
+  box-shadow: inset 0 0 28px rgba(0, 0, 0, 0.45);
 }
 
 .ascii-banner {
@@ -540,18 +513,7 @@ footer.footer a:hover {
 }
 
 .scanline-layer::before {
-  content: "";
-  pointer-events: none;
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-      to bottom,
-      rgba(111, 255, 233, 0.04),
-      rgba(111, 255, 233, 0.04) 1px,
-      transparent 1px,
-      transparent 3px
-    );
-  opacity: 0.12;
+  display: none;
 }
 
 html[data-theme="dark"],
