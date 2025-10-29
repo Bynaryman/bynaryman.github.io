@@ -120,7 +120,7 @@ body::after {
     transform: translateY(0);
   }
   100% {
-    transform: translateY(200%);
+    transform: translateY(140%);
   }
 }
 
@@ -266,20 +266,20 @@ hr {
 
 .terminal-background__scroll {
   position: absolute;
-  left: max(8vw, 60px);
-  top: -80%;
-  width: min(84vw, 980px);
+  left: max(6vw, 48px);
+  top: -18%;
+  width: min(80vw, 960px);
   display: flex;
   flex-direction: column;
-  gap: 3rem;
+  gap: 2.2rem;
   font-family: var(--retro-mono-stack);
-  font-size: 20px;
-  line-height: 1.35;
-  color: rgba(111, 255, 233, 0.82);
-  text-shadow: 0 0 20px rgba(111, 255, 233, 0.55);
-  opacity: 0.38;
-  animation: terminal-scroll-vertical 52s linear infinite;
-  filter: drop-shadow(0 0 18px rgba(0, 0, 0, 0.6));
+  font-size: 26px;
+  line-height: 1.4;
+  color: rgba(111, 255, 233, 0.92);
+  text-shadow: 0 0 28px rgba(111, 255, 233, 0.65);
+  opacity: 0.78;
+  animation: terminal-scroll-vertical 38s linear infinite;
+  filter: drop-shadow(0 0 24px rgba(0, 0, 0, 0.55));
   pointer-events: none;
 }
 
@@ -561,8 +561,9 @@ html[data-theme-setting="dark"] {
     padding: 1.75rem 1.5rem;
   }
   .terminal-background__scroll {
-    left: max(4vw, 24px);
-    font-size: 14px;
-    gap: 2rem;
+    left: max(4vw, 20px);
+    top: -10%;
+    font-size: 18px;
+    gap: 1.6rem;
   }
 }
