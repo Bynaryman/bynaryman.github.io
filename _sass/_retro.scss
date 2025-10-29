@@ -220,7 +220,7 @@ hr {
 .terminal-background {
   position: fixed;
   inset: 0;
-  z-index: 0;
+  z-index: -1;
   background: linear-gradient(180deg, rgba(4, 6, 11, 0.9) 0%, rgba(2, 3, 7, 0.95) 100%);
   overflow: hidden;
   pointer-events: none;
@@ -270,11 +270,11 @@ hr {
   font-family: var(--retro-mono-stack);
   white-space: pre;
   line-height: 1.4;
-  color: rgba(111, 255, 233, 0.95);
-  text-shadow: 0 0 32px rgba(111, 255, 233, 0.62);
-  opacity: 0.88;
-  mix-blend-mode: screen;
+  color: rgba(111, 255, 233, 0.92);
+  text-shadow: 0 0 28px rgba(111, 255, 233, 0.58);
+  opacity: 0.9;
   pointer-events: none;
+  will-change: transform;
 }
 
 .terminal-background__scroll--logs {
@@ -316,8 +316,8 @@ hr {
   gap: 0.75rem;
   padding: 1rem 1.25rem 1.2rem;
   margin: 0;
-  background: rgba(5, 9, 15, 0.82);
-  border: 1px solid rgba(111, 255, 233, 0.22);
+  background: rgba(5, 9, 15, 0.88);
+  border: 1px solid rgba(111, 255, 233, 0.28);
   box-shadow: 0 18px 36px rgba(0, 0, 0, 0.45),
     inset 0 0 12px rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(4px);
@@ -347,15 +347,15 @@ hr {
 
 @keyframes terminal-pane-flicker {
   0% {
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45), inset 0 0 6px rgba(111, 255, 233, 0.08);
-    opacity: 0.88;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.42), inset 0 0 6px rgba(111, 255, 233, 0.08);
+    opacity: 0.86;
   }
   50% {
-    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.52), inset 0 0 14px rgba(111, 255, 233, 0.12);
-    opacity: 0.96;
+    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.5), inset 0 0 14px rgba(111, 255, 233, 0.13);
+    opacity: 0.94;
   }
   100% {
-    box-shadow: 0 22px 42px rgba(0, 0, 0, 0.6), inset 0 0 18px rgba(111, 255, 233, 0.2);
+    box-shadow: 0 22px 42px rgba(0, 0, 0, 0.56), inset 0 0 18px rgba(111, 255, 233, 0.18);
     opacity: 0.9;
   }
 }
