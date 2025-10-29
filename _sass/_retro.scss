@@ -221,7 +221,7 @@ hr {
 .terminal-background {
   position: fixed;
   inset: 0;
-  z-index: -3;
+  z-index: 0;
   background: linear-gradient(180deg, rgba(4, 6, 11, 0.9) 0%, rgba(2, 3, 7, 0.95) 100%);
   overflow: hidden;
   pointer-events: none;
@@ -266,29 +266,57 @@ hr {
 
 .terminal-background__scroll {
   position: absolute;
-  left: max(6vw, 48px);
-  top: -18%;
-  width: min(80vw, 960px);
   display: flex;
   flex-direction: column;
-  gap: 2.2rem;
   font-family: var(--retro-mono-stack);
-  font-size: 26px;
+  white-space: pre;
   line-height: 1.4;
-  color: rgba(111, 255, 233, 0.92);
-  text-shadow: 0 0 28px rgba(111, 255, 233, 0.65);
-  opacity: 0.78;
-  animation: terminal-scroll-vertical 38s linear infinite;
-  filter: drop-shadow(0 0 24px rgba(0, 0, 0, 0.55));
+  color: rgba(111, 255, 233, 0.95);
+  text-shadow: 0 0 32px rgba(111, 255, 233, 0.62);
+  opacity: 0.88;
+  mix-blend-mode: screen;
   pointer-events: none;
+}
+
+.terminal-background__scroll--logs {
+  left: max(6vw, 48px);
+  top: -14%;
+  width: min(76vw, 920px);
+  gap: 2rem;
+  font-size: 28px;
+  animation: terminal-scroll-vertical 38s linear infinite;
+  filter: drop-shadow(0 0 26px rgba(0, 0, 0, 0.6));
+}
+
+.terminal-background__scroll--ascii {
+  right: max(6vw, 54px);
+  top: 32%;
+  width: 34ch;
+  gap: 1.4rem;
+  font-size: 30px;
+  animation: terminal-scroll-vertical 52s linear infinite reverse;
+  animation-delay: -12s;
+  text-align: right;
+  filter: drop-shadow(0 0 24px rgba(0, 0, 0, 0.55));
+}
+
+.terminal-background__scroll--weather {
+  right: max(10vw, 80px);
+  top: -6%;
+  width: 28ch;
+  gap: 2rem;
+  font-size: 24px;
+  animation: terminal-scroll-vertical 44s linear infinite;
+  animation-delay: -6s;
+  filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
 }
 
 .terminal-background__text {
   margin: 0;
-  white-space: pre;
   background: transparent;
   font-variant-ligatures: none;
   letter-spacing: 1px;
+  opacity: 0.95;
 }
 
 .shell-stage {
@@ -297,7 +325,7 @@ hr {
   display: flex;
   justify-content: center;
   width: 100%;
-  z-index: 1;
+  z-index: 2;
 }
 
 .shell-panel {
@@ -560,10 +588,17 @@ html[data-theme-setting="dark"] {
   .terminal-frame__body {
     padding: 1.75rem 1.5rem;
   }
-  .terminal-background__scroll {
+  .terminal-background__scroll--logs {
     left: max(4vw, 20px);
-    top: -10%;
-    font-size: 18px;
-    gap: 1.6rem;
+    top: -8%;
+    font-size: 20px;
+  }
+  .terminal-background__scroll--ascii {
+    display: none;
+  }
+  .terminal-background__scroll--weather {
+    right: max(6vw, 32px);
+    top: -6%;
+    font-size: 16px;
   }
 }

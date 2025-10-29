@@ -2,7 +2,8 @@
   <div class="terminal-background__layer terminal-background__layer--grid"></div>
   <div class="terminal-background__layer terminal-background__layer--glow"></div>
   <div class="terminal-background__layer terminal-background__layer--scan"></div>
-  <div class="terminal-background__scroll">
+
+  <div class="terminal-background__scroll terminal-background__scroll--logs">
     <pre class="terminal-background__text">
 > bootstrapping retro-sys .............. [OK]
 > loading gfx pipeline ................. [READY]
@@ -17,17 +18,48 @@
 > injecting scanlines .................. [ACTIVE]
 > awaiting operator command ............ [_]</pre>
     <pre class="terminal-background__text" aria-hidden="true">
-> bootstrapping retro-sys .............. [OK]
-> loading gfx pipeline ................. [READY]
-> mounting /dev/sky130hd ............... [OK]
-> compiling bryce_scene.b90 ............ [DONE]
-> baking reflection LUTs ............... [PASS]
-> scheduling ray dispatch .............. [LIVE]
-> streaming frame buffer ............... [SYNC]
-> writing blog packet .................. [OK]
-> refreshing crt phosphor .............. [GLOW]
-> randomizing skyline .................. [OK]
-> injecting scanlines .................. [ACTIVE]
-> awaiting operator command ............ [_]</pre>
+> git pull retro-assets ................. [OK]
+> running make silicon_vaporwave ........ [DONE]
+> exporting frames to /mnt/render ....... [SYNC]
+> bryce.exe --sky random ............... [SPIN]
+> linking sky130hd_fulladder.obj ........ [READY]
+> enqueue render job .................... [QUEUED]
+> pushing blog packet ................... [SENT]
+> updating crt burn-in .................. [SOFT]
+> system idle, press any key ............ [_]</pre>
+  </div>
+
+  <div class="terminal-background__scroll terminal-background__scroll--ascii">
+    <pre class="terminal-background__text">
+      ____
+ __  / __ )____  ____ _________
+/ / / / __  / _ \/ __ `/ ___/ _ \
+/ /_/ / /_/ /  __/ /_/ / /  /  __/
+\__, /_____/\___/\__, /_/   \___/
+/____/           /____/</pre>
+    <pre class="terminal-background__text" aria-hidden="true">
+ ██████╗ ███╗   ██╗██╗   ██╗██████╗ ███████╗
+██╔═══██╗████╗  ██║██║   ██║██╔══██╗██╔════╝
+██║   ██║██╔██╗ ██║██║   ██║██║  ██║█████╗
+██║   ██║██║╚██╗██║██║   ██║██║  ██║██╔══╝
+╚██████╔╝██║ ╚████║╚██████╔╝██████╔╝███████╗
+ ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝</pre>
+  </div>
+
+  <div class="terminal-background__scroll terminal-background__scroll--weather">
+    <pre class="terminal-background__text">
+> curl wttr.in/bcn?format=3 ............. [OK]
+ BCN: ☀️  21°C  ↙ 12 km/h
+> forecast @ midnight ................... [CALM]
+ SKY: scattered pixels, low jitter
+> humidity sensors ...................... [48%]
+> retro-gpu temp ........................ [37°C]</pre>
+    <pre class="terminal-background__text" aria-hidden="true">
+> curl wttr.in/bcn?FMT=4 ............... [CACHE]
+      \   /     Clear
+       .-.      20°C
+    ― (   ) ―   NE breeze
+       `-’      0.0 mm
+      /   \     1008 hPa</pre>
   </div>
 </div>
