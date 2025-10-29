@@ -275,9 +275,9 @@ hr {
   font-family: var(--retro-mono-stack);
   font-size: 18px;
   line-height: 1.35;
-  color: rgba(111, 255, 233, 0.78);
-  text-shadow: 0 0 18px rgba(111, 255, 233, 0.45);
-  opacity: 0.22;
+  color: rgba(111, 255, 233, 0.82);
+  text-shadow: 0 0 20px rgba(111, 255, 233, 0.55);
+  opacity: 0.38;
   animation: terminal-scroll-vertical 52s linear infinite;
   filter: drop-shadow(0 0 18px rgba(0, 0, 0, 0.6));
   pointer-events: none;
@@ -303,12 +303,12 @@ hr {
 .shell-panel {
   max-width: 900px;
   width: 100%;
-  background: rgba(5, 9, 15, 0.78);
-  border: 1px solid var(--retro-panel-border);
-  border-radius: 18px;
-  box-shadow: 0 32px 65px rgba(0, 0, 0, 0.72);
-  padding: 2.75rem 3rem;
-  backdrop-filter: blur(22px) saturate(165%);
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+  backdrop-filter: none;
 }
 
 .shell-panel > .row {
@@ -324,12 +324,12 @@ hr {
 
 .post,
 .page {
-  background: rgba(6, 9, 15, 0.78);
-  border: 1px solid var(--retro-panel-border);
-  border-radius: 12px;
-  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.65);
-  padding: 2.25rem;
-  backdrop-filter: blur(18px) saturate(140%);
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+  backdrop-filter: none;
 }
 
 .post-title,
@@ -363,6 +363,9 @@ h6 {
   padding: 0;
   overflow: hidden;
   backdrop-filter: blur(20px) saturate(150%);
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .terminal-frame__light {
@@ -589,8 +592,8 @@ html[data-theme-setting="dark"] {
     padding: 4rem 1rem 6rem;
   }
   .shell-panel {
-    padding: 1.75rem 1.5rem;
-    border-radius: 14px;
+    padding: 0;
+    border-radius: 0;
   }
   .terminal-frame__body {
     padding: 1.75rem 1.5rem;
