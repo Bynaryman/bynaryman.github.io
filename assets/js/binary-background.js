@@ -14,6 +14,7 @@
   const rotateMax = 0; // rotation disabled
   const baseAlpha = 0.1;
   const swapInterval = 180; // ms between neighbor swaps
+  const colorShiftInterval = 260; // ms between random recolors
 
   let cols = 0;
   let rows = 0;
@@ -27,6 +28,7 @@
   let nextSwap = performance.now() + swapInterval;
   let wrapW = 0;
   let wrapH = 0;
+  let nextColorShift = performance.now() + colorShiftInterval;
 
   const getColors = () => {
     const styles = getComputedStyle(document.documentElement);
@@ -169,6 +171,15 @@
       pulseAt(gridX, gridY, mousePulseStrength * factor, "fg");
       mouseTrailCount -= 1;
       mouseNextTrail = now + 45;
+    }
+
+    if (now >= nextColorShift) {
+      const target = cells[Math.floor(Math.random() * cells.length)];
+      if (target) {
+        target.color = target.color === "fg" ? "accent" : "fg";
+        target.alpha = Math.min(0.5, target.alpha + 0.1);
+      }
+      nextColorShift = now + colorShiftInterval + Math.random() * 200;
     }
 
     requestAnimationFrame(step);
