@@ -12,6 +12,8 @@
   const mousePulseStrength = 1.05; // tighter circle
   const driftSpeed = { x: 8, y: -4 }; // px per second
   const rotateMax = 0.07; // radians peak
+  const baseAlpha = 0.1;
+  const swapInterval = 180; // ms between neighbor swaps
 
   let cols = 0;
   let rows = 0;
@@ -22,6 +24,7 @@
   let mouseTrailCount = 0;
   let mouseNextTrail = 0;
   let drift = { x: 0, y: 0 };
+  let nextSwap = performance.now() + swapInterval;
 
   const getColors = () => {
     const styles = getComputedStyle(document.documentElement);
@@ -46,7 +49,7 @@
       const y = Math.floor(idx / cols);
       return {
         glyph: glyphs[Math.random() > 0.5 ? 1 : 0],
-        alpha: Math.random() * 0.4,
+        alpha: baseAlpha + Math.random() * 0.25,
         color: "fg",
         cx: x * cellSize + cellSize / 2,
         cy: y * cellSize + cellSize / 2,
@@ -66,7 +69,6 @@
       const falloff = 1 - distSq / radiusSq;
       cell.alpha = Math.min(1, cell.alpha + falloff);
       cell.color = tint || "accent";
-      cell.glyph = glyphs[Math.random() > 0.5 ? 1 : 0];
     }
   };
 
@@ -82,27 +84,33 @@
 
     drift.x += (driftSpeed.x * dt) / 1000;
     drift.y += (driftSpeed.y * dt) / 1000;
-    const offsetX = ((drift.x % cellSize) + cellSize) % cellSize;
-    const offsetY = ((drift.y % cellSize) + cellSize) % cellSize;
     const angle = Math.sin(now * 0.00025) * rotateMax;
 
     ctx.save();
     ctx.translate(viewW / 2, viewH / 2);
     ctx.rotate(angle);
     ctx.translate(-viewW / 2, -viewH / 2);
-    ctx.translate(offsetX, offsetY);
 
     const decay = Math.pow(fadeFactor, dt / 16.67);
+    const wrapW = cols * cellSize;
+    const wrapH = rows * cellSize;
+    const offX = ((drift.x % wrapW) + wrapW) % wrapW;
+    const offY = ((drift.y % wrapH) + wrapH) % wrapH;
     for (let i = 0; i < cells.length; i++) {
       const cell = cells[i];
-      cell.alpha *= decay;
+      cell.alpha = Math.max(baseAlpha, cell.alpha * decay);
       if (cell.alpha < 0.02) continue;
+      let px = cell.cx + offX;
+      let py = cell.cy + offY;
+      if (px > wrapW) px -= wrapW;
+      if (py > wrapH) py -= wrapH;
+      if (px < -cellSize || py < -cellSize || px > viewW + cellSize || py > viewH + cellSize) continue;
       ctx.globalAlpha = cell.alpha;
       ctx.fillStyle = cell.color === "accent" ? accent : fg;
       ctx.font = `${cellSize - 4}px "Times New Roman", serif`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillText(cell.glyph, cell.cx, cell.cy);
+      ctx.fillText(cell.glyph, px, py);
     }
     ctx.globalAlpha = 1;
     ctx.restore();
@@ -110,9 +118,25 @@
     if (Math.random() < randomFlashChance) {
       const target = cells[Math.floor(Math.random() * cells.length)];
       if (target) {
-        target.alpha = 1;
-        target.color = "accent";
+        target.alpha = Math.max(target.alpha, 0.5);
+        target.color = "fg";
       }
+    }
+
+    if (now >= nextSwap) {
+      const idx = Math.floor(Math.random() * cells.length);
+      const cell = cells[idx];
+      const dir = Math.random() > 0.5 ? 1 : -1;
+      const neighborIdx = idx + dir * (Math.random() > 0.5 ? 1 : cols);
+      if (neighborIdx >= 0 && neighborIdx < cells.length) {
+        const n = cells[neighborIdx];
+        const tmp = cell.glyph;
+        cell.glyph = n.glyph;
+        n.glyph = tmp;
+        cell.alpha = Math.min(0.4, cell.alpha + 0.08);
+        n.alpha = Math.min(0.4, n.alpha + 0.08);
+      }
+      nextSwap = now + swapInterval + Math.random() * 120;
     }
 
     if (now >= waveNext) {
@@ -126,7 +150,7 @@
     }
 
     if (mouse.dirty) {
-      pulseAt(mouse.x, mouse.y, mousePulseStrength, "accent");
+      pulseAt(mouse.x, mouse.y, mousePulseStrength, "fg");
       mouseTrailCount = 4;
       mouseNextTrail = now + 45;
       mouse.dirty = false;
@@ -134,7 +158,7 @@
 
     if (mouseTrailCount > 0 && now >= mouseNextTrail) {
       const factor = 0.75 * (mouseTrailCount / 4);
-      pulseAt(mouse.x, mouse.y, mousePulseStrength * factor, "accent");
+      pulseAt(mouse.x, mouse.y, mousePulseStrength * factor, "fg");
       mouseTrailCount -= 1;
       mouseNextTrail = now + 45;
     }
