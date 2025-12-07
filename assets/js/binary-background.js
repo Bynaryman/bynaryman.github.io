@@ -7,7 +7,7 @@
   var glyphs = ["0", "1"];
   var cellSize = 18;
   var fadeFactor = 0.94;
-  var randomFlashChance = 0.003;
+  var randomFlashChance = 0.005;
   var waveInterval = 4500;
   var mousePulseStrength = 1.05;
   var driftSpeed = { x: 8, y: -4 };
@@ -33,12 +33,50 @@
   var nextColorShift = performance.now() + colorShiftInterval;
   var nextHeightCheck = performance.now() + heightCheckInterval;
 
+  function hexToRgb(hex) {
+    var clean = hex.replace("#", "");
+    if (clean.length === 3) {
+      clean = clean[0] + clean[0] + clean[1] + clean[1] + clean[2] + clean[2];
+    }
+    if (clean.length !== 6) return null;
+    var num = parseInt(clean, 16);
+    return {
+      r: (num >> 16) & 255,
+      g: (num >> 8) & 255,
+      b: num & 255
+    };
+  }
+
+  function clampChannel(v) {
+    return Math.max(0, Math.min(255, Math.round(v)));
+  }
+
+  function adjustHex(hex, factor) {
+    var rgb = hexToRgb(hex);
+    if (!rgb) return hex;
+    var r = clampChannel(rgb.r + 255 * factor);
+    var g = clampChannel(rgb.g + 255 * factor);
+    var b = clampChannel(rgb.b + 255 * factor);
+    var out = "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    return out;
+  }
+
   function getColors() {
     var styles = getComputedStyle(document.documentElement);
     var bg = styles.getPropertyValue("--binary-bg-color").trim() || "#000";
     var fg = styles.getPropertyValue("--binary-digit-color").trim() || "#fff";
     var accent = styles.getPropertyValue("--binary-accent-color").trim() || fg;
-    return { bg: bg, fg: fg, accent: accent, palette: [fg, accent] };
+    var shade1 = adjustHex(fg, 0.12);
+    var shade2 = adjustHex(fg, -0.08);
+    var palette = [fg, shade1, shade2, accent];
+    return { bg: bg, fg: fg, accent: accent, palette: palette };
+  }
+
+  function pickColor(palette) {
+    if (!palette || !palette.length) return "#fff";
+    var roll = Math.random();
+    if (roll > 0.82) return palette[3] || palette[0];
+    return palette[Math.floor(Math.random() * Math.min(3, palette.length))];
   }
 
   function resize() {
@@ -64,7 +102,7 @@
       cells[idx] = {
         glyph: glyphs[Math.random() > 0.5 ? 1 : 0],
         alpha: baseAlpha + Math.random() * 0.25,
-        color: colors.palette[Math.random() > 0.6 ? 1 : 0],
+        color: pickColor(colors.palette),
         cx: x * cellSize + cellSize / 2,
         cy: y * cellSize + cellSize / 2
       };
@@ -139,7 +177,7 @@
       var target = cells[Math.floor(Math.random() * cells.length)];
       if (target) {
         target.alpha = Math.max(target.alpha, 0.5);
-        target.color = palette[Math.random() > 0.5 ? 1 : 0];
+        target.color = pickColor(palette);
       }
     }
 
@@ -166,7 +204,7 @@
       for (var r = 0; r < steps; r++) {
         (function (radiusStep) {
           setTimeout(function () {
-            pulseAt(pxWave, pyWave, 0.6 + radiusStep * 0.25, palette[Math.random() > 0.5 ? 1 : 0]);
+            pulseAt(pxWave, pyWave, 0.6 + radiusStep * 0.25, pickColor(palette));
           }, radiusStep * 36);
         })(r);
       }
@@ -176,7 +214,7 @@
     if (mouse.dirty) {
       var gridX = ((mouse.x - offX) % wrapW + wrapW) % wrapW;
       var gridY = ((mouse.y - offY) % wrapH + wrapH) % wrapH;
-      pulseAt(gridX, gridY, mousePulseStrength, palette[Math.random() > 0.5 ? 1 : 0]);
+      pulseAt(gridX, gridY, mousePulseStrength, pickColor(palette));
       mouseTrailCount = 4;
       mouseNextTrail = now + 45;
       mouse.dirty = false;
@@ -186,7 +224,7 @@
       var factor = 0.75 * (mouseTrailCount / 4);
       var gridX2 = ((mouse.x - offX) % wrapW + wrapW) % wrapW;
       var gridY2 = ((mouse.y - offY) % wrapH + wrapH) % wrapH;
-      pulseAt(gridX2, gridY2, mousePulseStrength * factor, palette[Math.random() > 0.5 ? 1 : 0]);
+      pulseAt(gridX2, gridY2, mousePulseStrength * factor, pickColor(palette));
       mouseTrailCount -= 1;
       mouseNextTrail = now + 45;
     }
@@ -194,7 +232,7 @@
     if (now >= nextColorShift) {
       var targetShift = cells[Math.floor(Math.random() * cells.length)];
       if (targetShift) {
-        targetShift.color = palette[Math.random() > 0.5 ? 1 : 0];
+        targetShift.color = pickColor(palette);
         targetShift.alpha = Math.min(0.5, targetShift.alpha + 0.1);
       }
       nextColorShift = now + colorShiftInterval + Math.random() * 200;
