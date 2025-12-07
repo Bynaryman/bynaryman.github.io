@@ -15,6 +15,7 @@
   const baseAlpha = 0.1;
   const swapInterval = 180; // ms between neighbor swaps
   const colorShiftInterval = 260; // ms between random recolors
+  const snapToPixel = true;
 
   let cols = 0;
   let rows = 0;
@@ -45,6 +46,7 @@
     canvas.style.width = `${w}px`;
     canvas.style.height = `${h}px`;
     ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.imageSmoothingEnabled = false;
     ctx.scale(dpr, dpr);
     cols = Math.ceil(w / cellSize);
     rows = Math.ceil(h / cellSize);
@@ -116,7 +118,9 @@
       ctx.font = `${cellSize - 4}px "Times New Roman", serif`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillText(cell.glyph, px, py);
+      const drawX = snapToPixel ? Math.round(px) + 0.5 : px;
+      const drawY = snapToPixel ? Math.round(py) + 0.5 : py;
+      ctx.fillText(cell.glyph, drawX, drawY);
     }
     ctx.globalAlpha = 1;
     ctx.restore();
