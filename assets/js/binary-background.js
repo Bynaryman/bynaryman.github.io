@@ -25,6 +25,8 @@
   let mouseNextTrail = 0;
   let drift = { x: 0, y: 0 };
   let nextSwap = performance.now() + swapInterval;
+  let wrapW = 0;
+  let wrapH = 0;
 
   const getColors = () => {
     const styles = getComputedStyle(document.documentElement);
@@ -44,6 +46,8 @@
     ctx.scale(dpr, dpr);
     cols = Math.ceil(w / cellSize);
     rows = Math.ceil(h / cellSize);
+    wrapW = cols * cellSize;
+    wrapH = rows * cellSize;
     cells = new Array(cols * rows).fill(null).map((_, idx) => {
       const x = idx % cols;
       const y = Math.floor(idx / cols);
@@ -62,8 +66,10 @@
     const radiusSq = radius * radius;
     for (let i = 0; i < cells.length; i++) {
       const cell = cells[i];
-      const dx = cell.cx - px;
-      const dy = cell.cy - py;
+      let dx = Math.abs(cell.cx - px);
+      let dy = Math.abs(cell.cy - py);
+      if (wrapW > 0) dx = Math.min(dx, wrapW - dx);
+      if (wrapH > 0) dy = Math.min(dy, wrapH - dy);
       const distSq = dx * dx + dy * dy;
       if (distSq > radiusSq) continue;
       const falloff = 1 - distSq / radiusSq;
@@ -92,8 +98,6 @@
     ctx.translate(-viewW / 2, -viewH / 2);
 
     const decay = Math.pow(fadeFactor, dt / 16.67);
-    const wrapW = cols * cellSize;
-    const wrapH = rows * cellSize;
     const offX = ((drift.x % wrapW) + wrapW) % wrapW;
     const offY = ((drift.y % wrapH) + wrapH) % wrapH;
     for (let i = 0; i < cells.length; i++) {
@@ -140,8 +144,8 @@
     }
 
     if (now >= waveNext) {
-      const px = Math.random() * canvas.width / dpr;
-      const py = Math.random() * canvas.height / dpr;
+      const px = Math.random() * wrapW;
+      const py = Math.random() * wrapH;
       const steps = 4;
       for (let r = 0; r < steps; r++) {
         setTimeout(() => pulseAt(px, py, 0.6 + (r * 0.25), "accent"), r * 36);
@@ -150,7 +154,9 @@
     }
 
     if (mouse.dirty) {
-      pulseAt(mouse.x, mouse.y, mousePulseStrength, "fg");
+      const gridX = ((mouse.x - offX) % wrapW + wrapW) % wrapW;
+      const gridY = ((mouse.y - offY) % wrapH + wrapH) % wrapH;
+      pulseAt(gridX, gridY, mousePulseStrength, "fg");
       mouseTrailCount = 4;
       mouseNextTrail = now + 45;
       mouse.dirty = false;
@@ -158,7 +164,9 @@
 
     if (mouseTrailCount > 0 && now >= mouseNextTrail) {
       const factor = 0.75 * (mouseTrailCount / 4);
-      pulseAt(mouse.x, mouse.y, mousePulseStrength * factor, "fg");
+      const gridX = ((mouse.x - offX) % wrapW + wrapW) % wrapW;
+      const gridY = ((mouse.y - offY) % wrapH + wrapH) % wrapH;
+      pulseAt(gridX, gridY, mousePulseStrength * factor, "fg");
       mouseTrailCount -= 1;
       mouseNextTrail = now + 45;
     }
