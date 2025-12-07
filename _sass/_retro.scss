@@ -674,3 +674,59 @@ html[data-theme-setting="dark"] {
     font-size: 16px;
   }
 }
+
+/* Binary background overlay (DNA-style) */
+.binary-background {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--binary-bg-color, #000);
+}
+
+.binary-background__canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.25));
+}
+
+:root {
+  --binary-bg-color: #ffffff;
+  --binary-digit-color: #000000;
+  --binary-accent-color: #1a1a1a;
+}
+
+html[data-theme="dark"],
+html[data-theme-setting="dark"] {
+  --binary-bg-color: #000000;
+  --binary-digit-color: #f7f7f7;
+  --binary-accent-color: #8cff73;
+}
+
+body {
+  background: transparent !important;
+}
+
+body > *:not(.binary-background) {
+  position: relative;
+  z-index: 1;
+}
+
+.shell-stage,
+.shell-panel,
+.container,
+.post,
+.page,
+.page-content,
+.post-content,
+main {
+  background: transparent !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .binary-background__canvas {
+    display: none;
+  }
+}
