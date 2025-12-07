@@ -6,11 +6,10 @@
   const dpr = Math.max(1, window.devicePixelRatio || 1);
   const glyphs = ["0", "1"];
   const cellSize = 18;
-  const fadeFactor = 0.9;
+  const fadeFactor = 0.94; // slower fade for visible trails
   const randomFlashChance = 0.003;
   const waveInterval = 4500;
-  const waveGrowth = 260;
-  const mousePulseStrength = 1.6;
+  const mousePulseStrength = 1.05; // tighter circle
 
   let cols = 0;
   let rows = 0;
@@ -18,6 +17,8 @@
   let lastTime = performance.now();
   let waveNext = performance.now() + waveInterval;
   let mouse = { x: 0, y: 0, dirty: false };
+  let mouseTrailCount = 0;
+  let mouseNextTrail = 0;
 
   const getColors = () => {
     const styles = getComputedStyle(document.documentElement);
@@ -51,7 +52,7 @@
   };
 
   const pulseAt = (px, py, strength, tint) => {
-    const radius = cellSize * 2.4 * strength;
+    const radius = cellSize * 1.6 * strength;
     const radiusSq = radius * radius;
     for (let i = 0; i < cells.length; i++) {
       const cell = cells[i];
@@ -98,16 +99,25 @@
     if (now >= waveNext) {
       const px = Math.random() * canvas.width / dpr;
       const py = Math.random() * canvas.height / dpr;
-      const steps = Math.max(6, Math.min(cols, rows));
+      const steps = 4;
       for (let r = 0; r < steps; r++) {
-        setTimeout(() => pulseAt(px, py, (r + 1) / steps, "accent"), r * 28);
+        setTimeout(() => pulseAt(px, py, 0.6 + (r * 0.25), "accent"), r * 36);
       }
       waveNext = now + waveInterval + Math.random() * 1800;
     }
 
     if (mouse.dirty) {
       pulseAt(mouse.x, mouse.y, mousePulseStrength, "accent");
+      mouseTrailCount = 4;
+      mouseNextTrail = now + 45;
       mouse.dirty = false;
+    }
+
+    if (mouseTrailCount > 0 && now >= mouseNextTrail) {
+      const factor = 0.75 * (mouseTrailCount / 4);
+      pulseAt(mouse.x, mouse.y, mousePulseStrength * factor, "accent");
+      mouseTrailCount -= 1;
+      mouseNextTrail = now + 45;
     }
 
     requestAnimationFrame(step);
