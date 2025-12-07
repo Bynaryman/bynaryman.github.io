@@ -1,1 +1,224 @@
-!function(){const t=document.getElementById("binary-bg");if(!t||window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;const a=t.getContext("2d"),e=Math.max(1,window.devicePixelRatio||1),n=["0","1"],o=18,r=.94,l=.003,i=4500,h=1.05,c={x:8,y:-4},m=0,s=.1,d=180,f=260,g=!0;let p=0,M=0,y=[],u=performance.now(),x=performance.now()+i,w={x:0,y:0,dirty:!1},b=0,v=0,A={x:0,y:0},E=performance.now()+d,T=0,P=0,S=performance.now()+f;const R=()=>{const t=getComputedStyle(document.documentElement),a=t.getPropertyValue("--binary-bg-color").trim()||"#000",e=t.getPropertyValue("--binary-digit-color").trim()||"#fff";return{bg:a,fg:e,accent:t.getPropertyValue("--binary-accent-color").trim()||e}},V=()=>{const{innerWidth:r,innerHeight:l}=window;t.width=Math.round(r*e),t.height=Math.round(l*e),t.style.width=`${r}px`,t.style.height=`${l}px`,a.setTransform(1,0,0,1,0,0),a.imageSmoothingEnabled=!1,a.scale(e,e),p=Math.ceil(r/o),M=Math.ceil(l/o),T=p*o,P=M*o,y=new Array(p*M).fill(null).map((t,a)=>{const e=a%p,r=Math.floor(a/p);return{glyph:n[Math.random()>.5?1:0],alpha:s+.25*Math.random(),color:"fg",cx:e*o+o/2,cy:r*o+o/2}})},$=(t,a,e,n)=>{const r=1.6*o*e,l=r*r;for(let e=0;e<y.length;e++){const o=y[e];let r=Math.abs(o.cx-t),i=Math.abs(o.cy-a);T>0&&(r=Math.min(r,T-r)),P>0&&(i=Math.min(i,P-i));const h=r*r+i*i;if(h>l)continue;const c=1-h/l;o.alpha=Math.min(1,o.alpha+c),o.color=n||"accent"}},q=n=>{const{bg:M,fg:V,accent:B}=R(),C=n-u;u=n;const F=t.width/e,L=t.height/e;a.setTransform(1,0,0,1,0,0),a.fillStyle=M||"#000",a.fillRect(0,0,F,L),A.x+=c.x*C/1e3,A.y+=c.y*C/1e3;const z=Math.sin(25e-5*n)*m;a.save(),a.translate(F/2,L/2),a.rotate(z),a.translate(-F/2,-L/2);const H=Math.pow(r,C/16.67),I=(A.x%T+T)%T,N=(A.y%P+P)%P;for(let t=0;t<y.length;t++){const e=y[t];if(e.alpha=Math.max(s,e.alpha*H),e.alpha<.02)continue;let n=e.cx+I,r=e.cy+N;if(n>T&&(n-=T),r>P&&(r-=P),n<-o||r<-o||n>F+o||r>L+o)continue;a.globalAlpha=e.alpha,a.fillStyle="accent"===e.color?B:V,a.font=`${o-4}px "Times New Roman", serif`,a.textAlign="center",a.textBaseline="middle";const l=g?Math.round(n)+.5:n,i=g?Math.round(r)+.5:r;a.fillText(e.glyph,l,i)}if(a.globalAlpha=1,a.restore(),Math.random()<l){const t=y[Math.floor(Math.random()*y.length)];t&&(t.alpha=Math.max(t.alpha,.5),t.color="fg")}if(n>=E){const t=Math.floor(Math.random()*y.length),a=y[t],e=t+(Math.random()>.5?1:-1)*(Math.random()>.5?1:p);if(e>=0&&e<y.length){const t=y[e],n=a.glyph;a.glyph=t.glyph,t.glyph=n,a.alpha=Math.min(.4,a.alpha+.08),t.alpha=Math.min(.4,t.alpha+.08)}E=n+d+120*Math.random()}if(n>=x){const t=Math.random()*T,a=Math.random()*P,e=4;for(let n=0;n<e;n++)setTimeout(()=>$(t,a,.6+.25*n,"accent"),36*n);x=n+i+1800*Math.random()}if(w.dirty){const t=((w.x-I)%T+T)%T,a=((w.y-N)%P+P)%P;$(t,a,h,"fg"),b=4,v=n+45,w.dirty=!1}if(b>0&&n>=v){const t=b/4*.75,a=((w.x-I)%T+T)%T,e=((w.y-N)%P+P)%P;$(a,e,h*t,"fg"),b-=1,v=n+45}if(n>=S){const t=y[Math.floor(Math.random()*y.length)];t&&(t.color="fg"===t.color?"accent":"fg",t.alpha=Math.min(.5,t.alpha+.1)),S=n+f+200*Math.random()}requestAnimationFrame(q)},B=t=>{w.x=t.clientX,w.y=t.clientY,w.dirty=!0};window.addEventListener("resize",V,{passive:!0}),window.addEventListener("mousemove",B,{passive:!0}),V(),requestAnimationFrame(q)}();
+(function () {
+  var canvas = document.getElementById("binary-bg");
+  if (!canvas || (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches)) return;
+
+  var ctx = canvas.getContext("2d");
+  var dpr = Math.max(1, window.devicePixelRatio || 1);
+  var glyphs = ["0", "1"];
+  var cellSize = 18;
+  var fadeFactor = 0.94;
+  var randomFlashChance = 0.003;
+  var waveInterval = 4500;
+  var mousePulseStrength = 1.05;
+  var driftSpeed = { x: 8, y: -4 };
+  var rotateMax = 0;
+  var baseAlpha = 0.1;
+  var swapInterval = 180;
+  var colorShiftInterval = 260;
+  var snapToPixel = true;
+  var heightCheckInterval = 500;
+
+  var cols = 0;
+  var rows = 0;
+  var cells = [];
+  var lastTime = performance.now();
+  var waveNext = performance.now() + waveInterval;
+  var mouse = { x: 0, y: 0, dirty: false };
+  var mouseTrailCount = 0;
+  var mouseNextTrail = 0;
+  var drift = { x: 0, y: 0 };
+  var nextSwap = performance.now() + swapInterval;
+  var wrapW = 0;
+  var wrapH = 0;
+  var nextColorShift = performance.now() + colorShiftInterval;
+  var nextHeightCheck = performance.now() + heightCheckInterval;
+
+  function getColors() {
+    var styles = getComputedStyle(document.documentElement);
+    var bg = styles.getPropertyValue("--binary-bg-color").trim() || "#000";
+    var fg = styles.getPropertyValue("--binary-digit-color").trim() || "#fff";
+    var accent = styles.getPropertyValue("--binary-accent-color").trim() || fg;
+    return { bg: bg, fg: fg, accent: accent, palette: [fg, accent] };
+  }
+
+  function resize() {
+    var w = window.innerWidth;
+    var h = window.innerHeight;
+    var fullH = Math.max(document.documentElement.scrollHeight, h);
+    canvas.width = Math.round(w * dpr);
+    canvas.height = Math.round(fullH * dpr);
+    canvas.style.width = w + "px";
+    canvas.style.height = fullH + "px";
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.imageSmoothingEnabled = false;
+    ctx.scale(dpr, dpr);
+    cols = Math.ceil(w / cellSize);
+    rows = Math.ceil(fullH / cellSize);
+    wrapW = cols * cellSize;
+    wrapH = rows * cellSize;
+    var colors = getColors();
+    cells = new Array(cols * rows);
+    for (var idx = 0; idx < cells.length; idx++) {
+      var x = idx % cols;
+      var y = Math.floor(idx / cols);
+      cells[idx] = {
+        glyph: glyphs[Math.random() > 0.5 ? 1 : 0],
+        alpha: baseAlpha + Math.random() * 0.25,
+        color: colors.palette[Math.random() > 0.6 ? 1 : 0],
+        cx: x * cellSize + cellSize / 2,
+        cy: y * cellSize + cellSize / 2
+      };
+    }
+  }
+
+  function pulseAt(px, py, strength, tint) {
+    var radius = cellSize * 1.6 * strength;
+    var radiusSq = radius * radius;
+    for (var i = 0; i < cells.length; i++) {
+      var cell = cells[i];
+      var dx = Math.abs(cell.cx - px);
+      var dy = Math.abs(cell.cy - py);
+      if (wrapW > 0) dx = Math.min(dx, wrapW - dx);
+      if (wrapH > 0) dy = Math.min(dy, wrapH - dy);
+      var distSq = dx * dx + dy * dy;
+      if (distSq > radiusSq) continue;
+      var falloff = 1 - distSq / radiusSq;
+      cell.alpha = Math.min(1, cell.alpha + falloff);
+      cell.color = tint || cell.color;
+    }
+  }
+
+  function step(now) {
+    var colors = getColors();
+    var bg = colors.bg;
+    var fg = colors.fg;
+    var palette = colors.palette;
+
+    var dt = now - lastTime;
+    lastTime = now;
+    var viewW = canvas.width / dpr;
+    var viewH = canvas.height / dpr;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.fillStyle = bg || "#000";
+    ctx.fillRect(0, 0, viewW, viewH);
+
+    drift.x += (driftSpeed.x * dt) / 1000;
+    drift.y += (driftSpeed.y * dt) / 1000;
+    var angle = Math.sin(now * 0.00025) * rotateMax;
+
+    ctx.save();
+    ctx.translate(viewW / 2, viewH / 2);
+    ctx.rotate(angle);
+    ctx.translate(-viewW / 2, -viewH / 2);
+
+    var decay = Math.pow(fadeFactor, dt / 16.67);
+    var offX = ((drift.x % wrapW) + wrapW) % wrapW;
+    var offY = ((drift.y % wrapH) + wrapH) % wrapH;
+    for (var i = 0; i < cells.length; i++) {
+      var cell = cells[i];
+      cell.alpha = Math.max(baseAlpha, cell.alpha * decay);
+      if (cell.alpha < 0.02) continue;
+      var px = cell.cx + offX;
+      var py = cell.cy + offY;
+      if (px > wrapW) px -= wrapW;
+      if (py > wrapH) py -= wrapH;
+      if (px < -cellSize || py < -cellSize || px > viewW + cellSize || py > viewH + cellSize) continue;
+      ctx.globalAlpha = cell.alpha;
+      ctx.fillStyle = cell.color || fg;
+      ctx.font = (cellSize - 4) + 'px "Times New Roman", serif';
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      var drawX = snapToPixel ? Math.round(px) + 0.5 : px;
+      var drawY = snapToPixel ? Math.round(py) + 0.5 : py;
+      ctx.fillText(cell.glyph, drawX, drawY);
+    }
+    ctx.globalAlpha = 1;
+    ctx.restore();
+
+    if (Math.random() < randomFlashChance) {
+      var target = cells[Math.floor(Math.random() * cells.length)];
+      if (target) {
+        target.alpha = Math.max(target.alpha, 0.5);
+        target.color = palette[Math.random() > 0.5 ? 1 : 0];
+      }
+    }
+
+    if (now >= nextSwap) {
+      var idx = Math.floor(Math.random() * cells.length);
+      var cell = cells[idx];
+      var dir = Math.random() > 0.5 ? 1 : -1;
+      var neighborIdx = idx + dir * (Math.random() > 0.5 ? 1 : cols);
+      if (neighborIdx >= 0 && neighborIdx < cells.length) {
+        var n = cells[neighborIdx];
+        var tmp = cell.glyph;
+        cell.glyph = n.glyph;
+        n.glyph = tmp;
+        cell.alpha = Math.min(0.4, cell.alpha + 0.08);
+        n.alpha = Math.min(0.4, n.alpha + 0.08);
+      }
+      nextSwap = now + swapInterval + Math.random() * 120;
+    }
+
+    if (now >= waveNext) {
+      var pxWave = Math.random() * wrapW;
+      var pyWave = Math.random() * wrapH;
+      var steps = 4;
+      for (var r = 0; r < steps; r++) {
+        (function (radiusStep) {
+          setTimeout(function () {
+            pulseAt(pxWave, pyWave, 0.6 + radiusStep * 0.25, palette[Math.random() > 0.5 ? 1 : 0]);
+          }, radiusStep * 36);
+        })(r);
+      }
+      waveNext = now + waveInterval + Math.random() * 1800;
+    }
+
+    if (mouse.dirty) {
+      var gridX = ((mouse.x - offX) % wrapW + wrapW) % wrapW;
+      var gridY = ((mouse.y - offY) % wrapH + wrapH) % wrapH;
+      pulseAt(gridX, gridY, mousePulseStrength, palette[Math.random() > 0.5 ? 1 : 0]);
+      mouseTrailCount = 4;
+      mouseNextTrail = now + 45;
+      mouse.dirty = false;
+    }
+
+    if (mouseTrailCount > 0 && now >= mouseNextTrail) {
+      var factor = 0.75 * (mouseTrailCount / 4);
+      var gridX2 = ((mouse.x - offX) % wrapW + wrapW) % wrapW;
+      var gridY2 = ((mouse.y - offY) % wrapH + wrapH) % wrapH;
+      pulseAt(gridX2, gridY2, mousePulseStrength * factor, palette[Math.random() > 0.5 ? 1 : 0]);
+      mouseTrailCount -= 1;
+      mouseNextTrail = now + 45;
+    }
+
+    if (now >= nextColorShift) {
+      var targetShift = cells[Math.floor(Math.random() * cells.length)];
+      if (targetShift) {
+        targetShift.color = palette[Math.random() > 0.5 ? 1 : 0];
+        targetShift.alpha = Math.min(0.5, targetShift.alpha + 0.1);
+      }
+      nextColorShift = now + colorShiftInterval + Math.random() * 200;
+    }
+
+    if (now >= nextHeightCheck) {
+      var fullHCheck = Math.max(document.documentElement.scrollHeight, window.innerHeight);
+      if (canvas.height / dpr !== fullHCheck) {
+        resize();
+      }
+      nextHeightCheck = now + heightCheckInterval;
+    }
+
+    requestAnimationFrame(step);
+  }
+
+  function onMove(e) {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+    mouse.dirty = true;
+  }
+
+  window.addEventListener("resize", resize, false);
+  window.addEventListener("mousemove", onMove, false);
+  resize();
+  requestAnimationFrame(step);
+})();
