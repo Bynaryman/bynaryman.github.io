@@ -29,7 +29,7 @@
 
   <!-- Body -->
   <body class="{% if site.navbar_fixed %}fixed-top-nav{% endif %} {% unless site.footer_fixed %}sticky-bottom-footer{% endunless %}">
-    {% include terminal-background.html %}
+    {% include binary-background.html %}
     <!-- Header -->
     {% include header.liquid %}
 
@@ -88,5 +88,6 @@
     {% include scripts/jekyll_tabs.liquid %}
     {% include scripts/back_to_top.liquid %}
     {% include scripts/search.liquid %}
+    <script src="/assets/js/binary-background.js"></script>
   </body>
 </html>
