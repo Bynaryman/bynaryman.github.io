@@ -10,6 +10,8 @@
   const randomFlashChance = 0.003;
   const waveInterval = 4500;
   const mousePulseStrength = 1.05; // tighter circle
+  const driftSpeed = { x: 8, y: -4 }; // px per second
+  const rotateMax = 0.07; // radians peak
 
   let cols = 0;
   let rows = 0;
@@ -19,6 +21,7 @@
   let mouse = { x: 0, y: 0, dirty: false };
   let mouseTrailCount = 0;
   let mouseNextTrail = 0;
+  let drift = { x: 0, y: 0 };
 
   const getColors = () => {
     const styles = getComputedStyle(document.documentElement);
@@ -71,8 +74,23 @@
     const { bg, fg, accent } = getColors();
     const dt = now - lastTime;
     lastTime = now;
+    const viewW = canvas.width / dpr;
+    const viewH = canvas.height / dpr;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.fillStyle = bg || "#000";
-    ctx.fillRect(0, 0, canvas.width / dpr, canvas.height / dpr);
+    ctx.fillRect(0, 0, viewW, viewH);
+
+    drift.x += (driftSpeed.x * dt) / 1000;
+    drift.y += (driftSpeed.y * dt) / 1000;
+    const offsetX = ((drift.x % cellSize) + cellSize) % cellSize;
+    const offsetY = ((drift.y % cellSize) + cellSize) % cellSize;
+    const angle = Math.sin(now * 0.00025) * rotateMax;
+
+    ctx.save();
+    ctx.translate(viewW / 2, viewH / 2);
+    ctx.rotate(angle);
+    ctx.translate(-viewW / 2, -viewH / 2);
+    ctx.translate(offsetX, offsetY);
 
     const decay = Math.pow(fadeFactor, dt / 16.67);
     for (let i = 0; i < cells.length; i++) {
@@ -87,6 +105,7 @@
       ctx.fillText(cell.glyph, cell.cx, cell.cy);
     }
     ctx.globalAlpha = 1;
+    ctx.restore();
 
     if (Math.random() < randomFlashChance) {
       const target = cells[Math.floor(Math.random() * cells.length)];
