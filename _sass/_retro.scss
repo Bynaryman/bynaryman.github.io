@@ -11,18 +11,18 @@
 }
 
 :root {
-  --retro-bg: #0a0c13;
-  --retro-panel: rgba(7, 10, 17, 0.82);
-  --retro-panel-border: rgba(136, 255, 222, 0.35);
-  --retro-text: #b7ffe3;
-  --retro-text-soft: #81d6bb;
-  --retro-accent: #6fffe9;
-  --retro-accent-strong: #2de2d3;
-  --retro-link-visited: #a567ff;
-  --retro-warning: #f9f871;
-  --retro-selection-bg: rgba(111, 255, 233, 0.35);
-  --retro-code-bg: rgba(0, 0, 0, 0.45);
-  --retro-divider: rgba(111, 255, 233, 0.15);
+  --retro-bg: #ffffff;
+  --retro-panel: #f3f3f3;
+  --retro-panel-border: rgba(0, 0, 0, 0.08);
+  --retro-text: #0a0a0a;
+  --retro-text-soft: #3a3a3a;
+  --retro-accent: #7efcf6;
+  --retro-accent-strong: #a5fff9;
+  --retro-link-visited: #7efcf6;
+  --retro-warning: #7efcf6;
+  --retro-selection-bg: rgba(126, 252, 246, 0.25);
+  --retro-code-bg: rgba(0, 0, 0, 0.06);
+  --retro-divider: rgba(0, 0, 0, 0.08);
   --retro-type-stack: "VT323 Retro", "Fira Code", "Cascadia Code", "Courier New", monospace;
   --retro-mono-stack: "Press Start Retro", "VT323 Retro", "Fira Code", "Courier New", monospace;
 
@@ -583,6 +583,19 @@ footer.footer a:hover {
 
 html[data-theme="dark"],
 html[data-theme-setting="dark"] {
+  --retro-bg: #000000;
+  --retro-panel: #0f0f0f;
+  --retro-panel-border: rgba(255, 255, 255, 0.12);
+  --retro-text: #f5f5f5;
+  --retro-text-soft: #cfcfcf;
+  --retro-accent: #7efcf6;
+  --retro-accent-strong: #cffffa;
+  --retro-link-visited: #7efcf6;
+  --retro-warning: #e4fffa;
+  --retro-selection-bg: rgba(126, 252, 246, 0.25);
+  --retro-code-bg: rgba(255, 255, 255, 0.08);
+  --retro-divider: rgba(255, 255, 255, 0.12);
+
   --global-bg-color: var(--retro-bg);
   --global-bg-path: none;
   --global-code-bg-color: var(--retro-code-bg);
@@ -590,23 +603,23 @@ html[data-theme-setting="dark"] {
   --global-text-color-light: var(--retro-text-soft);
   --global-theme-color: var(--retro-accent);
   --global-hover-color: var(--retro-accent-strong);
-  --global-hover-text-color: #02100f;
-  --global-footer-bg-color: rgba(10, 12, 18, 0.9);
+  --global-hover-text-color: #010101;
+  --global-footer-bg-color: #000000;
   --global-footer-text-color: var(--retro-text-soft);
   --global-footer-link-color: var(--retro-accent);
   --global-distill-app-color: var(--retro-text-soft);
   --global-divider-color: var(--retro-divider);
   --global-card-bg-color: var(--retro-panel);
   --global-highlight-color: var(--retro-warning);
-  --global-back-to-top-bg-color: rgba(111, 255, 233, 0.15);
+  --global-back-to-top-bg-color: rgba(126, 252, 246, 0.15);
   --global-back-to-top-text-color: var(--retro-accent-strong);
-  --global-tip-block: #42b983;
-  --global-tip-block-bg: rgba(66, 185, 131, 0.18);
+  --global-tip-block: #7efcf6;
+  --global-tip-block-bg: rgba(126, 252, 246, 0.1);
   --global-tip-block-text: var(--retro-text);
   --global-tip-block-title: var(--retro-accent-strong);
-  --global-warning-block: #f9f871;
-  --global-warning-block-bg: rgba(249, 248, 113, 0.15);
-  --global-warning-block-text: #fdfcbf;
+  --global-warning-block: #e4fffa;
+  --global-warning-block-bg: rgba(228, 255, 250, 0.12);
+  --global-warning-block-text: #f5f5f5;
   --global-warning-block-title: var(--retro-warning);
   --global-danger-block: #ff6f6f;
   --global-danger-block-bg: rgba(255, 111, 111, 0.12);
