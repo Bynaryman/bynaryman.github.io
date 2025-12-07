@@ -7,12 +7,12 @@
   var glyphs = ["0", "1"];
   var cellSize = 18;
   var fadeFactor = 0.94;
-  var randomFlashChance = 0.005;
+  var randomFlashChance = 0.003;
   var waveInterval = 4500;
   var mousePulseStrength = 1.05;
   var driftSpeed = { x: 8, y: -4 };
   var rotateMax = 0;
-  var baseAlpha = 0.1;
+  var baseAlpha = 0.08;
   var swapInterval = 180;
   var colorShiftInterval = 260;
   var snapToPixel = true;
@@ -66,17 +66,18 @@
     var bg = styles.getPropertyValue("--binary-bg-color").trim() || "#000";
     var fg = styles.getPropertyValue("--binary-digit-color").trim() || "#fff";
     var accent = styles.getPropertyValue("--binary-accent-color").trim() || fg;
-    var shade1 = adjustHex(fg, 0.12);
-    var shade2 = adjustHex(fg, -0.08);
-    var palette = [fg, shade1, shade2, accent];
+    var shade1 = adjustHex(fg, 0.1);
+    var shade2 = adjustHex(fg, -0.06);
+    var shade3 = adjustHex(fg, -0.14);
+    var palette = [fg, shade1, shade2, shade3, accent];
     return { bg: bg, fg: fg, accent: accent, palette: palette };
   }
 
   function pickColor(palette) {
     if (!palette || !palette.length) return "#fff";
     var roll = Math.random();
-    if (roll > 0.82) return palette[3] || palette[0];
-    return palette[Math.floor(Math.random() * Math.min(3, palette.length))];
+    if (roll > 0.95) return palette[4] || palette[0]; // accent, rare
+    return palette[Math.floor(Math.random() * Math.min(4, palette.length))];
   }
 
   function resize() {
