@@ -11,7 +11,7 @@
   const waveInterval = 4500;
   const mousePulseStrength = 1.05; // tighter circle
   const driftSpeed = { x: 8, y: -4 }; // px per second
-  const rotateMax = 0.07; // radians peak
+  const rotateMax = 0; // rotation disabled
   const baseAlpha = 0.1;
   const swapInterval = 180; // ms between neighbor swaps
 
