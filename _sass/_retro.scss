@@ -645,15 +645,15 @@ html[data-theme-setting="dark"] {
 
 :root {
   --binary-bg-color: var(--retro-bg);
-  --binary-digit-color: #b8b2a7; /* warm beige digits */
-  --binary-accent-color: #5fcac3; /* muted cyan accent */
+  --binary-digit-color: #c6bfae; /* warm beige digits */
+  --binary-accent-color: #4aa39d; /* muted cyan accent, more subtle */
 }
 
 html[data-theme="dark"],
 html[data-theme-setting="dark"] {
   --binary-bg-color: var(--retro-bg);
-  --binary-digit-color: #d8d2c8;
-  --binary-accent-color: #5fcac3;
+  --binary-digit-color: #d7d0c2;
+  --binary-accent-color: #4aa39d;
 }
 
 @media (prefers-reduced-motion: reduce) {
