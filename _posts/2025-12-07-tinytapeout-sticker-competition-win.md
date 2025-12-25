@@ -31,18 +31,15 @@ I am happy to share that my sticker set just won the [TinyTapeout sticker design
 ### Other Submissions
 
 <div class="row mt-4">
-    <div class="col-sm mt-3 mt-md-0">
+    <div class="col-md-6 mt-3 mt-md-0">
         {% include figure.liquid path="assets/img/tinytapeout-stickers/whatisend-1.png" class="img-fluid rounded z-depth-2" zoomable=true alt="Sticker concept exploring a softer metallic gradient and circuit skyline silhouette." %}
     </div>
-    <div class="col-sm mt-3 mt-md-0">
+    <div class="col-md-6 mt-3 mt-md-0">
         {% include figure.liquid path="assets/img/tinytapeout-stickers/whatisend-2.png" class="img-fluid rounded z-depth-2" zoomable=true alt="Sticker concept with brighter ribbon highlights and tighter inner routing lines." %}
     </div>
 </div>
 <div class="row mt-4">
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid path="assets/img/tinytapeout-stickers/whatisend-4.jpg" class="img-fluid rounded z-depth-2" zoomable=true alt="Sticker concept with photographic texture overlay and warm lighting." %}
-    </div>
-    <div class="col-sm mt-3 mt-md-0">
+    <div class="col-12 mt-3 mt-md-0">
         {% include figure.liquid path="assets/img/tinytapeout-stickers/whatisend-5.png" class="img-fluid rounded z-depth-2" zoomable=true alt="Sticker concept with bold magenta-to-cyan gradient and clean outlines." %}
     </div>
 </div>

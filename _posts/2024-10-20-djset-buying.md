@@ -9,28 +9,36 @@ categories: music
 
 <div class="row mt-5">
     <div class="col-sm mt-3 mt-md-0">
-        <div style="position:relative; padding-bottom:56.25%;" class="img-fluid rounded z-depth-2">
-            <iframe width="100%" height="450" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1937884868&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/et-al-records" title="Et Al. Records" target="_blank" style="color: #cccccc; text-decoration: none;">Et Al. Records</a> · <a href="https://soundcloud.com/et-al-records/areawithenergy" title="Buying Area with Energy - Binaryman (GOA)" target="_blank" style="color: #cccccc; text-decoration: none;">Buying Area with Energy - Binaryman (GOA)</a></div>
+        <div class="djset-embed">
+            <iframe
+                title="SoundCloud player"
+                scrolling="no"
+                frameborder="0"
+                allow="autoplay"
+                src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1937884868&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"
+            ></iframe>
         </div>
     </div>
 </div>
 
-<div class="caption">
+<div class="djset-tracklist">
 
 New oldschool and short goa set. This one is made of tracks I listen recently but without the occasion of mixing :)
 
 Enjoy, tracklist here:
 
-00:00:00 "Quench - Dreams (Crunched Up mix)"
-00:06:01 "Asia 2001 - Fantasm (Bonus Track)"
-00:12:04 "Rise - The Single (The Goa Pyramid Mix)"
-00:17:15 "Brainchild - Symmetry (C-Mix)"
-00:22:10 "The Infonaut - Mind Directed Energy"
-00:28:37 "Psychogenetic Soundforce - Axwitch"
-00:34:08 "Octopus Galore - Flying Squids (Original Mix)"
-00:38:13 "Project X - Highlander (The Acid Rain Mix)"
-00:42:47 "Kode IV - Near To The Divine (Original Doof Mix)"
-00:49:07 "Doof - Weird Karma"
-00:53:39 "Xerox, Freeman - Karina (Remaster)"
+<ol class="tracklist">
+    <li><span class="timecode">00:00:00</span> Quench - Dreams (Crunched Up mix)</li>
+    <li><span class="timecode">00:06:01</span> Asia 2001 - Fantasm (Bonus Track)</li>
+    <li><span class="timecode">00:12:04</span> Rise - The Single (The Goa Pyramid Mix)</li>
+    <li><span class="timecode">00:17:15</span> Brainchild - Symmetry (C-Mix)</li>
+    <li><span class="timecode">00:22:10</span> The Infonaut - Mind Directed Energy</li>
+    <li><span class="timecode">00:28:37</span> Psychogenetic Soundforce - Axwitch</li>
+    <li><span class="timecode">00:34:08</span> Octopus Galore - Flying Squids (Original Mix)</li>
+    <li><span class="timecode">00:38:13</span> Project X - Highlander (The Acid Rain Mix)</li>
+    <li><span class="timecode">00:42:47</span> Kode IV - Near To The Divine (Original Doof Mix)</li>
+    <li><span class="timecode">00:49:07</span> Doof - Weird Karma</li>
+    <li><span class="timecode">00:53:39</span> Xerox, Freeman - Karina (Remaster)</li>
+</ol>
 
 </div>

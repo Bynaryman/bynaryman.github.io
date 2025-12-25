@@ -432,6 +432,13 @@ html[data-theme-setting="dark"] .navbar .navbar-brand:hover {
   backdrop-filter: none;
 }
 
+.post.post--panel {
+  background: var(--global-card-bg-color);
+  border: 1px solid var(--global-divider-color);
+  padding: 2.4rem 2.6rem;
+  box-shadow: 0 18px 32px rgba(0, 0, 0, 0.08);
+}
+
 .post-title,
 h1,
 h2,
@@ -570,6 +577,42 @@ h6 {
   filter: grayscale(40%) contrast(115%) brightness(110%);
   border: 1px solid rgba(var(--retro-ink), 0.2);
   border-radius: 4px;
+}
+
+.djset-embed {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--global-divider-color);
+  background: rgba(var(--retro-ink), 0.04);
+}
+
+.djset-embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.djset-tracklist {
+  margin-top: 1.6rem;
+  text-align: left;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.djset-tracklist .tracklist {
+  margin: 0.8rem 0 0;
+  padding-left: 1.4rem;
+}
+
+.djset-tracklist .timecode {
+  font-family: var(--retro-mono-stack);
+  color: var(--retro-text-soft);
+  margin-right: 0.45rem;
 }
 
 .badge {
@@ -780,13 +823,14 @@ pre::after {
   box-shadow: 0 0 8px rgba(var(--retro-ink), 0.25);
 }
 
-.publications .abbr abbr {
-  background-color: var(--retro-badge-bg);
-  color: var(--retro-badge-text);
+.publications ol.bibliography li .abbr abbr {
+  background-color: var(--retro-badge-bg) !important;
+  color: var(--retro-badge-text) !important;
 }
 
-.publications .abbr abbr a {
-  color: var(--retro-badge-text);
+.publications ol.bibliography li .abbr abbr a,
+.publications ol.bibliography li .abbr abbr div {
+  color: inherit !important;
 }
 
 footer.footer {
@@ -949,6 +993,9 @@ html[data-theme-setting="dark"] footer.fixed-bottom a {
     padding: 0;
     border-radius: 0;
   }
+  .post.post--panel {
+    padding: 1.6rem 1.4rem;
+  }
   .terminal-frame__body {
     padding: 1.75rem 1.5rem;
   }
@@ -1009,7 +1056,6 @@ body > *:not(.binary-background) {
 .shell-stage,
 .shell-panel,
 .container,
-.post,
 .page,
 .page-content,
 .post-content,
