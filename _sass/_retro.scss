@@ -26,6 +26,8 @@
   --retro-ink: 10, 10, 10;
   --retro-border: rgba(0, 0, 0, 0.2);
   --retro-footer-height: 44px;
+  --retro-badge-bg: #0a0a0a;
+  --retro-badge-text: #ffffff;
   --retro-type-stack: "VT323 Retro", "Fira Code", "Cascadia Code", "Courier New", monospace;
   --retro-mono-stack: "Press Start Retro", "VT323 Retro", "Fira Code", "Courier New", monospace;
 
@@ -626,6 +628,8 @@ html[data-theme-setting="dark"] {
   --retro-divider: rgba(255, 255, 255, 0.22);
   --retro-ink: 255, 255, 255;
   --retro-border: rgba(255, 255, 255, 0.2);
+  --retro-badge-bg: #ffffff;
+  --retro-badge-text: #000000;
 
   --global-bg-color: var(--retro-bg);
   --global-bg-path: none;
@@ -774,6 +778,15 @@ pre::after {
 
 .btn-primary {
   box-shadow: 0 0 8px rgba(var(--retro-ink), 0.25);
+}
+
+.publications .abbr abbr {
+  background-color: var(--retro-badge-bg);
+  color: var(--retro-badge-text);
+}
+
+.publications .abbr abbr a {
+  color: var(--retro-badge-text);
 }
 
 footer.footer {
