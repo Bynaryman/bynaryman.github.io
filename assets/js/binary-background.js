@@ -4,34 +4,29 @@
 
   var ctx = canvas.getContext("2d");
   var dpr = Math.max(1, window.devicePixelRatio || 1);
+  var baseDpr = dpr;
   var glyphs = ["0", "1"];
   var cellSize = 18;
-  var fadeFactor = 0.94;
-  var randomFlashChance = 0.003;
-  var waveInterval = 4500;
-  var mousePulseStrength = 1.05;
-  var driftSpeed = { x: 8, y: -4 };
-  var rotateMax = 0;
-  var baseAlpha = 0.08;
-  var swapInterval = 180;
-  var colorShiftInterval = 260;
+  var fadeFactor = 0.96;
+  var randomFlashChance = 0.001;
+  var baseAlpha = 0.05;
+  var swapInterval = 260;
+  var colorShiftInterval = 420;
+  var mouseRadius = 90;
+  var mouseAlphaBoost = 0.38;
+  var mouseAccentThreshold = 0.35;
+  var mouseFlipSpeed = 0.004;
   var snapToPixel = true;
-  var heightCheckInterval = 500;
+  var parallaxFactor = 0.18;
 
   var cols = 0;
   var rows = 0;
+  var gridSize = cellSize;
   var cells = [];
   var lastTime = performance.now();
-  var waveNext = performance.now() + waveInterval;
-  var mouse = { x: 0, y: 0, dirty: false };
-  var mouseTrailCount = 0;
-  var mouseNextTrail = 0;
-  var drift = { x: 0, y: 0 };
+  var mouse = { x: 0, y: 0, tx: 0, ty: 0, active: false };
   var nextSwap = performance.now() + swapInterval;
-  var wrapW = 0;
-  var wrapH = 0;
   var nextColorShift = performance.now() + colorShiftInterval;
-  var nextHeightCheck = performance.now() + heightCheckInterval;
 
   function hexToRgb(hex) {
     var clean = hex.replace("#", "");
@@ -66,9 +61,9 @@
     var bg = styles.getPropertyValue("--binary-bg-color").trim() || "#000";
     var fg = styles.getPropertyValue("--binary-digit-color").trim() || "#fff";
     var accent = styles.getPropertyValue("--binary-accent-color").trim() || fg;
-    var shade1 = adjustHex(fg, 0.1);
-    var shade2 = adjustHex(fg, -0.06);
-    var shade3 = adjustHex(fg, -0.14);
+    var shade1 = adjustHex(fg, 0.18);
+    var shade2 = adjustHex(fg, -0.12);
+    var shade3 = adjustHex(fg, -0.24);
     var palette = [fg, shade1, shade2, shade3, accent];
     return { bg: bg, fg: fg, accent: accent, palette: palette };
   }
@@ -81,20 +76,22 @@
   }
 
   function resize() {
-    var w = window.innerWidth;
-    var h = window.innerHeight;
-    var fullH = Math.max(document.documentElement.scrollHeight, h);
+    dpr = Math.max(1, window.devicePixelRatio || 1);
+    if (!baseDpr) {
+      baseDpr = dpr;
+    }
+    var rect = canvas.getBoundingClientRect();
+    var w = rect.width || Math.max(window.innerWidth || 0, document.documentElement.clientWidth || 0);
+    var fullH = rect.height || Math.max(window.innerHeight || 0, document.documentElement.clientHeight || 0);
+    var zoomFactor = dpr / baseDpr;
+    gridSize = cellSize / Math.max(1, zoomFactor);
     canvas.width = Math.round(w * dpr);
     canvas.height = Math.round(fullH * dpr);
-    canvas.style.width = w + "px";
-    canvas.style.height = fullH + "px";
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.imageSmoothingEnabled = false;
     ctx.scale(dpr, dpr);
-    cols = Math.ceil(w / cellSize);
-    rows = Math.ceil(fullH / cellSize);
-    wrapW = cols * cellSize;
-    wrapH = rows * cellSize;
+    cols = Math.ceil(w / gridSize) + 2;
+    rows = Math.ceil(fullH / gridSize) + 2;
     var colors = getColors();
     cells = new Array(cols * rows);
     for (var idx = 0; idx < cells.length; idx++) {
@@ -102,32 +99,30 @@
       var y = Math.floor(idx / cols);
       cells[idx] = {
         glyph: glyphs[Math.random() > 0.5 ? 1 : 0],
-        alpha: baseAlpha + Math.random() * 0.25,
+        alpha: baseAlpha + Math.random() * 0.3,
         color: pickColor(colors.palette),
-        cx: x * cellSize + cellSize / 2,
-        cy: y * cellSize + cellSize / 2
+        cx: x * gridSize + gridSize / 2,
+        cy: y * gridSize + gridSize / 2,
+        phase: Math.random() * Math.PI * 2,
+        twinkle: 0.04 + Math.random() * 0.06
       };
     }
   }
 
-  function pulseAt(px, py, strength, tint) {
-    var radius = cellSize * 1.6 * strength;
-    var radiusSq = radius * radius;
-    for (var i = 0; i < cells.length; i++) {
-      var cell = cells[i];
-      var dx = Math.abs(cell.cx - px);
-      var dy = Math.abs(cell.cy - py);
-      if (wrapW > 0) dx = Math.min(dx, wrapW - dx);
-      if (wrapH > 0) dy = Math.min(dy, wrapH - dy);
-      var distSq = dx * dx + dy * dy;
-      if (distSq > radiusSq) continue;
-      var falloff = 1 - distSq / radiusSq;
-      cell.alpha = Math.min(1, cell.alpha + falloff);
-      cell.color = tint || cell.color;
-    }
+  function updateMouse(dt) {
+    if (!mouse.active) return;
+    var easing = Math.min(1, dt / 120);
+    mouse.x += (mouse.tx - mouse.x) * easing;
+    mouse.y += (mouse.ty - mouse.y) * easing;
   }
 
   function step(now) {
+    var rect = canvas.getBoundingClientRect();
+    var expectedW = rect.width || Math.max(window.innerWidth || 0, document.documentElement.clientWidth || 0);
+    var expectedH = rect.height || Math.max(window.innerHeight || 0, document.documentElement.clientHeight || 0);
+    if (Math.abs(expectedW - canvas.width / dpr) > 1 || Math.abs(expectedH - canvas.height / dpr) > 1) {
+      resize();
+    }
     var colors = getColors();
     var bg = colors.bg;
     var fg = colors.fg;
@@ -135,44 +130,61 @@
 
     var dt = now - lastTime;
     lastTime = now;
+    updateMouse(dt);
     var viewW = canvas.width / dpr;
     var viewH = canvas.height / dpr;
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    var scrollY = window.scrollY || window.pageYOffset || 0;
+    var parallaxOffset = -scrollY * parallaxFactor;
+    var wrapH = rows * gridSize;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.fillStyle = bg || "#000";
     ctx.fillRect(0, 0, viewW, viewH);
 
-    drift.x += (driftSpeed.x * dt) / 1000;
-    drift.y += (driftSpeed.y * dt) / 1000;
-    var angle = Math.sin(now * 0.00025) * rotateMax;
-
-    ctx.save();
-    ctx.translate(viewW / 2, viewH / 2);
-    ctx.rotate(angle);
-    ctx.translate(-viewW / 2, -viewH / 2);
-
     var decay = Math.pow(fadeFactor, dt / 16.67);
-    var offX = ((drift.x % wrapW) + wrapW) % wrapW;
-    var offY = ((drift.y % wrapH) + wrapH) % wrapH;
+    var zoomFactor = dpr / baseDpr;
+    var effectiveRadius = mouseRadius / Math.max(1, zoomFactor);
+    var radiusSq = effectiveRadius * effectiveRadius;
     for (var i = 0; i < cells.length; i++) {
       var cell = cells[i];
       cell.alpha = Math.max(baseAlpha, cell.alpha * decay);
-      if (cell.alpha < 0.02) continue;
-      var px = cell.cx + offX;
-      var py = cell.cy + offY;
-      if (px > wrapW) px -= wrapW;
-      if (py > wrapH) py -= wrapH;
-      if (px < -cellSize || py < -cellSize || px > viewW + cellSize || py > viewH + cellSize) continue;
-      ctx.globalAlpha = cell.alpha;
-      ctx.fillStyle = cell.color || fg;
-      ctx.font = (cellSize - 4) + 'px "Times New Roman", serif';
+      var wobble = cell.twinkle * Math.sin(now * 0.0012 + cell.phase);
+      var alpha = Math.max(baseAlpha, Math.min(1, cell.alpha + wobble));
+
+      var px = cell.cx;
+      var py = cell.cy + parallaxOffset;
+      if (wrapH > 0) {
+        py = ((py % wrapH) + wrapH) % wrapH;
+      }
+      var influence = 0;
+      if (mouse.active) {
+        var dx = px - mouse.x;
+        var dy = Math.abs(py - mouse.y);
+        if (wrapH > 0) {
+          dy = Math.min(dy, wrapH - dy);
+        }
+        var distSq = dx * dx + dy * dy;
+        if (distSq < radiusSq) {
+          var falloff = 1 - distSq / radiusSq;
+          influence = falloff * falloff;
+          alpha = Math.min(1, alpha + influence * mouseAlphaBoost);
+        }
+      }
+
+      if (px < -gridSize || py < -gridSize || px > viewW + gridSize || py > viewH + gridSize) continue;
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = influence > mouseAccentThreshold ? colors.accent : cell.color || fg;
+      ctx.font = (gridSize - 4) + 'px "Times New Roman", serif';
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       var drawX = snapToPixel ? Math.round(px) + 0.5 : px;
       var drawY = snapToPixel ? Math.round(py) + 0.5 : py;
-      ctx.fillText(cell.glyph, drawX, drawY);
+      var glyph = cell.glyph;
+      if (influence > 0.6 && Math.sin(now * mouseFlipSpeed + cell.phase) > 0.6) {
+        glyph = glyph === "0" ? "1" : "0";
+      }
+      ctx.fillText(glyph, drawX, drawY);
     }
     ctx.globalAlpha = 1;
-    ctx.restore();
 
     if (Math.random() < randomFlashChance) {
       var target = cells[Math.floor(Math.random() * cells.length)];
@@ -198,38 +210,6 @@
       nextSwap = now + swapInterval + Math.random() * 120;
     }
 
-    if (now >= waveNext) {
-      var pxWave = Math.random() * wrapW;
-      var pyWave = Math.random() * wrapH;
-      var steps = 4;
-      for (var r = 0; r < steps; r++) {
-        (function (radiusStep) {
-          setTimeout(function () {
-            pulseAt(pxWave, pyWave, 0.6 + radiusStep * 0.25, pickColor(palette));
-          }, radiusStep * 36);
-        })(r);
-      }
-      waveNext = now + waveInterval + Math.random() * 1800;
-    }
-
-    if (mouse.dirty) {
-      var gridX = ((mouse.x - offX) % wrapW + wrapW) % wrapW;
-      var gridY = ((mouse.y - offY) % wrapH + wrapH) % wrapH;
-      pulseAt(gridX, gridY, mousePulseStrength, pickColor(palette));
-      mouseTrailCount = 4;
-      mouseNextTrail = now + 45;
-      mouse.dirty = false;
-    }
-
-    if (mouseTrailCount > 0 && now >= mouseNextTrail) {
-      var factor = 0.75 * (mouseTrailCount / 4);
-      var gridX2 = ((mouse.x - offX) % wrapW + wrapW) % wrapW;
-      var gridY2 = ((mouse.y - offY) % wrapH + wrapH) % wrapH;
-      pulseAt(gridX2, gridY2, mousePulseStrength * factor, pickColor(palette));
-      mouseTrailCount -= 1;
-      mouseNextTrail = now + 45;
-    }
-
     if (now >= nextColorShift) {
       var targetShift = cells[Math.floor(Math.random() * cells.length)];
       if (targetShift) {
@@ -239,25 +219,59 @@
       nextColorShift = now + colorShiftInterval + Math.random() * 200;
     }
 
-    if (now >= nextHeightCheck) {
-      var fullHCheck = Math.max(document.documentElement.scrollHeight, window.innerHeight);
-      if (canvas.height / dpr !== fullHCheck) {
-        resize();
-      }
-      nextHeightCheck = now + heightCheckInterval;
-    }
-
     requestAnimationFrame(step);
   }
 
   function onMove(e) {
-    mouse.x = e.clientX;
-    mouse.y = e.clientY;
-    mouse.dirty = true;
+    mouse.tx = e.clientX;
+    mouse.ty = e.clientY;
+    if (!mouse.active) {
+      mouse.x = mouse.tx;
+      mouse.y = mouse.ty;
+    }
+    mouse.active = true;
+  }
+
+  function onLeave() {
+    mouse.active = false;
   }
 
   window.addEventListener("resize", resize, false);
+  window.addEventListener("orientationchange", resize, false);
   window.addEventListener("mousemove", onMove, false);
+  window.addEventListener("mouseleave", onLeave, false);
+  var themeObserver = new MutationObserver(function (mutations) {
+    for (var i = 0; i < mutations.length; i++) {
+      var attr = mutations[i].attributeName;
+      if (attr === "data-theme" || attr === "data-theme-setting") {
+        resize();
+        lastTime = performance.now();
+        break;
+      }
+    }
+  });
+  themeObserver.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-theme", "data-theme-setting"]
+  });
   resize();
+  var initialRect = canvas.getBoundingClientRect();
+  var lastSizeW = initialRect.width || window.innerWidth;
+  var lastSizeH = initialRect.height || window.innerHeight;
+  var lastDpr = dpr;
+  function monitorResize() {
+    var rect = canvas.getBoundingClientRect();
+    var w = rect.width || window.innerWidth;
+    var h = rect.height || window.innerHeight;
+    var currentDpr = Math.max(1, window.devicePixelRatio || 1);
+    if (w !== lastSizeW || h !== lastSizeH || currentDpr !== lastDpr) {
+      lastSizeW = w;
+      lastSizeH = h;
+      lastDpr = currentDpr;
+      resize();
+    }
+    requestAnimationFrame(monitorResize);
+  }
+  requestAnimationFrame(monitorResize);
   requestAnimationFrame(step);
 })();
