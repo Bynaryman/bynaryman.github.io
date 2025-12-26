@@ -178,12 +178,7 @@ pre {
 }
 
 pre::after {
-  content: "█";
-  position: absolute;
-  bottom: 0.75rem;
-  right: 0.75rem;
-  color: rgba(var(--retro-ink), 0.5);
-  animation: blink 1.2s steps(2, start) infinite;
+  content: none;
 }
 
 @keyframes blink {
@@ -579,6 +574,34 @@ h6 {
   border-radius: 4px;
 }
 
+.repositories {
+  width: 100%;
+  gap: 1.2rem;
+}
+
+.repositories .repo {
+  flex: 1 1 320px;
+  max-width: calc(50% - 0.6rem);
+}
+
+.repositories .repo a {
+  display: block;
+}
+
+.repositories .repo img {
+  display: block;
+  border-radius: 12px;
+  border: 1px solid var(--global-divider-color);
+  background: var(--global-card-bg-color);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+  filter: none;
+}
+
+html[data-theme="dark"] .repositories .repo img,
+html[data-theme-setting="dark"] .repositories .repo img {
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.5);
+}
+
 .djset-embed {
   position: relative;
   width: 100%;
@@ -723,15 +746,23 @@ html[data-theme-setting="dark"] {
 
 :root {
   --binary-bg-color: var(--retro-bg);
-  --binary-digit-color: #c6bfae; /* warm beige digits */
+  --binary-digit-color: #16130e;
   --binary-accent-color: var(--retro-accent);
+  --binary-alpha-base: 0.08;
+  --binary-alpha-range: 0.45;
+  --binary-alpha-boost: 0.2;
+  --binary-alpha-boost-chance: 0.12;
 }
 
 html[data-theme="dark"],
 html[data-theme-setting="dark"] {
   --binary-bg-color: var(--retro-bg);
-  --binary-digit-color: #d7d0c2;
+  --binary-digit-color: #f5f5f5;
   --binary-accent-color: var(--retro-accent);
+  --binary-alpha-base: 0.16;
+  --binary-alpha-range: 0.6;
+  --binary-alpha-boost: 0.35;
+  --binary-alpha-boost-chance: 0.2;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -758,6 +789,132 @@ pre {
 
 pre::after {
   color: rgba(var(--retro-ink), 0.5);
+}
+
+.highlight,
+.highlight pre,
+.highlight code,
+pre.highlight {
+  background-color: var(--retro-panel) !important;
+  background-image: none !important;
+  color: var(--retro-text) !important;
+  border: 1px solid var(--retro-border) !important;
+  box-shadow: none;
+}
+
+.code-display-wrapper,
+.code-display-wrapper pre,
+.code-display-wrapper code {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background-image: none !important;
+}
+
+.code-display-wrapper::after,
+.code-display-wrapper pre::after,
+.code-display-wrapper code::after {
+  content: none !important;
+}
+
+.bibtex figure.highlight,
+.bibtex figure.highlight * {
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  background-image: none !important;
+}
+
+.bibtex figure.highlight {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.bibtex pre {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.bibtex .copy {
+  border: 1px solid var(--retro-border) !important;
+  box-shadow: none !important;
+  background-color: var(--retro-panel) !important;
+}
+
+.highlight * {
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+.highlight .c,
+.highlight .cm,
+.highlight .c1,
+.highlight .cs {
+  color: var(--retro-text-soft) !important;
+}
+
+.highlight .k,
+.highlight .kd,
+.highlight .kn,
+.highlight .kp,
+.highlight .kr,
+.highlight .kt,
+.highlight .o,
+.highlight .ow,
+.highlight .na,
+.highlight .nb,
+.highlight .nc,
+.highlight .no,
+.highlight .nd,
+.highlight .ni,
+.highlight .ne,
+.highlight .nf,
+.highlight .nl,
+.highlight .nn,
+.highlight .nt,
+.highlight .nv,
+.highlight .nx,
+.highlight .py,
+.highlight .s,
+.highlight .sa,
+.highlight .sb,
+.highlight .sc,
+.highlight .sd,
+.highlight .se,
+.highlight .sh,
+.highlight .si,
+.highlight .sx,
+.highlight .sr,
+.highlight .ss,
+.highlight .s1,
+.highlight .s2,
+.highlight .vc,
+.highlight .vg,
+.highlight .vi,
+.highlight .il,
+.highlight .m,
+.highlight .mi,
+.highlight .mf,
+.highlight .mh,
+.highlight .mo {
+  color: var(--retro-text) !important;
+}
+
+html[data-theme="dark"] .highlight,
+html[data-theme-setting="dark"] .highlight,
+html[data-theme="dark"] .highlight pre,
+html[data-theme-setting="dark"] .highlight pre,
+html[data-theme="dark"] .highlight code,
+html[data-theme-setting="dark"] .highlight code,
+html[data-theme="dark"] pre.highlight,
+html[data-theme-setting="dark"] pre.highlight {
+  background-color: #0b0b0b !important;
+  background-image: none !important;
+  color: var(--retro-text) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  box-shadow: none;
 }
 
 .terminal-background__layer--grid {
@@ -996,6 +1153,9 @@ html[data-theme-setting="dark"] footer.fixed-bottom a {
   .post.post--panel {
     padding: 1.6rem 1.4rem;
   }
+  .repositories .repo {
+    max-width: 100%;
+  }
   .terminal-frame__body {
     padding: 1.75rem 1.5rem;
   }
@@ -1033,15 +1193,23 @@ html[data-theme-setting="dark"] footer.fixed-bottom a {
 
 :root {
   --binary-bg-color: #ffffff;
-  --binary-digit-color: #000000;
+  --binary-digit-color: #16130e;
   --binary-accent-color: var(--retro-accent);
+  --binary-alpha-base: 0.08;
+  --binary-alpha-range: 0.45;
+  --binary-alpha-boost: 0.2;
+  --binary-alpha-boost-chance: 0.12;
 }
 
 html[data-theme="dark"],
 html[data-theme-setting="dark"] {
   --binary-bg-color: #000000;
-  --binary-digit-color: #f7f7f7;
+  --binary-digit-color: #f5f5f5;
   --binary-accent-color: #f7f7f7;
+  --binary-alpha-base: 0.16;
+  --binary-alpha-range: 0.6;
+  --binary-alpha-boost: 0.35;
+  --binary-alpha-boost-chance: 0.2;
 }
 
 body {
