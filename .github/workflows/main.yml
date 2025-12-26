@@ -97,18 +97,3 @@ jobs:
           plugin_notable_types: commit, pull_request, issue
           committer_branch: master
           committer_message: "chore: update metrics"
-
-      - name: Repository contributors
-        uses: lowlighter/metrics@latest
-        with:
-          token: ${{ secrets.METRICS }}
-          user: Bynaryman
-          template: repository
-          repo: bynaryman.github.io
-          filename: assets/metrics/metrics-contributors.svg
-          base: ""
-          plugin_contributors: yes
-          plugin_contributors_contributions: yes
-          plugin_contributors_sections: contributors
-          committer_branch: master
-          committer_message: "chore: update metrics"
