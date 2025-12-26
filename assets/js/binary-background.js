@@ -12,9 +12,9 @@
   var baseAlpha = 0.05;
   var swapInterval = 260;
   var colorShiftInterval = 420;
-  var mouseRadius = 90;
-  var mouseAlphaBoost = 0.38;
-  var mouseAccentThreshold = 0.35;
+  var mouseRadius = 70;
+  var mouseAlphaBoost = 0.1;
+  var mouseAccentThreshold = 0.85;
   var mouseFlipSpeed = 0.004;
   var snapToPixel = true;
   var parallaxFactor = 0.18;
@@ -56,16 +56,36 @@
     return out;
   }
 
+  function getNumberVar(styles, name, fallback) {
+    var raw = styles.getPropertyValue(name);
+    if (!raw) return fallback;
+    var num = parseFloat(raw);
+    return Number.isFinite(num) ? num : fallback;
+  }
+
   function getColors() {
     var styles = getComputedStyle(document.documentElement);
     var bg = styles.getPropertyValue("--binary-bg-color").trim() || "#000";
     var fg = styles.getPropertyValue("--binary-digit-color").trim() || "#fff";
     var accent = styles.getPropertyValue("--binary-accent-color").trim() || fg;
-    var shade1 = adjustHex(fg, 0.18);
-    var shade2 = adjustHex(fg, -0.12);
-    var shade3 = adjustHex(fg, -0.24);
+    var alphaBase = getNumberVar(styles, "--binary-alpha-base", baseAlpha);
+    var alphaRange = getNumberVar(styles, "--binary-alpha-range", 0.3);
+    var alphaBoost = getNumberVar(styles, "--binary-alpha-boost", 0.2);
+    var alphaBoostChance = getNumberVar(styles, "--binary-alpha-boost-chance", 0.12);
+    var shade1 = adjustHex(fg, 0.12);
+    var shade2 = adjustHex(fg, -0.2);
+    var shade3 = adjustHex(fg, -0.38);
     var palette = [fg, shade1, shade2, shade3, accent];
-    return { bg: bg, fg: fg, accent: accent, palette: palette };
+    return {
+      bg: bg,
+      fg: fg,
+      accent: accent,
+      palette: palette,
+      alphaBase: alphaBase,
+      alphaRange: alphaRange,
+      alphaBoost: alphaBoost,
+      alphaBoostChance: alphaBoostChance
+    };
   }
 
   function pickColor(palette) {
@@ -97,9 +117,13 @@
     for (var idx = 0; idx < cells.length; idx++) {
       var x = idx % cols;
       var y = Math.floor(idx / cols);
+      var alpha = colors.alphaBase + Math.random() * colors.alphaRange;
+      if (Math.random() < colors.alphaBoostChance) {
+        alpha = Math.min(1, alpha + colors.alphaBoost);
+      }
       cells[idx] = {
         glyph: glyphs[Math.random() > 0.5 ? 1 : 0],
-        alpha: baseAlpha + Math.random() * 0.3,
+        alpha: alpha,
         color: pickColor(colors.palette),
         cx: x * gridSize + gridSize / 2,
         cy: y * gridSize + gridSize / 2,
@@ -140,15 +164,16 @@
     ctx.fillStyle = bg || "#000";
     ctx.fillRect(0, 0, viewW, viewH);
 
+    var alphaBase = colors.alphaBase;
     var decay = Math.pow(fadeFactor, dt / 16.67);
     var zoomFactor = dpr / baseDpr;
     var effectiveRadius = mouseRadius / Math.max(1, zoomFactor);
     var radiusSq = effectiveRadius * effectiveRadius;
     for (var i = 0; i < cells.length; i++) {
       var cell = cells[i];
-      cell.alpha = Math.max(baseAlpha, cell.alpha * decay);
+      cell.alpha = Math.max(alphaBase, cell.alpha * decay);
       var wobble = cell.twinkle * Math.sin(now * 0.0012 + cell.phase);
-      var alpha = Math.max(baseAlpha, Math.min(1, cell.alpha + wobble));
+      var alpha = Math.max(alphaBase, Math.min(1, cell.alpha + wobble));
 
       var px = cell.cx;
       var py = cell.cy + parallaxOffset;
