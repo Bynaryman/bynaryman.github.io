@@ -2,46 +2,89 @@
 layout: page
 permalink: /repositories/
 title: repositories
-description: Find an overview of my work with a selected set of personal and contributed repositories.
+description: GitHub metrics dashboard with activity, achievements, languages, and habits.
 nav: true
 nav_order: 4
 ---
 
-## GitHub users
+## GitHub metrics
 
-{% if site.data.repositories.github_users %}
-
-<div class="repositories d-flex flex-wrap flex-md-row flex-column justify-content-between align-items-center">
-  {% for user in site.data.repositories.github_users %}
-    {% include repository/repo_user.liquid username=user %}
-  {% endfor %}
-</div>
-
----
-
-{% if site.repo_trophies.enabled %}
-{% for user in site.data.repositories.github_users %}
-{% if site.data.repositories.github_users.size > 1 %}
-
-  <h4>{{ user }}</h4>
-  {% endif %}
-  <div class="repositories d-flex flex-wrap flex-md-row flex-column justify-content-between align-items-center">
-  {% include repository/repo_trophies.liquid username=user %}
+<div class="metrics-grid">
+  <div class="metric-card metric-card--wide">
+    <img
+      class="repo-img-light metric-img"
+      alt="GitHub metrics summary (light)"
+      src="/assets/metrics/metrics-base.svg"
+    >
+    <img
+      class="repo-img-dark metric-img"
+      alt="GitHub metrics summary (dark)"
+      src="/assets/metrics/metrics-base.svg"
+    >
   </div>
 
----
+  <div class="metric-card metric-card--wide">
+    <img
+      class="repo-img-light metric-img"
+      alt="GitHub isometric commit calendar (light)"
+      src="/assets/metrics/metrics-isocalendar.svg"
+    >
+    <img
+      class="repo-img-dark metric-img"
+      alt="GitHub isometric commit calendar (dark)"
+      src="/assets/metrics/metrics-isocalendar.svg"
+    >
+  </div>
 
-{% endfor %}
-{% endif %}
-{% endif %}
+  <div class="metric-card">
+    <img
+      class="repo-img-light metric-img"
+      alt="GitHub achievements (light)"
+      src="/assets/metrics/metrics-achievements.svg"
+    >
+    <img
+      class="repo-img-dark metric-img"
+      alt="GitHub achievements (dark)"
+      src="/assets/metrics/metrics-achievements.svg"
+    >
+  </div>
 
-## GitHub Repositories
+  <div class="metric-card">
+    <img
+      class="repo-img-light metric-img"
+      alt="GitHub languages (light)"
+      src="/assets/metrics/metrics-languages.svg"
+    >
+    <img
+      class="repo-img-dark metric-img"
+      alt="GitHub languages (dark)"
+      src="/assets/metrics/metrics-languages.svg"
+    >
+  </div>
 
-{% if site.data.repositories.github_repos %}
+  <div class="metric-card">
+    <img
+      class="repo-img-light metric-img"
+      alt="GitHub habits (light)"
+      src="/assets/metrics/metrics-habits.svg"
+    >
+    <img
+      class="repo-img-dark metric-img"
+      alt="GitHub habits (dark)"
+      src="/assets/metrics/metrics-habits.svg"
+    >
+  </div>
 
-<div class="repositories d-flex flex-wrap flex-md-row flex-column justify-content-between align-items-center">
-  {% for repo in site.data.repositories.github_repos %}
-    {% include repository/repo.liquid repository=repo %}
-  {% endfor %}
+  <div class="metric-card">
+    <img
+      class="repo-img-light metric-img"
+      alt="GitHub stars (light)"
+      src="/assets/metrics/metrics-stars.svg"
+    >
+    <img
+      class="repo-img-dark metric-img"
+      alt="GitHub stars (dark)"
+      src="/assets/metrics/metrics-stars.svg"
+    >
+  </div>
 </div>
-{% endif %}
