@@ -7,3 +7,31 @@
 
 "Vision":
   color: "#009f36"
+
+"DATE":
+  url: https://date-conference.com/
+  color: "#000000"
+
+"EuroLLVM":
+  url: https://llvm.org/devmtg/
+  color: "#000000"
+
+"BSC24":
+  url: https://www.bsc.es/events/11th-international-bsc-severo-ochoa-doctoral-symposium
+  color: "#000000"
+
+"BSC23":
+  url: https://www.bsc.es/events/10th-international-bsc-severo-ochoa-doctoral-symposium
+  color: "#000000"
+
+"DSD":
+  url: https://dsd-conference.com/
+  color: "#000000"
+
+"WIP-ECJ":
+  url: https://www.wep-journal.org/
+  color: "#000000"
+
+"OpenPOWER":
+  url: https://openpowerfoundation.org/
+  color: "#000000"

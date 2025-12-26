@@ -6,14 +6,67 @@
 	YEAR = {2024},
 	MONTH = Oct,
 	KEYWORDS = {Arithmetic ; Matrix Multiplication ; Workload Analysis ; HPC ; FPGA - field-Programmable gate array ; ASIC ; Arithm{\'e}tique IEEE 754 virgule flottante entiers},
-	TYPE = {Theses}, PDF = {https://hal.science/tel-04754167v2/file/LEDOUX_Louis_Thesis.pdf},
+	TYPE = {Theses}, PDF = {https://hal.science/tel-04754167/file/thesis.pdf},
 	HAL_ID = {tel-04754167},
-	HAL_VERSION = {v2},
+	HAL_VERSION = {v3},
   	selected = {false},
   	bibtex_show = {true},
-  	preview = {collage_thesis_small.png},
+  	preview = {tel-04754167.png},
   	html = {https://hal.science/tel-04754167},
 	abstract = {This dissertation explores the challenges and advancements in arithmetic representations and computations within computer architectures, focusing on the limitations of the IEEE 754 standard. Modern computing demands, driven by advancements in AI, HPC, and scientific simulations, make efficient and precise numerical representations crucial. This work investigates these challenges and proposes innovative solutions, evaluating their impact on computational efficiency and accuracy. The core problem is the inefficiencies of the IEEE 754 standard for floating-point arithmetic, which do not meet the needs of modern workloads. These inefficiencies result in higher energy consumption, inadequate precision, and suboptimal performance, especially in energy-constrained environments and high-precision applications. To address these challenges, this thesis explores various facets of arithmetic computation, from algorithmic concepts to metal and silicon structures. It introduces mechanisms to improve the adaptability of numerical representations, allowing precision adjustments according to computational tasks, resulting in more efficient circuits. Focusing on improving arithmetic performance, the thesis addresses energy consumption and highlights the importance of efficient arithmetic logic units. It also shows how these solutions can be integrated into various software frameworks, revealing a correlation between numerical requirements and internal precision, highlighting an underexploited aspect of general-purpose floating-point formats. Firstly, it develops a framework for generating Posit operators in hardware, improving accuracy and performance in tasks like image classification. The Posit Operator Framework, described in SystemVerilog, enables the construction of Multi-Layer Perceptrons for inference engines, applicable in POWER9/CAPI2 environments with FPGA acceleration. Secondly, it presents a generator for Systolic Arrays optimized for Matrix-Matrix Multiplication (MMM), showing the impact of custom hardware configurations on accuracy and energy efficiency. The MMM units are fully parametrizable and adapted to the numerical specifications of the workload, facilitated by a core generator with automated pipelining. These units allow evaluations with CAPI2 on FPGA and POWER9 systems, achieving up to two Tera floating-point operations per second. They have also demonstrated success in ASIC generation. Additionally, it establishes an open-source framework to integrate MMM units into high-level software, offering energy savings and enhanced precision for applications like AI and scientific computations. The methodology involves mapping General Matrix-Matrix Multiplication calls in BLAS libraries to our accelerators via the OpenCAPI coherent link, saturating the 22 GBps bandwidth by tuning computer formats to accommodate more Processing Elements while preserving accuracy. Finally, the resurgence of vector processing leads to a reevaluation of division algorithms, revealing opportunities to use smaller and slower computing units, allowing more units within varied energy and power budgets. This approach shows a broad Design Space Exploration. We developed an open-source EDA ASIC flow, facilitating parallel generation of multiple chip designs, enabling systematic exploration of power, performance, and area across various process design kits to identify optimal configurations. These contributions form an interdisciplinary thesis that advances solutions to computing challenges from an arithmetic perspective, overcoming the "arithmetic wall."},
+}
+
+@misc{ledoux_eurollvm_2025,
+  TITLE = {{Towards Multi-Level Arithmetic Optimizations}},
+  AUTHOR = {Cochard, Pierre and Forget, Luc and de Dinechin, Florent and Ledoux, Louis},
+  URL = {https://hal.science/hal-05063466},
+  NOTE = {Poster},
+  HOWPUBLISHED = {{EuroLLVM 2025}},
+  YEAR = {2025},
+  MONTH = Apr,
+  PDF = {https://hal.science/hal-05063466/file/2025-eurollvm.pdf},
+  HAL_ID = {hal-05063466},
+  HAL_VERSION = {v1},
+  selected = {false},
+  bibtex_show = {true},
+  preview = {hal-05063466.png},
+  abbr = {EuroLLVM},
+  html = {https://hal.science/hal-05063466}
+}
+
+@article{ledoux_mlir_2025,
+  TITLE = {{Towards Optimized Arithmetic Circuits with MLIR}},
+  AUTHOR = {Ledoux, Louis and Cochard, Pierre and de Dinechin, Florent},
+  JOURNAL = {Works in Progress in Embedded Computing Journal},
+  YEAR = {2025},
+  MONTH = Sep,
+  DOI = {10.64552/wipiec.v11i1.90},
+  URL = {https://hal.science/hal-05385229},
+  PDF = {https://hal.science/hal-05385229/file/dsdwip2025.pdf},
+  HAL_ID = {hal-05385229},
+  HAL_VERSION = {v1},
+  selected = {false},
+  bibtex_show = {true},
+  preview = {hal-05385229.png},
+  abbr = {WIP-ECJ},
+  html = {https://hal.science/hal-05385229}
+}
+
+@inproceedings{ledoux_dlp_2025,
+  TITLE = {Design-Space Exploration of Serialized Floating-Point Division for DLP Architectures},
+  AUTHOR = {Ledoux, Louis},
+  BOOKTITLE = {DSD 2025 - 28th Euromicro Conference on Digital System Design},
+  YEAR = {2025},
+  MONTH = Sep,
+  URL = {https://hal.science/hal-05385247},
+  PDF = {https://hal.science/hal-05385247/file/hpca_2024.pdf},
+  HAL_ID = {hal-05385247},
+  HAL_VERSION = {v1},
+  selected = {false},
+  bibtex_show = {true},
+  preview = {hal-05385247.png},
+  abbr = {DSD},
+  html = {https://hal.science/hal-05385247}
 }
 
 @misc{ledoux_suf_2024,
@@ -30,7 +83,7 @@
   HAL_VERSION = {v1},
   selected = {false},
   bibtex_show = {true},
-  preview = {suf_preview_small.png},
+  preview = {hal-04587458.png},
   html = {https://hal.science/hal-04587458},
   abbr = {DATE}
 }
@@ -51,7 +104,8 @@
   HAL_VERSION = {v1},
   selected = {true},
   bibtex_show = {true},
-  preview = {llmmmm_preview_small.png},
+  preview = {hal-04592229-poster.png},
+  abbr = {BSC24},
   html = {https://hal.science/hal-04592229v1}
 }
 
@@ -70,7 +124,8 @@
   HAL_VERSION = {v1},
   selected = {false},
   bibtex_show = {true},
-  preview = {osfntc_preview_small.png},
+  preview = {hal-04094835-poster.png},
+  abbr = {BSC23},
   html = {https://hal.science/hal-04094835}
 }
 
@@ -86,7 +141,8 @@
 	selected = {true},
 	bibtex_show = {true},
 	google_scholar_id = {u5HHmVD_uO8C},
-	preview = {placement.gif},
+	preview = {hal-04103774.png},
+	PDF = {https://hal.science/hal-04103774/file/fccm_send.pdf},
 	html = {https://ieeexplore.ieee.org/document/9786164},
 	abbr = {FCCM}
 }
@@ -106,7 +162,8 @@
 	selected = {true},
 	bibtex_show = {true},
 	google_scholar_id = {d1gkVwhDpl0C},
-	preview = {tailored.png},
+	preview = {hal-04277512.png},
+	PDF = {https://hal.science/hal-04277512/file/FPL_2023_paper_2671.pdf},
 	html = {https://ieeexplore.ieee.org/document/10296314},
 	abbr = {FPL}
 }
@@ -129,7 +186,8 @@ Thanks to the denser representation offered by the posit arithmetic BSC can:
 	keywords = {acceleration, CAPI, CAPI2, FPGA, PCIE, posit, POWER9},
 	abbr = {OpenPOWER},
 	bibtex_show = {true},
-	preview = {posit_mlp_preview_small.png},
+	preview = {hal-04094850.png},
+	PDF = {https://hal.science/hal-04094850/file/presentation_louis_ledoux_posit.pdf},
 	html = {https://hal.science/hal-04094850},
 }
 
@@ -143,7 +201,7 @@ Thanks to the denser representation offered by the posit arithmetic BSC can:
 	year = {2024},
 	keywords = {dark silicon, arithmetic, float, posit, llm, gemm, accuracy, energy},
 	bibtex_show = {true},
-	preview = {looped.png},
+	preview = {hal-04823130.png},
 	PDF = {https://hal.science/hal-04823130v1/file/main.pdf},
 	html = {https://hal.science/hal-04823130}
 }
