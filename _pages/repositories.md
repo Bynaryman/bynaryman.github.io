@@ -51,34 +51,6 @@ nav_order: 4
     >
   </div>
 
-  <div class="metric-card metric-card--wide">
-    <img
-      class="repo-img-light metric-img"
-      alt="GitHub recent activity (light)"
-      loading="eager"
-      src="{{ '/assets/metrics/metrics-activity.svg' | relative_url }}"
-    >
-    <img
-      class="repo-img-dark metric-img"
-      alt="GitHub recent activity (dark)"
-      loading="eager"
-      src="{{ '/assets/metrics/metrics-activity.svg' | relative_url }}"
-    >
-  </div>
-
-  <div class="metric-card">
-    <img
-      class="repo-img-light metric-img"
-      alt="GitHub achievements (light)"
-      src="{{ '/assets/metrics/metrics-achievements.svg' | relative_url }}"
-    >
-    <img
-      class="repo-img-dark metric-img"
-      alt="GitHub achievements (dark)"
-      src="{{ '/assets/metrics/metrics-achievements.svg' | relative_url }}"
-    >
-  </div>
-
   <div class="metric-card">
     <img
       class="repo-img-light metric-img"
@@ -93,19 +65,6 @@ nav_order: 4
   </div>
 
   <div class="metric-card">
-    <img
-      class="repo-img-light metric-img"
-      alt="GitHub habits (light)"
-      src="{{ '/assets/metrics/metrics-habits.svg' | relative_url }}"
-    >
-    <img
-      class="repo-img-dark metric-img"
-      alt="GitHub habits (dark)"
-      src="{{ '/assets/metrics/metrics-habits.svg' | relative_url }}"
-    >
-  </div>
-
-  <div class="metric-card metric-card--wide">
     <img
       class="repo-img-light metric-img"
       alt="GitHub notable contributions (light)"
