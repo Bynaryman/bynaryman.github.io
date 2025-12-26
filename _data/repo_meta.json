@@ -1,0 +1,212 @@
+{
+  "Bynaryman/LLMMM_extended_abstract": {
+    "description": "",
+    "forks_count": 0,
+    "html_url": "https://github.com/Bynaryman/LLMMM_extended_abstract",
+    "language": "TeX",
+    "stargazers_count": 0
+  },
+  "Bynaryman/Le-RetrOrchestre": {
+    "description": "transform your floppy drive disks into pleasant instruments",
+    "forks_count": 0,
+    "html_url": "https://github.com/Bynaryman/Le-RetrOrchestre",
+    "language": "C++",
+    "stargazers_count": 0
+  },
+  "Bynaryman/MMM_SA_2by2_posit_4_0": {
+    "description": "This repository contains a Matrix-Matrix-Multiply unit performed by a 2x2 systolic array and posit<4,0> numbers",
+    "forks_count": 2,
+    "html_url": "https://github.com/Bynaryman/MMM_SA_2by2_posit_4_0",
+    "language": "VHDL",
+    "stargazers_count": 1
+  },
+  "Bynaryman/NFC": {
+    "description": "Personal REPO to remember the steps for NFC insights + some files",
+    "forks_count": 0,
+    "html_url": "https://github.com/Bynaryman/NFC",
+    "language": "",
+    "stargazers_count": 0
+  },
+  "Bynaryman/OSFNTC": {
+    "description": "Open-Source Framework for Numerically-Tailored Computations  This project is \"An Open-Source Framework for Efficient Numerically-Tailored Computations\", hence the acronym OSFNTC.  The title of the corresponding paper is enclosed in the quotation marks.",
+    "forks_count": 0,
+    "html_url": "https://github.com/Bynaryman/OSFNTC",
+    "language": "Fortran",
+    "stargazers_count": 7
+  },
+  "Bynaryman/POF": {
+    "description": "The Posit Operators Framework (POF) is a comprehensive library designed to facilitate arithmetic computations and neural network operations using the Posit numerical format on FPGAs.",
+    "forks_count": 0,
+    "html_url": "https://github.com/Bynaryman/POF",
+    "language": "SystemVerilog",
+    "stargazers_count": 1
+  },
+  "Bynaryman/SUF": {
+    "description": "SUF is a SUperset Framework for OpenROAD that acts as an enhancement graft by augmenting the original capabilities.",
+    "forks_count": 0,
+    "html_url": "https://github.com/Bynaryman/SUF",
+    "language": "Python",
+    "stargazers_count": 3
+  },
+  "Bynaryman/TinyMLP": {
+    "description": "This repository is to share my work about evaluating arithmetics accuracies and performance at a software level for a same test bench .i.e a small MLP",
+    "forks_count": 0,
+    "html_url": "https://github.com/Bynaryman/TinyMLP",
+    "language": "C++",
+    "stargazers_count": 0
+  },
+  "Bynaryman/asic_watch": {
+    "description": "",
+    "forks_count": 0,
+    "html_url": "https://github.com/Bynaryman/asic_watch",
+    "language": "",
+    "stargazers_count": 0
+  },
+  "Bynaryman/binary_instruments": {
+    "description": "DIY front panels for eurorack ",
+    "forks_count": 0,
+    "html_url": "https://github.com/Bynaryman/binary_instruments",
+    "language": "",
+    "stargazers_count": 0
+  },
+  "Bynaryman/bynaryman.github.io": {
+    "description": "My personal website",
+    "forks_count": 0,
+    "html_url": "https://github.com/Bynaryman/bynaryman.github.io",
+    "language": "HTML",
+    "stargazers_count": 1
+  },
+  "Bynaryman/capi2-bsp": {
+    "description": "CAPI 2.0 Board Support Package",
+    "forks_count": 0,
+    "html_url": "https://github.com/Bynaryman/capi2-bsp",
+    "language": "VHDL",
+    "stargazers_count": 0
+  },
+  "Bynaryman/fpga_template": {
+    "description": "This repository aims to automatically generates source files for HDL",
+    "forks_count": 0,
+    "html_url": "https://github.com/Bynaryman/fpga_template",
+    "language": "Python",
+    "stargazers_count": 0
+  },
+  "Bynaryman/libxsmm": {
+    "description": "My libxsmm with some python",
+    "forks_count": 0,
+    "html_url": "https://github.com/Bynaryman/libxsmm",
+    "language": "C",
+    "stargazers_count": 1
+  },
+  "Bynaryman/mem_allocate": {
+    "description": "comparison of different times for mem allcoation",
+    "forks_count": 0,
+    "html_url": "https://github.com/Bynaryman/mem_allocate",
+    "language": "C++",
+    "stargazers_count": 0
+  },
+  "Bynaryman/mnist-3lnn": {
+    "description": "my work on a 3 layers NN for mnist dataset",
+    "forks_count": 0,
+    "html_url": "https://github.com/Bynaryman/mnist-3lnn",
+    "language": "C",
+    "stargazers_count": 0
+  },
+  "Bynaryman/mpw-multi-project-harness": {
+    "description": "",
+    "forks_count": 0,
+    "html_url": "https://github.com/Bynaryman/mpw-multi-project-harness",
+    "language": "Verilog",
+    "stargazers_count": 0
+  },
+  "Bynaryman/oc-accel": {
+    "description": "OpenCAPI Acceleration Framework: develop an accelerator with OpenCAPI technology",
+    "forks_count": 0,
+    "html_url": "https://github.com/Bynaryman/oc-accel",
+    "language": "SystemVerilog",
+    "stargazers_count": 0
+  },
+  "Bynaryman/plots_paper_instrumented_adder": {
+    "description": "some scripts and python virtual for academic plots with matplotlib",
+    "forks_count": 0,
+    "html_url": "https://github.com/Bynaryman/plots_paper_instrumented_adder",
+    "language": "Python",
+    "stargazers_count": 0
+  },
+  "Bynaryman/plots_paper_intrumented_adder": {
+    "description": "",
+    "forks_count": 0,
+    "html_url": "https://github.com/Bynaryman/plots_paper_intrumented_adder",
+    "language": "",
+    "stargazers_count": 0
+  },
+  "Bynaryman/riffa": {
+    "description": "The RIFFA development repository",
+    "forks_count": 0,
+    "html_url": "https://github.com/Bynaryman/riffa",
+    "language": "Verilog",
+    "stargazers_count": 0
+  },
+  "Bynaryman/serverNodeRaspPi": {
+    "description": "testing node server on rasp pi",
+    "forks_count": 0,
+    "html_url": "https://github.com/Bynaryman/serverNodeRaspPi",
+    "language": "JavaScript",
+    "stargazers_count": 0
+  },
+  "Bynaryman/taran_12_24_slides": {
+    "description": "",
+    "forks_count": 0,
+    "html_url": "https://github.com/Bynaryman/taran_12_24_slides",
+    "language": "TeX",
+    "stargazers_count": 0
+  },
+  "Bynaryman/teras": {
+    "description": "",
+    "forks_count": 0,
+    "html_url": "https://github.com/Bynaryman/teras",
+    "language": "Verilog",
+    "stargazers_count": 0
+  },
+  "Bynaryman/vh2v": {
+    "description": "Conveniant script based on GHDL to translate many entities from one vhdl file to several verilog files.",
+    "forks_count": 2,
+    "html_url": "https://github.com/Bynaryman/vh2v",
+    "language": "Python",
+    "stargazers_count": 6
+  },
+  "Bynaryman/wrapped_asic_watch": {
+    "description": "A 7 segments style watch targeting asic sky130 process node",
+    "forks_count": 1,
+    "html_url": "https://github.com/Bynaryman/wrapped_asic_watch",
+    "language": "Verilog",
+    "stargazers_count": 0
+  },
+  "Bynaryman/wrapped_teras": {
+    "description": "",
+    "forks_count": 1,
+    "html_url": "https://github.com/Bynaryman/wrapped_teras",
+    "language": "Verilog",
+    "stargazers_count": 2
+  },
+  "YosysHQ/yosys": {
+    "description": "Yosys Open SYnthesis Suite",
+    "forks_count": 1020,
+    "html_url": "https://github.com/YosysHQ/yosys",
+    "language": "C++",
+    "stargazers_count": 4202
+  },
+  "ghdl/ghdl": {
+    "description": "VHDL 2008/93/87 simulator",
+    "forks_count": 398,
+    "html_url": "https://github.com/ghdl/ghdl",
+    "language": "VHDL",
+    "stargazers_count": 2713
+  },
+  "ghdl/ghdl-yosys-plugin": {
+    "description": "VHDL synthesis (based on ghdl)",
+    "forks_count": 34,
+    "html_url": "https://github.com/ghdl/ghdl-yosys-plugin",
+    "language": "VHDL",
+    "stargazers_count": 354
+  }
+}

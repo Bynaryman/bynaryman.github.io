@@ -580,11 +580,18 @@ h6 {
 .repositories {
   width: 100%;
   gap: 1.2rem;
+  justify-content: flex-start !important;
+  align-items: stretch !important;
 }
 
 .repositories .repo {
-  flex: 1 1 320px;
-  max-width: calc(50% - 0.6rem);
+  flex: 1 1 260px;
+  max-width: 360px;
+  background: var(--global-card-bg-color);
+  border: 1px solid var(--global-divider-color);
+  border-radius: 14px;
+  padding: 0.6rem;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
 }
 
 .repositories .repo a {
@@ -593,16 +600,72 @@ h6 {
 
 .repositories .repo img {
   display: block;
-  border-radius: 12px;
-  border: 1px solid var(--global-divider-color);
-  background: var(--global-card-bg-color);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+  width: 100%;
+  border-radius: 10px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
   filter: none;
 }
 
-html[data-theme="dark"] .repositories .repo img,
-html[data-theme-setting="dark"] .repositories .repo img {
+html[data-theme="dark"] .repositories .repo,
+html[data-theme-setting="dark"] .repositories .repo {
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.5);
+}
+
+.repositories .repo-meta {
+  margin-top: 0.55rem;
+  text-align: left;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--retro-text-soft);
+}
+
+.repositories .repo-desc {
+  margin: 0;
+}
+
+.metrics-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+}
+
+.metrics-grid .metric-card {
+  flex: 1 1 360px;
+  max-width: calc(50% - 0.6rem);
+  background: var(--global-card-bg-color);
+  border: 1px solid var(--global-divider-color);
+  border-radius: 14px;
+  padding: 0.6rem;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+}
+
+.metrics-grid .metric-card--wide {
+  flex: 1 1 100%;
+  max-width: 100%;
+}
+
+.metrics-grid .metric-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+html[data-theme="dark"] .metrics-grid .metric-card,
+html[data-theme-setting="dark"] .metrics-grid .metric-card {
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.5);
+}
+
+.repositories .repo--trophies {
+  flex: 1 1 100%;
+  max-width: 100%;
+  padding: 0.75rem 0.9rem;
+}
+
+.repositories .repo--trophies img {
+  border-radius: 8px;
 }
 
 .djset-embed {
@@ -1517,6 +1580,9 @@ html[data-theme-setting="dark"] footer.fixed-bottom a {
     padding: 1.6rem 1.4rem;
   }
   .repositories .repo {
+    max-width: 100%;
+  }
+  .metrics-grid .metric-card {
     max-width: 100%;
   }
   .terminal-frame__body {

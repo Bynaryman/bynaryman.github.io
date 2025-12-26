@@ -4,6 +4,7 @@
 {% else %}
   {% assign show_owner = true %}
 {% endif %}
+{% assign repo_meta = site.data.repo_meta[include.repository] %}
 
 <div class="repo p-2 text-center">
   <a href="https://github.com/{{ include.repository }}">
@@ -18,4 +19,9 @@
       src="https://github-readme-stats.vercel.app/api/pin/?username={{ repo_url[0] }}&repo={{ repo_url[1] }}&theme={{ site.repo_theme_dark }}&show_owner={{ show_owner }}"
     >
   </a>
+  {% if repo_meta and repo_meta.description != "" %}
+    <div class="repo-meta">
+      <div class="repo-desc">{{ repo_meta.description }}</div>
+    </div>
+  {% endif %}
 </div>
