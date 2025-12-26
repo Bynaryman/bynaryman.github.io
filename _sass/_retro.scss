@@ -653,6 +653,20 @@ html[data-theme-setting="dark"] .repositories .repo {
   border-radius: 10px;
 }
 
+.metrics-grid .repo-img-dark {
+  display: none;
+}
+
+html[data-theme="dark"] .metrics-grid .repo-img-dark,
+html[data-theme-setting="dark"] .metrics-grid .repo-img-dark {
+  display: block;
+}
+
+html[data-theme="dark"] .metrics-grid .repo-img-light,
+html[data-theme-setting="dark"] .metrics-grid .repo-img-light {
+  display: none;
+}
+
 html[data-theme="dark"] .metrics-grid .metric-card,
 html[data-theme-setting="dark"] .metrics-grid .metric-card {
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.5);

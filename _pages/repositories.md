@@ -40,11 +40,13 @@ nav_order: 4
     <img
       class="repo-img-light metric-img"
       alt="GitHub full history commit calendar (light)"
+      loading="eager"
       src="{{ '/assets/metrics/metrics-calendar.svg' | relative_url }}"
     >
     <img
       class="repo-img-dark metric-img"
       alt="GitHub full history commit calendar (dark)"
+      loading="eager"
       src="{{ '/assets/metrics/metrics-calendar.svg' | relative_url }}"
     >
   </div>
@@ -53,11 +55,13 @@ nav_order: 4
     <img
       class="repo-img-light metric-img"
       alt="GitHub recent activity (light)"
+      loading="eager"
       src="{{ '/assets/metrics/metrics-activity.svg' | relative_url }}"
     >
     <img
       class="repo-img-dark metric-img"
       alt="GitHub recent activity (dark)"
+      loading="eager"
       src="{{ '/assets/metrics/metrics-activity.svg' | relative_url }}"
     >
   </div>
@@ -105,11 +109,13 @@ nav_order: 4
     <img
       class="repo-img-light metric-img"
       alt="GitHub notable contributions (light)"
+      loading="eager"
       src="{{ '/assets/metrics/metrics-notable.svg' | relative_url }}"
     >
     <img
       class="repo-img-dark metric-img"
       alt="GitHub notable contributions (dark)"
+      loading="eager"
       src="{{ '/assets/metrics/metrics-notable.svg' | relative_url }}"
     >
   </div>
@@ -124,19 +130,6 @@ nav_order: 4
       class="repo-img-dark metric-img"
       alt="GitHub stars (dark)"
       src="{{ '/assets/metrics/metrics-stars.svg' | relative_url }}"
-    >
-  </div>
-
-  <div class="metric-card">
-    <img
-      class="repo-img-light metric-img"
-      alt="GitHub starred topics (light)"
-      src="{{ '/assets/metrics/metrics-topics.svg' | relative_url }}"
-    >
-    <img
-      class="repo-img-dark metric-img"
-      alt="GitHub starred topics (dark)"
-      src="{{ '/assets/metrics/metrics-topics.svg' | relative_url }}"
     >
   </div>
 
