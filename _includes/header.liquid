@@ -116,13 +116,27 @@
             </li>
           {% endif %}
           {% if site.enable_darkmode %}
-            <!-- Toogle theme mode -->
-            <li class="toggle-container">
-              <button id="light-toggle" title="Change theme">
-                <i class="ti ti-sun-moon" id="light-toggle-system"></i>
-                <i class="ti ti-moon-filled" id="light-toggle-dark"></i>
-                <i class="ti ti-sun-filled" id="light-toggle-light"></i>
+            <!-- Theme + mode menu -->
+            <li class="nav-item dropdown theme-switcher">
+              <button
+                class="nav-link dropdown-toggle"
+                id="theme-toggle"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                title="Theme settings"
+              >
+                <i class="ti ti-paint"></i>
               </button>
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="theme-toggle">
+                <h6 class="dropdown-header">Mode</h6>
+                <button class="dropdown-item" type="button" data-theme-mode="light">Light</button>
+                <button class="dropdown-item" type="button" data-theme-mode="dark">Dark</button>
+                <div class="dropdown-divider"></div>
+                <h6 class="dropdown-header">Theme</h6>
+                <button class="dropdown-item" type="button" data-theme-variant="binary">Binary</button>
+                <button class="dropdown-item" type="button" data-theme-variant="modus">Modus</button>
+              </div>
             </li>
           {% endif %}
         </ul>

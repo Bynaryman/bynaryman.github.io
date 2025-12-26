@@ -1,14 +1,12 @@
 // Has to be in the head tag, otherwise a flicker effect will occur.
 
-// Toggle through light, dark, and system theme settings.
+// Toggle between light and dark theme settings.
 let toggleThemeSetting = () => {
   let themeSetting = determineThemeSetting();
   if (themeSetting == "dark") {
     setThemeSetting("light");
-  } else if (themeSetting == "light") {
-    setThemeSetting("dark");
   } else {
-    setThemeSetting("light");
+    setThemeSetting("dark");
   }
 };
 
@@ -21,9 +19,20 @@ let setThemeSetting = (themeSetting) => {
   applyTheme();
 };
 
+let setThemeVariant = (themeVariant) => {
+  localStorage.setItem("theme-variant", themeVariant);
+
+  document.documentElement.setAttribute("data-theme-variant", themeVariant);
+
+  applyTheme();
+};
+
 // Apply the computed dark or light theme to the website.
 let applyTheme = () => {
   let theme = determineComputedTheme();
+  let themeVariant = determineThemeVariant();
+
+  document.documentElement.setAttribute("data-theme-variant", themeVariant);
 
   transTheme();
   setHighlight(theme);
@@ -81,6 +90,8 @@ let applyTheme = () => {
       background: getComputedStyle(document.documentElement).getPropertyValue("--global-bg-color") + "ee", // + 'ee' for trasparency.
     });
   }
+
+  updateThemeMenuState();
 };
 
 let setHighlight = (theme) => {
@@ -205,48 +216,67 @@ let transTheme = () => {
   }, 500);
 };
 
-// Determine the expected state of the theme toggle, which can be "dark", "light", or
-// "system". Default is "system".
+// Determine the expected state of the theme toggle, which can be "dark" or "light".
+// Default is "light".
 let determineThemeSetting = () => {
   let themeSetting = localStorage.getItem("theme");
-  if (themeSetting != "dark" && themeSetting != "light" && themeSetting != "system") {
+  if (themeSetting != "dark" && themeSetting != "light") {
     themeSetting = "light";
+    localStorage.setItem("theme", themeSetting);
   }
   return themeSetting;
 };
 
-// Determine the computed theme, which can be "dark" or "light". If the theme setting is
-// "system", the computed theme is determined based on the user's system preference.
-let determineComputedTheme = () => {
-  let themeSetting = determineThemeSetting();
-  if (themeSetting == "system") {
-    const userPref = window.matchMedia;
-    if (userPref && userPref("(prefers-color-scheme: dark)").matches) {
-      return "dark";
-    } else {
-      return "light";
-    }
-  } else {
-    return themeSetting;
+let determineThemeVariant = () => {
+  let themeVariant = localStorage.getItem("theme-variant");
+  if (themeVariant != "binary" && themeVariant != "modus") {
+    themeVariant = "binary";
   }
+  return themeVariant;
+};
+
+let updateThemeMenuState = () => {
+  const themeSetting = determineThemeSetting();
+  const themeVariant = determineThemeVariant();
+
+  document.querySelectorAll("[data-theme-mode]").forEach((item) => {
+    item.classList.toggle("active", item.dataset.themeMode === themeSetting);
+    item.setAttribute("aria-checked", item.dataset.themeMode === themeSetting ? "true" : "false");
+  });
+
+  document.querySelectorAll("[data-theme-variant]").forEach((item) => {
+    item.classList.toggle("active", item.dataset.themeVariant === themeVariant);
+    item.setAttribute("aria-checked", item.dataset.themeVariant === themeVariant ? "true" : "false");
+  });
+};
+
+// Determine the computed theme, which can be "dark" or "light".
+let determineComputedTheme = () => {
+  return determineThemeSetting();
 };
 
 let initTheme = () => {
   let themeSetting = determineThemeSetting();
+  let themeVariant = determineThemeVariant();
 
   setThemeSetting(themeSetting);
+  setThemeVariant(themeVariant);
 
   // Add event listener to the theme toggle button.
   document.addEventListener("DOMContentLoaded", function () {
-    const mode_toggle = document.getElementById("light-toggle");
-
-    mode_toggle.addEventListener("click", function () {
-      toggleThemeSetting();
+    document.querySelectorAll("[data-theme-mode]").forEach((item) => {
+      item.addEventListener("click", function () {
+        setThemeSetting(item.dataset.themeMode);
+      });
     });
+
+    document.querySelectorAll("[data-theme-variant]").forEach((item) => {
+      item.addEventListener("click", function () {
+        setThemeVariant(item.dataset.themeVariant);
+      });
+    });
+
+    updateThemeMenuState();
   });
 
-  // Add event listener to the system theme preference change.
-  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches }) => {
-    applyTheme();
-  });
 };
