@@ -79,7 +79,7 @@ nav_order: 4
     >
   </div>
 
-  <div class="metric-card">
+  <div class="metric-card metric-card--wide">
     <img
       class="repo-img-light metric-img"
       alt="GitHub stars (light)"
@@ -89,19 +89,6 @@ nav_order: 4
       class="repo-img-dark metric-img"
       alt="GitHub stars (dark)"
       src="{{ '/assets/metrics/metrics-stars.svg' | relative_url }}"
-    >
-  </div>
-
-  <div class="metric-card metric-card--wide">
-    <img
-      class="repo-img-light metric-img"
-      alt="GitHub repository contributors (light)"
-      src="{{ '/assets/metrics/metrics-contributors.svg' | relative_url }}"
-    >
-    <img
-      class="repo-img-dark metric-img"
-      alt="GitHub repository contributors (dark)"
-      src="{{ '/assets/metrics/metrics-contributors.svg' | relative_url }}"
     >
   </div>
 </div>
