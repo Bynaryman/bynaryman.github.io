@@ -63,6 +63,11 @@
     return Number.isFinite(num) ? num : fallback;
   }
 
+  function isBinaryTheme() {
+    var variant = document.documentElement.getAttribute("data-theme-variant");
+    return variant !== "modus";
+  }
+
   function getColors() {
     var styles = getComputedStyle(document.documentElement);
     var bg = styles.getPropertyValue("--binary-bg-color").trim() || "#000";
@@ -141,6 +146,18 @@
   }
 
   function step(now) {
+    if (!isBinaryTheme()) {
+      if (canvas.style.visibility !== "hidden") {
+        canvas.style.visibility = "hidden";
+      }
+      lastTime = now;
+      requestAnimationFrame(step);
+      return;
+    }
+    if (canvas.style.visibility === "hidden") {
+      canvas.style.visibility = "";
+    }
+
     var rect = canvas.getBoundingClientRect();
     var expectedW = rect.width || Math.max(window.innerWidth || 0, document.documentElement.clientWidth || 0);
     var expectedH = rect.height || Math.max(window.innerHeight || 0, document.documentElement.clientHeight || 0);
@@ -268,7 +285,7 @@
   var themeObserver = new MutationObserver(function (mutations) {
     for (var i = 0; i < mutations.length; i++) {
       var attr = mutations[i].attributeName;
-      if (attr === "data-theme" || attr === "data-theme-setting") {
+      if (attr === "data-theme" || attr === "data-theme-setting" || attr === "data-theme-variant") {
         resize();
         lastTime = performance.now();
         break;
@@ -277,7 +294,7 @@
   });
   themeObserver.observe(document.documentElement, {
     attributes: true,
-    attributeFilter: ["data-theme", "data-theme-setting"]
+    attributeFilter: ["data-theme", "data-theme-setting", "data-theme-variant"]
   });
   resize();
   var initialRect = canvas.getBoundingClientRect();
