@@ -1,4 +1,11 @@
 source 'https://rubygems.org'
+
+# Ruby 3.4+ no longer guarantees these stdlib components are available as default gems
+# across all Linux distributions, so declare them explicitly for local Jekyll runs.
+gem 'erb'
+gem 'logger'
+gem 'observer'
+
 group :jekyll_plugins do
     gem 'classifier-reborn'
     gem 'jekyll'
