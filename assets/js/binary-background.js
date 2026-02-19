@@ -3,11 +3,16 @@
   if (!canvas || (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches)) return;
 
   var ctx = canvas.getContext("2d");
-  var dpr = Math.max(1, window.devicePixelRatio || 1);
-  var baseDpr = dpr;
+  var rawDpr = Math.max(1, window.devicePixelRatio || 1);
+  var baseRawDpr = rawDpr;
+  var dpr = rawDpr;
 
   var glyphs = ["0", "1"];
   var cellSize = 18;
+  var baseArea = 1920 * 1080;
+  var minRenderDpr = 0.8;
+  var maxRenderDpr = 1.5;
+  var renderPixelBudget = 3600000;
   var fadeFactor = 0.95;
   var baseAlpha = 0.05;
   var randomFlashChance = 0.0012;
@@ -41,11 +46,16 @@
   var gridSize = cellSize;
   var viewW = 0;
   var viewH = 0;
+  var isMobileViewport = false;
+  var prefersCoarsePointer = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
   var cells = [];
   var lastTime = performance.now();
+  var targetFrameMs = 16.67;
   var mouse = { x: 0, y: 0, tx: 0, ty: 0, active: false, intensity: 0, lastMove: performance.now() };
   var hud = null;
   var hudTimeoutId = 0;
+  var colors = null;
+  var colorsDirty = true;
 
   function clamp(v, min, max) {
     return Math.max(min, Math.min(max, v));
@@ -114,6 +124,33 @@
     };
   }
 
+  function refreshColors() {
+    colors = getColors();
+    colorsDirty = false;
+    return colors;
+  }
+
+  function getLiveColors() {
+    if (!colors || colorsDirty) return refreshColors();
+    return colors;
+  }
+
+  function getViewportSize() {
+    var rect = canvas.getBoundingClientRect();
+    return {
+      w: rect.width || Math.max(window.innerWidth || 0, document.documentElement.clientWidth || 0),
+      h: rect.height || Math.max(window.innerHeight || 0, document.documentElement.clientHeight || 0)
+    };
+  }
+
+  function computeRenderDpr(nextRawDpr, w, h, cap, budget) {
+    var effectiveCap = cap || maxRenderDpr;
+    var effectiveBudget = budget || renderPixelBudget;
+    var capped = Math.min(effectiveCap, nextRawDpr);
+    var maxDprForBudget = Math.sqrt(effectiveBudget / Math.max(1, w * h));
+    return Math.max(minRenderDpr, Math.min(capped, maxDprForBudget));
+  }
+
   function pickColor(palette) {
     if (!palette || !palette.length) return "#fff";
     var roll = Math.random();
@@ -144,6 +181,7 @@
   }
 
   function showHud(note) {
+    if (isMobileViewport) return;
     ensureHud();
     var mode = modes[modeIndex];
     var text = mode.label + " | power " + modeStrength.toFixed(2) + " | radius " + radiusScale.toFixed(2);
@@ -171,25 +209,41 @@
   }
 
   function resize() {
-    dpr = Math.max(1, window.devicePixelRatio || 1);
-    if (!baseDpr) baseDpr = dpr;
+    rawDpr = Math.max(1, window.devicePixelRatio || 1);
+    if (!baseRawDpr) baseRawDpr = rawDpr;
 
-    var rect = canvas.getBoundingClientRect();
-    viewW = rect.width || Math.max(window.innerWidth || 0, document.documentElement.clientWidth || 0);
-    viewH = rect.height || Math.max(window.innerHeight || 0, document.documentElement.clientHeight || 0);
+    var size = getViewportSize();
+    viewW = size.w;
+    viewH = size.h;
+    prefersCoarsePointer = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
+    isMobileViewport = viewW <= 820 || prefersCoarsePointer;
 
-    var zoomFactor = dpr / baseDpr;
-    gridSize = cellSize / Math.max(1, zoomFactor);
+    var renderCap = isMobileViewport ? 1 : maxRenderDpr;
+    var pixelBudget = isMobileViewport ? 2200000 : renderPixelBudget;
+    dpr = computeRenderDpr(rawDpr, viewW, viewH, renderCap, pixelBudget);
+    var zoomFactor = rawDpr / baseRawDpr;
+    var areaScale = Math.sqrt((viewW * viewH) / baseArea);
+    var densityScale = clamp(areaScale * (isMobileViewport ? 1.25 : 1), 1, isMobileViewport ? 2.8 : 2.2);
+    gridSize = (cellSize * densityScale) / Math.max(1, zoomFactor);
+    var area = viewW * viewH;
+    if (isMobileViewport) {
+      targetFrameMs = area > 1400000 ? 50 : 33.33;
+    } else {
+      targetFrameMs = area > 3200000 ? 33.33 : area > 2200000 ? 22.22 : 16.67;
+    }
     canvas.width = Math.round(viewW * dpr);
     canvas.height = Math.round(viewH * dpr);
 
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.imageSmoothingEnabled = false;
     ctx.scale(dpr, dpr);
+    ctx.font = Math.max(10, gridSize - 4) + 'px "Times New Roman", serif';
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
 
     cols = Math.ceil(viewW / gridSize) + 2;
     rows = Math.ceil(viewH / gridSize) + 2;
-    var colors = getColors();
+    var liveColors = refreshColors();
     var total = cols * rows;
     cells = new Array(total);
 
@@ -198,15 +252,15 @@
       var row = Math.floor(idx / cols);
       var anchorX = (col - 1) * gridSize + gridSize * 0.5 + (Math.random() - 0.5) * gridSize * 0.3;
       var anchorY = (row - 1) * gridSize + gridSize * 0.5 + (Math.random() - 0.5) * gridSize * 0.3;
-      var alpha = colors.alphaBase + Math.random() * colors.alphaRange;
-      if (Math.random() < colors.alphaBoostChance) {
-        alpha = Math.min(1, alpha + colors.alphaBoost);
+      var alpha = liveColors.alphaBase + Math.random() * liveColors.alphaRange;
+      if (Math.random() < liveColors.alphaBoostChance) {
+        alpha = Math.min(1, alpha + liveColors.alphaBoost);
       }
 
       cells[idx] = {
         glyph: glyphs[Math.random() > 0.5 ? 1 : 0],
         alpha: alpha,
-        color: pickColor(colors.palette),
+        color: pickColor(liveColors.palette),
         anchorX: anchorX,
         anchorY: anchorY,
         x: anchorX + (Math.random() - 0.5) * gridSize * 0.28,
@@ -247,16 +301,16 @@
       return;
     }
     if (canvas.style.visibility === "hidden") canvas.style.visibility = "";
-
-    var rect = canvas.getBoundingClientRect();
-    var expectedW = rect.width || Math.max(window.innerWidth || 0, document.documentElement.clientWidth || 0);
-    var expectedH = rect.height || Math.max(window.innerHeight || 0, document.documentElement.clientHeight || 0);
-    if (Math.abs(expectedW - canvas.width / dpr) > 1 || Math.abs(expectedH - canvas.height / dpr) > 1) resize();
-
-    var colors = getColors();
+    var liveColors = getLiveColors();
     var mode = modes[modeIndex];
 
-    var dt = now - lastTime;
+    var elapsed = now - lastTime;
+    if (elapsed < targetFrameMs) {
+      requestAnimationFrame(step);
+      return;
+    }
+
+    var dt = elapsed;
     if (!Number.isFinite(dt) || dt < 0) dt = 16.67;
     dt = Math.min(dt, 64);
     var dtSec = dt / 1000;
@@ -264,15 +318,12 @@
     updateMouse(dt, now);
 
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.fillStyle = colors.bg || "#000";
+    ctx.fillStyle = liveColors.bg || "#000";
     ctx.fillRect(0, 0, viewW, viewH);
-    ctx.font = (gridSize - 4) + 'px "Times New Roman", serif';
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
 
-    var alphaBase = colors.alphaBase;
+    var alphaBase = liveColors.alphaBase;
     var decay = Math.pow(fadeFactor, dt / 16.67);
-    var zoomFactor = dpr / baseDpr;
+    var zoomFactor = rawDpr / baseRawDpr;
     var effectiveRadius = (mouseRadiusBase * radiusScale) / Math.max(1, zoomFactor);
     var radiusSq = effectiveRadius * effectiveRadius;
     var damping = Math.exp(-velocityDamping * dtSec);
@@ -349,7 +400,7 @@
       var wobble = cell.twinkle * Math.sin(now * 0.0012 + cell.phase);
       var alpha = Math.max(alphaBase, Math.min(1, cell.alpha + wobble + influence * 0.12));
       ctx.globalAlpha = alpha;
-      ctx.fillStyle = influence > mouseAccentThreshold ? colors.accent : cell.color || colors.fg;
+      ctx.fillStyle = influence > mouseAccentThreshold ? liveColors.accent : cell.color || liveColors.fg;
 
       var pxOut = snapToPixel ? Math.round(drawX) + 0.5 : drawX;
       var pyOut = snapToPixel ? Math.round(drawY) + 0.5 : drawY;
@@ -365,7 +416,7 @@
       var target = cells[Math.floor(Math.random() * cells.length)];
       if (target) {
         target.alpha = Math.max(target.alpha, 0.5);
-        target.color = pickColor(colors.palette);
+        target.color = pickColor(liveColors.palette);
       }
     }
 
@@ -399,6 +450,7 @@
   }
 
   function onContextMenu(e) {
+    if (isMobileViewport) return;
     if (!isBinaryTheme()) return;
     if (e.shiftKey) return;
     var target = e.target;
@@ -410,6 +462,7 @@
   }
 
   function onWheel(e) {
+    if (isMobileViewport) return;
     if (!isBinaryTheme()) return;
     var dir = e.deltaY < 0 ? 1 : -1;
     if (e.shiftKey || e.ctrlKey || e.metaKey) {
@@ -421,8 +474,21 @@
     }
   }
 
-  window.addEventListener("resize", resize, false);
-  window.addEventListener("orientationchange", resize, false);
+  var resizeQueued = false;
+  function scheduleResize() {
+    if (resizeQueued) return;
+    resizeQueued = true;
+    requestAnimationFrame(function () {
+      resizeQueued = false;
+      resize();
+    });
+  }
+
+  window.addEventListener("resize", scheduleResize, false);
+  window.addEventListener("orientationchange", scheduleResize, false);
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener("resize", scheduleResize, false);
+  }
   window.addEventListener("mousemove", onMove, false);
   window.addEventListener("mousedown", onMouseDown, false);
   window.addEventListener("mouseleave", onLeave, false);
@@ -443,6 +509,7 @@
       var attr = mutations[i].attributeName;
       if (attr === "data-theme" || attr === "data-theme-setting" || attr === "data-theme-variant") {
         mouse.active = false;
+        colorsDirty = true;
         resize();
         lastTime = performance.now();
         showHud();
@@ -455,26 +522,13 @@
     attributeFilter: ["data-theme", "data-theme-setting", "data-theme-variant"]
   });
 
-  resize();
-  var initialRect = canvas.getBoundingClientRect();
-  var lastSizeW = initialRect.width || window.innerWidth;
-  var lastSizeH = initialRect.height || window.innerHeight;
-  var lastDpr = dpr;
-  function monitorResize() {
-    var rect = canvas.getBoundingClientRect();
-    var w = rect.width || window.innerWidth;
-    var h = rect.height || window.innerHeight;
-    var currentDpr = Math.max(1, window.devicePixelRatio || 1);
-    if (w !== lastSizeW || h !== lastSizeH || currentDpr !== lastDpr) {
-      lastSizeW = w;
-      lastSizeH = h;
-      lastDpr = currentDpr;
-      resize();
-    }
-    requestAnimationFrame(monitorResize);
+  if (window.ResizeObserver) {
+    var resizeObserver = new ResizeObserver(scheduleResize);
+    resizeObserver.observe(document.documentElement);
+    resizeObserver.observe(canvas);
   }
 
+  resize();
   showHud("ready");
-  requestAnimationFrame(monitorResize);
   requestAnimationFrame(step);
 })();
