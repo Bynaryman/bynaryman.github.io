@@ -1,5 +1,22 @@
 // Has to be in the head tag, otherwise a flicker effect will occur.
 
+const DEFAULT_THEME_SETTING = "light";
+const DEFAULT_THEME_VARIANT = "binary";
+const THEME_DEFAULTS_VERSION = "2026-02-light-binary-default";
+const THEME_DEFAULTS_VERSION_KEY = "theme-defaults-version";
+const THEME_USER_OVERRIDE_KEY = "theme-user-override";
+
+// One-time migration so first visit after deployment starts on light + binary.
+let ensureInitialThemeDefaults = () => {
+  let appliedVersion = localStorage.getItem(THEME_DEFAULTS_VERSION_KEY);
+  if (appliedVersion === THEME_DEFAULTS_VERSION) return;
+
+  localStorage.setItem("theme", DEFAULT_THEME_SETTING);
+  localStorage.setItem("theme-variant", DEFAULT_THEME_VARIANT);
+  localStorage.setItem(THEME_USER_OVERRIDE_KEY, "false");
+  localStorage.setItem(THEME_DEFAULTS_VERSION_KEY, THEME_DEFAULTS_VERSION);
+};
+
 // Toggle between light and dark theme settings.
 let toggleThemeSetting = () => {
   let themeSetting = determineThemeSetting();
@@ -11,8 +28,9 @@ let toggleThemeSetting = () => {
 };
 
 // Change the theme setting and apply the theme.
-let setThemeSetting = (themeSetting) => {
+let setThemeSetting = (themeSetting, userInitiated = true) => {
   localStorage.setItem("theme", themeSetting);
+  localStorage.setItem(THEME_USER_OVERRIDE_KEY, userInitiated ? "true" : "false");
 
   document.documentElement.setAttribute("data-theme-setting", themeSetting);
 
@@ -219,9 +237,15 @@ let transTheme = () => {
 // Determine the expected state of the theme toggle, which can be "dark" or "light".
 // Default is "light".
 let determineThemeSetting = () => {
+  let userOverride = localStorage.getItem(THEME_USER_OVERRIDE_KEY) === "true";
+  if (!userOverride) {
+    localStorage.setItem("theme", DEFAULT_THEME_SETTING);
+    return DEFAULT_THEME_SETTING;
+  }
+
   let themeSetting = localStorage.getItem("theme");
   if (themeSetting != "dark" && themeSetting != "light") {
-    themeSetting = "light";
+    themeSetting = DEFAULT_THEME_SETTING;
     localStorage.setItem("theme", themeSetting);
   }
   return themeSetting;
@@ -230,7 +254,7 @@ let determineThemeSetting = () => {
 let determineThemeVariant = () => {
   let themeVariant = localStorage.getItem("theme-variant");
   if (themeVariant != "binary" && themeVariant != "modus") {
-    themeVariant = "binary";
+    themeVariant = DEFAULT_THEME_VARIANT;
   }
   return themeVariant;
 };
@@ -256,10 +280,12 @@ let determineComputedTheme = () => {
 };
 
 let initTheme = () => {
+  ensureInitialThemeDefaults();
+
   let themeSetting = determineThemeSetting();
   let themeVariant = determineThemeVariant();
 
-  setThemeSetting(themeSetting);
+  setThemeSetting(themeSetting, false);
   setThemeVariant(themeVariant);
 
   // Add event listener to the theme toggle button.
