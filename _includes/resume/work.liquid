@@ -1,5 +1,19 @@
 <ul class="card-text font-weight-light list-group list-group-flush">
   {% assign work = data[1] | sort: 'startDate' | reverse %}
+  {% if data[0] == 'teaching' %}
+    {% assign teaching_total = 0 %}
+    {% for entry in work %}
+      {% for item in entry.highlights %}
+        {% if item contains 'Teaching load:' %}
+          {% assign teaching_hours = item | split: 'Teaching load:' | last | strip | split: 'h' | first | strip %}
+          {% assign teaching_total = teaching_total | plus: teaching_hours %}
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+    <li class="list-group-item">
+      <strong>Total teaching load: {{ teaching_total }}h.</strong>
+    </li>
+  {% endif %}
   {% for content in work %}
     <li class="list-group-item">
       <div class="row">
