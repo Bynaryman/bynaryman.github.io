@@ -1,5 +1,6 @@
 <div class="list-groups">
-  {% for content in data[1] %}
+  {% assign languages = items | default: data[1] %}
+  {% for content in languages %}
     <div class="list-group col-md-6">
       <table class="table-cv list-group-table">
         <tbody>

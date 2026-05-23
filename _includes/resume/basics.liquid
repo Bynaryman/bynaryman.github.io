@@ -1,6 +1,7 @@
 <table class="table table-cv table-sm table-borderless table-responsive table-cv-map">
   {% assign skip_basics = 'image,profiles,location' | split: ',' %}
-  {% for content in data[1] %}
+  {% assign basics = items | default: data[1] %}
+  {% for content in basics %}
     {%
       if (content[1] == "") or (skip_basics contains
       content[0])

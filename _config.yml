@@ -621,11 +621,18 @@ jekyll_get_json:
 jsonresume:
   - basics
   - work
-  - teaching
   - education
-  - publications
+  - teaching
+  - journals
+  - conference_papers
+  - tutorials
+  - contributions
+  - posters
+  - invited_talks
+  - academic_reviewing
+  - conference_organization
+  - academic_summer_schools
+  - internship_mentoring
   - projects
-  - volunteer
-  - certificates
   - skills
   - languages

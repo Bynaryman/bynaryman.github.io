@@ -69,18 +69,37 @@ layout: default
 
     <article>
       <div class="cv">
-        {% for data in site.data.resume %}
-          {% if site.jsonresume and site.jsonresume.size > 0 %}
-            {% unless site.jsonresume contains data[0] %}
-              {% continue %}
-            {% endunless %}
+        {% for section in site.jsonresume %}
+          {% assign items = site.data.resume[section] %}
+          {% if items == nil or items.size == 0 %}
+            {% continue %}
           {% endif %}
-          {% if data[0] == 'meta' or data[1].size == 0 %} {% continue %} {% endif %}
-          <a class="anchor" id="{{ data[0] }}"></a>
+          <a class="anchor" id="{{ section }}"></a>
           <div class="card mt-3 p-3">
-            <h3 class="card-title font-weight-medium">{{ data[0] | capitalize }}</h3>
+            <h3 class="card-title font-weight-medium">
+              {% case section %}
+                {% when 'basics' %}Basics
+                {% when 'work' %}Experience
+                {% when 'teaching' %}Teaching
+                {% when 'education' %}Education
+                {% when 'journals' %}International Peer-reviewed Journals
+                {% when 'conference_papers' %}International Peer-reviewed Conference Papers
+                {% when 'tutorials' %}Tutorials, Workshops &amp; Demos
+                {% when 'contributions' %}Contributions to Publications
+                {% when 'posters' %}Poster Presentations
+                {% when 'invited_talks' %}Invited Talks &amp; Seminars
+                {% when 'academic_reviewing' %}Academic Reviewing
+                {% when 'conference_organization' %}Conference Organization Experience
+                {% when 'academic_summer_schools' %}Academic Summer Schools and Workshops
+                {% when 'internship_mentoring' %}Internship Mentoring
+                {% when 'projects' %}Hardware &amp; Software Realizations
+                {% when 'skills' %}Skills
+                {% when 'languages' %}Languages
+                {% else %}{{ section | replace: '_', ' ' | capitalize }}
+              {% endcase %}
+            </h3>
             <div>
-              {% case data[0] %}
+              {% case section %}
                 {% when 'basics' %}
                   {% include resume/basics.liquid %}
                 {% when 'education' %}
@@ -89,26 +108,42 @@ layout: default
                   {% include resume/work.liquid %}
                 {% when 'teaching' %}
                   {% include resume/work.liquid %}
-                {% when 'volunteer' %}
-                  {% include resume/volunteer.liquid %}
                 {% when 'projects' %}
                   {% include resume/projects.liquid %}
-                {% when 'awards' %}
-                  {% include resume/awards.liquid %}
                 {% when 'skills' %}
                   {% include resume/skills.liquid %}
-                {% when 'publications' %}
-                  {% include resume/publications.liquid %}
                 {% when 'languages' %}
                   {% include resume/languages.liquid %}
-                {% when 'interests' %}
-                  {% include resume/interests.liquid %}
+                {% when 'journals' %}
+                  {% include resume/publications.liquid %}
+                {% when 'conference_papers' %}
+                  {% include resume/publications.liquid %}
+                {% when 'tutorials' %}
+                  {% include resume/publications.liquid %}
+                {% when 'contributions' %}
+                  {% include resume/publications.liquid %}
+                {% when 'posters' %}
+                  {% include resume/publications.liquid %}
+                {% when 'invited_talks' %}
+                  {% include resume/publications.liquid %}
+                {% when 'academic_reviewing' %}
+                  {% include resume/publications.liquid %}
+                {% when 'conference_organization' %}
+                  {% include resume/publications.liquid %}
+                {% when 'academic_summer_schools' %}
+                  {% include resume/publications.liquid %}
+                {% when 'internship_mentoring' %}
+                  {% include resume/publications.liquid %}
+                {% when 'volunteer' %}
+                  {% include resume/volunteer.liquid %}
+                {% when 'awards' %}
+                  {% include resume/awards.liquid %}
                 {% when 'certificates' %}
                   {% include resume/certificates.liquid %}
+                {% when 'interests' %}
+                  {% include resume/interests.liquid %}
                 {% when 'references' %}
                   {% include resume/references.liquid %}
-                {% else %}
-
               {% endcase %}
             </div>
           </div>
