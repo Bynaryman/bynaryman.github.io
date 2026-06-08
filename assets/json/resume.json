@@ -5,7 +5,7 @@
     "email": "i.f.lledoux[at]gmail.com",
     "phone": "+33 [seven] 70 49 11 98",
     "url": "https://bynaryman.github.io/",
-    "summary": "A Computer Architect with a focus on Arithmetic and Floating-Points.",
+    "summary": "Researcher in arithmetic-aware compilation, hardware design, synthesis, and open EDA flows.",
     "location": {
       "address": "",
       "postalCode": "69100",
@@ -48,12 +48,13 @@
       "url": "https://www.citi-lab.fr/",
       "startDate": "2025-01-01",
       "endDate": "Now",
-      "summary": "Postdoctoral research on arithmetic-aware compilation integrating MLIR and FloPoCo.",
+      "summary": "Working on arithmetic compilation and optimization within the Emeraude team, at the intersection of MLIR, HAriCo/FloPoCo, CIRCT, Faust, and open EDA/hardware flows. The research focuses on bridging high-level mathematical reasoning with low-level hardware synthesis and reproducible compiler-to-silicon validation.",
       "highlights": [
-        "Multi-level arithmetic transformations from real to fixed-point approximations for ASIC/FPGA.",
-        "Custom MLIR dialects for arithmetic abstraction, reasoning, and approximation.",
-        "Automated generation of hardware architectures from DSP-oriented code (e.g., Faust).",
-        "Presented results at DSD 2025, EuroLLVM 2025, and EuroLLVM 2026."
+        "Developing multi-level arithmetic transformations from real-valued expressions to fixed-point polynomial approximations for ASIC and FPGA targets.",
+        "Extending MLIR with custom dialects to support arithmetic abstraction, reasoning, and approximation.",
+        "Automating the generation of hardware architectures directly from DSP-oriented code (e.g., Faust), enabling end-to-end lowering from mathematical expressions to silicon.",
+        "Contributing to the refactoring of FloPoCo toward explicit IR-based circuit generation, in connection with HAriCo/CIRCT-compatible lowering.",
+        "Presented results at DSD 2025, EuroLLVM 2025, the PEPR IA Embarquee workshop in Aussois (2026), and EuroLLVM 2026."
       ]
     },
     {
@@ -62,13 +63,14 @@
       "url": "https://www.bsc.es/ledoux-louis",
       "startDate": "2018-08-16",
       "endDate": "2024-12-31",
-      "summary": "Conducting research in computer architecture, arithmetic, and HPC. Exploring co-designed hardware/software acceleration of posit arithmetic, developing Kulisch/Quire accumulators, and designing Systolic Array architecture for HPC workloads.",
+      "summary": "As a BSC researcher during my PhD, I published peer-reviewed papers, attended international conferences, and developed software toolchains and hardware designs for numerical acceleration.",
       "highlights": [
         "Thesis: Floating-Point Arithmetic Paradigms for High-Performance Computing: Software Algorithms and Hardware Designs.",
-        "Co-designed hardware/software acceleration of posit arithmetic.",
+        "Explored co-designed hardware/software acceleration of posit arithmetic for FPGA and ASIC technologies, and POWER9 hosts.",
         "Developed Kulisch/Quire accumulators for any floating-point representation.",
-        "Designed Systolic Array architecture for HPC workloads.",
-        "Explored very slow but very little floating-point division designs for SIMD/Vector paradigms."
+        "Conducted accuracy and energy budgeting tailored to workload numerical requirements.",
+        "Designed Systolic Array architecture for HPC workloads with three directions of data flow, infinite number representations, and tailored internal precision.",
+        "Proposed serialized, area-efficient division units targeting the SIMD/Vector paradigm at the architecture level, further improving the parallelism/latency/energy ratio."
       ]
     },
     {
@@ -345,38 +347,57 @@
   ],
   "projects": [
     {
-      "name": "Tapeouts",
-      "summary": "Tapeouts across TinyTapeout and Sky130 MPW programs, including arithmetic-focused silicon demonstrators.",
+      "name": "Software",
+      "summary": "Open-source software for ASIC flow orchestration, numerical hardware generation, and compiler-facing exports.",
       "highlights": [
-        "TinyTapeout GF0P2: Faust -> MLIR data path with tanh saturation.",
-        "TinyTapeout Sky130: modified placement flow and visual experimentation.",
-        "MPW5 Sky130: posit/quire systolic array for matrix multiplication.",
-        "Contributions to MPW1 bring-up and MPW4 re-tapeout."
+        "<a href=\"https://github.com/Bynaryman/SUF\">SUF</a>: OpenROAD-based ASIC design-space exploration and flow orchestration.",
+        "<a href=\"https://github.com/Bynaryman/OSFNTC\">OSFNTC</a>: numerically-tailored GEMM generator with PyTorch/NumPy/OpenBLAS/OpenCAPI integration.",
+        "<a href=\"https://github.com/Bynaryman/MLModelMLIRGEN\">MLModelMLIRGEN</a>: PyTorch/torchvision to MLIR exporter."
+      ],
+      "url": "https://github.com/Bynaryman/SUF"
+    },
+    {
+      "name": "Hardware IP",
+      "summary": "Arithmetic IP and circuit-generation work for FPGA, ASIC, and IR-oriented hardware flows.",
+      "highlights": [
+        "<a href=\"https://github.com/Bynaryman/POF\">POF</a>: SystemVerilog Posit operators, datapaths, quires, and verification benches.",
+        "<a href=\"https://gitlab.com/flopoco/flopoco/-/commit/16f5a9365cbe6c5fa758a07c756acb7aeb22deec\">FloPoCo</a>: Virtex UltraScale+ timing model, systolic-array generator work, and HAriCo/IR-oriented refactoring."
+      ],
+      "url": "https://github.com/Bynaryman/POF"
+    },
+    {
+      "name": "Utilities",
+      "summary": "Bridges and visualization utilities for open ASIC flows and research artifacts.",
+      "highlights": [
+        "<a href=\"https://github.com/Bynaryman/vh2v\">VH2V</a>: VHDL to Verilog bridge for open ASIC flows.",
+        "<a href=\"https://github.com/Bynaryman/gpl\">OpenROAD GPL</a>: placement visualization and chip-shaping experiments.",
+        "<a href=\"https://github.com/Bynaryman/gdsiistl\">gdsiistl</a>: GDSII to STL layout visualization.",
+        "<a href=\"https://github.com/Bynaryman/codez\">Codez</a>: Typst/CeTZ annotated code figures with MLIR/Python/SystemVerilog support."
+      ],
+      "url": "https://github.com/Bynaryman/vh2v"
+    },
+    {
+      "name": "Upstream",
+      "summary": "Upstream contributions to compiler, OpenCAPI, and OpenROAD ecosystems.",
+      "highlights": [
+        "<a href=\"https://github.com/llvm/circt/pull/9263\">CIRCT PR9263</a> and <a href=\"https://github.com/llvm/circt/pull/9245\">PR9245</a>: arithmetic lowering and HDL-oriented transforms.",
+        "<a href=\"https://github.com/OpenCAPI/oc-accel/commits?author=Bynaryman\">oc-accel</a> and <a href=\"https://github.com/open-power/capi2-bsp/commit/438f7489ebece2dcf4aabf6886ebdb7ca2b52f4c\">capi2-bsp</a>: OpenCAPI/CAPI2 accelerator support.",
+        "<a href=\"https://github.com/The-OpenROAD-Project/OpenROAD/pull/8609\">OpenROAD PR</a>: Arch/Manjaro installer support."
+      ],
+      "url": "https://github.com/llvm/circt/pull/9263"
+    },
+    {
+      "name": "Tapeouts",
+      "summary": "Tapeout contributions and silicon demonstrators spanning Sky130, GF180, and IHP CMOS5L.",
+      "highlights": [
+        "<a href=\"https://www.zerotoasiccourse.com/post/mpw5_submitted/\">MPW5 Sky130</a>: posit/Quire systolic array.",
+        "<a href=\"https://tinytapeout.com/chips/ttgf0p2/tt_um_gf0p2_faust_top\">TT GF0P2</a>: Faust to MLIR to silicon soft-clipper.",
+        "<a href=\"https://app.tinytapeout.com/projects/4001\">TT SKY26A</a>: MLIR to floating-point accumulator.",
+        "<a href=\"https://github.com/Bynaryman/ttihp04_bf16_kulisch_diminished\">IHP BF16</a> and <a href=\"https://github.com/Bynaryman/ttihp04_ieee754_perop\">IHP IEEE754</a>: CMOS5L floating-point lowering demonstrators.",
+        "<a href=\"https://tinytapeout.com/chips/ttsky25b/tt_um_zerotoasic_logo_screensaver\">TT SKY25B</a>: modified-placement demonstrator.",
+        "<a href=\"https://www.zerotoasiccourse.com/post/mpw1-bringup/\">MPW1</a> and <a href=\"https://www.zerotoasiccourse.com/post/mpw4_submitted/\">MPW4</a>: integration contributions."
       ],
       "url": "https://www.zerotoasiccourse.com/post/mpw5_submitted/"
-    },
-    {
-      "name": "Toolchains",
-      "summary": "Open-source hardware/software toolchains for numerically-tailored computation and ASIC generation.",
-      "highlights": [
-        "OSFNTC: numerically-tailored GEMM generator with PyTorch/OpenBLAS/OpenCAPI integration.",
-        "SUF: Python -> ASIC design-space exploration flow.",
-        "VH2V: VHDL -> Verilog translation for OpenLane/OpenROAD.",
-        "POF: SystemVerilog posit operators framework.",
-        "gdsiistl: GDSII -> STL conversion tooling."
-      ],
-      "url": "https://github.com/Bynaryman/OSFNTC"
-    },
-    {
-      "name": "Open-Source Contributions",
-      "summary": "Upstream and ecosystem contributions spanning compiler IRs, arithmetic generation, and acceleration stacks.",
-      "highlights": [
-        "CIRCT/LLVM: arithmetic dialect and HDL lowering contributions.",
-        "OpenCAPI ecosystem: oc-accel and capi2-bsp support improvements.",
-        "OpenROAD global placer experiments and visualization work.",
-        "FloPoCo: Virtex UltraScale+ timing model contribution."
-      ],
-      "url": "https://github.com/Bynaryman/circt"
     }
   ],
   "volunteer": [
@@ -739,7 +760,7 @@
   "academic_reviewing": [
     {
       "name": "2026",
-      "publisher": "Academic Reviewing",
+      "publisher": "Conference Peer Reviewing",
       "releaseDate": "2026",
       "url": "",
       "summary": "FCCM (x1), ASAP (x2)."
