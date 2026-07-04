@@ -18,6 +18,7 @@
   --retro-text-soft: #3a3a3a;
   --retro-accent: #0a0a0a; /* monochrome accent */
   --retro-accent-strong: #0a0a0a;
+  --retro-accent-contrast: #ffffff;
   --retro-link-visited: #0a0a0a;
   --retro-warning: #0a0a0a;
   --retro-selection-bg: rgba(0, 0, 0, 0.22);
@@ -724,16 +725,39 @@ html[data-theme-setting="dark"] .metrics-grid .metric-card {
 }
 
 .btn-primary {
-  background: linear-gradient(180deg, var(--retro-accent) 0%, var(--retro-accent-strong) 100%);
-  color: #041010;
-  border: none;
+  background: var(--retro-accent) !important;
+  background-color: var(--retro-accent) !important;
+  color: var(--retro-accent-contrast) !important;
+  border: 1px solid var(--retro-accent) !important;
   box-shadow: 0 0 8px rgba(var(--retro-ink), 0.25);
+  text-decoration: none;
 }
 
 .btn-primary:hover,
 .btn-primary:focus {
-  filter: brightness(1.1);
-  color: #01080a;
+  background: var(--retro-accent-strong) !important;
+  background-color: var(--retro-accent-strong) !important;
+  border-color: var(--retro-accent-strong) !important;
+  color: var(--retro-accent-contrast) !important;
+  filter: none;
+  text-decoration: none;
+}
+
+.btn-outline-primary {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: var(--retro-accent) !important;
+  border-color: var(--retro-accent) !important;
+  text-decoration: none;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus {
+  background: var(--retro-accent) !important;
+  background-color: var(--retro-accent) !important;
+  border-color: var(--retro-accent) !important;
+  color: var(--retro-accent-contrast) !important;
+  text-decoration: none;
 }
 
 footer.footer {
@@ -767,6 +791,7 @@ html[data-theme-setting="dark"] {
   --retro-text-soft: #c7c1b6;
   --retro-accent: #ffffff;
   --retro-accent-strong: #ffffff;
+  --retro-accent-contrast: #010101;
   --retro-link-visited: #ffffff;
   --retro-warning: #ffffff;
   --retro-selection-bg: rgba(255, 255, 255, 0.28);
@@ -904,6 +929,7 @@ html[data-theme-variant="modus"] {
   --retro-text-soft: #4b4b4b;
   --retro-accent: #0031a9;
   --retro-accent-strong: #721045;
+  --retro-accent-contrast: #ffffff;
   --retro-link-visited: #005e8b;
   --retro-warning: #6f5500;
   --retro-selection-bg: rgba(0, 94, 139, 0.22);
@@ -945,6 +971,7 @@ html[data-theme-setting="dark"][data-theme-variant="modus"] {
   --retro-text-soft: #b7b7b7;
   --retro-accent: #79a8ff;
   --retro-accent-strong: #c6a0ff;
+  --retro-accent-contrast: #0d0e1c;
   --retro-link-visited: #7fdbff;
   --retro-warning: #d2b580;
   --retro-selection-bg: rgba(127, 219, 255, 0.3);
