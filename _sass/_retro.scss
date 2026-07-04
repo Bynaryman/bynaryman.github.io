@@ -2025,22 +2025,23 @@ html[data-theme-variant="modus"] .post article.page-content p {
   font-weight: 500;
 }
 
-html[data-theme-variant="modus"] .post article .clearfix strong,
-html[data-theme-variant="modus"] .post-content #markdown-content strong,
-html[data-theme-variant="modus"] .post article.page-content strong {
-  color: var(--retro-accent-strong);
+html[data-theme-variant="modus"] .post article .clearfix :is(strong, b, em, mark),
+html[data-theme-variant="modus"] .post-content #markdown-content :is(strong, b, em, mark),
+html[data-theme-variant="modus"] .post article.page-content :is(strong, b, em, mark) {
+  color: var(--global-highlight-color);
+  font-style: normal;
   font-weight: 850;
-  background: linear-gradient(transparent 58%, rgba(114, 16, 69, 0.16) 58%);
+  background: linear-gradient(transparent 44%, rgba(166, 0, 0, 0.24) 44%);
   padding: 0 0.08em;
 }
 
-html[data-theme="dark"][data-theme-variant="modus"] .post article .clearfix strong,
-html[data-theme-setting="dark"][data-theme-variant="modus"] .post article .clearfix strong,
-html[data-theme="dark"][data-theme-variant="modus"] .post-content #markdown-content strong,
-html[data-theme-setting="dark"][data-theme-variant="modus"] .post-content #markdown-content strong,
-html[data-theme="dark"][data-theme-variant="modus"] .post article.page-content strong,
-html[data-theme-setting="dark"][data-theme-variant="modus"] .post article.page-content strong {
-  background: linear-gradient(transparent 58%, rgba(198, 160, 255, 0.22) 58%);
+html[data-theme="dark"][data-theme-variant="modus"] .post article .clearfix :is(strong, b, em, mark),
+html[data-theme-setting="dark"][data-theme-variant="modus"] .post article .clearfix :is(strong, b, em, mark),
+html[data-theme="dark"][data-theme-variant="modus"] .post-content #markdown-content :is(strong, b, em, mark),
+html[data-theme-setting="dark"][data-theme-variant="modus"] .post-content #markdown-content :is(strong, b, em, mark),
+html[data-theme="dark"][data-theme-variant="modus"] .post article.page-content :is(strong, b, em, mark),
+html[data-theme-setting="dark"][data-theme-variant="modus"] .post article.page-content :is(strong, b, em, mark) {
+  background: linear-gradient(transparent 44%, rgba(255, 127, 159, 0.3) 44%);
 }
 
 html[data-theme-variant="modus"] .post article .clearfix a:not(.btn),

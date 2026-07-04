@@ -20,7 +20,7 @@ The tutorial slides are also in the repository:
     </div>
 </div>
 <div class="caption text-center mt-2">
-    <strong>Tutorial slide deck:</strong> a practical entry point to CIRCT as compiler infrastructure for hardware.
+    The first slide already tells the story: Sam, me, and a tutorial built around making CIRCT concrete.
 </div>
 
 ## The Tutorial
@@ -53,7 +53,7 @@ The pitch was deliberately direct: I want to keep mathematical intent visible lo
     </div>
 </div>
 <div class="caption text-center mt-2">
-    <strong>Demo framing:</strong> from mathematical expressions and compiler IR down to generated layouts.
+    Yes, I like catchy titles. This one was my way of saying that compiler IR should leave a visible trace all the way down to layout.
 </div>
 
 One of the examples starts from Python tensor code shaped like an LLM feed-forward sublayer. Another starts from a Faust audio DSP expression. They are intentionally different front ends, but they share the same constraint: useful arithmetic structure should not disappear before the compiler has a chance to act on it.
@@ -75,7 +75,7 @@ For the visual part, I showed an OpenROAD placement animation from a generated s
     </div>
 </div>
 <div class="caption text-center mt-2">
-    <strong>Showoff video:</strong> a 6x7 FloPoCo systolic-array placement run with a modified OpenROAD visualization flow.
+    The showoff part: a 6x7 FloPoCo systolic-array placement run turned into a small OpenROAD animation.
 </div>
 
 <div class="row mt-4">
@@ -84,7 +84,7 @@ For the visual part, I showed an OpenROAD placement animation from a generated s
     </div>
 </div>
 <div class="caption text-center mt-2">
-    <strong>One placement frame from the demo:</strong> physical design as both evidence and communication material.
+    One frame from the animation; I like when a layout is still technical evidence, but also something you want to look at.
 </div>
 
 ## Why I Liked Animating This
