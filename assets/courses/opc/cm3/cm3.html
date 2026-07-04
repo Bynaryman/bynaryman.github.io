@@ -630,7 +630,7 @@ With an 8-bit unsigned integer, arithmetic is modulo <code>256</code>, so <code>
 <section id="quarto-can-execute-a-c-build-at-render-time" class="slide level2">
 <h2>Quarto can execute a C build at render time</h2>
 <p>The generated RevealJS/Beamer/Typst output is static, but this cell compiles and runs C while the document is rendered.</p>
-<div id="6dd893a5" class="cell" data-execution_count="1">
+<div id="41f1eaf8" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-stdout">
 <pre><code>$ gcc -Wall -Wextra hello.c -o hello
 $ ./hello
@@ -1329,16 +1329,16 @@ hello from compiled C</code></pre>
         mobileViewDistance: 2,
 
         // Parallax background image
-        parallaxBackgroundImage: 'cm3-background.webp', // e.g. "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'"
+        parallaxBackgroundImage: 'cm3-background-parallax.webp', // e.g. "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'"
 
         // Parallax background size
-        parallaxBackgroundSize: '2048px 1080px', // CSS syntax, e.g. "2100px 900px"
+        parallaxBackgroundSize: '5120px 2880px', // CSS syntax, e.g. "2100px 900px"
 
         // Amount to move parallax background (horizontal and vertical) on slide change
         // Number, e.g. 100
-        parallaxBackgroundHorizontal: 48,
+        parallaxBackgroundHorizontal: 32,
 
-        parallaxBackgroundVertical: 16,
+        parallaxBackgroundVertical: 8,
 
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be
