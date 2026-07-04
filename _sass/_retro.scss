@@ -819,38 +819,13 @@ html[data-theme-setting="dark"] {
   background: var(--binary-bg-color, #000);
 }
 
-.binary-background__canvas {
-  width: 100%;
-  height: 100%;
-  display: block;
-  filter: none;
-}
-
 :root {
   --binary-bg-color: var(--retro-bg);
-  --binary-digit-color: #16130e;
-  --binary-accent-color: var(--retro-accent);
-  --binary-alpha-base: 0.08;
-  --binary-alpha-range: 0.45;
-  --binary-alpha-boost: 0.2;
-  --binary-alpha-boost-chance: 0.12;
 }
 
 html[data-theme="dark"],
 html[data-theme-setting="dark"] {
   --binary-bg-color: var(--retro-bg);
-  --binary-digit-color: #f5f5f5;
-  --binary-accent-color: var(--retro-accent);
-  --binary-alpha-base: 0.16;
-  --binary-alpha-range: 0.6;
-  --binary-alpha-boost: 0.35;
-  --binary-alpha-boost-chance: 0.2;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .binary-background__canvas {
-    display: none;
-  }
 }
 
 /* Theme switcher dropdown */
@@ -1810,7 +1785,7 @@ html[data-theme-setting="dark"] footer.fixed-bottom a {
   }
 }
 
-/* Binary background overlay (DNA-style) */
+/* Binary theme background */
 .binary-background {
   position: fixed;
   inset: 0;
@@ -1820,32 +1795,13 @@ html[data-theme-setting="dark"] footer.fixed-bottom a {
   background: var(--binary-bg-color, #000);
 }
 
-.binary-background__canvas {
-  width: 100%;
-  height: 100%;
-  display: block;
-  filter: none;
-}
-
 :root {
   --binary-bg-color: #ffffff;
-  --binary-digit-color: #16130e;
-  --binary-accent-color: var(--retro-accent);
-  --binary-alpha-base: 0.08;
-  --binary-alpha-range: 0.45;
-  --binary-alpha-boost: 0.2;
-  --binary-alpha-boost-chance: 0.12;
 }
 
 html[data-theme="dark"],
 html[data-theme-setting="dark"] {
   --binary-bg-color: #000000;
-  --binary-digit-color: #f5f5f5;
-  --binary-accent-color: #f7f7f7;
-  --binary-alpha-base: 0.16;
-  --binary-alpha-range: 0.6;
-  --binary-alpha-boost: 0.35;
-  --binary-alpha-boost-chance: 0.2;
 }
 
 body {
@@ -1865,10 +1821,4 @@ body > *:not(.binary-background) {
 .post-content,
 main {
   background: transparent !important;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .binary-background__canvas {
-    display: none;
-  }
 }

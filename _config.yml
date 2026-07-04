@@ -272,7 +272,6 @@ jekyll-minifier:
   exclude:
     - "robots.txt"
     - "assets/js/search/*.js"
-    - "assets/js/binary-background.js"
     - "assets/courses/opc/cm3/**"
   uglifier_args:
     harmony: true
