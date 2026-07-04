@@ -2019,11 +2019,15 @@ html[data-theme-variant="modus"] .post-header .desc {
   font-weight: 750;
 }
 
-html[data-theme-variant="modus"] .post article .clearfix p {
+html[data-theme-variant="modus"] .post article .clearfix p,
+html[data-theme-variant="modus"] .post-content #markdown-content p,
+html[data-theme-variant="modus"] .post article.page-content p {
   font-weight: 500;
 }
 
-html[data-theme-variant="modus"] .post article .clearfix strong {
+html[data-theme-variant="modus"] .post article .clearfix strong,
+html[data-theme-variant="modus"] .post-content #markdown-content strong,
+html[data-theme-variant="modus"] .post article.page-content strong {
   color: var(--retro-accent-strong);
   font-weight: 850;
   background: linear-gradient(transparent 58%, rgba(114, 16, 69, 0.16) 58%);
@@ -2031,11 +2035,17 @@ html[data-theme-variant="modus"] .post article .clearfix strong {
 }
 
 html[data-theme="dark"][data-theme-variant="modus"] .post article .clearfix strong,
-html[data-theme-setting="dark"][data-theme-variant="modus"] .post article .clearfix strong {
+html[data-theme-setting="dark"][data-theme-variant="modus"] .post article .clearfix strong,
+html[data-theme="dark"][data-theme-variant="modus"] .post-content #markdown-content strong,
+html[data-theme-setting="dark"][data-theme-variant="modus"] .post-content #markdown-content strong,
+html[data-theme="dark"][data-theme-variant="modus"] .post article.page-content strong,
+html[data-theme-setting="dark"][data-theme-variant="modus"] .post article.page-content strong {
   background: linear-gradient(transparent 58%, rgba(198, 160, 255, 0.22) 58%);
 }
 
-html[data-theme-variant="modus"] .post article .clearfix a:not(.btn) {
+html[data-theme-variant="modus"] .post article .clearfix a:not(.btn),
+html[data-theme-variant="modus"] .post-content #markdown-content a:not(.btn),
+html[data-theme-variant="modus"] .post article.page-content a:not(.btn) {
   color: var(--retro-accent);
   font-weight: 800;
   border-bottom: 0;
@@ -2046,13 +2056,21 @@ html[data-theme-variant="modus"] .post article .clearfix a:not(.btn) {
 }
 
 html[data-theme-variant="modus"] .post article .clearfix a:not(.btn):hover,
-html[data-theme-variant="modus"] .post article .clearfix a:not(.btn):focus {
+html[data-theme-variant="modus"] .post article .clearfix a:not(.btn):focus,
+html[data-theme-variant="modus"] .post-content #markdown-content a:not(.btn):hover,
+html[data-theme-variant="modus"] .post-content #markdown-content a:not(.btn):focus,
+html[data-theme-variant="modus"] .post article.page-content a:not(.btn):hover,
+html[data-theme-variant="modus"] .post article.page-content a:not(.btn):focus {
   color: var(--retro-accent-strong);
   text-decoration-color: currentColor;
 }
 
 html[data-theme="dark"][data-theme-variant="modus"] .post article .clearfix a:not(.btn),
-html[data-theme-setting="dark"][data-theme-variant="modus"] .post article .clearfix a:not(.btn) {
+html[data-theme-setting="dark"][data-theme-variant="modus"] .post article .clearfix a:not(.btn),
+html[data-theme="dark"][data-theme-variant="modus"] .post-content #markdown-content a:not(.btn),
+html[data-theme-setting="dark"][data-theme-variant="modus"] .post-content #markdown-content a:not(.btn),
+html[data-theme="dark"][data-theme-variant="modus"] .post article.page-content a:not(.btn),
+html[data-theme-setting="dark"][data-theme-variant="modus"] .post article.page-content a:not(.btn) {
   text-decoration-color: rgba(121, 168, 255, 0.72);
 }
 
