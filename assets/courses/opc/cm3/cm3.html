@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.9.37">
 
   <meta name="author" content="Louis Ledoux">
-  <meta name="dcterms.date" content="2026-07-03">
+  <meta name="dcterms.date" content="2026-07-04">
   <title>CM3 - C Language</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -209,7 +209,7 @@ Louis Ledoux
 </div>
 </div>
 
-  <p class="date">2026-07-03</p>
+  <p class="date">2026-07-04</p>
 </section>
 <section>
 <section id="course-shape" class="title-slide slide level1 center">
@@ -630,7 +630,7 @@ With an 8-bit unsigned integer, arithmetic is modulo <code>256</code>, so <code>
 <section id="quarto-can-execute-a-c-build-at-render-time" class="slide level2">
 <h2>Quarto can execute a C build at render time</h2>
 <p>The generated RevealJS/Beamer/Typst output is static, but this cell compiles and runs C while the document is rendered.</p>
-<div id="e21dc684" class="cell" data-execution_count="1">
+<div id="832103b0" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-stdout">
 <pre><code>$ gcc -Wall -Wextra hello.c -o hello
 $ ./hello
@@ -1105,9 +1105,9 @@ hello from compiled C</code></pre>
 </tbody>
 </table>
 </section>
-<section id="print-handouts-from-revealjs" class="slide level2">
-<h2>Print handouts from RevealJS</h2>
-<p>RevealJS can be printed from the browser using <code>?print-pdf</code>.</p>
+<section id="print-handouts" class="slide level2">
+<h2>Print handouts</h2>
+<p>RevealJS can still be printed from the browser using <code>?print-pdf</code>, but the student n-up PDFs use the Beamer export as their source. That keeps the printed versions clean, centered, and free of the web background.</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>handouts.sh</strong></pre>
@@ -1116,9 +1116,25 @@ hello from compiled C</code></pre>
 <span id="cb33-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">--print-to-pdf</span><span class="op">=</span>cm3-reveal-print.pdf <span class="dt">\</span></span>
 <span id="cb33-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="st">"file://</span><span class="va">$PWD</span><span class="st">/cm3.html?print-pdf"</span></span>
 <span id="cb33-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pdfjam cm3-reveal-print.pdf <span class="at">--nup</span> 1x2 <span class="at">--paper</span> a4paper <span class="at">--outfile</span> cm3-2up.pdf</span>
-<span id="cb33-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pdfjam cm3-reveal-print.pdf <span class="at">--nup</span> 2x2 <span class="at">--paper</span> a4paper <span class="at">--outfile</span> cm3-4up.pdf</span>
-<span id="cb33-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pdfjam cm3-reveal-print.pdf <span class="at">--nup</span> 3x2 <span class="at">--landscape</span> <span class="at">--paper</span> a4paper <span class="at">--outfile</span> cm3-6up.pdf</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb33-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> page_numbers=<span class="st">'\usepackage{fancyhdr}\pagestyle{fancy}\fancyhf{}\fancyhead[R]{\footnotesize\thepage}\renewcommand{\headrulewidth}{0pt}\renewcommand{\footrulewidth}{0pt}'</span></span>
+<span id="cb33-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> page_command=<span class="st">'\thispagestyle{fancy}'</span></span>
+<span id="cb33-7"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pdfjam cm3-beamer.pdf <span class="at">--nup</span> 1x2 <span class="at">--paper</span> a4paper <span class="dt">\</span></span>
+<span id="cb33-9"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">--frame</span> true <span class="at">--delta</span> <span class="st">"0cm 0.25cm"</span> <span class="at">--scale</span> 0.96 <span class="dt">\</span></span>
+<span id="cb33-10"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">--preamble</span> <span class="st">"</span><span class="va">$page_numbers</span><span class="st">"</span> <span class="at">--pagecommand</span> <span class="st">"</span><span class="va">$page_command</span><span class="st">"</span> <span class="dt">\</span></span>
+<span id="cb33-11"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">--outfile</span> cm3-2up.pdf</span>
+<span id="cb33-12"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pdfjam cm3-beamer.pdf <span class="at">--nup</span> 2x2 <span class="at">--landscape</span> <span class="at">--paper</span> a4paper <span class="dt">\</span></span>
+<span id="cb33-13"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">--frame</span> true <span class="at">--delta</span> <span class="st">"0.20cm 0.20cm"</span> <span class="at">--scale</span> 0.96 <span class="dt">\</span></span>
+<span id="cb33-14"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">--preamble</span> <span class="st">"</span><span class="va">$page_numbers</span><span class="st">"</span> <span class="at">--pagecommand</span> <span class="st">"</span><span class="va">$page_command</span><span class="st">"</span> <span class="dt">\</span></span>
+<span id="cb33-15"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">--outfile</span> cm3-4up.pdf</span>
+<span id="cb33-16"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pdfjam cm3-beamer.pdf <span class="at">--nup</span> 2x3 <span class="at">--paper</span> a4paper <span class="dt">\</span></span>
+<span id="cb33-17"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">--frame</span> true <span class="at">--delta</span> <span class="st">"0.18cm 0.18cm"</span> <span class="at">--scale</span> 0.96 <span class="dt">\</span></span>
+<span id="cb33-18"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">--preamble</span> <span class="st">"</span><span class="va">$page_numbers</span><span class="st">"</span> <span class="at">--pagecommand</span> <span class="st">"</span><span class="va">$page_command</span><span class="st">"</span> <span class="dt">\</span></span>
+<span id="cb33-19"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">--outfile</span> cm3-6up.pdf</span>
+<span id="cb33-20"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pdfjam cm3-beamer.pdf <span class="at">--nup</span> 3x3 <span class="at">--landscape</span> <span class="at">--paper</span> a4paper <span class="dt">\</span></span>
+<span id="cb33-21"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">--frame</span> true <span class="at">--delta</span> <span class="st">"0.12cm 0.12cm"</span> <span class="at">--scale</span> 0.94 <span class="dt">\</span></span>
+<span id="cb33-22"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">--preamble</span> <span class="st">"</span><span class="va">$page_numbers</span><span class="st">"</span> <span class="at">--pagecommand</span> <span class="st">"</span><span class="va">$page_command</span><span class="st">"</span> <span class="dt">\</span></span>
+<span id="cb33-23"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">--outfile</span> cm3-9up.pdf</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>These PDFs are for students who print. They should not depend on scrolling.</p>
 </section>
@@ -1320,10 +1336,10 @@ hello from compiled C</code></pre>
         mobileViewDistance: 2,
 
         // Parallax background image
-        parallaxBackgroundImage: 'render_4k_512_noise-modified.png', // e.g. "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'"
+        parallaxBackgroundImage: 'cm3-background.webp', // e.g. "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'"
 
         // Parallax background size
-        parallaxBackgroundSize: '4096px 2160px', // CSS syntax, e.g. "2100px 900px"
+        parallaxBackgroundSize: '2048px 1080px', // CSS syntax, e.g. "2100px 900px"
 
         // Amount to move parallax background (horizontal and vertical) on slide change
         // Number, e.g. 100

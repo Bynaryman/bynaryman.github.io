@@ -34,7 +34,7 @@
 .reveal-viewport.reveal-scroll {
   background:
     linear-gradient(90deg, rgba(251, 248, 237, 0.97), rgba(251, 248, 237, 0.9)),
-    url("render_4k_512_noise-modified.png") center / cover fixed no-repeat;
+    url("cm3-background.webp") center / cover fixed no-repeat;
   scroll-behavior: smooth;
 }
 
