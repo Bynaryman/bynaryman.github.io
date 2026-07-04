@@ -1,12 +1,12 @@
 // Has to be in the head tag, otherwise a flicker effect will occur.
 
 const DEFAULT_THEME_SETTING = "light";
-const DEFAULT_THEME_VARIANT = "binary";
-const THEME_DEFAULTS_VERSION = "2026-02-light-binary-default";
+const DEFAULT_THEME_VARIANT = "modus";
+const THEME_DEFAULTS_VERSION = "2026-07-light-modus-default";
 const THEME_DEFAULTS_VERSION_KEY = "theme-defaults-version";
 const THEME_USER_OVERRIDE_KEY = "theme-user-override";
 
-// One-time migration so first visit after deployment starts on light + binary.
+// One-time migration so first visit after deployment starts on light + modus.
 let ensureInitialThemeDefaults = () => {
   let appliedVersion = localStorage.getItem(THEME_DEFAULTS_VERSION_KEY);
   if (appliedVersion === THEME_DEFAULTS_VERSION) return;
