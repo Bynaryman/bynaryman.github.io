@@ -1,0 +1,394 @@
+:root {
+  --cm3-paper: #fbf8ed;
+  --cm3-paper-strong: #fffdf6;
+  --cm3-ink: #0b2a33;
+  --cm3-muted: #48636b;
+  --cm3-rule: #aebdc2;
+  --cm3-accent: #b32645;
+  --cm3-accent-2: #006d77;
+  --cm3-code-bg: rgba(255, 253, 246, 0.97);
+  --cm3-code-head: #2f3a3f;
+  --cm3-highlight: #ffd166;
+}
+
+.reveal.has-parallax-background .backgrounds {
+  background-repeat: no-repeat !important;
+  opacity: 0.92;
+}
+
+.reveal.has-parallax-background::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(251, 248, 237, 0.97), rgba(251, 248, 237, 0.93) 48%, rgba(251, 248, 237, 0.88)),
+    radial-gradient(circle at 84% 12%, rgba(179, 38, 69, 0.09), transparent 28rem);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.reveal .slides {
+  z-index: 2;
+  text-align: left;
+}
+
+.reveal-viewport.reveal-scroll {
+  background:
+    linear-gradient(90deg, rgba(251, 248, 237, 0.97), rgba(251, 248, 237, 0.9)),
+    url("cm3-background-parallax.webp") center / cover fixed no-repeat;
+  scroll-behavior: smooth;
+}
+
+.reveal-viewport.reveal-scroll .reveal {
+  position: relative;
+  z-index: 1;
+}
+
+.reveal::before {
+  content: "";
+  position: fixed;
+  top: 18px;
+  right: 22px;
+  width: 138px;
+  height: 42px;
+  background: url("Univ-rennes-logo.png") no-repeat center / contain;
+  opacity: 0.95;
+  pointer-events: none;
+  z-index: 40;
+}
+
+html.reveal-print .reveal.has-parallax-background::after,
+html.reveal-print .reveal::before {
+  display: none;
+}
+
+.reveal {
+  color: var(--cm3-ink);
+}
+
+.reveal h1,
+.reveal h2,
+.reveal h3 {
+  color: var(--cm3-ink);
+  font-weight: 750;
+  letter-spacing: 0;
+  line-height: 1.06;
+  text-shadow: none;
+  text-transform: none;
+}
+
+.reveal h1 {
+  font-size: 2.15em;
+}
+
+.reveal h2 {
+  font-size: 1.55em;
+}
+
+.reveal h2::after {
+  content: "";
+  display: block;
+  width: 4.2rem;
+  height: 0.16rem;
+  margin-top: 0.25em;
+  background: var(--cm3-accent);
+}
+
+.reveal p,
+.reveal li {
+  line-height: 1.28;
+}
+
+.reveal a {
+  color: #005f73;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.16em;
+}
+
+.reveal strong {
+  color: #06181f;
+}
+
+.reveal p code,
+.reveal li code,
+.reveal td code,
+.reveal th code {
+  color: #4f1f9f;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(79, 31, 159, 0.18);
+  border-radius: 0.2em;
+  padding: 0.02em 0.16em;
+}
+
+.reveal div.sourceCode {
+  background: var(--cm3-code-bg);
+  border: 1px solid rgba(72, 99, 107, 0.34);
+  border-radius: 0 0 6px 6px;
+  box-shadow: none;
+  overflow: hidden !important;
+}
+
+.reveal pre.sourceCode {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  margin: 0;
+  padding: 0.7em 0.85em;
+}
+
+.reveal .columns pre.sourceCode {
+  font-size: 0.47em;
+}
+
+.reveal pre code {
+  color: #102a31;
+  line-height: 1.24;
+}
+
+.reveal pre.sourceCode code {
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+.reveal .code-with-filename {
+  background: var(--cm3-code-bg);
+  border: 1px solid rgba(72, 99, 107, 0.34);
+  border-radius: 6px;
+  box-shadow: none;
+  margin: 0.55em 0;
+  overflow: hidden;
+}
+
+.reveal .code-with-filename > .code-with-filename-file {
+  align-items: center;
+  background: linear-gradient(180deg, #344249, #27343b);
+  border: 0;
+  border-radius: 0;
+  box-sizing: border-box;
+  color: #f7fbfc;
+  display: flex;
+  justify-content: space-between;
+  min-height: 1.42em;
+  padding: 0.16em 0.48em 0.16em 0.72em;
+}
+
+.reveal .code-with-filename > .code-with-filename-file pre {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  color: inherit;
+  font-size: 0.5em;
+  line-height: 1;
+  margin: 0;
+  padding: 0;
+  width: auto;
+}
+
+.reveal .code-with-filename > .code-with-filename-file strong {
+  color: inherit;
+  font-weight: 650;
+}
+
+.reveal .code-with-filename > .code-with-filename-file::after {
+  background: rgba(255, 255, 255, 0.13);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  color: #eaf6f8;
+  content: "code";
+  font-family: var(--r-code-font);
+  font-size: 0.34em;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  padding: 0.27em 0.55em;
+  text-transform: uppercase;
+}
+
+.reveal .code-with-filename:has(pre.sourceCode.c) > .code-with-filename-file::after {
+  content: "C";
+}
+
+.reveal .code-with-filename:has(pre.sourceCode.cpp) > .code-with-filename-file::after {
+  content: "C";
+}
+
+.reveal .code-with-filename:has(pre.sourceCode.bash) > .code-with-filename-file::after {
+  content: "shell";
+}
+
+.reveal .code-with-filename:has(pre.sourceCode.makefile) > .code-with-filename-file::after {
+  content: "make";
+}
+
+.reveal .code-with-filename div.sourceCode {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  margin-top: 0;
+}
+
+.reveal div.code-copy-outer-scaffold > .code-copy-button {
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(72, 99, 107, 0.22);
+  border-radius: 5px;
+  height: 1.25rem;
+  margin: 0;
+  opacity: 0;
+  padding: 0.1rem;
+  right: 0.42rem;
+  top: 0.38rem;
+  transition: opacity 120ms ease;
+  width: 1.25rem;
+}
+
+.reveal .code-with-filename:hover div.code-copy-outer-scaffold > .code-copy-button,
+.reveal div.code-copy-outer-scaffold:hover > .code-copy-button {
+  opacity: 0.82;
+}
+
+.reveal div.code-copy-outer-scaffold > .code-copy-button:hover {
+  opacity: 1;
+}
+
+.reveal pre.numberSource code > span > a:first-child::before {
+  color: var(--cm3-muted);
+}
+
+.reveal pre.sourceCode code span.highlight-line {
+  background-color: rgba(255, 209, 102, 0.36);
+  box-shadow: inset 0.22em 0 0 var(--cm3-accent);
+}
+
+.reveal pre.code-wrapper > code.sourceCode.fragment {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+.reveal pre.code-wrapper > code.sourceCode.fragment.current-fragment {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.reveal pre.code-wrapper:has(> code.sourceCode.fragment.current-fragment) > code.sourceCode:first-child {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+.reveal pre.sourceCode code span[style] {
+  border-radius: 0.12em;
+  padding: 0 0.04em;
+}
+
+.reveal table {
+  font-size: 0.72em;
+}
+
+.reveal th {
+  color: #06181f;
+  background: rgba(0, 109, 119, 0.09);
+}
+
+.reveal td,
+.reveal th {
+  border-bottom-color: rgba(72, 99, 107, 0.32);
+}
+
+.reveal blockquote,
+.reveal .callout {
+  background: rgba(255, 253, 246, 0.88);
+  border: 1px solid rgba(72, 99, 107, 0.26);
+  border-left: 0.22em solid var(--cm3-accent-2);
+  border-radius: 6px;
+  box-shadow: none;
+  color: var(--cm3-ink);
+}
+
+.reveal .footer,
+.reveal .slide-number {
+  color: var(--cm3-ink);
+}
+
+.reveal .footer {
+  font-size: 0.38em;
+  letter-spacing: 0;
+}
+
+.reveal .controls {
+  color: var(--cm3-accent);
+}
+
+.reveal .progress {
+  color: var(--cm3-accent);
+  height: 0.2rem;
+}
+
+.reveal .slide.scrollable {
+  scrollbar-width: none;
+}
+
+.reveal .slide.scrollable::-webkit-scrollbar {
+  display: none;
+}
+
+.reveal .slide.scrollable div.sourceCode,
+.reveal .slide.scrollable pre.sourceCode,
+.reveal .slide.scrollable pre code {
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+.reveal .slide.scrollable.wrap-lines pre code {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.reveal details.foldable-check {
+  border: 1px solid rgba(0, 109, 119, 0.36);
+  border-left: 0.18em solid var(--cm3-accent-2);
+  border-radius: 6px;
+  background: rgba(255, 253, 246, 0.9);
+  margin: 0.55em 0 0;
+  padding: 0.35em 0.55em;
+  font-size: 0.7em;
+}
+
+.reveal details.foldable-check.answer {
+  border-color: rgba(179, 38, 69, 0.42);
+  border-left-color: var(--cm3-accent);
+}
+
+.reveal details.foldable-check summary {
+  color: var(--cm3-ink);
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.reveal details.foldable-check[open] summary {
+  margin-bottom: 0.35em;
+}
+
+.reveal details.foldable-check p {
+  margin: 0.3em 0;
+}
+
+.reveal details.foldable-check pre {
+  margin: 0.35em 0;
+  font-size: 0.72em;
+}
+
+@media (max-width: 760px) {
+  .reveal h1 {
+    font-size: 1.82em;
+  }
+
+  .reveal h2 {
+    font-size: 1.32em;
+  }
+
+  .reveal::before {
+    width: 108px;
+    height: 33px;
+  }
+}
