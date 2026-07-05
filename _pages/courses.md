@@ -2,12 +2,12 @@
 layout: page
 title: courses
 permalink: /courses/
-description: Teaching material, slide decks, handouts, and export experiments.
+description: Teaching material, slide decks, and handouts.
 nav: true
 nav_order: 7
 ---
 
-This section collects course material and publishing experiments.
+This section collects course material, slide decks, and handouts.
 
 ## Available Courses
 
@@ -15,12 +15,12 @@ This section collects course material and publishing experiments.
   <div class="col mb-4">
     <div class="card h-100">
       <div class="card-body">
-        <h5 class="card-title">OPC course test</h5>
+        <h5 class="card-title">OPC - Programmation C et outils systeme</h5>
         <p class="card-text">
-          A Quarto prototype for the OPC course, with a RevealJS deck for online viewing and several PDF exports for printing or distribution.
+          Layered Quarto and RevealJS material for the OPC module: lecture slides, exercise sessions, and printable PDFs.
         </p>
-        <a class="btn btn-sm btn-primary" href="{{ '/courses/opc/' | relative_url }}">Choose a version</a>
-        <a class="btn btn-sm btn-outline-primary" href="{{ '/assets/courses/opc/cm3/cm3.html' | relative_url }}">Open HTML slides</a>
+        <a class="btn btn-sm btn-primary" href="{{ '/courses/opc/' | relative_url }}">Open course page</a>
+        <a class="btn btn-sm btn-outline-primary" href="{{ '/assets/courses/opc/complete.html' | relative_url }}">Complete HTML deck</a>
       </div>
     </div>
   </div>
