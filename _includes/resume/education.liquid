@@ -3,38 +3,41 @@
   {% for content in education %}
     <li class="list-group-item">
       <div class="row">
-        <div class="col-xs-2 cl-sm-2 col-md-2 text-center" style="width: 75px">
-          {% if content.startDate and content.startDate != '' %}
-            {% assign startDate = content.startDate | split: '-' | slice: 0, 2 | join: '.' %}
-            {% assign endDate = content.endDate | split: '-' | slice: 0, 2 | join: '.' | default: 'Present' %}
-            {% assign date = startDate | append: ' - ' %}
-            {% assign date = date | append: endDate %}
-          {% else %}
-            {% assign date = null %}
-          {% endif %}
-          <table class="table-cv">
-            <tbody>
-              <tr>
-                <td>
-                  {% if date %}
-                    <span class="badge font-weight-bold danger-color-dark text-uppercase align-middle" style="min-width: 75px"> {{ date }} </span>
-                  {% endif %}
-                </td>
-              </tr>
-              {% if content.location %}
-                <tr>
-                  <td>
-                    <p class="location">
-                      <i class="fa-solid fa-location-dot iconlocation"></i>
-                      {{ content.location }}
-                    </p>
-                  </td>
-                </tr>
-              {% endif %}
-            </tbody>
-          </table>
-        </div>
-        <div class="col-xs-10 cl-sm-10 col-md-10 mt-2 mt-md-0">
+        {% if content.startDate and content.startDate != '' %}
+          {% assign startDate = content.startDate | split: '-' | slice: 0, 2 | join: '.' %}
+          {% assign endDate = content.endDate | split: '-' | slice: 0, 2 | join: '.' | default: 'Present' %}
+          {% assign date = startDate | append: ' - ' %}
+          {% assign date = date | append: endDate %}
+        {% else %}
+          {% assign date = '' %}
+        {% endif %}
+        {% assign date_text = date | strip %}
+        {% if date_text != '' or content.location %}
+          <div class="cv-date-column col-12 col-md-3 text-md-center">
+            <table class="table-cv">
+              <tbody>
+                {% if date_text != '' %}
+                  <tr>
+                    <td>
+                      <span class="badge cv-date-badge font-weight-bold danger-color-dark text-uppercase align-middle">{{ date_text }}</span>
+                    </td>
+                  </tr>
+                {% endif %}
+                {% if content.location %}
+                  <tr>
+                    <td>
+                      <p class="location">
+                        <i class="fa-solid fa-location-dot iconlocation"></i>
+                        {{ content.location }}
+                      </p>
+                    </td>
+                  </tr>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+        {% endif %}
+        <div class="{% if date_text != '' or content.location %}cv-content-column col-12 col-md-9{% else %}cv-content-column cv-content-column-full col-12{% endif %} mt-2 mt-md-0">
           <h6 class="title font-weight-bold ml-1 ml-md-4">
             <a href="{{ content.url }}">{{ content.studyType }}</a>
           </h6>

@@ -10,6 +10,52 @@ table.table-cv {
   background-color: transparent !important;
 }
 
+.cv-date-column,
+.cv-content-column {
+  min-width: 0;
+}
+
+.cv-date-column {
+  margin-bottom: 0.35rem;
+}
+
+.cv-date-badge {
+  display: inline-block;
+  min-width: 8.75rem;
+  max-width: 100%;
+  padding: 0.35rem 0.5rem;
+  line-height: 1.25;
+  text-align: center;
+  white-space: normal;
+}
+
+.cv-content-column-full h6.title,
+.cv-content-column-full .table-cv.ml-1.ml-md-4,
+.cv-content-column-full .ml-1.ml-md-4,
+.cv-content-column-full .container-links.ml-1.ml-md-4 {
+  margin-left: 0 !important;
+}
+
+@media (min-width: 768px) {
+  .cv-date-column {
+    flex: 0 0 11.5rem;
+    max-width: 11.5rem;
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 1.5rem;
+  }
+
+  .cv-content-column {
+    flex: 1 1 calc(100% - 11.5rem);
+    max-width: calc(100% - 11.5rem);
+  }
+
+  .cv-content-column-full {
+    flex-basis: 100%;
+    max-width: 100%;
+  }
+}
+
 a.btncv {
   color: var(--global-text-color) !important;
   border: 1px solid var(--global-text-color) !important;
