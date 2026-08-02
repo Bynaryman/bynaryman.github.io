@@ -4,6 +4,7 @@ title: opc course test
 permalink: /courses/opc/
 description: Test page for the OPC Quarto export pipeline.
 nav: false
+published: false
 ---
 
 This page exposes the current CM3 Quarto test export in several formats.
