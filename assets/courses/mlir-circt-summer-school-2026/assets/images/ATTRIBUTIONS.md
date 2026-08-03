@@ -118,12 +118,24 @@
 
 ## CIRCT dialect overview
 
-- Local file: `digital-design/circt-dialects.svg`
+- Local files: `digital-design/circt-dialects.svg` and
+  `digital-design/circt-dialects-core.svg`
 - Description: official overview of CIRCT dialects, their interactions, and
-  their paths from frontend languages to hardware outputs
+  their paths from frontend languages to hardware outputs; the `-core` variant
+  locally highlights the official Core dialects cluster
 - Source: CIRCT, *Getting Started with the CIRCT Project*,
   <https://circt.llvm.org/docs/GettingStarted/>
 - Original SVG: <https://circt.llvm.org/includes/img/dialects.svg>
+
+## Hardware compiler explorers
+
+- Local files: `circt/compiler-explorer-circt.jpg` and
+  `circt/synthexplorer.jpg`
+- Description: screenshots of Compiler Explorer running CIRCT and Synth
+  Explorer showing an RTL design beside its synthesized schematic
+- Sources: <https://circt.godbolt.org/> and <https://www.synthexplorer.dev/>
+- Captured: 2026-08-03
+- Project licenses: Compiler Explorer BSD-2-Clause; Synth Explorer Apache-2.0
 
 ## FPGA background figures
 
