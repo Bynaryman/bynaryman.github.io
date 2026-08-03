@@ -44,31 +44,48 @@
 }
 
 .reveal .motivation-state-label {
+  display: block;
   margin-bottom: 0.55em;
   color: #24313a;
   font-size: 0.82em;
   font-weight: 750;
 }
 
+.reveal .motivation-state-label-impact {
+  width: fit-content;
+  font-size: 1.08em;
+}
+
+.reveal #motivation-fp8-gpu .motivation-machine-image {
+  display: block;
+  width: 100%;
+  height: 245px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.reveal #motivation-fp8-gpu .motivation-machine-caption {
+  min-height: 2.6em;
+  margin-top: 0.35em;
+  font-size: 0.65em;
+  line-height: 1.25;
+  text-align: center;
+}
+
+.reveal #motivation-fp8-gpu .motivation-machine-takeaway {
+  margin-top: 0.45em;
+  text-align: center;
+}
+
+.reveal #motivation-specialization .motivation-trend-caption {
+  margin-top: 0.25em;
+  color: #52616b;
+  font-size: 0.58em;
+  text-align: center;
+}
+
 .reveal .motivation-layer-copy-state ul {
   margin-top: 0.45em;
-}
-
-.reveal .motivation-impact {
-  margin: 0.3em 0 0.65em;
-  color: var(--course-accent);
-  font-size: 0.9em;
-  font-weight: 750;
-  line-height: 1.12;
-}
-
-.reveal .motivation-impact span {
-  display: block;
-}
-
-.reveal .motivation-impact .motivation-impact-arrow {
-  margin: 0.1em 0;
-  color: #52616e;
 }
 
 .reveal #motivation-e4m3-format .bit-layout {

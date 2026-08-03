@@ -46,7 +46,7 @@
 
 ## Application-Specific Arithmetic cover
 
-- Local file: `motivation/application-specific-arithmetic-cover.jpg`
+- Local file: `motivation/application-specific-arithmetic-cover-hires.jpg`
 - Description: high-resolution cover used for the application-specific
   arithmetic team introduction
 - Authors: Florent de Dinechin and Martin Kumm
@@ -64,10 +64,22 @@
 - Copyright: Google; reproduced in this educational presentation with source
   attribution
 
+## Google Cloud TPU v2
+
+- Local file: `motivation/google-tpu-v2-hero.webp`
+- Description: Google's second-generation Cloud TPU board connected by
+  high-speed interconnect cables
+- Authors: Jeff Dean and Urs Hölzle
+- Source: <https://blog.google/innovation-and-ai/infrastructure-and-cloud/google-cloud/google-cloud-offer-tpus-machine-learning/>
+- Copyright: Google; reproduced in this educational presentation with source
+  attribution
+
 ## Microprocessor trend data
 
-- Local file: `motivation/rupp-50-years-processor-trend.png`
-- Description: the original author-rendered plot used in the course
+- Local files: `motivation/rupp-50-years-processor-trend.png` and
+  `motivation/rupp-50-years-processor-trend-annotated.svg`
+- Description: the original author-rendered plot and the course version with
+  scaling-era annotations
 - Author: Karl Rupp; original data through 2010 by Mark Horowitz, Fred Labonte,
   Ofer Shacham, Kunle Olukotun, Lance Hammond, and Chris Batten
 - Source: <https://github.com/karlrupp/microprocessor-trend-data>
@@ -104,6 +116,15 @@
 - Visual reference: Florent de Dinechin et al., *Posit arithmetic units: the
   good, the bad, and the ugly*, <https://inria.hal.science/hal-01959581>
 
+## CIRCT dialect overview
+
+- Local file: `digital-design/circt-dialects.svg`
+- Description: official overview of CIRCT dialects, their interactions, and
+  their paths from frontend languages to hardware outputs
+- Source: CIRCT, *Getting Started with the CIRCT Project*,
+  <https://circt.llvm.org/docs/GettingStarted/>
+- Original SVG: <https://circt.llvm.org/includes/img/dialects.svg>
+
 ## FPGA background figures
 
 - Local files: `digital-design/fpga-cellular-automaton.svg` and
@@ -118,13 +139,17 @@
 
 ## Digital-design primer figures
 
-- Local files: `digital-design/register-timing.svg`,
+- Local files: `digital-design/register-timing-question.svg`,
+  `digital-design/register-timing-rising.svg`,
+  `digital-design/register-timing-negedge.svg`,
+  `digital-design/register-timing-sync-reset.svg`,
+  `digital-design/register-timing-async-reset.svg`,
   `digital-design/clocked-datapath.svg`,
   `digital-design/stored-program-models.svg`, and
   `digital-design/spatial-models.svg`
 - Editable source: `figures/digital-design/primer-diagrams.tex`
 - Generator: `scripts/generate-digital-design-primer-diagrams.sh`
-- Description: thin-line TikZ figures for clocked computation and the
+- Description: TikZ figures for clocked computation and the
   stored-program/spatial-computing analogy
 - Visual reference for the computing models: *Frugalit\'e et conception de
   circuits pour le traitement du signal audio num\'erique*, 2026
@@ -143,6 +168,13 @@
 - Local file: `digital-design/xc2064-package.png`
 - Source: the XC2064 package figure in the presenter's PhD thesis
 - License: presenter-owned thesis material
+
+- Local file: `digital-design/vu19p-package.png`
+- Source: Xilinx, *Virtex UltraScale+ VU19P FPGA Press Deck*, 2019,
+  <https://www.xilinx.com/publications/presentations/vu19p-press-deck.pdf>
+- Description: transparent product image extracted from the official press deck
+- Copyright: Xilinx, 2019; reproduced for this educational presentation with
+  source attribution
 
 - Local files: `digital-design/tinytapeout-logo.svg` and
   `digital-design/zero-to-asic-logo.png`
@@ -197,13 +229,15 @@
   physical implementation, including the software/hardware boundary
 - License: presenter-owned course and application material
 
-- Local files: `motivation/abstraction-layers-step-1.svg` and
-  `motivation/abstraction-layers-step-3.svg`
-- Source: pages 14 and 16 of the presenter's 16:9 HoliGrail deck
+- Local files: `motivation/abstraction-layers-step-1.svg` through
+  `motivation/abstraction-layers-step-5.svg`
+- Source: pages 14-17 of the presenter's 16:9 HoliGrail deck
   `mlir-peyrusse/flopoco_part/holygrail169.pdf`
-- Description: the stack before and after highlighting hardware-generation
-  paths that cross the instruction-set boundary; slide chrome and explanatory
-  text were excluded from the crops
+- Description: successive views of the stack highlight a conventional compiler
+  window, hardware-generation paths crossing the ISA boundary, MLIR's broader
+  view, and the Logic/RTL plus circuit layers covered by this course. Slide
+  chrome and explanatory text were excluded from the source crops; the final
+  course-focus outline was added locally.
 - License: presenter-owned course and research material
 
 ## Louis Ledoux portrait
