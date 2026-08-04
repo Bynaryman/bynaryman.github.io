@@ -982,7 +982,7 @@ t_{\text{clk} \rightarrow Q} + t_{\text{logic}} + t_{\text{routing}}
 </div>
 </section>
 <section id="dd-generate" class="slide level2">
-<h2>Quiz: how many PEs?</h2>
+<h2>Quiz: one Processing Element (PE), or nine?</h2>
 <div class="slide-body">
 <div class="callout callout-note no-icon callout-titled callout-style-simple">
 <div class="callout-body">
@@ -990,7 +990,7 @@ t_{\text{clk} \rightarrow Q} + t_{\text{logic}} + t_{\text{routing}}
 <p><strong>Question</strong></p>
 </div>
 <div class="callout-content">
-<p>In the following hardware code: <strong>one PE or nine PEs?</strong></p>
+<p><strong>Nine calls to one Processing Element (PE)</strong>, or <strong>nine independent PEs</strong>?</p>
 </div>
 </div>
 </div>
@@ -1015,8 +1015,8 @@ t_{\text{clk} \rightarrow Q} + t_{\text{logic}} + t_{\text{routing}}
 </div>
 </div>
 <div class="fragment" data-fragment-index="0">
-<p><strong>Nine PEs, operating in parallel.</strong></p>
-<p><code>generate</code> repeats hardware while the circuit is being built. It is not a loop that runs while the circuit operates.</p>
+<p><strong>Nine independent PEs, operating in parallel.</strong></p>
+<p><code>generate</code> repeats structure during elaboration, before the circuit operates.</p>
 </div>
 <div class="dd-compiler-takeaway fragment" data-fragment-index="1">
 <div class="callout callout-tip no-icon callout-titled callout-style-simple">
