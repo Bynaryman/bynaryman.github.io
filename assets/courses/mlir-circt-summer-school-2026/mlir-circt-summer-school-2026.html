@@ -941,7 +941,6 @@ t_{\text{clk} \rightarrow Q} + t_{\text{logic}} + t_{\text{routing}}
 <li><code>u_mul</code> names this <strong>instance</strong> of <code>mul4</code>.</li>
 <li>Port connections become <strong>wires</strong>.</li>
 </ul>
-<p>Hierarchy organizes the description. Synthesis may later flatten it or optimize across its boundaries.</p>
 </div>
 <div class="dd-compiler-takeaway fragment" data-fragment-index="1">
 <div class="callout callout-tip no-icon callout-titled callout-style-simple">
@@ -950,7 +949,7 @@ t_{\text{clk} \rightarrow Q} + t_{\text{logic}} + t_{\text{routing}}
 <p><strong>Compiler takeaway</strong></p>
 </div>
 <div class="callout-content">
-<p>Analyze instances. Flatten or specialize them.</p>
+<p>A module hierarchy is a static instance graph that compiler analyses can traverse.</p>
 </div>
 </div>
 </div>
