@@ -659,6 +659,18 @@ Audio <span class="marker">compilation</span> with <a href="https://faust.grame.
 <li>With no register, there is no stored state or clock cycle.</li>
 </ul>
 </div>
+<div class="dd-compiler-takeaway fragment">
+<div class="callout callout-tip no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Compiler takeaway</strong></p>
+</div>
+<div class="callout-content">
+<p>A dependency analysis sees one combinational graph, independent of source order.</p>
+</div>
+</div>
+</div>
+</div>
 </div></div>
 </div>
 </section>
@@ -690,8 +702,17 @@ Audio <span class="marker">compilation</span> with <a href="https://faust.grame.
 <span id="cb4-2"><a href=""></a>exact   = 5'b10000  // 16</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The carry exists only when the wires have room for it. <strong>Width is behavior.</strong></p>
 </div>
-<div class="fragment">
-<p><em>(And this could be an analysis pass…)</em></p>
+<div class="dd-compiler-takeaway fragment">
+<div class="callout callout-tip no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Compiler takeaway</strong></p>
+</div>
+<div class="callout-content">
+<p>Range analysis can prove smaller widths and narrow the circuit.</p>
+</div>
+</div>
+</div>
 </div>
 </div></div>
 </div>
@@ -787,7 +808,7 @@ Audio <span class="marker">compilation</span> with <a href="https://faust.grame.
 <div class="dd-ff-stage-copy fragment fade-in-then-out instant-fragment" data-fragment-index="3">
 <p>Edge, reset timing, and reset polarity are hardware choices.</p>
 </div>
-<div class="dd-ff-takeaway fragment instant-fragment" data-fragment-index="4">
+<div class="dd-compiler-takeaway fragment instant-fragment" data-fragment-index="4">
 <div class="callout callout-tip no-icon callout-titled callout-style-simple">
 <div class="callout-body">
 <div class="callout-title">
@@ -844,19 +865,20 @@ t_{\text{clk} \rightarrow Q} + t_{\text{logic}} + t_{\text{routing}}
 </div>
 </div>
 </section>
-<section id="dd-clock-pipeline" class="slide level2 top-body" data-auto-animate="true" data-auto-animate-id="clock-timing">
-<h2 data-id="quarto-animate-title">Meeting a 500 ps clock period</h2>
+<section id="dd-clock-pipeline" class="slide level2">
+<h2>Critical paths can be a compiler job</h2>
 <div class="slide-body">
-<div class="smaller" data-id="clock-budget">
-<p><span class="math display">\[
-t_{\text{clk} \rightarrow Q} + t_{\text{logic}} + t_{\text{routing}}
-  + t_{\text{setup}} + t_{\text{skew}} &lt; 500\,\text{ps}
-\]</span></p>
-<p>The period is a <strong>budget for the longest register-to-register path</strong>.</p>
+<div class="dd-compiler-takeaway">
+<div class="callout callout-tip no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Compiler takeaway</strong></p>
 </div>
-<p><strong>CPU example.</strong> Intel reports <strong>3 cycles</strong> of latency for floating-point add on Gracemont and <strong>2 cycles</strong> for selected vector adds on Sapphire Rapids <span class="citation" data-cites="intel2022gracemont intel2024intrinsics">(<a href="#/references" role="doc-biblioref" onclick="">Intel Corporation 2022</a>, <a href="#/references" role="doc-biblioref" onclick="">2024</a>)</span>. Pipeline registers split the FPU datapath so each stage can meet the clock period.</p>
-<div class="fragment">
-<p><strong>A compiler pass could analyze the critical path, split it with registers, and balance the resulting stages.</strong></p>
+<div class="callout-content">
+<p><strong>Analyze</strong> the critical path <span class="math inline">\(\rightarrow\)</span> <strong>split</strong> it with registers <span class="math inline">\(\rightarrow\)</span> <strong>balance</strong> the pipeline stages.</p>
+</div>
+</div>
+</div>
 </div>
 </div>
 </section>
@@ -921,6 +943,18 @@ t_{\text{clk} \rightarrow Q} + t_{\text{logic}} + t_{\text{routing}}
 </ul>
 <p>Hierarchy organizes the description. Synthesis may later flatten it or optimize across its boundaries.</p>
 </div>
+<div class="dd-compiler-takeaway fragment" data-fragment-index="1">
+<div class="callout callout-tip no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Compiler takeaway</strong></p>
+</div>
+<div class="callout-content">
+<p>Hierarchy analysis finds every instance; transforms can flatten or specialize them.</p>
+</div>
+</div>
+</div>
+</div>
 </div></div>
 </div>
 </section>
@@ -984,6 +1018,18 @@ t_{\text{clk} \rightarrow Q} + t_{\text{logic}} + t_{\text{routing}}
 <div class="fragment" data-fragment-index="0">
 <p><strong>Nine PEs, operating in parallel.</strong></p>
 <p><code>generate</code> repeats hardware while the circuit is being built. It is not a loop that runs while the circuit operates.</p>
+</div>
+<div class="dd-compiler-takeaway fragment" data-fragment-index="1">
+<div class="callout callout-tip no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Compiler takeaway</strong></p>
+</div>
+<div class="callout-content">
+<p>An elaboration pass expands the loop into nine explicit parallel instances.</p>
+</div>
+</div>
+</div>
 </div>
 </div><div class="column" style="width:62%;">
 <div class="fragment" data-fragment-index="0">
@@ -1106,13 +1152,24 @@ t_{\text{clk} \rightarrow Q} + t_{\text{logic}} + t_{\text{routing}}
 </div>
 </div>
 </div>
-<div class="fragment">
+<div class="fragment" data-fragment-index="0">
 <p><strong>Connect several LUTs.</strong> For example:</p>
 <ol type="1">
 <li>one LUT computes <code>a | b | c | d | e | f</code>;</li>
 <li>another LUT combines that result with <code>g</code>.</li>
 </ol>
-<p>Synthesis performs this decomposition.</p>
+</div>
+<div class="dd-compiler-takeaway fragment" data-fragment-index="1">
+<div class="callout callout-tip no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Compiler takeaway</strong></p>
+</div>
+<div class="callout-content">
+<p>Technology mapping decomposes logic into the LUTs available on the target FPGA.</p>
+</div>
+</div>
+</div>
 </div>
 </div></div>
 </div>
@@ -1284,8 +1341,17 @@ t_{\text{clk} \rightarrow Q} + t_{\text{logic}} + t_{\text{routing}}
 </figure>
 </div>
 </div></div>
-<div class="fragment">
-<p>The function remains <span class="math inline">\(y=a\lor b\)</span>; the representation becomes progressively more physical and process-specific.</p>
+<div class="dd-compiler-takeaway fragment">
+<div class="callout callout-tip no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Compiler takeaway</strong></p>
+</div>
+<div class="callout-content">
+<p>Lowering changes the representation while preserving the Boolean function.</p>
+</div>
+</div>
+</div>
 </div>
 </div>
 </section>
@@ -4367,12 +4433,6 @@ Dean, Jeff, and Urs Hölzle. 2017. <span>“Build and Train Machine Learning Mod
 </div>
 <div id="ref-dinechin2024asa" class="csl-entry" role="listitem">
 Dinechin, Florent de, and Martin Kumm. 2024. <em>Application-Specific Arithmetic: Computing Just Right for the Reconfigurable Computer and the Dark Silicon Era</em>. Springer Cham. <a href="https://doi.org/10.1007/978-3-031-42808-1">https://doi.org/10.1007/978-3-031-42808-1</a>.
-</div>
-<div id="ref-intel2022gracemont" class="csl-entry" role="listitem">
-Intel Corporation. 2022. <em>Intel Processors Based on Gracemont Microarchitecture: Instruction Throughput and Latency</em>. Nos. 350391-001US. Intel Corporation. <a href="https://cdrdv2-public.intel.com/723461/350391-Intel-Processors-Based-on-Gracemont-Microarchitecture-Latency-Throughput.pdf">https://cdrdv2-public.intel.com/723461/350391-Intel-Processors-Based-on-Gracemont-Microarchitecture-Latency-Throughput.pdf</a>.
-</div>
-<div id="ref-intel2024intrinsics" class="csl-entry" role="listitem">
-Intel Corporation. 2024. <span>“Intel Intrinsics Guide.”</span> <a href="https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html">https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html</a>.
 </div>
 <div id="ref-jouppi2020tpu" class="csl-entry" role="listitem">
 Jouppi, Norman P., Doe Hyun Yoon, George Kurian, et al. 2020. <span>“A Domain-Specific Supercomputer for Training Deep Neural Networks.”</span> <em>Communications of the ACM</em> 63 (7): 67–78. <a href="https://doi.org/10.1145/3360307">https://doi.org/10.1145/3360307</a>.
