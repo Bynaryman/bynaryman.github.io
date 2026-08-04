@@ -1224,19 +1224,21 @@ t_{\text{clk} \rightarrow Q} + t_{\text{logic}} + t_{\text{routing}}
 </div>
 </section>
 <section id="dd-targets" class="slide level2">
-<h2>Same HDL, different substrate</h2>
+<h2>From FPGA to ASIC</h2>
 <div class="slide-body">
 <div class="callout callout-note no-icon callout-titled callout-style-simple">
 <div class="callout-body">
 <div class="callout-title">
-<p><strong>Question</strong></p>
+<p><strong>One last FPGA quiz</strong></p>
 </div>
 <div class="callout-content">
-<p>Which target can become a different circuit after manufacturing?</p>
+<p>Which can implement a different circuit <strong>after manufacturing</strong>: an FPGA or an ASIC?</p>
 </div>
 </div>
 </div>
-<div class="fragment">
+<div class="fragment" data-fragment-index="0">
+<p><strong>The FPGA.</strong> Its configuration can be rewritten.</p>
+<p>The source language can be the same; the implementation is not.</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -1269,8 +1271,8 @@ t_{\text{clk} \rightarrow Q} + t_{\text{logic}} + t_{\text{routing}}
 </tbody>
 </table>
 </div>
-<div class="fragment">
-<p>Same SystemVerilog. Very different consequences.</p>
+<div class="fragment" data-fragment-index="1">
+<p><span class="marker">Next: in an ASIC, logic and wires become fixed geometry.</span></p>
 </div>
 </div>
 </section>
