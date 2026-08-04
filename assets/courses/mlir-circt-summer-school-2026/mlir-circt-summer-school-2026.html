@@ -355,6 +355,21 @@ Guinness
 </figure>
 </div>
 </div>
+</section>
+<section id="artist-silicon" class="slide level2">
+<h2>Crafting silicon</h2>
+<div class="slide-body">
+<p><strong>Why does everyone make them square?</strong></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><video data-src="assets/videos/digital-design/openroad-mlir-placement.mp4" aria-label="OpenROAD placement iterations converging toward the MLIR mark" autoplay="true" loop="true" muted="true" playsinline="true" width="560" controls=""><a href="assets/videos/digital-design/openroad-mlir-placement.mp4">Video</a></video></p>
+<p><strong>MLIR</strong></p>
+</div><div class="column" style="width:50%;">
+<p><video data-src="assets/videos/digital-design/openroad-llvm-placement.mp4" aria-label="OpenROAD placement iterations converging toward the LLVM dragon" autoplay="true" loop="true" muted="true" playsinline="true" width="560" controls=""><a href="assets/videos/digital-design/openroad-llvm-placement.mp4">Video</a></video></p>
+<p><strong>LLVM</strong></p>
+</div></div>
+<p><em>OpenROAD placement as a visual medium.</em></p>
+</div>
 </section></section>
 <section>
 <section id="motivation" class="title-slide slide level1 section-title center">
@@ -1279,81 +1294,104 @@ t_{\text{clk} \rightarrow Q} + t_{\text{logic}} + t_{\text{routing}}
 <section id="dd-asic-separator" class="slide level2 section-title center">
 <h2>ASIC</h2>
 </section>
-<section id="dd-asic-flow" class="slide level2">
-<h2>ASIC: the circuit becomes geometry</h2>
+<section id="dd-asic-mystery" class="slide level2">
+<h2>Quiz: what are we looking at?</h2>
+<div class="slide-body">
+<div class="callout callout-note no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Question</strong></p>
+</div>
+<div class="callout-content">
+<p>What hardware object is shown here?</p>
+</div>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="assets/images/digital-design/sky130-inverter-gds-3d.png" class="quarto-figure quarto-figure-center" style="width:61.0%" alt="Unlabelled layered three-dimensional rendering of a SKY130 standard cell"></p>
+</figure>
+</div>
+</div>
+</section>
+<section id="dd-asic-inverter" class="slide level2">
+<h2>Work upward from geometry</h2>
+<div class="slide-body">
+<div class="callout callout-note no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Question</strong></p>
+</div>
+<div class="callout-content">
+<p>This standard cell has two transistors. Which Boolean operation does it implement?</p>
+</div>
+</div>
+</div>
+<div class="columns">
+<div class="column" style="width:55%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="assets/images/digital-design/sky130-inverter-gds-3d.png" style="width:100.0%" alt="Layered three-dimensional rendering of the SKY130 inv 1 standard cell"></p>
+<figcaption>GDSII polygons extruded by fabrication layer.</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:45%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="assets/images/digital-design/cmos-inverter.svg" style="width:75.0%" alt="CMOS circuit with one pMOS and one nMOS transistor driven by input a and producing output y"></p>
+<figcaption>CMOS transistor schematic.</figcaption>
+</figure>
+</div>
+<div class="fragment">
+<p><span class="math inline">\(a=0 \Rightarrow y=1\)</span> and <span class="math inline">\(a=1 \Rightarrow y=0\)</span>.</p>
+<p><strong>An inverter:</strong> <span class="math inline">\(y = \neg a\)</span>.</p>
+</div>
+</div></div>
+</div>
+</section>
+<section id="dd-asic-rtl" class="slide level2">
+<h2>Yes: this line generated that geometry</h2>
 <div class="slide-body">
 <div class="columns">
-<div class="column" style="width:68%;">
+<div class="column" style="width:36%;">
+<p><strong>RTL</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode systemverilog code-emphasis code-with-copy"><code class="sourceCode systemverilog"><span id="cb16-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">assign</span> y = ~a;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><strong>Synthesis</strong> selects an inverter cell.</li>
+<li><strong>Physical design</strong> turns that cell into fixed polygons.</li>
+</ul>
+</div><div class="column" style="width:64%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="assets/images/digital-design/sky130-inverter-gds-3d.png" class="quarto-figure quarto-figure-center" style="width:100.0%" alt="Layered three-dimensional rendering of the SKY130 inv 1 standard cell generated from an RTL inversion"></p>
+</figure>
+</div>
+</div></div>
+</div>
+</section>
+<section id="dd-asic-flow" class="slide level2">
+<h2>From RTL to GDSII</h2>
+<div class="slide-body">
+<div class="columns">
+<div class="column" style="width:70%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="assets/images/digital-design/thesis-asic-flow.svg" style="width:100.0%" alt="ASIC flow from synthesis through floorplanning, placement, clock-tree synthesis, routing, and GDSII generation"></p>
 <figcaption>Main stages of an ASIC physical-design flow. <span class="citation" data-cites="ledoux2024thesis">(<a href="#/references" role="doc-biblioref" onclick="">Ledoux 2024</a>)</span></figcaption>
 </figure>
 </div>
-</div><div class="column" style="width:32%;">
+</div><div class="column" style="width:30%;">
 <ol type="1">
-<li>Synthesize RTL into logic cells.</li>
-<li>Choose a floorplan.</li>
-<li>Place every cell.</li>
+<li>Map RTL to logic cells.</li>
+<li>Floorplan and place them.</li>
 <li>Build the clock network.</li>
-<li>Route metal wires.</li>
+<li>Route fixed metal wires.</li>
 <li>Verify and export GDSII.</li>
 </ol>
-</div></div>
-</div>
-</section>
-<section id="dd-placement-art" class="slide level2">
-<h2>You can design chips in any shape you want</h2>
-<div class="slide-body">
-<p><strong>Why does everyone make them square?</strong></p>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><video data-src="assets/videos/digital-design/openroad-mlir-placement.mp4" aria-label="OpenROAD placement iterations converging toward the MLIR mark" autoplay="true" loop="true" muted="true" playsinline="true" width="560" controls=""><a href="assets/videos/digital-design/openroad-mlir-placement.mp4">Video</a></video></p>
-<p><strong>MLIR</strong></p>
-</div><div class="column" style="width:50%;">
-<p><video data-src="assets/videos/digital-design/openroad-llvm-placement.mp4" aria-label="OpenROAD placement iterations converging toward the LLVM dragon" autoplay="true" loop="true" muted="true" playsinline="true" width="560" controls=""><a href="assets/videos/digital-design/openroad-llvm-placement.mp4">Video</a></video></p>
-<p><strong>LLVM</strong></p>
-</div></div>
-<p><em>Each dot is a transistor finding its place.</em></p>
-</div>
-</section>
-<section id="dd-asic-cells" class="slide level2">
-<h2>One Boolean function, three representations</h2>
-<div class="slide-body">
-<div class="columns">
-<div class="column" style="width:28%;">
-<p><strong>RTL</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource systemverilog number-lines code-with-copy"><code class="sourceCode systemverilog"><span id="cb16-1"><a href=""></a><span class="kw">assign</span> y = a | b;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
-<p>The intended Boolean function.</p>
-</div>
-</div><div class="column" style="width:34%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="assets/images/digital-design/sky130-or2-schematic.svg" style="width:100.0%" alt="Schematic representation of a two-input OR standard cell"></p>
-<figcaption>Logic schematic of a SKY130 OR2 standard cell. <span class="citation" data-cites="ledoux2024thesis">(<a href="#/references" role="doc-biblioref" onclick="">Ledoux 2024</a>)</span></figcaption>
-</figure>
-</div>
-</div><div class="column" style="width:38%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="assets/images/digital-design/sky130-or2-layout-cropped.svg" alt="Colored GDSII geometry for a two-input OR standard cell" height="350"></p>
-<figcaption>Physical layout of the same SKY130 OR2 cell. <span class="citation" data-cites="ledoux2024thesis">(<a href="#/references" role="doc-biblioref" onclick="">Ledoux 2024</a>)</span></figcaption>
-</figure>
+<p><span class="marker">RTL becomes geometry through a sequence of compiler passes and physical-design algorithms.</span></p>
 </div>
 </div></div>
-<div class="dd-compiler-takeaway fragment">
-<div class="callout callout-tip no-icon callout-titled callout-style-simple">
-<div class="callout-body">
-<div class="callout-title">
-<p><strong>Compiler takeaway</strong></p>
-</div>
-<div class="callout-content">
-<p>Lowering changes representation while preserving behavior.</p>
-</div>
-</div>
-</div>
-</div>
 </div>
 </section>
 <section id="dd-video" class="slide level2">
