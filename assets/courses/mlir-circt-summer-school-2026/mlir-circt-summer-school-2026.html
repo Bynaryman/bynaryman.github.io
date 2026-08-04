@@ -666,7 +666,7 @@ Audio <span class="marker">compilation</span> with <a href="https://faust.grame.
 <p><strong>Compiler takeaway</strong></p>
 </div>
 <div class="callout-content">
-<p>A dependency analysis sees one combinational graph, independent of source order.</p>
+<p>Dependency analysis recovers the graph, independent of source order.</p>
 </div>
 </div>
 </div>
@@ -815,7 +815,7 @@ Audio <span class="marker">compilation</span> with <a href="https://faust.grame.
 <p><strong>Compiler takeaway</strong></p>
 </div>
 <div class="callout-content">
-<p>Analyses can match these explicit semantics to the flip-flops available in the target library.</p>
+<p>Analyses can match these semantics to flip-flops in the target library.</p>
 </div>
 </div>
 </div>
@@ -875,7 +875,7 @@ t_{\text{clk} \rightarrow Q} + t_{\text{logic}} + t_{\text{routing}}
 <p><strong>Compiler takeaway</strong></p>
 </div>
 <div class="callout-content">
-<p><strong>Analyze</strong> the critical path <span class="math inline">\(\rightarrow\)</span> <strong>split</strong> it with registers <span class="math inline">\(\rightarrow\)</span> <strong>balance</strong> the pipeline stages.</p>
+<p><strong>Analyze</strong> the critical path <span class="math inline">\(\rightarrow\)</span> <strong>insert</strong> registers <span class="math inline">\(\rightarrow\)</span> <strong>balance</strong> stages.</p>
 </div>
 </div>
 </div>
@@ -950,7 +950,7 @@ t_{\text{clk} \rightarrow Q} + t_{\text{logic}} + t_{\text{routing}}
 <p><strong>Compiler takeaway</strong></p>
 </div>
 <div class="callout-content">
-<p>Hierarchy analysis finds every instance; transforms can flatten or specialize them.</p>
+<p>Analyze instances. Flatten or specialize them.</p>
 </div>
 </div>
 </div>
@@ -1026,7 +1026,7 @@ t_{\text{clk} \rightarrow Q} + t_{\text{logic}} + t_{\text{routing}}
 <p><strong>Compiler takeaway</strong></p>
 </div>
 <div class="callout-content">
-<p>An elaboration pass expands the loop into nine explicit parallel instances.</p>
+<p>Elaboration expands the loop into nine parallel instances.</p>
 </div>
 </div>
 </div>
@@ -1166,7 +1166,7 @@ t_{\text{clk} \rightarrow Q} + t_{\text{logic}} + t_{\text{routing}}
 <p><strong>Compiler takeaway</strong></p>
 </div>
 <div class="callout-content">
-<p>Technology mapping decomposes logic into the LUTs available on the target FPGA.</p>
+<p>Technology mapping decomposes logic into target LUTs.</p>
 </div>
 </div>
 </div>
@@ -1348,7 +1348,7 @@ t_{\text{clk} \rightarrow Q} + t_{\text{logic}} + t_{\text{routing}}
 <p><strong>Compiler takeaway</strong></p>
 </div>
 <div class="callout-content">
-<p>Lowering changes the representation while preserving the Boolean function.</p>
+<p>Lowering changes representation while preserving behavior.</p>
 </div>
 </div>
 </div>
