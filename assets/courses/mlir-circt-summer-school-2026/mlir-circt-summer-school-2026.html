@@ -1294,8 +1294,8 @@ t_{\text{clk} \rightarrow Q} + t_{\text{logic}} + t_{\text{routing}}
 <section id="dd-asic-separator" class="slide level2 section-title center">
 <h2>ASIC</h2>
 </section>
-<section id="dd-asic-mystery" class="slide level2" data-auto-animate="true" data-auto-animate-id="asic-inverter-reveal">
-<h2 data-id="quarto-animate-title">Quiz: what are we looking at?</h2>
+<section id="dd-asic-mystery" class="slide level2" data-transition="none">
+<h2>Quiz: what are we looking at?</h2>
 <div class="slide-body">
 <div class="callout callout-note no-icon callout-titled callout-style-simple">
 <div class="callout-body">
@@ -1307,49 +1307,49 @@ t_{\text{clk} \rightarrow Q} + t_{\text{logic}} + t_{\text{routing}}
 </div>
 </div>
 </div>
-<div class="asic-reveal-stage asic-mystery-stage" data-id="asic-reveal-stage">
-<div class="asic-render-frame" data-id="asic-render-frame">
-<p><img data-id="asic-gds-render" src="assets/images/digital-design/sky130-inverter-mbalestrini.jpg" alt="Perspective rendering of an unlabelled SKY130 standard cell with input A, output Y, power, and ground pins"></p>
+<div class="asic-reveal-stage asic-mystery-stage">
+<div class="asic-render-frame">
+<p><img src="assets/images/digital-design/sky130-inverter-mbalestrini.jpg" alt="Perspective rendering of an unlabelled SKY130 standard cell with input A, output Y, power, and ground pins"></p>
 </div>
 </div>
 </div>
 </section>
-<section id="dd-asic-cmos" class="slide level2" data-auto-animate="true" data-auto-animate-id="asic-inverter-reveal">
-<h2 data-id="quarto-animate-title">Look through the layers</h2>
+<section id="dd-asic-cmos" class="slide level2" data-transition="none">
+<h2>Look through the layers</h2>
 <div class="slide-body">
-<div class="asic-reveal-stage asic-pair-stage" data-id="asic-reveal-stage">
-<div class="asic-render-frame" data-id="asic-render-frame">
-<p><img data-id="asic-gds-render" src="assets/images/digital-design/sky130-inverter-mbalestrini.jpg" alt="Perspective rendering of a SKY130 standard cell"></p>
+<div class="asic-reveal-stage asic-pair-stage">
+<div class="asic-render-frame">
+<p><img src="assets/images/digital-design/sky130-inverter-mbalestrini.jpg" alt="Perspective rendering of a SKY130 standard cell"></p>
 </div>
-<div class="asic-cmos-column" data-id="asic-cmos-column" data-auto-animate-delay="0.38">
+<div class="asic-cmos-column fragment instant-fragment" data-fragment-index="0">
 <div class="asic-kind-of">
 See? It kind of looks like this.
 </div>
-<div class="r-stack asic-cmos-stack" data-id="asic-cmos-stack">
-<p><img class="fragment fade-out instant-fragment" data-fragment-index="0" data-id="asic-cmos-neutral" src="assets/images/digital-design/cmos-inverter.svg" alt="CMOS circuit with a pMOS above an nMOS transistor"> <img class="fragment fade-in-then-out instant-fragment" data-fragment-index="0" src="assets/images/digital-design/cmos-inverter-low.svg" alt="With input zero, the pMOS path drives the output high"> <img class="fragment instant-fragment" data-fragment-index="1" src="assets/images/digital-design/cmos-inverter-high.svg" alt="With input one, the nMOS path drives the output low"></p>
+<div class="r-stack asic-cmos-stack">
+<p><img class="fragment fade-out instant-fragment" data-fragment-index="1" src="assets/images/digital-design/cmos-inverter.svg" alt="CMOS circuit with a pMOS above an nMOS transistor"> <img class="fragment fade-in-then-out instant-fragment" data-fragment-index="1" src="assets/images/digital-design/cmos-inverter-low.svg" alt="With input zero, the pMOS path drives the output high"> <img class="fragment instant-fragment" data-fragment-index="2" src="assets/images/digital-design/cmos-inverter-high.svg" alt="With input one, the nMOS path drives the output low"></p>
 </div>
 </div>
 </div>
 </div>
 </section>
-<section id="dd-asic-inverter" class="slide level2" data-auto-animate="true" data-auto-animate-id="asic-inverter-reveal">
-<h2 data-id="quarto-animate-title">From geometry to logic</h2>
+<section id="dd-asic-inverter" class="slide level2" data-transition="none">
+<h2>From geometry to logic</h2>
 <div class="slide-body">
-<div class="asic-reveal-stage asic-answer-stage" data-id="asic-reveal-stage">
+<div class="asic-reveal-stage asic-answer-stage">
 <div class="asic-answer-item">
-<div class="asic-render-frame asic-answer-media" data-id="asic-render-frame">
-<p><img data-id="asic-gds-render" src="assets/images/digital-design/sky130-inverter-mbalestrini.jpg" alt="Perspective rendering of a SKY130 inverter standard cell"></p>
+<div class="asic-render-frame asic-answer-media">
+<p><img src="assets/images/digital-design/sky130-inverter-mbalestrini.jpg" alt="Perspective rendering of a SKY130 inverter standard cell"></p>
 </div>
 <div class="asic-answer-caption fragment" data-fragment-index="0">
 SKY130 <code>inv_2</code> render by <a href="https://github.com/mbalestrini/GDS-Cell-Library-Render">Matias Balestrini</a>
 </div>
 </div>
-<div class="asic-answer-item" data-id="asic-cmos-column">
-<div class="r-stack asic-cmos-stack asic-answer-media" data-id="asic-cmos-stack">
-<p><img data-id="asic-cmos-neutral" src="assets/images/digital-design/cmos-inverter.svg" alt="CMOS implementation using one pMOS and one nMOS transistor"></p>
+<div class="asic-answer-item">
+<div class="r-stack asic-cmos-stack asic-answer-media">
+<p><img src="assets/images/digital-design/cmos-inverter.svg" alt="CMOS implementation using one pMOS and one nMOS transistor"></p>
 </div>
 <div class="asic-answer-caption fragment" data-fragment-index="0">
-Complementary pMOS + nMOS pair
+CMOS inverter: pMOS + nMOS
 </div>
 </div>
 <div class="asic-answer-item">
