@@ -1476,15 +1476,16 @@ CMOS inverter: pMOS + nMOS
 <section id="tools-setup" class="slide level2">
 <h2>Start the environment</h2>
 <div class="slide-body">
-<p>Pull and enter the pre-built course image:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href=""></a><span class="ex">docker</span> run <span class="at">-it</span> ghcr.io/bynaryman/mlir-summer-school-2026-circt:latest</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Clone once, then enter the pre-built course image:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href=""></a><span class="fu">git</span> clone https://github.com/Bynaryman/MLIR_ACM_Summer_School_2026_CIRCT</span>
+<span id="cb18-2"><a href=""></a><span class="bu">cd</span> MLIR_ACM_Summer_School_2026_CIRCT/tutorial</span>
+<span id="cb18-3"><a href=""></a><span class="ex">docker</span> run <span class="at">-it</span> <span class="at">-v</span> <span class="st">"</span><span class="va">$PWD</span><span class="st">:/workspace"</span> ghcr.io/bynaryman/mlir-summer-school-2026-circt:latest</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><br>
 </p>
-<p>The same image can be built locally:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href=""></a><span class="fu">git</span> clone https://github.com/Bynaryman/MLIR_ACM_Summer_School_2026_CIRCT</span>
-<span id="cb19-2"><a href=""></a><span class="bu">cd</span> MLIR_ACM_Summer_School_2026_CIRCT/tutorial</span>
-<span id="cb19-3"><a href=""></a><span class="ex">docker</span> build <span class="at">-t</span> mlir-summer-school-2026-circt .</span>
-<span id="cb19-4"><a href=""></a><span class="ex">docker</span> run <span class="at">-it</span> mlir-summer-school-2026-circt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>-v "$PWD:/workspace"</code> shares the local folder: edit with your IDE, run in Docker. Use the mount on every <code>docker run</code>.</p>
+<p>The same image can be built locally instead:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href=""></a><span class="ex">docker</span> build <span class="at">-t</span> mlir-summer-school-2026-circt .</span>
+<span id="cb19-2"><a href=""></a><span class="ex">docker</span> run <span class="at">-it</span> <span class="at">-v</span> <span class="st">"</span><span class="va">$PWD</span><span class="st">:/workspace"</span> mlir-summer-school-2026-circt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><br>
 </p>
 <div class="fragment">
