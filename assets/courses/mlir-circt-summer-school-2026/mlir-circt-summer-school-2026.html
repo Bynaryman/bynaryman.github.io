@@ -1441,26 +1441,6 @@ CMOS inverter: pMOS + nMOS
 <p>Learn the complete open-source digital ASIC flow.</p>
 </div></div>
 </div>
-</section>
-<section id="dd-vocabulary" class="slide level2">
-<h2>The same circuit lives in several representations</h2>
-<div class="slide-body">
-<div class="columns">
-<div class="column" style="width:57%;">
-<p>We have just seen the same hardware concepts living together at several levels:</p>
-<ul>
-<li><strong>SystemVerilog / RTL:</strong> modules, connections, combinational logic, and registers.</li>
-<li><strong>Gate-level netlists:</strong> gates or cells and their connectivity.</li>
-<li><strong>Physical design:</strong> placed cells and routed wires.</li>
-</ul>
-<div class="fragment" data-fragment-index="0">
-<p>Can compiler passes see a <strong>module</strong>, a <strong>combinational operator</strong>, or a <strong>register</strong> directly, without rediscovering those concepts from syntax?</p>
-<p><strong>CIRCT gives those hardware concepts explicit MLIR operations.</strong></p>
-</div>
-</div><div class="column" style="width:43%;">
-<p><img data-src="assets/images/digital-design/circt-dialects.svg" class="fragment" data-fragment-index="0" alt="Overview of CIRCT dialects, their frontends, lowerings, and hardware outputs" height="730"></p>
-</div></div>
-</div>
 </section></section>
 <section>
 <section id="circt" class="title-slide slide level1 section-title center">
@@ -1468,21 +1448,21 @@ CMOS inverter: pMOS + nMOS
 
 </section>
 <section id="circt-route" class="slide level2">
-<h2>CIRCT</h2>
+<h2>Can we do this with MLIR?</h2>
 <div class="slide-body">
 <div class="columns">
 <div class="column" style="width:68%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="assets/images/digital-design/circt-dialects-core.svg" class="quarto-figure quarto-figure-center" alt="Overview of CIRCT with the core dialects highlighted" height="730"></p>
+<p><img data-src="assets/images/digital-design/circt-dialects-core.svg" class="quarto-figure quarto-figure-center" alt="Overview of CIRCT with the core dialects highlighted" height="700"></p>
 </figure>
 </div>
 <div class="source-strip">
 <p><a href="https://circt.llvm.org/docs/GettingStarted/">CIRCT, <em>Getting Started with the CIRCT Project</em></a></p>
 </div>
 </div><div class="column" style="width:32%;">
-<p>The highlighted dialects match the concepts from the digital-design primer:</p>
-<p><strong><code>hw</code></strong> structure<br> <strong><code>comb</code></strong> combinational logic<br> <strong><code>seq</code></strong> state</p>
+<p>The CIRCT core dialects make the concepts we just used explicit:</p>
+<p><strong><code>hw</code></strong> structure and hierarchy<br> <strong><code>comb</code></strong> combinational logic<br> <strong><code>seq</code></strong> state</p>
 <div class="fragment">
 <p>CIRCT also contains other hardware dialects, transformations, analyses, and tools.</p>
 <p><span class="marker">Next: use the tools.</span></p>
