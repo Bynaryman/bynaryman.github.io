@@ -1494,65 +1494,6 @@ CMOS inverter: pMOS + nMOS
 </div>
 </div>
 </section>
-<section id="tools-cheatsheet" class="slide level2 smaller">
-<h2>Exercise cheat sheet</h2>
-<div class="slide-body">
-<table class="caption-top">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>I need to…</th>
-<th>Use</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Build and run the supplied pipeline</td>
-<td><code>./scripts/build.sh &amp;&amp; ./scripts/run.sh</code></td>
-</tr>
-<tr class="even">
-<td>SystemVerilog -&gt; MLIR</td>
-<td><code>circt-verilog in.sv -o out.mlir</code></td>
-</tr>
-<tr class="odd">
-<td>Apply passes</td>
-<td><code>circt-opt in.mlir --PASS -o out.mlir</code></td>
-</tr>
-<tr class="even">
-<td>MLIR -&gt; SystemVerilog</td>
-<td><code>firtool in.mlir -o out.sv</code></td>
-</tr>
-<tr class="odd">
-<td>Prove equivalent</td>
-<td><code>circt-lec --c1 TOP before.mlir --c2 TOP after.mlir</code></td>
-</tr>
-<tr class="even">
-<td>Compare synthesis statistics</td>
-<td><code>./scripts/compare-aig.py BEFORE.mlir AFTER.mlir TOP</code></td>
-</tr>
-<tr class="odd">
-<td>Run the Python lowering</td>
-<td><code>python scripts/lower-e4m3fn.py in.mlir -o out.mlir</code></td>
-</tr>
-<tr class="even">
-<td>Create XOR</td>
-<td><code>x = comb.XorOp.create(a, b).result</code></td>
-</tr>
-<tr class="odd">
-<td>Replace an operation</td>
-<td><code>rewriter.replace_op(op, [value])</code></td>
-</tr>
-<tr class="even">
-<td>Test the E4M3 normal path</td>
-<td><code>./scripts/test-e4m3-all.py --pass --normal-path</code></td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
 <section id="tools-basics" class="slide level2">
 <h2>Tutorial Part 1: CIRCT basics</h2>
 <div class="slide-body">
@@ -2368,6 +2309,65 @@ a \lor b = \neg(\neg a \land \neg b)
 </tbody>
 </table>
 <p>Less precision buys a smaller representation and more operations per watt; the exact rounding and exceptional-value rules remain part of the contract.</p>
+</div>
+</section>
+<section id="tools-cheatsheet" class="slide level2 smaller">
+<h2>Exercise cheat sheet</h2>
+<div class="slide-body">
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>I need to…</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Build and run the supplied pipeline</td>
+<td><code>./scripts/build.sh &amp;&amp; ./scripts/run.sh</code></td>
+</tr>
+<tr class="even">
+<td>SystemVerilog -&gt; MLIR</td>
+<td><code>circt-verilog in.sv -o out.mlir</code></td>
+</tr>
+<tr class="odd">
+<td>Apply passes</td>
+<td><code>circt-opt in.mlir --PASS -o out.mlir</code></td>
+</tr>
+<tr class="even">
+<td>MLIR -&gt; SystemVerilog</td>
+<td><code>firtool in.mlir -o out.sv</code></td>
+</tr>
+<tr class="odd">
+<td>Prove equivalent</td>
+<td><code>circt-lec --c1 TOP before.mlir --c2 TOP after.mlir</code></td>
+</tr>
+<tr class="even">
+<td>Compare synthesis statistics</td>
+<td><code>./scripts/compare-aig.py BEFORE.mlir AFTER.mlir TOP</code></td>
+</tr>
+<tr class="odd">
+<td>Run the Python lowering</td>
+<td><code>python scripts/lower-e4m3fn.py in.mlir -o out.mlir</code></td>
+</tr>
+<tr class="even">
+<td>Create XOR</td>
+<td><code>x = comb.XorOp.create(a, b).result</code></td>
+</tr>
+<tr class="odd">
+<td>Replace an operation</td>
+<td><code>rewriter.replace_op(op, [value])</code></td>
+</tr>
+<tr class="even">
+<td>Test the E4M3 normal path</td>
+<td><code>./scripts/test-e4m3-all.py --pass --normal-path</code></td>
+</tr>
+</tbody>
+</table>
 </div>
 </section>
 <section id="arithmetic-pass-goal" class="slide level2" data-auto-animate="true" data-auto-animate-id="e4m3-rewrite">
