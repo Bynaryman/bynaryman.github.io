@@ -1416,21 +1416,25 @@ CMOS inverter: pMOS + nMOS
 <h2>Can we do this with MLIR?</h2>
 <div class="slide-body">
 <div class="columns">
-<div class="column" style="width:68%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="assets/images/digital-design/circt-dialects-core.svg" class="quarto-figure quarto-figure-center" alt="Overview of CIRCT with the core dialects highlighted" height="700"></p>
-</figure>
-</div>
-<div class="source-strip">
-<p><a href="https://circt.llvm.org/docs/GettingStarted/">CIRCT, <em>Getting Started with the CIRCT Project</em></a></p>
-</div>
-</div><div class="column" style="width:32%;">
+<div class="column" style="width:36%;">
 <p>The CIRCT core dialects make the concepts we just used explicit:</p>
-<p><strong><code>hw</code></strong> structure and hierarchy<br> <strong><code>comb</code></strong> combinational logic<br> <strong><code>seq</code></strong> state</p>
+<ul>
+<li><strong><code>hw</code></strong>: structure and hierarchy</li>
+<li><strong><code>comb</code></strong>: combinational logic</li>
+<li><strong><code>seq</code></strong>: state</li>
+</ul>
 <div class="fragment">
 <p>CIRCT also contains other hardware dialects, transformations, analyses, and tools.</p>
 <p><span class="marker">Next: use the tools.</span></p>
+</div>
+</div><div class="column" style="width:64%;">
+<div class="circt-dialects-figure">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="assets/images/digital-design/circt-dialects-core.svg" style="width:100.0%" alt="Overview of CIRCT with the core dialects highlighted"></p>
+<figcaption>CIRCT dialect map. <a href="https://circt.llvm.org/docs/GettingStarted/">Source</a></figcaption>
+</figure>
+</div>
 </div>
 </div></div>
 </div>
