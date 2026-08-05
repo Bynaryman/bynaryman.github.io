@@ -1294,8 +1294,8 @@ t_{\text{clk} \rightarrow Q} + t_{\text{logic}} + t_{\text{routing}}
 <section id="dd-asic-separator" class="slide level2 section-title center">
 <h2>ASIC</h2>
 </section>
-<section id="dd-asic-mystery" class="slide level2">
-<h2>Quiz: what are we looking at?</h2>
+<section id="dd-asic-mystery" class="slide level2" data-auto-animate="true" data-auto-animate-id="asic-inverter-reveal">
+<h2 data-id="quarto-animate-title">Quiz: what are we looking at?</h2>
 <div class="slide-body">
 <div class="callout callout-note no-icon callout-titled callout-style-simple">
 <div class="callout-body">
@@ -1307,46 +1307,60 @@ t_{\text{clk} \rightarrow Q} + t_{\text{logic}} + t_{\text{routing}}
 </div>
 </div>
 </div>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="assets/images/digital-design/sky130-inverter-gds-3d.png" class="quarto-figure quarto-figure-center" style="width:61.0%" alt="Unlabelled layered three-dimensional rendering of a SKY130 standard cell"></p>
-</figure>
+<div class="asic-reveal-stage asic-mystery-stage" data-id="asic-reveal-stage">
+<div class="asic-render-frame" data-id="asic-render-frame">
+<p><img data-id="asic-gds-render" src="assets/images/digital-design/sky130-inverter-mbalestrini.jpg" alt="Perspective rendering of an unlabelled SKY130 standard cell with input A, output Y, power, and ground pins"></p>
+</div>
 </div>
 </div>
 </section>
-<section id="dd-asic-inverter" class="slide level2">
-<h2>Work upward from geometry</h2>
+<section id="dd-asic-cmos" class="slide level2" data-auto-animate="true" data-auto-animate-id="asic-inverter-reveal">
+<h2 data-id="quarto-animate-title">Look through the layers</h2>
 <div class="slide-body">
-<div class="callout callout-note no-icon callout-titled callout-style-simple">
-<div class="callout-body">
-<div class="callout-title">
-<p><strong>Question</strong></p>
+<div class="asic-reveal-stage asic-pair-stage" data-id="asic-reveal-stage">
+<div class="asic-render-frame" data-id="asic-render-frame">
+<p><img data-id="asic-gds-render" src="assets/images/digital-design/sky130-inverter-mbalestrini.jpg" alt="Perspective rendering of a SKY130 standard cell"></p>
 </div>
-<div class="callout-content">
-<p>This standard cell has two transistors. Which Boolean operation does it implement?</p>
+<div class="asic-cmos-column" data-id="asic-cmos-column" data-auto-animate-delay="0.38">
+<div class="asic-kind-of">
+See? It kind of looks like this.
+</div>
+<div class="r-stack asic-cmos-stack" data-id="asic-cmos-stack">
+<p><img class="fragment fade-out instant-fragment" data-fragment-index="0" data-id="asic-cmos-neutral" src="assets/images/digital-design/cmos-inverter.svg" alt="CMOS circuit with a pMOS above an nMOS transistor"> <img class="fragment fade-in-then-out instant-fragment" data-fragment-index="0" src="assets/images/digital-design/cmos-inverter-low.svg" alt="With input zero, the pMOS path drives the output high"> <img class="fragment instant-fragment" data-fragment-index="1" src="assets/images/digital-design/cmos-inverter-high.svg" alt="With input one, the nMOS path drives the output low"></p>
 </div>
 </div>
 </div>
-<div class="columns">
-<div class="column" style="width:55%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="assets/images/digital-design/sky130-inverter-gds-3d.png" style="width:100.0%" alt="Layered three-dimensional rendering of the SKY130 inv 1 standard cell"></p>
-<figcaption>GDSII polygons extruded by fabrication layer.</figcaption>
-</figure>
 </div>
-</div><div class="column" style="width:45%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="assets/images/digital-design/cmos-inverter.svg" style="width:75.0%" alt="CMOS circuit with one pMOS and one nMOS transistor driven by input a and producing output y"></p>
-<figcaption>CMOS transistor schematic.</figcaption>
-</figure>
+</section>
+<section id="dd-asic-inverter" class="slide level2" data-auto-animate="true" data-auto-animate-id="asic-inverter-reveal">
+<h2 data-id="quarto-animate-title">From geometry to logic</h2>
+<div class="slide-body">
+<div class="asic-reveal-stage asic-answer-stage" data-id="asic-reveal-stage">
+<div class="asic-answer-item">
+<div class="asic-render-frame asic-answer-media" data-id="asic-render-frame">
+<p><img data-id="asic-gds-render" src="assets/images/digital-design/sky130-inverter-mbalestrini.jpg" alt="Perspective rendering of a SKY130 inverter standard cell"></p>
 </div>
-<div class="fragment">
-<p><span class="math inline">\(a=0 \Rightarrow y=1\)</span> and <span class="math inline">\(a=1 \Rightarrow y=0\)</span>.</p>
-<p><strong>An inverter:</strong> <span class="math inline">\(y = \neg a\)</span>.</p>
+<div class="asic-answer-caption fragment" data-fragment-index="0">
+SKY130 <code>inv_2</code> render by <a href="https://github.com/mbalestrini/GDS-Cell-Library-Render">Matias Balestrini</a>
 </div>
-</div></div>
+</div>
+<div class="asic-answer-item" data-id="asic-cmos-column">
+<div class="r-stack asic-cmos-stack asic-answer-media" data-id="asic-cmos-stack">
+<p><img data-id="asic-cmos-neutral" src="assets/images/digital-design/cmos-inverter.svg" alt="CMOS implementation using one pMOS and one nMOS transistor"></p>
+</div>
+<div class="asic-answer-caption fragment" data-fragment-index="0">
+Complementary pMOS + nMOS pair
+</div>
+</div>
+<div class="asic-answer-item">
+<div class="asic-answer-media">
+<p><img src="assets/images/digital-design/logic-inverter.svg" alt="Logic symbol for an inverter with input a and output y"></p>
+</div>
+<div class="asic-answer-caption fragment" data-fragment-index="0">
+<strong>Inverter:</strong> y = ¬a
+</div>
+</div>
+</div>
 </div>
 </section>
 <section id="dd-asic-rtl" class="slide level2">
@@ -1363,7 +1377,7 @@ t_{\text{clk} \rightarrow Q} + t_{\text{logic}} + t_{\text{routing}}
 </div><div class="column" style="width:64%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="assets/images/digital-design/sky130-inverter-gds-3d.png" class="quarto-figure quarto-figure-center" style="width:100.0%" alt="Layered three-dimensional rendering of the SKY130 inv 1 standard cell generated from an RTL inversion"></p>
+<p><img data-src="assets/images/digital-design/sky130-inverter-mbalestrini.jpg" class="quarto-figure quarto-figure-center" style="width:100.0%" alt="Perspective rendering of a SKY130 inverter standard cell selected for an RTL inversion"></p>
 </figure>
 </div>
 </div></div>
