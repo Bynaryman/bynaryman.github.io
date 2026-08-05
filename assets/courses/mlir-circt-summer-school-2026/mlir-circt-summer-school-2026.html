@@ -253,7 +253,7 @@ Louis Ledoux
 <li><a href="#/digital-design">Digital design primer</a> <span class="toc-quiz">quiz</span> <span class="toc-time">~20 min</span></li>
 <li><a href="#/circt">CIRCT: MLIR toward hardware</a> <span class="toc-time">~10 min</span></li>
 <li><a href="#/circt-tools">CIRCT in practice</a> <span class="toc-hands-on">hands-on: 5 exercises</span> <span class="toc-quiz">quiz</span> <span class="toc-time">~45 min</span></li>
-<li><a href="#/arithmetic">Arithmetic becomes hardware</a> <span class="toc-hands-on">hands-on: 3 exercises + 1 optional</span> <span class="toc-quiz">quiz</span> <span class="toc-time">~50 min</span></li>
+<li><a href="#/arithmetic">Let’s multiply</a> <span class="toc-hands-on">hands-on: 3 exercises + 1 optional</span> <span class="toc-quiz">quiz</span> <span class="toc-time">~50 min</span></li>
 <li><a href="#/hls">Bonus: HLS with MLIR and CIRCT</a> <span class="toc-time">~20 min</span></li>
 </ol>
 </div>
@@ -1291,8 +1291,14 @@ t_{\text{clk} \rightarrow Q} + t_{\text{logic}} + t_{\text{routing}}
 </div>
 </div>
 </section>
-<section id="dd-asic-separator" class="slide level2 section-title center">
+<section id="dd-asic-separator" class="slide level2 section-title center with-subtitle">
 <h2>ASIC</h2>
+<div class="slide-body">
+<div class="section-subtitle">
+<p>Application-Specific Integrated Circuits</p>
+<p><span class="section-aside">(the hard hardware)</span></p>
+</div>
+</div>
 </section>
 <section id="dd-asic-mystery" class="slide level2" data-transition="none">
 <h2>Quiz: what are we looking at?</h2>
@@ -2049,9 +2055,12 @@ a \lor b = \neg(\neg a \land \neg b)
 </div>
 </section></section>
 <section>
-<section id="arithmetic" class="title-slide slide level1 section-title center">
-<h1>Arithmetic becomes hardware</h1>
-
+<section id="arithmetic" class="title-slide slide level1 section-title center with-subtitle">
+<h1>Let’s multiply</h1>
+<div class="section-subtitle section-epigraph">
+<p>“Be fruitful, and multiply.”</p>
+<p><a href="https://www.biblegateway.com/passage/?search=Genesis%201%3A27-29&amp;version=KJ21" class="section-reference">Genesis 1:28</a></p>
+</div>
 </section>
 <section id="arithmetic-route" class="slide level2">
 <h2>The arithmetic hands-on</h2>
