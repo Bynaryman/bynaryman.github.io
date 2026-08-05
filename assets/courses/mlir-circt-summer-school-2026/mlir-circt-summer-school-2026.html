@@ -1416,18 +1416,19 @@ CMOS inverter: pMOS + nMOS
 <h2>Can we do this with MLIR?</h2>
 <div class="slide-body">
 <div class="columns">
-<div class="column" style="width:36%;">
-<p>The CIRCT core dialects make the concepts we just used explicit:</p>
+<div class="column" style="width:42%;">
+<p>The highlighted core dialects match the concepts we just used:</p>
 <ul>
 <li><strong><code>hw</code></strong>: structure and hierarchy</li>
 <li><strong><code>comb</code></strong>: combinational logic</li>
 <li><strong><code>seq</code></strong>: state</li>
 </ul>
+<p><strong>Upstream (top):</strong> source/front-end, more abstract.<br> <strong>Downstream (bottom):</strong> HDL/back-end, closer to implementation.</p>
 <div class="fragment">
 <p>CIRCT also contains other hardware dialects, transformations, analyses, and tools.</p>
 <p><span class="marker">Next: use the tools.</span></p>
 </div>
-</div><div class="column" style="width:64%;">
+</div><div class="column" style="width:58%;">
 <div class="circt-dialects-figure">
 <div class="quarto-figure quarto-figure-center">
 <figure>
