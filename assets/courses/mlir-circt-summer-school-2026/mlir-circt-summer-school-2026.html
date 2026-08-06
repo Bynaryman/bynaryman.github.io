@@ -2329,42 +2329,46 @@ a \lor b = \neg(\neg a \land \neg b)
 </thead>
 <tbody>
 <tr class="odd">
+<td>Edit locally; run in Docker</td>
+<td><code>docker run -it -v "$PWD:/workspace" IMAGE</code></td>
+</tr>
+<tr class="even">
 <td>Build and run the supplied pipeline</td>
 <td><code>./scripts/build.sh &amp;&amp; ./scripts/run.sh</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>SystemVerilog -&gt; MLIR</td>
 <td><code>circt-verilog in.sv -o out.mlir</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Apply passes</td>
 <td><code>circt-opt in.mlir --PASS -o out.mlir</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>MLIR -&gt; SystemVerilog</td>
 <td><code>firtool in.mlir -o out.sv</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Prove equivalent</td>
 <td><code>circt-lec --c1 TOP before.mlir --c2 TOP after.mlir</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Compare synthesis statistics</td>
 <td><code>./scripts/compare-aig.py BEFORE.mlir AFTER.mlir TOP</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Run the Python lowering</td>
 <td><code>python scripts/lower-e4m3fn.py in.mlir -o out.mlir</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Create XOR</td>
 <td><code>x = comb.XorOp.create(a, b).result</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Replace an operation</td>
 <td><code>rewriter.replace_op(op, [value])</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Test the E4M3 normal path</td>
 <td><code>./scripts/test-e4m3-all.py --pass --normal-path</code></td>
 </tr>
