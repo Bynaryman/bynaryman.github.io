@@ -1418,15 +1418,16 @@ CMOS inverter: pMOS + nMOS
 <div class="slide-body">
 <div class="columns">
 <div class="column" style="width:42%;">
-<p>The highlighted core dialects match the concepts we just used:</p>
+<p><strong>Upstream MLIR</strong></p>
+<p><code>tensor</code>, <code>linalg</code> can lower toward<br> <code>func</code>, <code>scf</code>, <code>arith</code>.</p>
+<p><strong>CIRCT continues downstream</strong></p>
 <ul>
 <li><strong><code>hw</code></strong>: structure and hierarchy</li>
 <li><strong><code>comb</code></strong>: combinational logic</li>
 <li><strong><code>seq</code></strong>: state</li>
 </ul>
-<p><strong>Upstream (top):</strong> source/front-end, more abstract.<br> <strong>Downstream (bottom):</strong> HDL/back-end, closer to implementation.</p>
 <div class="fragment">
-<p>CIRCT also contains other hardware dialects, transformations, analyses, and tools.</p>
+<p>Then: <strong>SystemVerilog</strong> and FPGA/ASIC tools.</p>
 <p><span class="marker">Next: use the tools.</span></p>
 </div>
 </div><div class="column" style="width:58%;">
