@@ -1418,17 +1418,20 @@ CMOS inverter: pMOS + nMOS
 <div class="slide-body">
 <div class="columns">
 <div class="column" style="width:42%;">
-<p><strong>Upstream MLIR</strong></p>
-<p><code>tensor</code>, <code>linalg</code> can lower toward<br> <code>func</code>, <code>scf</code>, <code>arith</code>.</p>
-<p><strong>CIRCT continues downstream</strong></p>
+<p><strong>CIRCT defines the concepts from the primer:</strong></p>
 <ul>
 <li><strong><code>hw</code></strong>: structure and hierarchy</li>
 <li><strong><code>comb</code></strong>: combinational logic</li>
-<li><strong><code>seq</code></strong>: state</li>
+<li><strong><code>seq</code></strong>: registers and state</li>
 </ul>
 <div class="fragment">
-<p>Then: <strong>SystemVerilog</strong> and FPGA/ASIC tools.</p>
-<p><span class="marker">Next: use the tools.</span></p>
+<ul>
+<li><strong>Upstream MLIR:</strong> <code>tensor</code>, <code>linalg</code> → <code>func</code>, <code>scf</code>, <code>arith</code></li>
+<li><strong>Downstream:</strong> SystemVerilog → simulation, FPGA, ASIC tools</li>
+</ul>
+</div>
+<div class="fragment">
+<p><span class="marker">Next: use the CIRCT tools.</span></p>
 </div>
 </div><div class="column" style="width:58%;">
 <div class="circt-dialects-figure">
