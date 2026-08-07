@@ -1858,22 +1858,24 @@ CMOS inverter: pMOS + nMOS
 </div>
 </section>
 <section id="tools-synthesis-part" class="slide level2">
-<h2>Exercise 5: beat Sam’s circuit - 12 min</h2>
+<h2>Exercise 5: simplify and measure - 12 min</h2>
 <div class="slide-body">
-<div class="callout callout-note no-icon callout-titled callout-style-simple">
-<div class="callout-body">
-<div class="callout-title">
-<p><strong>Two questions</strong></p>
-</div>
-<div class="callout-content">
-<ol type="1">
-<li>How many <strong>AIG nodes</strong> implement the circuit?</li>
-<li>How many <strong>logic levels</strong> are on its deepest path?</li>
-</ol>
-</div>
-</div>
-</div>
-<p>Sam’s baseline: <strong>149 nodes, 13 levels</strong>. Can you reach <strong>54 nodes, 8 levels</strong>?</p>
+<div class="columns">
+<div class="column" style="width:55%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="sourceCode numberSource systemverilog number-lines code-with-copy"><code class="sourceCode systemverilog"><span id="cb40-1"><a href=""></a><span class="co">// exercises/ex5_aig.sv</span></span>
+<span id="cb40-2"><a href=""></a><span class="kw">always_comb</span> <span class="kw">begin</span></span>
+<span id="cb40-3"><a href=""></a>  out = a ? (b ? -x : -(x + <span class="bn">8'd1</span>))</span>
+<span id="cb40-4"><a href=""></a>          : (b ? x + <span class="bn">8'd1</span> : x);</span>
+<span id="cb40-5"><a href=""></a><span class="kw">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>All operations are modulo <span class="math inline">\(2^8\)</span>.</p>
+</div><div class="column" style="width:45%;">
+<p><strong>Objective</strong></p>
+<ul>
+<li><strong>Simplify</strong> this circuit without changing its function.</li>
+<li><strong>Measure</strong> AIG nodes and logic levels with CIRCT.</li>
+<li><strong>Check</strong> equivalence with <code>circt-lec</code>.</li>
+</ul>
+</div></div>
 </div>
 </section>
 <section id="tools-synthesis-definition" class="slide level2">
@@ -1938,8 +1940,8 @@ a \lor b = \neg(\neg a \land \neg b)
 <li>ports are graph inputs and outputs.</li>
 </ul>
 </div><div class="column" style="width:48%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="sourceCode numberSource mlir number-lines code-with-copy"><code class="sourceCode mlir"><span id="cb40-1"><a href=""></a><span class="va">%and</span> <span class="op">=</span> <span class="fu">synth.aig.and_inv</span> <span class="va">%a</span><span class="op">,</span> <span class="va">%b</span> <span class="op">:</span> <span class="dt">i1</span></span>
-<span id="cb40-2"><a href=""></a><span class="va">%a_n_b</span> <span class="op">=</span> <span class="fu">synth.aig.and_inv</span> not <span class="va">%a</span><span class="op">,</span> <span class="va">%b</span> <span class="op">:</span> <span class="dt">i1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="sourceCode numberSource mlir number-lines code-with-copy"><code class="sourceCode mlir"><span id="cb41-1"><a href=""></a><span class="va">%and</span> <span class="op">=</span> <span class="fu">synth.aig.and_inv</span> <span class="va">%a</span><span class="op">,</span> <span class="va">%b</span> <span class="op">:</span> <span class="dt">i1</span></span>
+<span id="cb41-2"><a href=""></a><span class="va">%a_n_b</span> <span class="op">=</span> <span class="fu">synth.aig.and_inv</span> not <span class="va">%a</span><span class="op">,</span> <span class="va">%b</span> <span class="op">:</span> <span class="dt">i1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The <code>synth</code> dialect represents this graph.</p>
 <p><span class="citation" data-cites="mishchenko2006aig">(<a href="#/references" role="doc-biblioref" onclick="">Mishchenko et al. 2006</a>)</span></p>
 </div></div>
@@ -1970,65 +1972,33 @@ a \lor b = \neg(\neg a \land \neg b)
 </tr>
 </tbody>
 </table>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb41-1"><a href=""></a><span class="ex">circt-synth</span> input.mlir <span class="at">-o</span> circuit-aig.mlir</span>
-<span id="cb41-2"><a href=""></a><span class="ex">circt-translate</span> circuit-aig.mlir <span class="dt">\</span></span>
-<span id="cb41-3"><a href=""></a>  <span class="at">--export-aiger</span> <span class="at">-o</span> circuit.aiger</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb42-1"><a href=""></a><span class="ex">circt-synth</span> input.mlir <span class="at">-o</span> circuit-aig.mlir</span>
+<span id="cb42-2"><a href=""></a><span class="ex">circt-translate</span> circuit-aig.mlir <span class="dt">\</span></span>
+<span id="cb42-3"><a href=""></a>  <span class="at">--export-aiger</span> <span class="at">-o</span> circuit.aiger</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>firtool</code> remains the tool used when the required output is Verilog.</p>
 </div>
 </section>
 <section id="tools-aig-source" class="slide level2">
-<h2>Exercise 5: inspect the starting circuit</h2>
+<h2>Exercise 5: measure the baseline</h2>
 <div class="slide-body">
 <div class="columns">
-<div class="column" style="width:55%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42"><pre class="sourceCode numberSource systemverilog number-lines code-with-copy"><code class="sourceCode systemverilog"><span id="cb42-1"><a href=""></a><span class="co">// exercises/ex5_aig.sv</span></span>
-<span id="cb42-2"><a href=""></a><span class="kw">always_comb</span> <span class="kw">begin</span></span>
-<span id="cb42-3"><a href=""></a>  out = a ? (b ? -x : -(x + <span class="bn">8'd1</span>))</span>
-<span id="cb42-4"><a href=""></a>          : (b ? x + <span class="bn">8'd1</span> : x);</span>
-<span id="cb42-5"><a href=""></a><span class="kw">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>All operations are modulo <span class="math inline">\(2^8\)</span>.</p>
-</div><div class="column" style="width:45%;">
+<div class="column" style="width:60%;">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb43-1"><a href=""></a><span class="ex">circt-verilog</span> exercises/ex5_aig.sv <span class="at">-o</span> build/ex5_aig.mlir</span>
 <span id="cb43-2"><a href=""></a><span class="ex">circt-synth</span> build/ex5_aig.mlir <span class="at">--top</span><span class="op">=</span>ex5_aig <span class="dt">\</span></span>
 <span id="cb43-3"><a href=""></a>  <span class="at">--analysis-output</span><span class="op">=</span>build/ex5-reports <span class="dt">\</span></span>
 <span id="cb43-4"><a href=""></a>  <span class="at">-o</span> build/ex5_aig_synth.mlir</span>
 <span id="cb43-5"><a href=""></a><span class="fu">cat</span> build/ex5-reports/resource_usage.txt</span>
 <span id="cb43-6"><a href=""></a><span class="fu">cat</span> build/ex5-reports/longest_path.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div></div>
+</div><div class="column" style="width:40%;">
 <div class="fragment">
-<p>This is a four-entry lookup table selected by <code>a</code> and <code>b</code>:</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th style="text-align: right;"><code>a</code></th>
-<th style="text-align: right;"><code>b</code></th>
-<th><code>out</code></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td><code>x</code></td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-<td><code>x + 1</code></td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">0</td>
-<td><code>-(x + 1)</code></td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1</td>
-<td><code>-x</code></td>
-</tr>
-</tbody>
-</table>
+<p><strong>Baseline</strong></p>
+<ul>
+<li><strong>149</strong> AIG nodes</li>
+<li><strong>13</strong> logic levels</li>
+</ul>
+<p><span class="marker">Target: 54 nodes, 8 levels.</span></p>
 </div>
+</div></div>
 </div>
 </section>
 <section id="tools-aig-simplify" class="slide level2">
