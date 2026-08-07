@@ -2428,16 +2428,23 @@ a \lor b = \neg(\neg a \land \neg b)
 </div>
 </section>
 <section id="arithmetic-e4m3-axis" class="slide level2">
-<h2>Normal and subnormal values</h2>
+<h2>Why subnormal values?</h2>
 <div class="slide-body">
-<p>You may remember from class: <strong>normal values</strong> have an implicit leading <span class="math inline">\(1\)</span>; <strong>subnormal values</strong> are tiny values near zero without it.</p>
+<p>You may remember binary scientific notation:</p>
+<ul>
+<li><strong>Normal:</strong> normalized binary scientific notation, <span class="math inline">\(1.mmm_2 \times 2^e\)</span>.</li>
+<li>At <span class="math inline">\(e_{\min}=-6\)</span>, no smaller exponent exists; without subnormals, the next representable value below <span class="math inline">\(2^{-6}\)</span> is zero.</li>
+</ul>
+<div class="fragment" data-fragment-index="0">
+<p><strong>Subnormal:</strong> keep <span class="math inline">\(e=-6\)</span> and allow <span class="math inline">\(0.mmm_2 \times 2^{-6}\)</span>; seven values fill the gap gradually.</p>
+</div>
 <div class="r-stack">
 <p><img data-src="assets/images/e4m3-binades.svg" style="width:94.0%" alt="Normal E4M3FN binades double in width and leave no normal values between zero and two to the minus six"></p>
 <p><img data-src="assets/images/e4m3-binades-subnormals.svg" class="fragment" style="width:94.0%" data-fragment-index="0" alt="Seven subnormal values fill the interval next to zero"></p>
 </div>
 <div class="fragment" data-fragment-index="1">
 <p><span class="marker">Exercise 7: exact normal finite products only.</span></p>
-<p>A complete multiplier must also handle zero, subnormals, NaNs, overflow/underflow, and rounding. <code>f8E4M3FN</code> has no infinities.</p>
+<p>Set aside: zero, subnormals, NaNs, overflow/underflow, and rounding.</p>
 </div>
 </div>
 </section>
