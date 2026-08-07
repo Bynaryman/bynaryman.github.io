@@ -2579,12 +2579,14 @@ a \lor b = \neg(\neg a \land \neg b)
 </div>
 </div>
 <div class="e4m3-rewrite-copy" data-id="e4m3-copy">
+<p><strong>Input excerpt:</strong> <code>examples/ex7_e4m3fn_mul.mlir</code></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb58"><pre class="sourceCode numberSource mlir number-lines code-with-copy"><code class="sourceCode mlir"><span id="cb58-1"><a href=""></a><span class="va">%af</span> <span class="op">=</span> <span class="fu">arith.bitcast</span> <span class="va">%a</span> <span class="op">:</span> <span class="dt">i8</span> to f8E4M3FN</span>
 <span id="cb58-2"><a href=""></a><span class="va">%bf</span> <span class="op">=</span> <span class="fu">arith.bitcast</span> <span class="va">%b</span> <span class="op">:</span> <span class="dt">i8</span> to f8E4M3FN</span>
-<span id="cb58-3"><a href=""></a><span class="va">%p</span> <span class="op">=</span> <span class="fu">arith.mulf</span> <span class="va">%af</span><span class="op">,</span> <span class="va">%bf</span> <span class="op">:</span> f8E4M3FN</span>
-<span id="cb58-4"><a href=""></a><span class="va">%r</span> <span class="op">=</span> <span class="fu">arith.bitcast</span> <span class="va">%p</span> <span class="op">:</span> f8E4M3FN to <span class="dt">i8</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb58-3"><a href=""></a><span class="va">%product</span> <span class="op">=</span> <span class="fu">arith.mulf</span> <span class="va">%af</span><span class="op">,</span> <span class="va">%bf</span> <span class="op">:</span> f8E4M3FN</span>
+<span id="cb58-4"><a href=""></a><span class="va">%result</span> <span class="op">=</span> <span class="fu">arith.bitcast</span> <span class="va">%product</span> <span class="op">:</span> f8E4M3FN to <span class="dt">i8</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Root the rewrite at the final <code>arith.bitcast</code>: the matched island and its replacement then have the same <code>i8</code> boundary.</p>
 <div class="e4m3-stage-code stage-target">
+<p><strong>Pass skeleton:</strong> <code>scripts/lower-e4m3fn.py</code></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb59"><pre class="sourceCode numberSource python-circt number-lines code-with-copy"><code class="sourceCode pythoncirct"><span id="cb59-1"><a href=""></a><span class="kw">def</span> <span class="fu">lower_e4m3_mul</span><span class="op">(</span>out_cast<span class="op">,</span> rewriter<span class="op">):</span></span>
 <span id="cb59-2"><a href=""></a>    <span class="va">matched</span> <span class="op">=</span> <span class="fu">match_e4m3_island</span><span class="op">(</span>out_cast<span class="op">)</span>  <span class="co"># supplied</span></span>
 <span id="cb59-3"><a href=""></a>    <span class="cf">if</span> matched <span class="kw">is</span> <span class="cn">None</span><span class="op">:</span></span>
@@ -2598,7 +2600,7 @@ a \lor b = \neg(\neg a \land \neg b)
 <span id="cb59-11"><a href=""></a><span class="fu">patterns.add</span><span class="op">(</span></span>
 <span id="cb59-12"><a href=""></a>    <span class="fu">arith.BitcastOp</span><span class="op">,</span> lower_e4m3_mul<span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><strong>Edit:</strong> <code>scripts/lower-e4m3fn.py</code> · <strong>Supplied:</strong> matcher, integer type aliases, and <code>comb</code>/<code>hw</code> builders · <strong>Scope:</strong> exact normal finite products; no rounding.</p>
+<p><strong>Supplied:</strong> matcher, integer type aliases, and <code>comb</code>/<code>hw</code> builders · <strong>Scope:</strong> exact normal finite products; no rounding.</p>
 </div>
 </div>
 </div>
