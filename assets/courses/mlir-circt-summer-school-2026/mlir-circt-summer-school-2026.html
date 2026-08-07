@@ -3213,26 +3213,6 @@ Cumulative schematic
 <p>For a square, the lower triangle duplicates the upper triangle and the diagonal does not require an AND gate <span class="citation" data-cites="dinechin2024asa">(<a href="#/references" role="doc-biblioref" onclick="">Dinechin and Kumm 2024, sec. 14.2</a>)</span>.</p>
 </div>
 </section>
-<section id="arithmetic-square-derivation" class="slide level2">
-<h2>Why the significand squarer is cheaper</h2>
-<div class="slide-body">
-<div class="columns">
-<div class="column" style="width:46%;">
-<p>For <span class="math inline">\(X=\sum_i 2^i x_i\)</span>:</p>
-<p><span class="math display">\[
-X^2 = \sum_i 2^{2i}x_i
-    + \sum_{j&lt;i} 2^{i+j+1}x_ix_j
-\]</span></p>
-</div><div class="column" style="width:54%;">
-<ul>
-<li class="fragment"><strong>Diagonal:</strong> <span class="math inline">\(x_i x_i=x_i\)</span>, so it is a wire.</li>
-<li class="fragment"><strong>Mirror:</strong> <span class="math inline">\(x_ix_j=x_jx_i\)</span>, so compute the pair once and shift its weight.</li>
-<li class="fragment"><strong>Four bits:</strong> 16 generic partial products become 6 ANDs and 4 wires.</li>
-</ul>
-</div></div>
-<p>The bit complexity is roughly halved before compression and rounding. The floating-point normalization and exceptional-value policy remain.</p>
-</div>
-</section>
 <section id="arithmetic-square-order" class="slide level2">
 <h2>Exercise 8: use the stronger pattern first</h2>
 <div class="slide-body">
@@ -3250,7 +3230,8 @@ X^2 = \sum_i 2^{2i}x_i
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb78"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb78-1"><a href=""></a><span class="ex">python</span> scripts/lower-e4m3fn-square.py <span class="dt">\</span></span>
 <span id="cb78-2"><a href=""></a>  exercises/ex8_e4m3fn_square.mlir <span class="kw">|</span> <span class="dt">\</span></span>
 <span id="cb78-3"><a href=""></a>  <span class="ex">circt-tutorial-opt</span> <span class="at">--tutorial-func-to-hw</span> <span class="dt">\</span></span>
-<span id="cb78-4"><a href=""></a>    <span class="at">--canonicalize</span> <span class="at">-o</span> exercises/ex8_square_intermediate.mlir</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb78-4"><a href=""></a>    <span class="at">--canonicalize</span> <span class="dt">\</span></span>
+<span id="cb78-5"><a href=""></a>    <span class="at">-o</span> exercises/ex8_square_intermediate.mlir</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>In a combined production pass, the square rewrite would receive the higher <code>PatternBenefit</code>.</p>
 </div></div>
 </div>
