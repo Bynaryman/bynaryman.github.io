@@ -1917,26 +1917,30 @@ CMOS inverter: pMOS + nMOS
 </div>
 </div>
 </div>
+<div class="fragment">
+<p><strong>Yes.</strong> De Morgan’s law gives:</p>
+<p><span class="math display">\[
+a \lor b = \neg(\neg a \land \neg b)
+\]</span></p>
+</div>
 </div>
 </section>
 <section id="tools-aig-definition" class="slide level2">
-<h2>The Boolean network is an AIG</h2>
+<h2>AIG: a common synthesis representation</h2>
 <div class="slide-body">
+<p>Many synthesis tools normalize Boolean logic into an <strong>And-Inverter Graph (AIG)</strong>.</p>
+<p>It is regular and optimization-friendly, but <strong>not a canonical form</strong>: equivalent functions can still have different AIGs.</p>
 <div class="columns">
 <div class="column" style="width:52%;">
-<p>An <strong>And-Inverter Graph (AIG)</strong> is a directed acyclic graph:</p>
 <ul>
 <li>vertices are two-input AND operations;</li>
 <li>an edge may invert its value;</li>
 <li>ports are graph inputs and outputs.</li>
 </ul>
+</div><div class="column" style="width:48%;">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="sourceCode numberSource mlir number-lines code-with-copy"><code class="sourceCode mlir"><span id="cb40-1"><a href=""></a><span class="va">%and</span> <span class="op">=</span> <span class="fu">synth.aig.and_inv</span> <span class="va">%a</span><span class="op">,</span> <span class="va">%b</span> <span class="op">:</span> <span class="dt">i1</span></span>
 <span id="cb40-2"><a href=""></a><span class="va">%a_n_b</span> <span class="op">=</span> <span class="fu">synth.aig.and_inv</span> not <span class="va">%a</span><span class="op">,</span> <span class="va">%b</span> <span class="op">:</span> <span class="dt">i1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:48%;">
-<p><span class="math display">\[
-a \lor b = \neg(\neg a \land \neg b)
-\]</span></p>
-<p>AND and inversion can represent every Boolean function. <span class="citation" data-cites="mishchenko2006aig">(<a href="#/references" role="doc-biblioref" onclick="">Mishchenko et al. 2006</a>)</span></p>
+<p><span class="citation" data-cites="mishchenko2006aig">(<a href="#/references" role="doc-biblioref" onclick="">Mishchenko et al. 2006</a>)</span></p>
 </div></div>
 </div>
 </section>
