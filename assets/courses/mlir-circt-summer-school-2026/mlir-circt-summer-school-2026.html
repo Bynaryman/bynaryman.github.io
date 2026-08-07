@@ -3214,7 +3214,7 @@ Cumulative schematic
 </div>
 </section>
 <section id="arithmetic-square-order" class="slide level2">
-<h2>Exercise 8: use the stronger pattern first</h2>
+<h2>Exercise 8: recognize the stronger pattern</h2>
 <div class="slide-body">
 <div class="columns">
 <div class="column" style="width:47%;">
@@ -3226,90 +3226,111 @@ Cumulative schematic
 <span id="cb77-5"><a href=""></a>  <span class="kw">return</span> <span class="va">%r</span> <span class="op">:</span> <span class="dt">i8</span></span>
 <span id="cb77-6"><a href=""></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:53%;">
-<p>The generic multiplier pattern also matches <code>%x * %x</code>. For this exercise, run the dedicated square lowering first:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb78"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb78-1"><a href=""></a><span class="ex">python</span> scripts/lower-e4m3fn-square.py <span class="dt">\</span></span>
-<span id="cb78-2"><a href=""></a>  exercises/ex8_e4m3fn_square.mlir <span class="kw">|</span> <span class="dt">\</span></span>
-<span id="cb78-3"><a href=""></a>  <span class="ex">circt-tutorial-opt</span> <span class="at">--tutorial-func-to-hw</span> <span class="dt">\</span></span>
-<span id="cb78-4"><a href=""></a>    <span class="at">--canonicalize</span> <span class="dt">\</span></span>
-<span id="cb78-5"><a href=""></a>    <span class="at">-o</span> exercises/ex8_square_intermediate.mlir</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>In a combined production pass, the square rewrite would receive the higher <code>PatternBenefit</code>.</p>
-</div></div>
-</div>
-</section>
-<section id="arithmetic-square-intermediate" class="slide level2">
-<h2>Exercise 8: working intermediate</h2>
-<div class="slide-body">
-<div class="columns">
-<div class="column" style="width:52%;">
-<p>The supplied script already specializes the outer floating-point structure:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb79"><pre class="sourceCode numberSource python-circt number-lines code-with-copy"><code class="sourceCode pythoncirct"><span id="cb79-1"><a href=""></a>lhs<span class="op">,</span> <span class="va">rhs</span> <span class="op">=</span> matched</span>
-<span id="cb79-2"><a href=""></a><span class="cf">if</span> lhs !<span class="op">=</span> rhs<span class="op">:</span></span>
-<span id="cb79-3"><a href=""></a>    <span class="cf">return</span> <span class="cn">True</span></span>
-<span id="cb79-4"><a href=""></a></span>
-<span id="cb79-5"><a href=""></a><span class="va">x</span> <span class="op">=</span> lhs</span>
-<span id="cb79-6"><a href=""></a><span class="va">sign</span> <span class="op">=</span> <span class="fu">hw.ConstantOp.create</span><span class="op">(</span><span class="dt">i1</span><span class="op">,</span> <span class="dv">0</span><span class="op">).</span>result</span>
-<span id="cb79-7"><a href=""></a></span>
-<span id="cb79-8"><a href=""></a><span class="va">ex</span> <span class="op">=</span> <span class="fu">comb.ExtractOp.create</span><span class="op">(</span><span class="dv">3</span><span class="op">,</span> <span class="dt">i4</span><span class="op">,</span> x<span class="op">).</span>result</span>
-<span id="cb79-9"><a href=""></a><span class="va">ex5</span> <span class="op">=</span> <span class="fu">comb.ConcatOp.create</span><span class="op">(</span>zero1<span class="op">,</span> ex<span class="op">).</span>result</span>
-<span id="cb79-10"><a href=""></a><span class="va">doubled</span> <span class="op">=</span> <span class="fu">comb.ShlOp.create</span><span class="op">(</span>ex5<span class="op">,</span> one5<span class="op">).</span>result</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:48%;">
-<p>Only the significand still uses a generic multiplier:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb80"><pre class="sourceCode numberSource python-circt number-lines code-with-copy"><code class="sourceCode pythoncirct"><span id="cb80-1"><a href=""></a><span class="kw">def</span> <span class="fu">build_square4</span><span class="op">(</span>value<span class="op">):</span></span>
-<span id="cb80-2"><a href=""></a>    <span class="dt">i4</span> <span class="op">=</span> <span class="fu">IntegerType.get_signless</span><span class="op">(</span><span class="dv">4</span><span class="op">)</span></span>
-<span id="cb80-3"><a href=""></a>    <span class="va">zero4</span> <span class="op">=</span> <span class="fu">hw.ConstantOp.create</span><span class="op">(</span><span class="dt">i4</span><span class="op">,</span> <span class="dv">0</span><span class="op">).</span>result</span>
-<span id="cb80-4"><a href=""></a>    <span class="va">wide</span> <span class="op">=</span> <span class="fu">comb.ConcatOp.create</span><span class="op">(</span>zero4<span class="op">,</span> value<span class="op">).</span>result</span>
-<span id="cb80-5"><a href=""></a>    <span class="cf">return</span> <span class="fu">comb.MulOp.create</span><span class="op">(</span>wide<span class="op">,</span> wide<span class="op">).</span>result</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The intermediate is valid and testable before students edit anything.</p>
+<p><strong>Matcher excerpt:</strong> <code>scripts/lower-e4m3fn-square.py</code></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb78"><pre class="sourceCode numberSource python-circt number-lines code-with-copy"><code class="sourceCode pythoncirct"><span id="cb78-1"><a href=""></a><span class="va">matched</span> <span class="op">=</span> <span class="fu">match_e4m3_island</span><span class="op">(</span>out_cast<span class="op">)</span></span>
+<span id="cb78-2"><a href=""></a><span class="cf">if</span> matched <span class="kw">is</span> <span class="cn">None</span><span class="op">:</span></span>
+<span id="cb78-3"><a href=""></a>    <span class="cf">return</span> <span class="cn">True</span></span>
+<span id="cb78-4"><a href=""></a></span>
+<span id="cb78-5"><a href=""></a>lhs<span class="op">,</span> <span class="va">rhs</span> <span class="op">=</span> matched</span>
+<span id="cb78-6"><a href=""></a><span class="cf">if</span> lhs !<span class="op">=</span> rhs<span class="op">:</span></span>
+<span id="cb78-7"><a href=""></a>    <span class="cf">return</span> <span class="cn">True</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The rewrite continues only when both operands are the <strong>same SSA value</strong>. A combined production pass would give this pattern a higher <code>PatternBenefit</code> than the generic multiplier.</p>
 </div></div>
 </div>
 </section>
 <section id="arithmetic-square-exercise" class="slide level2">
-<h2>Exercise 8: replace one helper - 12 min</h2>
+<h2>Exercise 8: build the 4-bit squarer - 12 min</h2>
 <div class="slide-body">
-<p>Edit only <code>build_square4</code> in <code>scripts/lower-e4m3fn-square.py</code>:</p>
-<ol type="1">
-<li>Route each diagonal bit <span class="math inline">\(x_i\)</span> to weight <span class="math inline">\(2i\)</span>.</li>
-<li>Compute each cross product <span class="math inline">\(x_ix_j\)</span> once for <span class="math inline">\(j&lt;i\)</span>.</li>
-<li>Place it at weight <span class="math inline">\(i+j+1\)</span> and add the terms.</li>
-</ol>
-<p>Then regenerate the specialized circuit:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb81"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb81-1"><a href=""></a><span class="ex">python</span> scripts/lower-e4m3fn-square.py <span class="dt">\</span></span>
-<span id="cb81-2"><a href=""></a>  exercises/ex8_e4m3fn_square.mlir <span class="kw">|</span> <span class="dt">\</span></span>
-<span id="cb81-3"><a href=""></a>  <span class="ex">circt-tutorial-opt</span> <span class="at">--tutorial-func-to-hw</span> <span class="dt">\</span></span>
-<span id="cb81-4"><a href=""></a>    <span class="at">--canonicalize</span> <span class="at">-o</span> exercises/ex8_square_specialized.mlir</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Edit only:</strong> <code>build_square4</code> in <code>scripts/lower-e4m3fn-square.py</code>.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb79"><pre class="sourceCode numberSource python-circt number-lines code-with-copy"><code class="sourceCode pythoncirct"><span id="cb79-1"><a href=""></a><span class="kw">def</span> <span class="fu">build_square4</span><span class="op">(</span>value<span class="op">):</span></span>
+<span id="cb79-2"><a href=""></a>    <span class="dt">i4</span> <span class="op">=</span> <span class="fu">IntegerType.get_signless</span><span class="op">(</span><span class="dv">4</span><span class="op">)</span></span>
+<span id="cb79-3"><a href=""></a>    <span class="va">zero4</span> <span class="op">=</span> <span class="fu">hw.ConstantOp.create</span><span class="op">(</span><span class="dt">i4</span><span class="op">,</span> <span class="dv">0</span><span class="op">).</span>result</span>
+<span id="cb79-4"><a href=""></a>    <span class="va">wide</span> <span class="op">=</span> <span class="fu">comb.ConcatOp.create</span><span class="op">(</span>zero4<span class="op">,</span> value<span class="op">).</span>result</span>
+<span id="cb79-5"><a href=""></a>    <span class="cf">return</span> <span class="fu">comb.MulOp.create</span><span class="op">(</span>wide<span class="op">,</span> wide<span class="op">).</span>result</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This generic multiplier is the code to replace.</p>
+</div><div class="column" style="width:50%;">
+<p><strong>Task:</strong> return the exact 8-bit square of the 4-bit <code>1.mmm</code> significand.</p>
+<ul>
+<li>Route the four diagonal bits to weights <span class="math inline">\(2i\)</span>.</li>
+<li>Compute the six distinct cross terms once and place them at <span class="math inline">\(i+j+1\)</span>.</li>
+<li>Add the ten weighted terms into one <code>i8</code> result.</li>
+<li>Generate no <code>comb.mul</code>.</li>
+</ul>
+<p>Everything outside this helper remains unchanged.</p>
+</div></div>
 </div>
 </section>
-<section id="arithmetic-square-builder" class="slide level2">
-<h2>Exercise 8: solution</h2>
+<section id="arithmetic-square-run" class="slide level2">
+<h2>Exercise 8: generate and inspect</h2>
+<div class="slide-body">
+<p>When your helper is ready:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb80"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb80-1"><a href=""></a><span class="ex">python</span> scripts/lower-e4m3fn-square.py <span class="dt">\</span></span>
+<span id="cb80-2"><a href=""></a>  exercises/ex8_e4m3fn_square.mlir <span class="kw">|</span> <span class="dt">\</span></span>
+<span id="cb80-3"><a href=""></a>  <span class="ex">circt-tutorial-opt</span> <span class="at">--tutorial-func-to-hw</span> <span class="dt">\</span></span>
+<span id="cb80-4"><a href=""></a>    <span class="at">--canonicalize</span> <span class="dt">\</span></span>
+<span id="cb80-5"><a href=""></a>    <span class="at">-o</span> exercises/ex8_square_specialized.mlir</span>
+<span id="cb80-6"><a href=""></a><span class="fu">grep</span> <span class="at">-n</span> <span class="st">"comb.mul"</span> exercises/ex8_square_specialized.mlir  <span class="co"># no match</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The generated file must be created, pass MLIR verification, and contain no <code>comb.mul</code>. Functional equivalence and circuit cost are checked after the solution.</p>
+</div>
+</section>
+<section id="arithmetic-square-diagonal" class="slide level2" data-transition="none">
+<h2>Solution checkpoint: diagonal terms</h2>
+<div class="slide-body">
+<div class="columns">
+<div class="column" style="width:38%;">
+<p>For every bit <span class="math inline">\(x_i\)</span>:</p>
+<p><span class="math display">\[x_i^2=x_i\]</span></p>
+<p>Its weight changes from <span class="math inline">\(i\)</span> to <span class="math inline">\(2i\)</span>. Extending one bit to <code>i8</code> and shifting it by a constant describes that wiring.</p>
+<p>At this checkpoint, <code>terms</code> contains only the four diagonal wires.</p>
+</div><div class="column" style="width:62%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb81"><pre class="sourceCode numberSource python-circt number-lines code-with-copy"><code class="sourceCode pythoncirct"><span id="cb81-1"><a href=""></a><span class="kw">def</span> <span class="fu">build_square4</span><span class="op">(</span>value<span class="op">):</span></span>
+<span id="cb81-2"><a href=""></a>    <span class="dt">i1</span> <span class="op">=</span> <span class="fu">IntegerType.get_signless</span><span class="op">(</span><span class="dv">1</span><span class="op">)</span></span>
+<span id="cb81-3"><a href=""></a>    <span class="dt">i7</span> <span class="op">=</span> <span class="fu">IntegerType.get_signless</span><span class="op">(</span><span class="dv">7</span><span class="op">)</span></span>
+<span id="cb81-4"><a href=""></a>    <span class="dt">i8</span> <span class="op">=</span> <span class="fu">IntegerType.get_signless</span><span class="op">(</span><span class="dv">8</span><span class="op">)</span></span>
+<span id="cb81-5"><a href=""></a>    <span class="va">bits</span> <span class="op">=</span> <span class="op">[</span></span>
+<span id="cb81-6"><a href=""></a>        <span class="fu">comb.ExtractOp.create</span><span class="op">(</span>i<span class="op">,</span> <span class="dt">i1</span><span class="op">,</span> value<span class="op">).</span>result</span>
+<span id="cb81-7"><a href=""></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span><span class="op">(</span><span class="dv">4</span><span class="op">)</span></span>
+<span id="cb81-8"><a href=""></a>    <span class="op">]</span></span>
+<span id="cb81-9"><a href=""></a>    <span class="va">zero7</span> <span class="op">=</span> <span class="fu">hw.ConstantOp.create</span><span class="op">(</span><span class="dt">i7</span><span class="op">,</span> <span class="dv">0</span><span class="op">).</span>result</span>
+<span id="cb81-10"><a href=""></a></span>
+<span id="cb81-11"><a href=""></a>    <span class="kw">def</span> <span class="fu">at_weight</span><span class="op">(</span>bit<span class="op">,</span> weight<span class="op">):</span></span>
+<span id="cb81-12"><a href=""></a>        <span class="va">wide</span> <span class="op">=</span> <span class="fu">comb.ConcatOp.create</span><span class="op">(</span>zero7<span class="op">,</span> bit<span class="op">).</span>result</span>
+<span id="cb81-13"><a href=""></a>        <span class="va">shift</span> <span class="op">=</span> <span class="fu">hw.ConstantOp.create</span><span class="op">(</span><span class="dt">i8</span><span class="op">,</span> weight<span class="op">).</span>result</span>
+<span id="cb81-14"><a href=""></a>        <span class="cf">return</span> <span class="fu">comb.ShlOp.create</span><span class="op">(</span>wide<span class="op">,</span> shift<span class="op">).</span>result</span>
+<span id="cb81-15"><a href=""></a></span>
+<span id="cb81-16"><a href=""></a>    <span class="va">terms</span> <span class="op">=</span> <span class="op">[</span><span class="fu">at_weight</span><span class="op">(</span>bits<span class="op">[</span>i<span class="op">],</span> <span class="dv">2</span> <span class="op">*</span> i<span class="op">)</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span><span class="op">(</span><span class="dv">4</span><span class="op">)]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div></div>
+</div>
+</section>
+<section id="arithmetic-square-builder" class="slide level2" data-transition="none">
+<h2>Solution checkpoint: cross terms</h2>
 <div class="slide-body">
 <div class="columns">
 <div class="column" style="width:39%;">
-<p>For each input bit <span class="math inline">\(x_i\)</span>:</p>
-<ul>
-<li>route <span class="math inline">\(x_i\)</span> directly to bit position <span class="math inline">\(2i\)</span>;</li>
-<li>compute <span class="math inline">\(x_i x_j\)</span> once for every <span class="math inline">\(j&lt;i\)</span>;</li>
-<li>place that cross product at bit position <span class="math inline">\(i+j+1\)</span>.</li>
-</ul>
-<p>The loop describes the bit heap. Constant shifts become wiring, and the generic <code>comb.add</code> network can be compressed by synthesis.</p>
+<p>For each pair <span class="math inline">\(j&lt;i\)</span>:</p>
+<p><span class="math display">\[2x_ix_j=x_ix_j\,2^1\]</span></p>
+<p>Compute one AND and place it at weight <span class="math inline">\(i+j+1\)</span>. The nested loop visits the six distinct cross terms; <code>comb.add</code> collects all ten weighted terms.</p>
 </div><div class="column" style="width:61%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb82"><pre class="sourceCode numberSource python-circt number-lines code-with-copy"><code class="sourceCode pythoncirct"><span id="cb82-1"><a href=""></a><span class="kw">def</span> <span class="fu">build_square4</span><span class="op">(</span>x<span class="op">):</span></span>
-<span id="cb82-2"><a href=""></a>    <span class="va">bits</span> <span class="op">=</span> <span class="op">[</span></span>
-<span id="cb82-3"><a href=""></a>        <span class="fu">comb.ExtractOp.create</span><span class="op">(</span>i<span class="op">,</span> <span class="dt">i1</span><span class="op">,</span> x<span class="op">).</span>result</span>
-<span id="cb82-4"><a href=""></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span><span class="op">(</span><span class="dv">4</span><span class="op">)</span></span>
-<span id="cb82-5"><a href=""></a>    <span class="op">]</span></span>
-<span id="cb82-6"><a href=""></a>    <span class="va">zero7</span> <span class="op">=</span> <span class="fu">hw.ConstantOp.create</span><span class="op">(</span><span class="dt">i7</span><span class="op">,</span> <span class="dv">0</span><span class="op">).</span>result</span>
-<span id="cb82-7"><a href=""></a></span>
-<span id="cb82-8"><a href=""></a>    <span class="kw">def</span> <span class="fu">at_weight</span><span class="op">(</span>bit<span class="op">,</span> weight<span class="op">):</span></span>
-<span id="cb82-9"><a href=""></a>        <span class="va">wide</span> <span class="op">=</span> <span class="fu">comb.ConcatOp.create</span><span class="op">(</span>zero7<span class="op">,</span> bit<span class="op">).</span>result</span>
-<span id="cb82-10"><a href=""></a>        <span class="va">shift</span> <span class="op">=</span> <span class="fu">hw.ConstantOp.create</span><span class="op">(</span><span class="dt">i8</span><span class="op">,</span> weight<span class="op">).</span>result</span>
-<span id="cb82-11"><a href=""></a>        <span class="cf">return</span> <span class="fu">comb.ShlOp.create</span><span class="op">(</span>wide<span class="op">,</span> shift<span class="op">).</span>result</span>
-<span id="cb82-12"><a href=""></a></span>
-<span id="cb82-13"><a href=""></a>    <span class="va">terms</span> <span class="op">=</span> <span class="op">[</span><span class="fu">at_weight</span><span class="op">(</span>bits<span class="op">[</span>i<span class="op">],</span> <span class="dv">2</span> <span class="op">*</span> i<span class="op">)</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span><span class="op">(</span><span class="dv">4</span><span class="op">)]</span></span>
-<span id="cb82-14"><a href=""></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span><span class="op">(</span><span class="dv">4</span><span class="op">):</span></span>
-<span id="cb82-15"><a href=""></a>        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span><span class="op">(</span>i<span class="op">):</span></span>
-<span id="cb82-16"><a href=""></a>            <span class="va">cross</span> <span class="op">=</span> <span class="fu">comb.AndOp.create</span><span class="op">(</span>bits<span class="op">[</span>i<span class="op">],</span> bits<span class="op">[</span>j<span class="op">]).</span>result</span>
-<span id="cb82-17"><a href=""></a>            <span class="fu">terms.append</span><span class="op">(</span><span class="fu">at_weight</span><span class="op">(</span>cross<span class="op">,</span> i <span class="op">+</span> j <span class="op">+</span> <span class="dv">1</span><span class="op">))</span></span>
-<span id="cb82-18"><a href=""></a></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb82"><pre class="sourceCode numberSource python-circt number-lines code-with-copy"><code class="sourceCode pythoncirct"><span id="cb82-1"><a href=""></a><span class="kw">def</span> <span class="fu">build_square4</span><span class="op">(</span>value<span class="op">):</span></span>
+<span id="cb82-2"><a href=""></a>    <span class="dt">i1</span> <span class="op">=</span> <span class="fu">IntegerType.get_signless</span><span class="op">(</span><span class="dv">1</span><span class="op">)</span></span>
+<span id="cb82-3"><a href=""></a>    <span class="dt">i7</span> <span class="op">=</span> <span class="fu">IntegerType.get_signless</span><span class="op">(</span><span class="dv">7</span><span class="op">)</span></span>
+<span id="cb82-4"><a href=""></a>    <span class="dt">i8</span> <span class="op">=</span> <span class="fu">IntegerType.get_signless</span><span class="op">(</span><span class="dv">8</span><span class="op">)</span></span>
+<span id="cb82-5"><a href=""></a>    <span class="va">bits</span> <span class="op">=</span> <span class="op">[</span></span>
+<span id="cb82-6"><a href=""></a>        <span class="fu">comb.ExtractOp.create</span><span class="op">(</span>i<span class="op">,</span> <span class="dt">i1</span><span class="op">,</span> value<span class="op">).</span>result</span>
+<span id="cb82-7"><a href=""></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span><span class="op">(</span><span class="dv">4</span><span class="op">)</span></span>
+<span id="cb82-8"><a href=""></a>    <span class="op">]</span></span>
+<span id="cb82-9"><a href=""></a>    <span class="va">zero7</span> <span class="op">=</span> <span class="fu">hw.ConstantOp.create</span><span class="op">(</span><span class="dt">i7</span><span class="op">,</span> <span class="dv">0</span><span class="op">).</span>result</span>
+<span id="cb82-10"><a href=""></a>    <span class="kw">def</span> <span class="fu">at_weight</span><span class="op">(</span>bit<span class="op">,</span> weight<span class="op">):</span></span>
+<span id="cb82-11"><a href=""></a>        <span class="va">wide</span> <span class="op">=</span> <span class="fu">comb.ConcatOp.create</span><span class="op">(</span>zero7<span class="op">,</span> bit<span class="op">).</span>result</span>
+<span id="cb82-12"><a href=""></a>        <span class="va">shift</span> <span class="op">=</span> <span class="fu">hw.ConstantOp.create</span><span class="op">(</span><span class="dt">i8</span><span class="op">,</span> weight<span class="op">).</span>result</span>
+<span id="cb82-13"><a href=""></a>        <span class="cf">return</span> <span class="fu">comb.ShlOp.create</span><span class="op">(</span>wide<span class="op">,</span> shift<span class="op">).</span>result</span>
+<span id="cb82-14"><a href=""></a>    <span class="va">terms</span> <span class="op">=</span> <span class="op">[</span><span class="fu">at_weight</span><span class="op">(</span>bits<span class="op">[</span>i<span class="op">],</span> <span class="dv">2</span> <span class="op">*</span> i<span class="op">)</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span><span class="op">(</span><span class="dv">4</span><span class="op">)]</span></span>
+<span id="cb82-15"><a href=""></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span><span class="op">(</span><span class="dv">4</span><span class="op">):</span></span>
+<span id="cb82-16"><a href=""></a>        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span><span class="op">(</span>i<span class="op">):</span></span>
+<span id="cb82-17"><a href=""></a>            <span class="va">cross</span> <span class="op">=</span> <span class="fu">comb.AndOp.create</span><span class="op">(</span>bits<span class="op">[</span>i<span class="op">],</span> bits<span class="op">[</span>j<span class="op">]).</span>result</span>
+<span id="cb82-18"><a href=""></a>            <span class="fu">terms.append</span><span class="op">(</span><span class="fu">at_weight</span><span class="op">(</span>cross<span class="op">,</span> i <span class="op">+</span> j <span class="op">+</span> <span class="dv">1</span><span class="op">))</span></span>
 <span id="cb82-19"><a href=""></a>    <span class="cf">return</span> <span class="fu">comb.AddOp.create</span><span class="op">(*</span>terms<span class="op">).</span>result</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 </div>
