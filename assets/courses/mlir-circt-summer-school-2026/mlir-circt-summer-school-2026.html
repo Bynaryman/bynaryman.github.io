@@ -2206,11 +2206,13 @@ a \lor b = \neg(\neg a \land \neg b)
 <section id="arithmetic-route" class="slide level2">
 <h2>The arithmetic hands-on</h2>
 <div class="slide-body">
-<p>This section builds one floating-point lowering step by step.</p>
+<p><strong>Pass:</strong> <code>lower-e4m3fn-mul-to-comb</code><br> <strong>Implementation:</strong> <code>scripts/lower-e4m3fn.py</code></p>
+<p>Match one <code>arith.mulf : f8E4M3FN</code> island and replace it with a CIRCT <code>comb</code> datapath on <code>i8</code> wires.</p>
+<p><code>arith.mulf : f8E4M3FN</code> <span class="math inline">\(\longrightarrow\)</span> <code>comb.extract</code>, <code>comb.mul</code>, <code>comb.add</code>, <code>comb.mux</code>, <code>comb.concat</code></p>
 <ol type="1">
-<li class="fragment"><p><strong>Exercise 6:</strong> lower integer <code>arith.muli</code> into <code>hw</code> and <code>comb</code>.</p></li>
-<li class="fragment"><p><strong>Exercise 7:</strong> construct an E4M3 multiplier.</p></li>
-<li class="fragment"><p><strong>Exercise 8 (optional):</strong> recognize squaring and build a cheaper datapath.</p></li>
+<li class="fragment"><p><strong>Exercise 6 — baseline:</strong> lower integer <code>arith.muli</code>, then expose the missing floating-point mapping.</p></li>
+<li class="fragment"><p><strong>Exercise 7 — pass:</strong> construct the E4M3 datapath one rewrite step at a time, then exhaustively test the supported normal products.</p></li>
+<li class="fragment"><p><strong>Exercise 8 — specialization (optional):</strong> recognize <code>x * x</code> and build a cheaper squarer.</p></li>
 </ol>
 </div>
 </section>
