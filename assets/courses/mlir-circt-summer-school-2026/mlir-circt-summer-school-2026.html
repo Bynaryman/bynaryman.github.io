@@ -2021,8 +2021,8 @@ a \lor b = \neg(\neg a \land \neg b)
 </div>
 </div>
 </section>
-<section id="tools-aig-rewrite" class="slide level2">
-<h2>Exercise 5: algebra and syntax hints</h2>
+<section id="tools-aig-simplify" class="slide level2">
+<h2>Exercise 5: simplify the four cases</h2>
 <div class="slide-body">
 <p>All arithmetic is eight-bit modulo <span class="math inline">\(2^8\)</span>:</p>
 <p><span class="math display">\[
@@ -2030,39 +2030,155 @@ a \lor b = \neg(\neg a \land \neg b)
 \qquad
 -x = \mathord{\sim}x + 1
 \]</span></p>
+<p>Apply these identities to the two negative rows.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Original table</strong></p>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>SystemVerilog</th>
-<th>Meaning</th>
+<th style="text-align: right;"><code>a</code></th>
+<th style="text-align: right;"><code>b</code></th>
+<th><code>out</code></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>x ^ y</code></td>
-<td>bitwise XOR</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td><code>x</code></td>
 </tr>
 <tr class="even">
-<td><code>{8{a}}</code></td>
-<td>repeat <code>a</code> eight times</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td><code>x + 1</code></td>
 </tr>
 <tr class="odd">
-<td><code>{a, b}</code></td>
-<td>concatenate <code>a</code> and <code>b</code></td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td><code>-(x + 1)</code></td>
 </tr>
 <tr class="even">
-<td><code>assign</code></td>
-<td>continuous combinational assignment</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td><code>-x</code></td>
 </tr>
 </tbody>
 </table>
-<div class="fragment">
+</div><div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="0">
+<p><strong>Simplified table</strong></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: right;"><code>a</code></th>
+<th style="text-align: right;"><code>b</code></th>
+<th><code>out</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td><code>x</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td><code>x + 1</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td><code>~x</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td><code>~x + 1</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></div>
+<div class="fragment" data-fragment-index="1">
+<div class="callout callout-note no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Question</strong></p>
+</div>
+<div class="callout-content">
+<p>Which input selects <code>x</code> or <code>~x</code>? Which input selects <code>+0</code> or <code>+1</code>?</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="tools-aig-rewrite" class="slide level2">
+<h2>Exercise 5: combine the controls</h2>
+<div class="slide-body">
+<div class="columns">
+<div class="column" style="width:42%;">
+<p><strong>Simplified behavior</strong></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: right;"><code>a</code></th>
+<th style="text-align: right;"><code>b</code></th>
+<th><code>out</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td><code>x</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td><code>x + 1</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td><code>~x</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td><code>~x + 1</code></td>
+</tr>
+</tbody>
+</table>
+</div><div class="column" style="width:58%;">
+<div class="callout callout-note no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Question</strong></p>
+</div>
+<div class="callout-content">
+<p>How can <code>a</code> select <code>x</code> or <code>~x</code>, while <code>b</code> selects <code>+0</code> or <code>+1</code>?</p>
+</div>
+</div>
+</div>
+<div class="fragment" data-fragment-index="0">
+<p><strong>1. Replicate <code>a</code> into an eight-bit mask</strong></p>
+<p><code>{8{a}}</code> is <code>8'b00000000</code> when <code>a = 0</code>, and <code>8'b11111111</code> when <code>a = 1</code>.</p>
+</div>
+<div class="fragment" data-fragment-index="1">
+<p><strong>2. Use XOR to select <code>x</code> or <code>~x</code></strong></p>
+<p><code>base = x ^ {8{a}}</code></p>
+</div>
+<div class="fragment" data-fragment-index="2">
+<p><strong>3. Let <code>b</code> add zero or one</strong></p>
+<p><code>out = base + b</code></p>
+</div>
+</div></div>
+<div class="fragment" data-fragment-index="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb44"><pre class="sourceCode numberSource systemverilog number-lines code-with-copy"><code class="sourceCode systemverilog"><span id="cb44-1"><a href=""></a><span class="co">// solutions/ex5_aig_optimized.sv</span></span>
 <span id="cb44-2"><a href=""></a><span class="kw">assign</span> out = (x ^ {<span class="dv">8</span>{a}}) + b;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<ul>
-<li><code>a</code> selects either <code>x</code> or <code>~x</code>.</li>
-<li><code>b</code> selects whether to add one.</li>
-</ul>
 </div>
 </div>
 </section>
