@@ -255,6 +255,7 @@ Louis Ledoux
 <li><a href="#/circt">CIRCT: MLIR toward hardware</a> <span class="toc-time">~10 min</span></li>
 <li><a href="#/circt-tools">CIRCT in practice</a> <span class="toc-hands-on">hands-on: 5 exercises</span> <span class="toc-quiz">quiz</span> <span class="toc-time">~45 min</span></li>
 <li><a href="#/arithmetic">Let’s multiply</a> <span class="toc-hands-on">hands-on: 3 exercises + 1 optional</span> <span class="toc-quiz">quiz</span> <span class="toc-time">~50 min</span></li>
+<li><a href="#/conclusion">Conclusion</a> <span class="toc-time">~3 min</span></li>
 <li><a href="#/hls">Bonus: HLS with MLIR and CIRCT</a> <span class="toc-time">~20 min</span></li>
 </ol>
 </div>
@@ -3414,35 +3415,22 @@ Cumulative schematic
 <p>MLIR preserves enough intent to recognize the pattern; CIRCT lets the pass materialize the chosen circuit. This is the bridge to higher-level hardware generation.</p>
 </div>
 </div>
+</section></section>
+<section>
+<section id="conclusion" class="title-slide slide level1 section-title center">
+<h1>Conclusion</h1>
+
 </section>
 <section id="course-takeaways" class="slide level2">
-<h2>Can <code>tensor</code> / <code>linalg</code> become a chip?</h2>
+<h2>Compilation becomes hardware design</h2>
 <div class="slide-body">
-<table class="caption-top">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Upstream of CIRCT</th>
-<th>CIRCT hardware IR</th>
-<th>Downstream of CIRCT</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>tensor</code>, <code>linalg</code>, <code>scf</code>, <code>arith</code></td>
-<td><code>hw</code>, <code>comb</code>, <code>seq</code></td>
-<td>SystemVerilog, AIG/netlists, gates, GDSII</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Yes, but the arrows are not automatic.</strong> Lowering passes must choose the schedule, parallelism, storage, control, bit widths, and arithmetic architecture.</p>
-<p><span class="marker">Preserve intent <span class="math inline">\(\rightarrow\)</span> choose a circuit <span class="math inline">\(\rightarrow\)</span> prove behavior <span class="math inline">\(\rightarrow\)</span> measure cost <span class="math inline">\(\rightarrow\)</span> iterate.</span></p>
-<p><strong>A hardware compiler does not merely target a machine; it helps build the machine.</strong></p>
-<p>The bridge from upstream MLIR into CIRCT is <strong>high-level synthesis</strong>.</p>
+<ul>
+<li><p><strong>Represent hardware:</strong> <code>hw</code>, <code>comb</code>, and <code>seq</code> capture hierarchy, parallel logic, and state.</p></li>
+<li><p><strong>Choose an architecture:</strong> lowering makes widths, pipelines, storage, control, and arithmetic explicit. One operation can become many circuits.</p></li>
+<li><p><strong>Explore with evidence:</strong> prove behavior, synthesize, measure cost, and iterate.</p></li>
+<li><p><strong>Connect the levels:</strong> <code>tensor</code> / <code>linalg</code> <span class="math inline">\(\rightarrow\)</span> HLS <span class="math inline">\(\rightarrow\)</span> CIRCT <span class="math inline">\(\rightarrow\)</span> RTL, gates, and geometry.</p></li>
+</ul>
+<p><span class="marker">A hardware compiler does not merely target a machine; it helps build the machine.</span></p>
 </div>
 </section></section>
 <section>
