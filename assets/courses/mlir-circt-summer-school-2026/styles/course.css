@@ -18,7 +18,7 @@
 .reveal #title-slide::after {
   content: "";
   width: min(100%, 1150px);
-  height: 2.25em;
+  height: 2.5em;
   margin-top: 1em;
   flex: 0 0 auto;
   background-image:
@@ -116,11 +116,14 @@
 }
 
 .reveal .course-toc {
-  width: min(100%, 26em);
+  width: min(100%, 38.5em);
   margin: 0 auto;
 }
 
 .reveal .course-toc ol {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
   margin: 0;
   padding-left: 1.5em;
 }
@@ -129,7 +132,8 @@
   margin: 0.45em 0;
   padding-left: 0.25em;
   color: #263746;
-  font-size: 0.82em;
+  font-size: 0.78em;
+  white-space: nowrap;
 }
 
 .reveal .course-toc li::marker {
@@ -145,6 +149,39 @@
 .reveal .course-toc a:hover,
 .reveal .course-toc a:focus-visible {
   text-decoration: underline;
+}
+
+.reveal .course-toc .toc-time,
+.reveal .course-toc .toc-hands-on,
+.reveal .course-toc .toc-quiz {
+  display: inline-block;
+  margin-left: 0.45em;
+  padding: 0.12em 0.42em;
+  border-radius: 0.12em;
+  color: #fff;
+  font-size: 0.68em;
+  font-weight: 750;
+  line-height: 1.25;
+  text-transform: uppercase;
+  vertical-align: 0.08em;
+}
+
+.reveal .course-toc .toc-time {
+  float: right;
+  min-width: 4.6em;
+  margin-left: 1.1em;
+  background: #263746;
+  font-family: var(--r-code-font);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.reveal .course-toc .toc-hands-on {
+  background: var(--course-accent);
+}
+
+.reveal .course-toc .toc-quiz {
+  background: #a14f03;
 }
 
 .reveal .deck-kicker {
@@ -611,21 +648,30 @@
 
 .reveal .whoami-portrait {
   min-height: 0;
-  aspect-ratio: 4 / 5;
-  overflow: hidden;
 }
 
-.reveal .whoami-portrait p,
-.reveal .whoami-portrait img {
+.reveal .whoami-portrait figure,
+.reveal .whoami-portrait p {
   width: 100%;
-  height: 100%;
   margin: 0;
 }
 
 .reveal .whoami-portrait img {
   display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  margin: 0;
   object-fit: cover;
   object-position: 58% 18%;
+}
+
+.reveal .whoami-portrait figcaption {
+  margin-top: 0.35em;
+  color: #52616e;
+  font-size: 0.42em;
+  line-height: 1.2;
+  text-align: center;
 }
 
 .reveal .whoami-copy {
@@ -651,6 +697,101 @@
 
 .reveal .whoami-list li::marker {
   color: var(--course-accent);
+}
+
+.reveal .whoami-links {
+  margin-top: 0.9em;
+  color: #52616e;
+  font-size: 0.5em;
+}
+
+.reveal .whoami-links a {
+  color: var(--course-accent);
+  font-weight: 700;
+}
+
+.reveal .artist-gallery {
+  height: 13.2em;
+  margin: 0.65em auto 0;
+}
+
+.reveal .artist-gallery-wide {
+  height: auto;
+  margin-top: 2.1em;
+}
+
+.reveal .artist-gallery-works {
+  gap: 1em;
+  height: 15em;
+}
+
+.reveal .artist-gallery-captioned {
+  display: flex;
+  gap: 0.55em;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.reveal .artist-gallery-captioned figure {
+  flex: 0 0 auto;
+  margin: 0;
+  text-align: center;
+}
+
+.reveal .artist-gallery-works figure {
+  position: relative;
+  width: auto;
+}
+
+.reveal .artist-gallery.artist-gallery-captioned img {
+  width: auto;
+  height: 10.2em;
+  max-width: none;
+  max-height: none;
+}
+
+.reveal .artist-gallery.artist-gallery-works img {
+  height: 13.2em;
+  max-width: none;
+}
+
+.reveal .artist-gallery-works figcaption {
+  position: absolute;
+  top: calc(100% + 0.35em);
+  left: 50%;
+  width: 8.8em;
+  margin-top: 0;
+  transform: translateX(-50%);
+}
+
+.reveal .artist-gallery-captioned figcaption {
+  margin-top: 0.35em;
+  color: #52616e;
+  font-size: 0.42em;
+  line-height: 1.2;
+}
+
+.reveal .artist-gallery p {
+  display: flex;
+  gap: 0.55em;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+.reveal .artist-gallery img {
+  flex: 0 0 auto;
+  display: block;
+  width: auto;
+  height: 100%;
+  max-width: none;
+  max-height: 100%;
+  margin: 0;
+  object-fit: contain;
+  border-radius: 4px;
+  box-shadow: 0 0.2em 0.55em rgba(24, 35, 43, 0.22);
 }
 
 .reveal .edition-banner {
