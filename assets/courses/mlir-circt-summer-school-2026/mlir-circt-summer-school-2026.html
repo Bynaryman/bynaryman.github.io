@@ -1978,7 +1978,7 @@ a \lor b = \neg(\neg a \land \neg b)
 <span id="cb42-5"><a href=""></a><span class="kw">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>All operations are modulo <span class="math inline">\(2^8\)</span>.</p>
 </div><div class="column" style="width:45%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43" data-code-line-numbers="2-6"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb43-1"><a href=""></a><span class="ex">circt-verilog</span> rtl/ex5_aig.sv <span class="at">-o</span> build/ex5_aig.mlir</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb43-1"><a href=""></a><span class="ex">circt-verilog</span> rtl/ex5_aig.sv <span class="at">-o</span> build/ex5_aig.mlir</span>
 <span id="cb43-2"><a href=""></a><span class="ex">circt-synth</span> build/ex5_aig.mlir <span class="at">--top</span><span class="op">=</span>ex5_aig <span class="dt">\</span></span>
 <span id="cb43-3"><a href=""></a>  <span class="at">--analysis-output</span><span class="op">=</span>build/ex5-reports <span class="dt">\</span></span>
 <span id="cb43-4"><a href=""></a>  <span class="at">-o</span> build/ex5_aig_synth.mlir</span>
