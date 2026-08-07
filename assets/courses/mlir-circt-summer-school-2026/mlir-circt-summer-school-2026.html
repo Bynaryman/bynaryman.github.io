@@ -3169,14 +3169,9 @@ Cumulative schematic
 <section id="arithmetic-specialization-transition" class="slide level2" data-transition="none">
 <h2>From completeness to specialization</h2>
 <div class="slide-body">
-<p>The complete reference broadens <strong>which values</strong> the multiplier handles.</p>
-<p>Exercise 8 changes <strong>which circuit</strong> the compiler generates:</p>
-<ul>
-<li>SSA tells us when both operands are the same value;</li>
-<li>a stronger rewrite pattern can recognize it;</li>
-<li>the lowering can generate a dedicated squarer.</li>
-</ul>
-<p><span class="marker">This is where compilers can shine: recognize stronger intent and choose a specialized architecture.</span></p>
+<p>The complete reference expands <strong>numerical coverage</strong>.</p>
+<p>We will instead exploit <strong>structure already visible in the IR</strong>.</p>
+<p><span class="marker">Recognize <code>%x * %x</code> <span class="math inline">\(\longrightarrow\)</span> generate a specialized squarer.</span></p>
 </div>
 </section>
 <section id="arithmetic-square-quiz" class="slide level2" data-transition="none">
