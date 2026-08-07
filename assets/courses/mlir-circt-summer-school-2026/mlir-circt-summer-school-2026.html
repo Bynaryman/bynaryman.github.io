@@ -2449,60 +2449,9 @@ a \lor b = \neg(\neg a \land \neg b)
 </div>
 </section>
 <section id="arithmetic-e4m3-values" class="slide level2">
-<h2>The same format spans tiny values to 448</h2>
+<h2>All 256 E4M3FN encodings</h2>
 <div class="slide-body">
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th style="text-align: right;">Hex</th>
-<th>Fields <code>s eeee mmm</code></th>
-<th style="text-align: right;">Value</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;"><code>0x00</code></td>
-<td><code>0 0000 000</code></td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;"><code>0x08</code></td>
-<td><code>0 0001 000</code></td>
-<td style="text-align: right;"><span class="math inline">\(2^{-6}\)</span></td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;"><code>0x30</code></td>
-<td><code>0 0110 000</code></td>
-<td style="text-align: right;">0.5</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;"><code>0x38</code></td>
-<td><code>0 0111 000</code></td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;"><code>0x3C</code></td>
-<td><code>0 0111 100</code></td>
-<td style="text-align: right;">1.5</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;"><code>0x41</code></td>
-<td><code>0 1000 001</code></td>
-<td style="text-align: right;">2.25</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;"><code>0x7E</code></td>
-<td><code>0 1111 110</code></td>
-<td style="text-align: right;">448</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;"><code>0x7F</code></td>
-<td><code>0 1111 111</code></td>
-<td style="text-align: right;">NaN</td>
-</tr>
-</tbody>
-</table>
-<p>Less precision buys a smaller representation and more operations per watt; the exact rounding and exceptional-value rules remain part of the contract.</p>
+<p><img data-src="assets/images/arithmetic/e4m3-value-grid.svg" style="width:98.0%" alt="Table of all 256 E4M3FN values with exponent bits from 0000 to 1111 across columns and sign plus fraction bits from 0000 to 1111 across rows; zeros, subnormals, and NaNs are colorized"></p>
 </div>
 </section>
 <section id="tools-cheatsheet" class="slide level2 smaller">
