@@ -3416,15 +3416,33 @@ Cumulative schematic
 </div>
 </section>
 <section id="course-takeaways" class="slide level2">
-<h2>What to keep from this session</h2>
+<h2>Can <code>tensor</code> / <code>linalg</code> become a chip?</h2>
 <div class="slide-body">
-<ul>
-<li><p><code>hw</code>, <code>comb</code>, and <code>seq</code> preserve hardware structure, dataflow, and state.</p></li>
-<li><p>A lowering is an <strong>architecture choice</strong>: one operation can become many circuits.</p></li>
-<li><p>Prove behavior first; then compare Boolean structure and physical cost.</p></li>
-<li><p>MLIR and CIRCT make that design loop programmable.</p></li>
-</ul>
-<p><span class="marker">Preserve intent long enough to choose the circuit deliberately.</span></p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Upstream of CIRCT</th>
+<th>CIRCT hardware IR</th>
+<th>Downstream of CIRCT</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>tensor</code>, <code>linalg</code>, <code>scf</code>, <code>arith</code></td>
+<td><code>hw</code>, <code>comb</code>, <code>seq</code></td>
+<td>SystemVerilog, AIG/netlists, gates, GDSII</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Yes, but the arrows are not automatic.</strong> Lowering passes must choose the schedule, parallelism, storage, control, bit widths, and arithmetic architecture.</p>
+<p><span class="marker">Preserve intent <span class="math inline">\(\rightarrow\)</span> choose a circuit <span class="math inline">\(\rightarrow\)</span> prove behavior <span class="math inline">\(\rightarrow\)</span> measure cost <span class="math inline">\(\rightarrow\)</span> iterate.</span></p>
+<p><strong>A hardware compiler does not merely target a machine; it helps build the machine.</strong></p>
+<p>The bridge from upstream MLIR into CIRCT is <strong>high-level synthesis</strong>.</p>
 </div>
 </section></section>
 <section>
