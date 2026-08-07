@@ -3015,7 +3015,7 @@ Finally: pack the result.
 </div>
 </section>
 <section id="arithmetic-final-recap" class="slide level2" data-transition="none">
-<h2>Complete normal-path lowering</h2>
+<h2>Exercise 7: the simplified datapath</h2>
 <div class="slide-body">
 <div class="e4m3-rewrite-layout">
 <div class="e4m3-diagram-panel e4m3-recap-panel">
@@ -3023,7 +3023,7 @@ Finally: pack the result.
 Cumulative schematic
 </div>
 <div class="r-stack e4m3-vertical-stack" data-id="e4m3-datapath">
-<p><img data-id="e4m3-base" src="assets/images/arithmetic/e4m3-rewrite-base.svg" alt="Complete normal-path E4M3 multiplier"> <img data-id="e4m3-sign" src="assets/images/arithmetic/e4m3-rewrite-sign.svg" alt="" aria-hidden="true"> <img data-id="e4m3-significand" src="assets/images/arithmetic/e4m3-rewrite-significand.svg" alt="" aria-hidden="true"> <img data-id="e4m3-normalize" src="assets/images/arithmetic/e4m3-rewrite-normalize.svg" alt="" aria-hidden="true"> <img data-id="e4m3-exponent" src="assets/images/arithmetic/e4m3-rewrite-exponent.svg" alt="" aria-hidden="true"> <img data-id="e4m3-pack" src="assets/images/arithmetic/e4m3-rewrite-pack.svg" alt="" aria-hidden="true"></p>
+<p><img data-id="e4m3-base" src="assets/images/arithmetic/e4m3-rewrite-base.svg" alt="Simplified E4M3 multiplier datapath"> <img data-id="e4m3-sign" src="assets/images/arithmetic/e4m3-rewrite-sign.svg" alt="" aria-hidden="true"> <img data-id="e4m3-significand" src="assets/images/arithmetic/e4m3-rewrite-significand.svg" alt="" aria-hidden="true"> <img data-id="e4m3-normalize" src="assets/images/arithmetic/e4m3-rewrite-normalize.svg" alt="" aria-hidden="true"> <img data-id="e4m3-exponent" src="assets/images/arithmetic/e4m3-rewrite-exponent.svg" alt="" aria-hidden="true"> <img data-id="e4m3-pack" src="assets/images/arithmetic/e4m3-rewrite-pack.svg" alt="" aria-hidden="true"></p>
 </div>
 </div>
 <div class="e4m3-rewrite-copy e4m3-function-recap e4m3-recap-panel" data-id="e4m3-copy">
@@ -3070,43 +3070,79 @@ Cumulative schematic
 </div>
 </section>
 <section id="arithmetic-special-cases" class="slide level2" data-transition="none">
-<h2>What did we implement?</h2>
+<h2>Quiz: how many exact products did we prove?</h2>
+<div class="slide-body">
+<div class="callout callout-note no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>How many normal <span class="math inline">\(\times\)</span> normal cases does our restricted checker validate?</strong></p>
+</div>
+<div class="callout-content">
+
+</div>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb70"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb70-1"><a href=""></a><span class="ex">./scripts/test-e4m3-all.py</span> <span class="at">--pass</span> <span class="at">--normal-path</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb71"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb71-1"><a href=""></a>PASS: all 11892 E4M3 products match MLIR</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<h3 id="of-56644-normal-times-normal-pairs"><strong>11,892</strong> of <strong>56,644</strong> normal <span class="math inline">\(\times\)</span> normal pairs</h3>
+<p>That is <strong>21%</strong> of normal <span class="math inline">\(\times\)</span> normal, or <strong>18%</strong> of all 65,536 bit-pattern pairs.</p>
+<p>These are the guaranteed exact cases; truncation may coincide with correct rounding elsewhere.</p>
+</div>
+</div>
+</section>
+<section id="arithmetic-coverage-breakdown" class="slide level2" data-transition="none">
+<h2>Why does the checker stop at 11,892?</h2>
 <div class="slide-body">
 <div class="columns">
-<div class="column" style="width:47%;">
+<div class="column" style="width:58%;">
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>Scope</th>
-<th style="text-align: right;">Input pairs</th>
+<th>Outcome for normal <span class="math inline">\(\times\)</span> normal</th>
+<th style="text-align: right;">Pairs</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>every E4M3 bit pattern</td>
-<td style="text-align: right;"><strong>65,536</strong></td>
+<td>normal finite result</td>
+<td style="text-align: right;"><strong>42,084</strong></td>
 </tr>
 <tr class="even">
-<td>normal <span class="math inline">\(\times\)</span> normal</td>
-<td style="text-align: right;"><strong>56,644</strong></td>
+<td><span class="math inline">\(\hookrightarrow\)</span> exact, no rounding</td>
+<td style="text-align: right;"><strong>11,892</strong></td>
 </tr>
 <tr class="odd">
-<td>exact simplified path</td>
-<td style="text-align: right;"><strong>11,892</strong></td>
+<td><span class="math inline">\(\hookrightarrow\)</span> rounding required</td>
+<td style="text-align: right;"><strong>30,192</strong></td>
+</tr>
+<tr class="even">
+<td>subnormal result</td>
+<td style="text-align: right;"><strong>3,916</strong></td>
+</tr>
+<tr class="odd">
+<td>underflow to zero</td>
+<td style="text-align: right;"><strong>524</strong></td>
+</tr>
+<tr class="even">
+<td>overflow to E4M3FN NaN</td>
+<td style="text-align: right;"><strong>10,120</strong></td>
+</tr>
+<tr class="odd">
+<td><strong>total</strong></td>
+<td style="text-align: right;"><strong>56,644</strong></td>
 </tr>
 </tbody>
 </table>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb70"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb70-1"><a href=""></a><span class="ex">./scripts/test-e4m3-all.py</span> <span class="at">--pass</span> <span class="at">--normal-path</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb71"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb71-1"><a href=""></a>PASS: all 11892 E4M3 products match MLIR</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:53%;">
-<p>The checker keeps products that:</p>
+</div><div class="column" style="width:42%;">
+<p>Our datapath still lacks:</p>
 <ul>
-<li>use normal finite operands;</li>
-<li>stay in the normal exponent range;</li>
-<li>need no rounding.</li>
+<li>round-to-nearest, ties-to-even;</li>
+<li>subnormal and gradual-underflow paths;</li>
+<li>exponent-range and overflow handling;</li>
+<li>classification of zero, subnormal, and NaN inputs.</li>
 </ul>
-<p>It excludes zero, subnormals, overflow, NaN, and inexact products.</p>
-<p><span class="marker">Our circuit implements a useful subset, not the complete E4M3FN contract.</span></p>
+<p><span class="marker">The 11,892 cases are exactly those for which none of this extra machinery is needed.</span></p>
 </div></div>
 </div>
 </section>
@@ -3117,21 +3153,34 @@ Cumulative schematic
 <div class="column" style="width:64%;">
 <p><img data-src="assets/images/arithmetic/e4m3-complete-multiplier.svg" alt="Block-level complete E4M3FN multiplier with classification, significand multiplication, scale computation, normalization, rounding, and special-case selection" height="650"></p>
 </div><div class="column" style="width:36%;">
-<p>The supplied reference adds:</p>
+<p><span class="marker">A complete reference is provided, but we will not implement it today.</span></p>
+<p>It handles:</p>
 <ul>
-<li>operand classification;</li>
-<li>normal and subnormal alignment;</li>
-<li>round-to-nearest, ties-to-even;</li>
+<li>operand and special-value classification;</li>
+<li>normal/subnormal alignment and rounding;</li>
 <li>zero, NaN, underflow, and overflow selection.</li>
 </ul>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb72"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb72-1"><a href=""></a><span class="ex">./scripts/test-e4m3-all.py</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb73"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb73-1"><a href=""></a>PASS: 65536 / 65536 products</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Complete reference RTL in <code>exercises/</code>.</p>
+<p>Complete RTL is provided in <code>exercises/</code>.</p>
 </div></div>
 </div>
 </section>
-<section id="arithmetic-square-quiz" class="slide level2">
-<h2>Quiz: should <code>%x * %x</code> cost the same?</h2>
+<section id="arithmetic-specialization-transition" class="slide level2" data-transition="none">
+<h2>From completeness to specialization</h2>
+<div class="slide-body">
+<p>The complete reference broadens <strong>which values</strong> the multiplier handles.</p>
+<p>Exercise 8 changes <strong>which circuit</strong> the compiler generates:</p>
+<ul>
+<li>SSA tells us when both operands are the same value;</li>
+<li>a stronger rewrite pattern can recognize it;</li>
+<li>the lowering can generate a dedicated squarer.</li>
+</ul>
+<p><span class="marker">This is where compilers can shine: recognize stronger intent and choose a specialized architecture.</span></p>
+</div>
+</section>
+<section id="arithmetic-square-quiz" class="slide level2" data-transition="none">
+<h2>Exercise 8: should <code>%x * %x</code> cost the same?</h2>
 <div class="slide-body">
 <div class="columns">
 <div class="column" style="width:48%;">
