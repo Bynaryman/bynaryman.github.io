@@ -1940,6 +1940,7 @@ a \lor b = \neg(\neg a \land \neg b)
 </div><div class="column" style="width:48%;">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="sourceCode numberSource mlir number-lines code-with-copy"><code class="sourceCode mlir"><span id="cb40-1"><a href=""></a><span class="va">%and</span> <span class="op">=</span> <span class="fu">synth.aig.and_inv</span> <span class="va">%a</span><span class="op">,</span> <span class="va">%b</span> <span class="op">:</span> <span class="dt">i1</span></span>
 <span id="cb40-2"><a href=""></a><span class="va">%a_n_b</span> <span class="op">=</span> <span class="fu">synth.aig.and_inv</span> not <span class="va">%a</span><span class="op">,</span> <span class="va">%b</span> <span class="op">:</span> <span class="dt">i1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The <code>synth</code> dialect represents this graph.</p>
 <p><span class="citation" data-cites="mishchenko2006aig">(<a href="#/references" role="doc-biblioref" onclick="">Mishchenko et al. 2006</a>)</span></p>
 </div></div>
 </div>
