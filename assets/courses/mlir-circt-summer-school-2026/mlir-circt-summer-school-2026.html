@@ -2428,18 +2428,16 @@ a \lor b = \neg(\neg a \land \neg b)
 </div>
 </section>
 <section id="arithmetic-e4m3-axis" class="slide level2">
-<h2>Normal binades double; subnormals fill the gap</h2>
+<h2>Normal and subnormal values</h2>
 <div class="slide-body">
-<p>A binade <span class="math inline">\([2^k,2^{k+1})\)</span> contains the values that share one exponent.</p>
+<p>You may remember from class: <strong>normal values</strong> have an implicit leading <span class="math inline">\(1\)</span>; <strong>subnormal values</strong> are tiny values near zero without it.</p>
 <div class="r-stack">
 <p><img data-src="assets/images/e4m3-binades.svg" style="width:94.0%" alt="Normal E4M3FN binades double in width and leave no normal values between zero and two to the minus six"></p>
 <p><img data-src="assets/images/e4m3-binades-subnormals.svg" class="fragment" style="width:94.0%" data-fragment-index="0" alt="Seven subnormal values fill the interval next to zero"></p>
 </div>
-<div class="fragment" data-fragment-index="0">
-<p>Subnormals make underflow <strong>gradual</strong>: seven values continue the smallest normal spacing toward zero, preserving nearby subtraction (Sterbenz’s lemma).</p>
-</div>
 <div class="fragment" data-fragment-index="1">
-<p><strong>Exercise 7 keeps only the normal path.</strong> Many accelerators choose flush-to-zero: less shifting and control for AI workloads that tolerate tiny perturbations.</p>
+<p><span class="marker">Exercise 7: exact normal finite products only.</span></p>
+<p>A complete multiplier must also handle zero, subnormals, NaNs, overflow/underflow, and rounding. <code>f8E4M3FN</code> has no infinities.</p>
 </div>
 </div>
 </section>
