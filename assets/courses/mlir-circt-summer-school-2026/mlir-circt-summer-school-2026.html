@@ -1500,7 +1500,7 @@ CMOS inverter: pMOS + nMOS
 </div><div class="column" style="width:50%;">
 <p><strong>Mounted course files</strong></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href=""></a><span class="fu">ls</span> <span class="at">-l</span> /workspace</span>
-<span id="cb21-2"><a href=""></a><span class="fu">ls</span> <span class="at">-l</span> /workspace/rtl</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb21-2"><a href=""></a><span class="fu">ls</span> <span class="at">-l</span> /workspace/exercises</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 </div>
 </div>
@@ -1525,12 +1525,12 @@ CMOS inverter: pMOS + nMOS
 <div class="columns">
 <div class="column" style="width:50%;">
 <p>Let’s inspect the FMA module.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href=""></a><span class="fu">cat</span> rtl/ex1_fma.sv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href=""></a><span class="fu">cat</span> exercises/ex1_fma.sv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><br>
 </p>
 <div class="fragment" data-fragment-index="0">
 <div data-id="exercise-1-systemverilog">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode numberSource systemverilog number-lines code-with-copy"><code class="sourceCode systemverilog"><span id="cb23-1"><a href=""></a><span class="co">// rtl/ex1_fma.sv</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode numberSource systemverilog number-lines code-with-copy"><code class="sourceCode systemverilog"><span id="cb23-1"><a href=""></a><span class="co">// exercises/ex1_fma.sv</span></span>
 <span id="cb23-2"><a href=""></a><span class="kw">module</span> ex1_fma (</span>
 <span id="cb23-3"><a href=""></a>  <span class="kw">input</span>  <span class="kw">wire</span> [<span class="dv">3</span>:<span class="dv">0</span>] a,</span>
 <span id="cb23-4"><a href=""></a>  <span class="kw">input</span>  <span class="kw">wire</span> [<span class="dv">3</span>:<span class="dv">0</span>] b,</span>
@@ -1544,7 +1544,7 @@ CMOS inverter: pMOS + nMOS
 </div>
 </div><div class="column" style="width:50%;">
 <p>… and its MLIR/CIRCT counterpart</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href=""></a><span class="ex">circt-verilog</span> rtl/ex1_fma.sv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href=""></a><span class="ex">circt-verilog</span> exercises/ex1_fma.sv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><br>
 </p>
 <div class="fragment" data-fragment-index="1">
@@ -1572,7 +1572,7 @@ CMOS inverter: pMOS + nMOS
 <div class="slide-body">
 <div class="columns">
 <div class="column" data-id="exercise-1-systemverilog" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode numberSource systemverilog number-lines code-with-copy"><code class="sourceCode systemverilog"><span id="cb26-1"><a href=""></a><span class="co">// rtl/ex1_fma.sv</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode numberSource systemverilog number-lines code-with-copy"><code class="sourceCode systemverilog"><span id="cb26-1"><a href=""></a><span class="co">// exercises/ex1_fma.sv</span></span>
 <span id="cb26-2"><a href=""></a><span class="kw">module</span> ex1_fma (</span>
 <span id="cb26-3"><a href=""></a>  <span class="kw">input</span>  <span class="kw">wire</span> [<span class="dv">3</span>:<span class="dv">0</span>] a,</span>
 <span id="cb26-4"><a href=""></a>  <span class="kw">input</span>  <span class="kw">wire</span> [<span class="dv">3</span>:<span class="dv">0</span>] b,</span>
@@ -1608,7 +1608,7 @@ CMOS inverter: pMOS + nMOS
 <h2>Exercise 1: save the IR</h2>
 <div class="slide-body">
 <p>Save the IR for Exercise 2:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href=""></a><span class="ex">circt-verilog</span> rtl/ex1_fma.sv <span class="at">-o</span> rtl/ex1_fma.mlir</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href=""></a><span class="ex">circt-verilog</span> exercises/ex1_fma.sv <span class="at">-o</span> exercises/ex1_fma.mlir</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><br>
 </p>
 <ul>
@@ -1676,10 +1676,10 @@ CMOS inverter: pMOS + nMOS
 <section id="tools-exercise-2" class="slide level2">
 <h2>Exercise 2: run a deliberate pipeline</h2>
 <div class="slide-body">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href=""></a><span class="ex">circt-opt</span> rtl/ex1_fma.mlir <span class="dt">\</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href=""></a><span class="ex">circt-opt</span> exercises/ex1_fma.mlir <span class="dt">\</span></span>
 <span id="cb30-2"><a href=""></a>  <span class="at">--comb-int-range-narrowing</span> <span class="dt">\</span></span>
 <span id="cb30-3"><a href=""></a>  <span class="at">--canonicalize</span> <span class="dt">\</span></span>
-<span id="cb30-4"><a href=""></a>  <span class="at">-o</span> rtl/ex2_fma_optimized.mlir</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb30-4"><a href=""></a>  <span class="at">-o</span> exercises/ex2_fma_optimized.mlir</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The order is intentional:</p>
 <ol type="1">
 <li>Range narrowing rewrites operation widths and inserts <code>comb.extract</code> or <code>comb.concat</code> where narrow operations meet wider values.</li>
@@ -1712,12 +1712,12 @@ CMOS inverter: pMOS + nMOS
 <h2>Exercise 2: make pass ordering observable</h2>
 <div class="slide-body">
 <p>Now reverse the two passes:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href=""></a><span class="ex">circt-opt</span> rtl/ex1_fma.mlir <span class="dt">\</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href=""></a><span class="ex">circt-opt</span> exercises/ex1_fma.mlir <span class="dt">\</span></span>
 <span id="cb32-2"><a href=""></a>  <span class="at">--canonicalize</span> <span class="dt">\</span></span>
 <span id="cb32-3"><a href=""></a>  <span class="at">--comb-int-range-narrowing</span> <span class="dt">\</span></span>
-<span id="cb32-4"><a href=""></a>  <span class="at">-o</span> rtl/ex2_fma_variant.mlir</span>
+<span id="cb32-4"><a href=""></a>  <span class="at">-o</span> exercises/ex2_fma_variant.mlir</span>
 <span id="cb32-5"><a href=""></a></span>
-<span id="cb32-6"><a href=""></a><span class="fu">diff</span> <span class="at">-u</span> rtl/ex2_fma_optimized.mlir rtl/ex2_fma_variant.mlir</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb32-6"><a href=""></a><span class="fu">diff</span> <span class="at">-u</span> exercises/ex2_fma_optimized.mlir exercises/ex2_fma_variant.mlir</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>Before reading the diff:</strong> will the semantics change? Will the operation count change? What single extra pass would recover the first output?</p>
 <div class="fragment">
 <p><strong>Answer:</strong> the arithmetic still narrows to <code>i8</code>, but late narrowing inserts <code>comb.extract</code> and <code>comb.concat</code> operations after canonicalization has already finished. The semantics are unchanged, the IR is larger, and a final <code>--canonicalize</code> recovers the first output.</p>
@@ -1750,8 +1750,8 @@ CMOS inverter: pMOS + nMOS
 </p>
 <div class="fragment">
 <p>Our FMA:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a href=""></a><span class="ex">circt-lec</span> <span class="at">--c1</span> ex1_fma rtl/ex1_fma.mlir <span class="dt">\</span></span>
-<span id="cb34-2"><a href=""></a>          <span class="at">--c2</span> ex1_fma rtl/ex2_fma_optimized.mlir</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a href=""></a><span class="ex">circt-lec</span> <span class="at">--c1</span> ex1_fma exercises/ex1_fma.mlir <span class="dt">\</span></span>
+<span id="cb34-2"><a href=""></a>          <span class="at">--c2</span> ex1_fma exercises/ex2_fma_optimized.mlir</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><br>
 </p>
@@ -1798,11 +1798,11 @@ CMOS inverter: pMOS + nMOS
 <h2>Exercise 3: break the circuit - 5 min</h2>
 <div class="slide-body">
 <p>Introduce a functional bug while keeping the circuit valid and compilable. Then check that <code>circt-lec</code> reports <code>c1 != c2</code>.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb36-1"><a href=""></a><span class="fu">cp</span> rtl/ex2_fma_optimized.mlir rtl/ex3_fma_broken.mlir</span>
-<span id="cb36-2"><a href=""></a><span class="fu">nano</span> rtl/ex3_fma_broken.mlir</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb36-1"><a href=""></a><span class="fu">cp</span> exercises/ex2_fma_optimized.mlir exercises/ex3_fma_broken.mlir</span>
+<span id="cb36-2"><a href=""></a><span class="fu">nano</span> exercises/ex3_fma_broken.mlir</span>
 <span id="cb36-3"><a href=""></a></span>
-<span id="cb36-4"><a href=""></a><span class="ex">circt-lec</span> <span class="at">--c1</span> ex1_fma rtl/ex1_fma.mlir <span class="dt">\</span></span>
-<span id="cb36-5"><a href=""></a>          <span class="at">--c2</span> ex1_fma rtl/ex3_fma_broken.mlir</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb36-4"><a href=""></a><span class="ex">circt-lec</span> <span class="at">--c1</span> ex1_fma exercises/ex1_fma.mlir <span class="dt">\</span></span>
+<span id="cb36-5"><a href=""></a>          <span class="at">--c2</span> ex1_fma exercises/ex3_fma_broken.mlir</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
 <p><br>
 <strong>Answer</strong>: Change the multiply to an add, alter a constant, or disconnect an operand. The current tool reports inequivalence but does not conveniently print the counterexample.</p>
@@ -1818,8 +1818,8 @@ CMOS inverter: pMOS + nMOS
 <li>Optimize it with <strong><code>circt-opt</code></strong> and verify the transformations.</li>
 <li>Emit Verilog with <strong><code>firtool</code></strong> for downstream FPGA or ASIC tools.</li>
 </ol>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb37-1"><a href=""></a><span class="ex">firtool</span> rtl/ex2_fma_optimized.mlir</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><code>rtl/ex2_fma_optimized.mlir</code> is the output saved in Exercise 2.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb37-1"><a href=""></a><span class="ex">firtool</span> exercises/ex2_fma_optimized.mlir</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>exercises/ex2_fma_optimized.mlir</code> is the output saved in Exercise 2.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode numberSource systemverilog number-lines code-with-copy"><code class="sourceCode systemverilog"><span id="cb38-1"><a href=""></a><span class="kw">module</span> ex1_fma(</span>
 <span id="cb38-2"><a href=""></a>  <span class="kw">input</span>  [<span class="dv">3</span>:<span class="dv">0</span>] a, b, c,</span>
 <span id="cb38-3"><a href=""></a>  <span class="kw">output</span> [<span class="dv">8</span>:<span class="dv">0</span>] d</span>
@@ -1838,10 +1838,10 @@ CMOS inverter: pMOS + nMOS
 <li>Use <code>circt-lec</code> to prove that the round trip preserved equivalence.</li>
 </ol>
 <div class="fragment">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb39-1"><a href=""></a><span class="ex">firtool</span> rtl/ex2_fma_optimized.mlir <span class="at">-o</span> rtl/ex4_fma_roundtrip.sv</span>
-<span id="cb39-2"><a href=""></a><span class="ex">circt-verilog</span> rtl/ex4_fma_roundtrip.sv <span class="at">-o</span> rtl/ex4_fma_roundtrip.mlir</span>
-<span id="cb39-3"><a href=""></a><span class="ex">circt-lec</span> <span class="at">--c1</span> ex1_fma rtl/ex2_fma_optimized.mlir <span class="dt">\</span></span>
-<span id="cb39-4"><a href=""></a>          <span class="at">--c2</span> ex1_fma rtl/ex4_fma_roundtrip.mlir</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb39-1"><a href=""></a><span class="ex">firtool</span> exercises/ex2_fma_optimized.mlir <span class="at">-o</span> exercises/ex4_fma_roundtrip.sv</span>
+<span id="cb39-2"><a href=""></a><span class="ex">circt-verilog</span> exercises/ex4_fma_roundtrip.sv <span class="at">-o</span> exercises/ex4_fma_roundtrip.mlir</span>
+<span id="cb39-3"><a href=""></a><span class="ex">circt-lec</span> <span class="at">--c1</span> ex1_fma exercises/ex2_fma_optimized.mlir <span class="dt">\</span></span>
+<span id="cb39-4"><a href=""></a>          <span class="at">--c2</span> ex1_fma exercises/ex4_fma_roundtrip.mlir</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section>
@@ -1972,14 +1972,14 @@ a \lor b = \neg(\neg a \land \neg b)
 <div class="slide-body">
 <div class="columns">
 <div class="column" style="width:55%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42"><pre class="sourceCode numberSource systemverilog number-lines code-with-copy"><code class="sourceCode systemverilog"><span id="cb42-1"><a href=""></a><span class="co">// rtl/ex5_aig.sv</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42"><pre class="sourceCode numberSource systemverilog number-lines code-with-copy"><code class="sourceCode systemverilog"><span id="cb42-1"><a href=""></a><span class="co">// exercises/ex5_aig.sv</span></span>
 <span id="cb42-2"><a href=""></a><span class="kw">always_comb</span> <span class="kw">begin</span></span>
 <span id="cb42-3"><a href=""></a>  out = a ? (b ? -x : -(x + <span class="bn">8'd1</span>))</span>
 <span id="cb42-4"><a href=""></a>          : (b ? x + <span class="bn">8'd1</span> : x);</span>
 <span id="cb42-5"><a href=""></a><span class="kw">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>All operations are modulo <span class="math inline">\(2^8\)</span>.</p>
 </div><div class="column" style="width:45%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb43-1"><a href=""></a><span class="ex">circt-verilog</span> rtl/ex5_aig.sv <span class="at">-o</span> build/ex5_aig.mlir</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb43-1"><a href=""></a><span class="ex">circt-verilog</span> exercises/ex5_aig.sv <span class="at">-o</span> build/ex5_aig.mlir</span>
 <span id="cb43-2"><a href=""></a><span class="ex">circt-synth</span> build/ex5_aig.mlir <span class="at">--top</span><span class="op">=</span>ex5_aig <span class="dt">\</span></span>
 <span id="cb43-3"><a href=""></a>  <span class="at">--analysis-output</span><span class="op">=</span>build/ex5-reports <span class="dt">\</span></span>
 <span id="cb43-4"><a href=""></a>  <span class="at">-o</span> build/ex5_aig_synth.mlir</span>
@@ -2222,7 +2222,7 @@ a \lor b = \neg(\neg a \land \neg b)
 <div class="slide-body">
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb47"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb47-1"><a href=""></a><span class="fu">cat</span> examples/ex6_arith_muli.mlir</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb47"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb47-1"><a href=""></a><span class="fu">cat</span> exercises/ex6_arith_muli.mlir</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="code-gap">
 
 </div>
@@ -2273,7 +2273,7 @@ a \lor b = \neg(\neg a \land \neg b)
 <section id="arithmetic-integer-pipeline" class="slide level2">
 <h2>Exercise 6: compose two passes</h2>
 <div class="slide-body">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb53"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb53-1"><a href=""></a><span class="ex">circt-tutorial-opt</span> examples/ex6_arith_muli.mlir <span class="dt">\</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb53"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb53-1"><a href=""></a><span class="ex">circt-tutorial-opt</span> exercises/ex6_arith_muli.mlir <span class="dt">\</span></span>
 <span id="cb53-2"><a href=""></a>  <span class="at">--tutorial-func-to-hw</span> <span class="at">-o</span> build/ex6_hw_arith.mlir</span>
 <span id="cb53-3"><a href=""></a></span>
 <span id="cb53-4"><a href=""></a><span class="ex">circt-opt</span> build/ex6_hw_arith.mlir <span class="dt">\</span></span>
@@ -2316,8 +2316,8 @@ a \lor b = \neg(\neg a \land \neg b)
 <span id="cb54-4"><a href=""></a>    <span class="kw">return</span> <span class="va">%r</span> <span class="op">:</span> f8E4M3FN</span>
 <span id="cb54-5"><a href=""></a>  <span class="op">}</span></span>
 <span id="cb54-6"><a href=""></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Run the same two-stage pipeline on <code>examples/ex6_arith_mulf.mlir</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb55"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb55-1"><a href=""></a><span class="ex">circt-tutorial-opt</span> examples/ex6_arith_mulf.mlir <span class="dt">\</span></span>
+<p>Run the same two-stage pipeline on <code>exercises/ex6_arith_mulf.mlir</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb55"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb55-1"><a href=""></a><span class="ex">circt-tutorial-opt</span> exercises/ex6_arith_mulf.mlir <span class="dt">\</span></span>
 <span id="cb55-2"><a href=""></a>  <span class="at">--tutorial-func-to-hw</span> <span class="at">-o</span> build/ex6_float_hw_arith.mlir</span>
 <span id="cb55-3"><a href=""></a><span class="ex">circt-opt</span> build/ex6_float_hw_arith.mlir <span class="at">--map-arith-to-comb</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
@@ -2579,7 +2579,7 @@ a \lor b = \neg(\neg a \land \neg b)
 </div>
 </div>
 <div class="e4m3-rewrite-copy" data-id="e4m3-copy">
-<p><strong>Input excerpt:</strong> <code>examples/ex7_e4m3fn_mul.mlir</code></p>
+<p><strong>Input excerpt:</strong> <code>exercises/ex7_e4m3fn_mul.mlir</code></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb58"><pre class="sourceCode numberSource mlir number-lines code-with-copy"><code class="sourceCode mlir"><span id="cb58-1"><a href=""></a><span class="va">%af</span> <span class="op">=</span> <span class="fu">arith.bitcast</span> <span class="va">%a</span> <span class="op">:</span> <span class="dt">i8</span> to f8E4M3FN</span>
 <span id="cb58-2"><a href=""></a><span class="va">%bf</span> <span class="op">=</span> <span class="fu">arith.bitcast</span> <span class="va">%b</span> <span class="op">:</span> <span class="dt">i8</span> to f8E4M3FN</span>
 <span id="cb58-3"><a href=""></a><span class="va">%product</span> <span class="op">=</span> <span class="fu">arith.mulf</span> <span class="va">%af</span><span class="op">,</span> <span class="va">%bf</span> <span class="op">:</span> f8E4M3FN</span>
@@ -3193,7 +3193,7 @@ Cumulative Python lowering
 </ul>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb71"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb71-1"><a href=""></a><span class="ex">./scripts/test-e4m3-all.py</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb72"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb72-1"><a href=""></a>PASS: 65536 / 65536 products</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Complete reference RTL in <code>examples/</code>.</p>
+<p>Complete reference RTL in <code>exercises/</code>.</p>
 </div></div>
 </div>
 </section>
@@ -3261,7 +3261,7 @@ X^2 = \sum_i 2^{2i}x_i
 <div class="slide-body">
 <div class="columns">
 <div class="column" style="width:47%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb75"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb75-1"><a href=""></a><span class="fu">cat</span> examples/ex8_e4m3fn_square.mlir</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb75"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb75-1"><a href=""></a><span class="fu">cat</span> exercises/ex8_e4m3fn_square.mlir</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb76"><pre class="sourceCode numberSource mlir number-lines code-with-copy"><code class="sourceCode mlir"><span id="cb76-1"><a href=""></a><span class="fu">func.func</span> <span class="fu">@e4m3fn_square</span><span class="op">(</span><span class="va">%x</span> <span class="op">:</span> <span class="dt">i8</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="dt">i8</span> <span class="op">{</span></span>
 <span id="cb76-2"><a href=""></a>  <span class="va">%xf</span> <span class="op">=</span> <span class="fu">arith.bitcast</span> <span class="va">%x</span> <span class="op">:</span> <span class="dt">i8</span> to f8E4M3FN</span>
 <span id="cb76-3"><a href=""></a>  <span class="va">%p</span> <span class="op">=</span> <span class="fu">arith.mulf</span> <span class="va">%xf</span><span class="op">,</span> <span class="va">%xf</span> <span class="op">:</span> f8E4M3FN</span>
@@ -3271,7 +3271,7 @@ X^2 = \sum_i 2^{2i}x_i
 </div><div class="column" style="width:53%;">
 <p>The generic multiplier pattern also matches <code>%x * %x</code>. For this exercise, run the dedicated square lowering first:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb77"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb77-1"><a href=""></a><span class="ex">python</span> scripts/lower-e4m3fn-square.py <span class="dt">\</span></span>
-<span id="cb77-2"><a href=""></a>  examples/ex8_e4m3fn_square.mlir <span class="kw">|</span> <span class="dt">\</span></span>
+<span id="cb77-2"><a href=""></a>  exercises/ex8_e4m3fn_square.mlir <span class="kw">|</span> <span class="dt">\</span></span>
 <span id="cb77-3"><a href=""></a>  <span class="ex">circt-tutorial-opt</span> <span class="at">--tutorial-func-to-hw</span> <span class="dt">\</span></span>
 <span id="cb77-4"><a href=""></a>    <span class="at">--canonicalize</span> <span class="at">-o</span> build/ex8_square_intermediate.mlir</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>In a combined production pass, the square rewrite would receive the higher <code>PatternBenefit</code>.</p>
@@ -3316,7 +3316,7 @@ X^2 = \sum_i 2^{2i}x_i
 </ol>
 <p>Then regenerate the specialized circuit:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb80"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb80-1"><a href=""></a><span class="ex">python</span> scripts/lower-e4m3fn-square.py <span class="dt">\</span></span>
-<span id="cb80-2"><a href=""></a>  examples/ex8_e4m3fn_square.mlir <span class="kw">|</span> <span class="dt">\</span></span>
+<span id="cb80-2"><a href=""></a>  exercises/ex8_e4m3fn_square.mlir <span class="kw">|</span> <span class="dt">\</span></span>
 <span id="cb80-3"><a href=""></a>  <span class="ex">circt-tutorial-opt</span> <span class="at">--tutorial-func-to-hw</span> <span class="dt">\</span></span>
 <span id="cb80-4"><a href=""></a>    <span class="at">--canonicalize</span> <span class="at">-o</span> build/ex8_square_specialized.mlir</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -3361,7 +3361,7 @@ X^2 = \sum_i 2^{2i}x_i
 <div class="slide-body">
 <p>Generate the generic Exercise 7 baseline:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb82"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb82-1"><a href=""></a><span class="ex">python</span> solutions/lower-e4m3fn-normal.py <span class="dt">\</span></span>
-<span id="cb82-2"><a href=""></a>  examples/ex8_e4m3fn_square.mlir <span class="kw">|</span> <span class="dt">\</span></span>
+<span id="cb82-2"><a href=""></a>  exercises/ex8_e4m3fn_square.mlir <span class="kw">|</span> <span class="dt">\</span></span>
 <span id="cb82-3"><a href=""></a>  <span class="ex">circt-tutorial-opt</span> <span class="at">--tutorial-func-to-hw</span> <span class="dt">\</span></span>
 <span id="cb82-4"><a href=""></a>    <span class="at">--canonicalize</span> <span class="at">-o</span> build/ex8_square_generic.mlir</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Compare it with the specialized circuit:</p>
