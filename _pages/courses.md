@@ -19,7 +19,7 @@ This section collects teaching material and hands-on exercises.
         <p class="card-text">
           ACM Europe School on MLIR 2026 course on CIRCT tools, hardware dialects, equivalence checking, logic synthesis, and application-specific arithmetic.
         </p>
-        <a class="btn btn-sm btn-primary" href="{{ '/assets/courses/mlir-circt-summer-school-2026/mlir-circt-summer-school-2026.html' | relative_url }}">Open student slides</a>
+        <a class="btn btn-sm btn-primary" href="{{ '/assets/courses/mlir-circt-summer-school-2026/mlir-circt-summer-school-2026.html' | relative_url }}">Open slides</a>
         <a class="btn btn-sm btn-outline-primary" href="https://github.com/Bynaryman/MLIR_ACM_Summer_School_2026_CIRCT">Source and exercises</a>
       </div>
     </div>
