@@ -3417,20 +3417,32 @@ Cumulative schematic
 </div>
 </section></section>
 <section>
-<section id="conclusion" class="title-slide slide level1 section-title center">
+<section id="conclusion" class="title-slide slide level1 section-title center with-subtitle">
 <h1>Conclusion</h1>
-
+<div class="section-subtitle">
+<p>Compilation becomes hardware design…</p>
+<p><em>or the other way around?</em></p>
+</div>
 </section>
 <section id="course-takeaways" class="slide level2">
-<h2>Compilation becomes hardware design</h2>
+<h2>What we did</h2>
 <div class="slide-body">
 <ul>
-<li><p><strong>Represent hardware:</strong> <code>hw</code>, <code>comb</code>, and <code>seq</code> capture hierarchy, parallel logic, and state.</p></li>
-<li><p><strong>Choose an architecture:</strong> lowering makes widths, pipelines, storage, control, and arithmetic explicit. One operation can become many circuits.</p></li>
-<li><p><strong>Explore with evidence:</strong> prove behavior, synthesize, measure cost, and iterate.</p></li>
-<li><p><strong>Connect the levels:</strong> <code>tensor</code> / <code>linalg</code> <span class="math inline">\(\rightarrow\)</span> HLS <span class="math inline">\(\rightarrow\)</span> CIRCT <span class="math inline">\(\rightarrow\)</span> RTL, gates, and geometry.</p></li>
+<li><p><strong>Started from the motivation:</strong> specialization and hardware freedom require crossing the layers from a problem to electron flow.</p></li>
+<li><p><strong>Practised digital design with CIRCT:</strong> represented hierarchy, combinational logic, and state; then transformed, verified, synthesized, and emitted the design.</p></li>
+<li><p><strong>Built an application-specific circuit:</strong> lowered <code>arith.mulf</code> to an E4M3 <code>comb</code> datapath, then recognized <code>%x * %x</code> to generate a cheaper squarer.</p></li>
 </ul>
-<p><span class="marker">A hardware compiler does not merely target a machine; it helps build the machine.</span></p>
+<p><span class="marker">Yes: we can do digital design with MLIR and CIRCT — and it is interesting!</span></p>
+</div>
+</section>
+<section id="research-opening" class="slide level2">
+<h2>Where I want to take this</h2>
+<div class="slide-body">
+<p>My research asks how to connect a complete HLS flow to an automated design-space exploration loop:</p>
+<ul>
+<li><p><strong>Full HLS flow:</strong> lower <code>tensor</code> / <code>linalg</code> through scheduling, memory, control, and arithmetic decisions into CIRCT, RTL, and physical implementation.</p></li>
+<li><p><strong>Design-space exploration (DSE):</strong> generate architectural variants, prove their behavior, compare accuracy, area, timing, and power, and feed those measurements back into the compiler.</p></li>
+</ul>
 </div>
 </section></section>
 <section>
