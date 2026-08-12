@@ -2343,16 +2343,25 @@ a \lor b = \neg(\neg a \land \neg b)
 <section id="arithmetic-openroad" class="slide level2">
 <h2>MLIR 2 SV 2 GDS in seconds :)</h2>
 <div class="slide-body">
-<p>This you know: get SystemVerilog from MLIR with <code>firtool</code>.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb55"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb55-1"><a href=""></a><span class="ex">firtool</span> exercises/ex6_hw_comb.mlir <span class="dt">\</span></span>
-<span id="cb55-2"><a href=""></a>  <span class="at">-o</span> exercises/ex6_mul.sv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Then, copy the RTL and run OpenROAD to get a Sky130 GDSII.</p>
+<ol type="1">
+<li>This you know: get SystemVerilog from MLIR with <code>firtool</code>.</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb55"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb55-1"><a href=""></a><span class="ex">firtool</span> exercises/ex6_hw_comb.mlir <span class="at">-o</span> exercises/ex6_mul.sv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ol start="2" type="1">
+<li>Copy the RTL and run OpenROAD to get a Sky130 GDSII.</li>
+</ol>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb56"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb56-1"><a href=""></a><span class="fu">cp</span> exercises/ex6_mul.sv <span class="dt">\</span></span>
 <span id="cb56-2"><a href=""></a>  ~/Documents/work/repositories/OpenROAD-flow-scripts-feature-sonification/flow/designs/src/ex6_mul/</span>
 <span id="cb56-3"><a href=""></a><span class="bu">cd</span> ~/Documents/work/repositories/OpenROAD-flow-scripts-feature-sonification/flow</span>
 <span id="cb56-4"><a href=""></a><span class="fu">make</span> DESIGN_CONFIG=designs/sky130hd/ex6_mul/config.mk</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Finally, open the <a href="http://localhost:5173/">3D viewer</a> and drop the generated layout into it. Again, thanks to the <strong>open-source silicon community</strong>, including <a href="https://tinytapeout.com/">Tiny Tapeout</a>.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb57"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb57-1"><a href=""></a>results/sky130hd/ex6_mul/base/6_final.gds</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ol start="3" type="1">
+<li>Open the <a href="http://localhost:5173/">3D viewer</a> and drop the generated layout into it.</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb57"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb57-1"><a href=""></a><span class="ex">r</span></span>
+<span id="cb57-2"><a href=""></a><span class="bu">cd</span> tinytapeout_gds_viewer</span>
+<span id="cb57-3"><a href=""></a><span class="ex">npm</span> start</span>
+<span id="cb57-4"><a href=""></a><span class="ex">firefox</span> http://localhost:5173/</span>
+<span id="cb57-5"><a href=""></a><span class="ex">~/Documents/work/repositories/OpenROAD-flow-scripts-feature-sonification/flow/results/sky130hd/ex6_mul/base/6_final.gds</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="arithmetic-float-attempt" class="slide level2">
