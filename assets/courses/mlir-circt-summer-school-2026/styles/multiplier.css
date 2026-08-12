@@ -154,6 +154,15 @@
   margin: 0 !important;
 }
 
+.reveal .e4m3-stage-math.stage-normalize th,
+.reveal .e4m3-stage-math.stage-normalize td {
+  white-space: nowrap;
+}
+
+.reveal .e4m3-stage-math.stage-normalize table code {
+  white-space: nowrap;
+}
+
 .reveal .e4m3-normal-table {
   font-size: 0.68em;
 }
