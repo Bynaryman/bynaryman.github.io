@@ -3250,7 +3250,7 @@ Cumulative schematic
 <p>HAriCo can now generate an IEEE-754 single-precision adder directly as CIRCT Core IR:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb77"><pre class="sourceCode numberSource console number-lines code-with-copy"><code class="sourceCode"><span id="cb77-1"><a href=""></a>$ ./build-circt/harico-cli --hdl circt IEEEFPAdd --wE 8 --wF 23</span>
 <span id="cb77-2"><a href=""></a>Info: CirctCodeGenerator.cpp: Now writing CIRCT Core IR to: harico.mlir</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><code>cat harico.mlir</code></p>
+<h3 id="cat-harico.mlir">cat harico.mlir</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb78"><pre class="sourceCode numberSource mlir number-lines code-with-copy"><code class="sourceCode mlir"><span id="cb78-1"><a href=""></a><span class="kw">module</span> <span class="op">{</span></span>
 <span id="cb78-2"><a href=""></a>  <span class="fu">hw.module</span> <span class="fu">@IEEEFPAdd_0_8_23_comb_uid21</span><span class="op">(</span></span>
 <span id="cb78-3"><a href=""></a>      in <span class="va">%X</span> <span class="op">:</span> <span class="dt">i32</span><span class="op">,</span> in <span class="va">%Y</span> <span class="op">:</span> <span class="dt">i32</span><span class="op">,</span> out R <span class="op">:</span> <span class="dt">i32</span><span class="op">)</span> <span class="op">{</span></span>
