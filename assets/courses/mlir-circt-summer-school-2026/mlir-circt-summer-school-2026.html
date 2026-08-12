@@ -1528,22 +1528,22 @@ CMOS inverter: pMOS + nMOS
 <h2>Tutorial Part 1: CIRCT basics</h2>
 <div class="slide-body">
 <ul>
-<li class="fragment"><p>Exercise 1: <strong>Compile</strong> a SystemVerilog design to CIRCT IR. (<span class="math inline">\(\approx\)</span> 3 min.)</p></li>
-<li class="fragment"><p>Exercise 2: <strong>Narrow</strong> a combinational datapath with range analysis. (<span class="math inline">\(\approx\)</span> 5 min.)</p></li>
-<li class="fragment"><p>Exercise 3: <strong>Verify</strong> that a transformation preserved the circuit. (<span class="math inline">\(\approx\)</span> 5 min.)</p></li>
-<li class="fragment"><p>Exercise 4: <strong>Generate</strong> SystemVerilog for downstream EDA tools. (<span class="math inline">\(\approx\)</span> 5 min.)</p></li>
+<li><p>Exercise 1: <strong>Compile</strong> a SystemVerilog design to CIRCT IR. (<span class="math inline">\(\approx\)</span> 3 min.)</p></li>
+<li><p>Exercise 2: <strong>Narrow</strong> a combinational datapath with range analysis. (<span class="math inline">\(\approx\)</span> 5 min.)</p></li>
+<li><p>Exercise 3: <strong>Verify</strong> that a transformation preserved the circuit. (<span class="math inline">\(\approx\)</span> 5 min.)</p></li>
+<li><p>Exercise 4: <strong>Generate</strong> SystemVerilog for downstream EDA tools. (<span class="math inline">\(\approx\)</span> 5 min.)</p></li>
 </ul>
 </div>
 </section>
 <section id="tools-exercise-1" class="slide level2" data-auto-animate="true" data-auto-animate-id="exercise-1-import">
-<h2 data-id="quarto-animate-title">Exercise 1: compile the FMA example</h2>
+<h2 data-id="quarto-animate-title">Exercise 1: compile the “FMA” example</h2>
 <div class="slide-body">
 <p>First tool: <strong><code>circt-verilog</code></strong> parses SystemVerilog and prints CIRCT IR.<br>
 <br>
 </p>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p>Let’s inspect the FMA module.</p>
+<p>Let’s inspect the “FMA” module.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href=""></a><span class="fu">cat</span> exercises/ex1_fma.sv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><br>
 </p>
@@ -1587,7 +1587,7 @@ CMOS inverter: pMOS + nMOS
 </div>
 </section>
 <section id="tools-exercise-1-widths" class="slide level2" data-auto-animate="true" data-auto-animate-id="exercise-1-import">
-<h2 data-id="quarto-animate-title">Exercise 1: compile the FMA example</h2>
+<h2 data-id="quarto-animate-title">Exercise 1: compile the “FMA” example</h2>
 <div class="slide-body">
 <div class="columns">
 <div class="column" data-id="exercise-1-systemverilog" style="width:50%;">
