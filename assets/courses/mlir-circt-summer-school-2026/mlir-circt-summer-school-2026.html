@@ -1608,7 +1608,7 @@ CMOS inverter: pMOS + nMOS
 <h2>Exercise 2: read the narrowing contract</h2>
 <div class="slide-body">
 <p><code>comb-int-range-narrowing</code> makes that range argument mechanically:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28" data-code-line-numbers="2,4-5|6-10"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb28-1"><a href=""></a>def CombIntRangeNarrowing : Pass&lt;"comb-int-range-narrowing"&gt; {</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28" data-code-line-numbers="2,4-5"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb28-1"><a href=""></a>def CombIntRangeNarrowing : Pass&lt;"comb-int-range-narrowing"&gt; {</span>
 <span id="cb28-2"><a href=""></a>  let summary = "Reduce comb op bitwidth based on integer range analysis.";</span>
 <span id="cb28-3"><a href=""></a>  let description = [{</span>
 <span id="cb28-4"><a href=""></a>    Compute a basic value range analysis, by propagating integer intervals</span>
