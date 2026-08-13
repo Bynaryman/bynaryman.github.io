@@ -1088,7 +1088,7 @@ t_{\text{clk} \rightarrow Q} + t_{\text{logic}} + t_{\text{routing}}
 </div>
 </section>
 <section id="dd-fpga-larger-function" class="slide level2">
-<h2>Quiz: what if six inputs are not enough?</h2>
+<h2>What if six inputs are not enough?</h2>
 <div class="slide-body">
 <div class="columns">
 <div class="column" style="width:48%;">
@@ -1098,24 +1098,12 @@ t_{\text{clk} \rightarrow Q} + t_{\text{logic}} + t_{\text{routing}}
 <span id="cb17-4"><a href=""></a><span class="kw">assign</span> y = a | b | c | d |</span>
 <span id="cb17-5"><a href=""></a>           e | f | g;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:52%;">
-<div class="callout callout-note no-icon callout-titled callout-style-simple">
-<div class="callout-body">
-<div class="callout-title">
-<p><strong>Question</strong></p>
-</div>
-<div class="callout-content">
-<p>One LUT6 can see at most six inputs. How could the FPGA implement this seven-input OR?</p>
-</div>
-</div>
-</div>
-<div class="fragment" data-fragment-index="0">
 <p><strong>Connect several LUTs.</strong> For example:</p>
 <ol type="1">
 <li>one LUT computes <code>a | b | c | d | e | f</code>;</li>
 <li>another LUT combines that result with <code>g</code>.</li>
 </ol>
-</div>
-<div class="dd-compiler-takeaway fragment" data-fragment-index="1">
+<div class="dd-compiler-takeaway">
 <div class="callout callout-tip no-icon callout-titled callout-style-simple">
 <div class="callout-body">
 <div class="callout-title">
@@ -1148,8 +1136,17 @@ t_{\text{clk} \rightarrow Q} + t_{\text{logic}} + t_{\text{routing}}
 <li><strong>Switch blocks:</strong> join the selected tracks</li>
 <li><strong>Hard blocks:</strong> DSPs and memories beside the fabric</li>
 </ul>
-<div class="fragment">
+<div class="dd-compiler-takeaway fragment">
+<div class="callout callout-tip no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Compiler takeaway</strong></p>
+</div>
+<div class="callout-content">
 <p>Synthesis decomposes the function, placement chooses the resources, and routing connects them into one circuit.</p>
+</div>
+</div>
+</div>
 </div>
 </div></div>
 </div>
