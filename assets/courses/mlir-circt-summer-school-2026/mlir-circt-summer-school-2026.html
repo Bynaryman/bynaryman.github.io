@@ -2803,8 +2803,38 @@ E_a+E_b=(e_a+B)+(e_b+B)=e_a+e_b+2B
 </div>
 </div>
 </section>
+<section id="arithmetic-exercise-7c" class="slide level2" data-transition="none">
+<h2>Exercise 7C: adjust the exponent - 6 min</h2>
+<div class="slide-body">
+<div class="e4m3-rewrite-layout">
+<div class="e4m3-diagram-panel">
+<div class="r-stack e4m3-vertical-stack" data-id="e4m3-datapath">
+<p><img data-id="e4m3-base" src="assets/images/arithmetic/e4m3-rewrite-base.svg" alt="E4M3 multiplier before its exponent path is implemented"> <img data-id="e4m3-sign" src="assets/images/arithmetic/e4m3-rewrite-sign.svg" alt="" aria-hidden="true"> <img data-id="e4m3-significand" src="assets/images/arithmetic/e4m3-rewrite-significand.svg" alt="" aria-hidden="true"> <img data-id="e4m3-normalize" src="assets/images/arithmetic/e4m3-rewrite-normalize.svg" alt="" aria-hidden="true"> <img data-id="e4m3-exponent-question" src="assets/images/arithmetic/e4m3-rewrite-exponent-question.svg" alt="The exponent path remains to be implemented"></p>
+</div>
+</div>
+<div class="e4m3-rewrite-copy" data-id="e4m3-copy">
+<div class="e4m3-stage-cue stage-exponent">
+Now: build the exponent path.
+</div>
+<p>The blue box receives the two stored exponents and the normalization bit. It must produce <code>%exp : i4</code>:</p>
+<div class="e4m3-stage-math stage-exponent">
+<p><span class="math display">\[
+E_r=E_a+E_b-7+\mathtt{\%norm}
+\]</span></p>
+</div>
+<div class="callout callout-tip no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Your step:</strong> extract <code>%ea</code> and <code>%eb</code>, compute the expression above with five-bit intermediates, then extract the low four bits as <code>%exp</code>.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
 <section id="arithmetic-exponent-path" class="slide level2" data-transition="none">
-<h2>Together: adjust the exponent</h2>
+<h2>Exercise 7C: solution</h2>
 <div class="slide-body">
 <div class="e4m3-rewrite-layout">
 <div class="e4m3-diagram-panel">
