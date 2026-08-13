@@ -552,7 +552,7 @@ Guinness
 <p><img data-src="assets/images/motivation/nvidia-h100-sxm5.png" class="motivation-machine-image quarto-figure quarto-figure-center" alt="NVIDIA H100 SXM5 GPU module with the central Hopper GPU and surrounding HBM stacks"></p>
 </figure>
 </div>
-<div class="motivation-machine-caption">
+<div class="motivation-machine-caption fragment" data-fragment-index="0">
 <p><strong>GPU:</strong> matrix-multiply instructions backed by dedicated Tensor Core hardware. <span class="citation" data-cites="nvidia2022hopper">(<a href="#/references" role="doc-biblioref" onclick="">NVIDIA 2022</a>)</span></p>
 </div>
 </div><div class="column" style="width:50%;">
@@ -561,14 +561,14 @@ Guinness
 <p><img data-src="assets/images/motivation/google-tpu-v2-hero.webp" class="motivation-machine-image quarto-figure quarto-figure-center" alt="Google second-generation Cloud TPU board connected by colored high-speed interconnect cables"></p>
 </figure>
 </div>
-<div class="motivation-machine-caption">
+<div class="motivation-machine-caption fragment" data-fragment-index="0">
 <p><strong>TPU:</strong> a processor built around matrix-multiply hardware. <span class="citation" data-cites="google2017cloudtpu jouppi2020tpu">(<a href="#/references" role="doc-biblioref" onclick="">Dean and Hölzle 2017</a>; <a href="#/references" role="doc-biblioref" onclick="">Jouppi et al. 2020</a>)</span></p>
 </div>
 </div></div>
-<div class="motivation-machine-takeaway">
+<div class="motivation-machine-takeaway fragment" data-fragment-index="1">
 <p><strong>Specialization puts <span class="marker">more of the problem directly into the machine</span>.</strong></p>
 </div>
-<div class="motivation-machine-takeaway">
+<div class="motivation-machine-takeaway fragment" data-fragment-index="2">
 <p>New accelerators, new compiler stacks: one origin of <a href="https://storage.googleapis.com/gweb-research2023-media/pubtools/5945.pdf#page=2">MLIR</a>.</p>
 </div>
 </div>
@@ -583,10 +583,10 @@ Guinness
 <div class="slide-body">
 <p>These concepts become CIRCT vocabulary in the next section.</p>
 <ol type="1">
-<li class="fragment"><p><strong>Logic:</strong> combinational operations and bit widths.</p></li>
-<li class="fragment"><p><strong>Time:</strong> registers, clocks, and timing.</p></li>
-<li class="fragment"><p><strong>Structure:</strong> modules, instances, and repeated hardware.</p></li>
-<li class="fragment"><p><strong>Targets:</strong> FPGA fabrics and ASIC geometry.</p></li>
+<li><p><strong>Logic:</strong> combinational operations and bit widths.</p></li>
+<li><p><strong>Time:</strong> registers, clocks, and timing.</p></li>
+<li><p><strong>Structure:</strong> modules, instances, and repeated hardware.</p></li>
+<li><p><strong>Targets:</strong> FPGA fabrics and ASIC geometry.</p></li>
 </ol>
 </div>
 </section>
