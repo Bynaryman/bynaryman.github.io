@@ -2069,14 +2069,14 @@ CMOS inverter: pMOS + nMOS
 <p>Until now, we used existing CIRCT passes. <strong>Now we write a lowering.</strong></p>
 <p><span class="marker"><code>arith.mulf : f8E4M3FN</code> <span class="math inline">\(\longrightarrow\)</span> Python rewrite <span class="math inline">\(\longrightarrow\)</span> <code>hw</code> + <code>comb</code> circuit</span></p>
 <ol type="1">
-<li><p><strong>Exercise 6 — warm-up:</strong> lower an integer multiply with existing passes.</p></li>
+<li><p><strong>Exercise 6 — warm-up:</strong> go from upstream <code>func</code> + <code>arith</code> MLIR to a hardware circuit.</p></li>
 <li><p><strong>Exercise 7 — build:</strong> construct and test an E4M3 multiplier datapath.</p></li>
 <li><p><strong>Exercise 8 — specialize (optional):</strong> detect <code>x * x</code> and generate a cheaper squarer.</p></li>
 </ol>
 </div>
 </section>
 <section id="arithmetic-objective" class="slide level2">
-<h2>Exercise 6: start from generic MLIR</h2>
+<h2>Exercise 6: from upstream MLIR to a circuit</h2>
 <div class="slide-body">
 <div class="columns">
 <div class="column" style="width:50%;">
