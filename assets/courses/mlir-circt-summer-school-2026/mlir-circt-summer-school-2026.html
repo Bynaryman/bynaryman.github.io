@@ -2789,18 +2789,16 @@ Cumulative schematic
 <div class="e4m3-stage-cue stage-exponent">
 Then: encode the exponent.
 </div>
-<p>Take <span class="math inline">\(1.5 \times 1.5\)</span>. Both inputs store exponent <span class="math inline">\(E=7\)</span>, which represents the real exponent <span class="math inline">\(7-7=0\)</span>.</p>
+<p><strong>Notation reminder:</strong> <span class="math inline">\(E\)</span> is the stored exponent field, <span class="math inline">\(B=7\)</span> is the bias, and <span class="math inline">\(e=E-B\)</span> is the real exponent.</p>
 <div class="e4m3-stage-math stage-exponent">
 <p><span class="math display">\[
-\underbrace{7+7}_{\text{stored inputs}}
--\underbrace{7}_{\text{remove one bias}}
-=7
+E_a+E_b=(e_a+B)+(e_b+B)=e_a+e_b+2B
 \]</span></p>
 </div>
-<p>Why only one subtraction? The result exponent must also remain biased:</p>
-<p><span class="math display">\[\underbrace{(7-7)+(7-7)}_{\text{real exponent }0}
-+\underbrace{7}_{\text{store it again}}=7.\]</span></p>
-<p>Finally, <span class="math inline">\(1.5\times1.5=2.25=1.125\times2^1\)</span>, so normalization increments the stored result exponent from <strong>7 to 8</strong>.</p>
+<p>But the result must store only <span class="math inline">\(e_a+e_b+B\)</span>. The sum therefore contains <strong>one bias too many</strong>, so we subtract <span class="math inline">\(B\)</span> once:</p>
+<p><span class="math display">\[E_{\text{base}}=E_a+E_b-B.\]</span></p>
+<p><strong>Example:</strong> <span class="math inline">\(2.0\)</span> stores <span class="math inline">\(E_a=8\)</span> and <span class="math inline">\(0.5\)</span> stores <span class="math inline">\(E_b=6\)</span>. Their product is <span class="math inline">\(1.0\)</span>, whose stored exponent is <span class="math inline">\(7\)</span>: <span class="math inline">\(8+6-7=7\)</span>.</p>
+<p>Unbiasing both inputs is also correct: <span class="math inline">\((E_a-7)+(E_b-7)+7\)</span>. It simplifies to the same expression above, which exposes the smaller datapath directly.</p>
 </div>
 </div>
 </div>
@@ -2816,9 +2814,13 @@ Then: encode the exponent.
 </div>
 <div class="e4m3-rewrite-copy" data-id="e4m3-copy">
 <div class="e4m3-stage-math stage-exponent">
-<p><span class="math display">\[E_r=E_a+E_b-7+n\]</span></p>
+<p><span class="math display">\[
+E_{\text{base}}=E_a+E_b-7,
+\qquad
+E_r=E_{\text{base}}+\mathtt{\%norm}
+\]</span></p>
 </div>
-<p>Use five-bit intermediates to preserve the carry while adding the stored exponents, removing one bias, and applying the normalization correction.</p>
+<p><code>%norm</code> is the bit computed in the previous stage: it is <code>1</code> exactly when the significand product was shifted right by one. Use five-bit intermediates to preserve the carry.</p>
 <div class="e4m3-stage-code stage-exponent">
 <p><strong>Exponent path</strong></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb68"><pre class="sourceCode numberSource python-circt number-lines code-with-copy"><code class="sourceCode pythoncirct"><span id="cb68-1"><a href=""></a><span class="va">ea</span> <span class="op">=</span> <span class="fu">comb.ExtractOp.create</span><span class="op">(</span><span class="dv">3</span><span class="op">,</span> <span class="dt">i4</span><span class="op">,</span> lhs<span class="op">).</span>result</span>
