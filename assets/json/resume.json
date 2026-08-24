@@ -1,17 +1,17 @@
 {
   "basics": {
     "name": "Louis Ledoux",
-    "label": "Philosophiae Doctor",
+    "label": "Associate Professor (Maître de conférences)",
     "email": "i.f.lledoux[at]gmail.com",
     "phone": "+33 [seven] 70 49 11 98",
     "url": "https://bynaryman.github.io/",
-    "summary": "Researcher in arithmetic-aware compilation, hardware design, synthesis, and open EDA flows.",
+    "summary": "Teaching-and-research faculty member in computer architecture, arithmetic-aware compilation, tensor accelerators, and open EDA flows.",
     "location": {
       "address": "",
-      "postalCode": "69100",
-      "city": "Lyon",
+      "postalCode": "35000",
+      "city": "Rennes",
       "countryCode": "FRA",
-      "region": "Auvergne-Rhône-Alpes"
+      "region": "Brittany"
     },
     "profiles": [
       {
@@ -43,11 +43,23 @@
   },
   "work": [
     {
+      "name": "Université de Rennes – ISTIC / IRISA / Inria Taran",
+      "position": "Associate Professor (Maître de conférences)",
+      "url": "https://istic.univ-rennes.fr/",
+      "startDate": "2026-08-01",
+      "endDate": "Now",
+      "summary": "Teaching-and-research faculty member (enseignant-chercheur) at ISTIC, Université de Rennes, with research in IRISA's Architecture Department (D3) as a member of the Inria Taran project-team.",
+      "highlights": [
+        "Contributing to the design and tapeout of AI accelerators within the national PEPR CAMELIA program.",
+        "Designing systolic-array and tensor architectures with small-format floating-point arithmetic."
+      ]
+    },
+    {
       "name": "INSA/INRIA – Emeraude",
       "position": "Postdoctoral Researcher",
       "url": "https://www.citi-lab.fr/",
       "startDate": "2025-01-01",
-      "endDate": "Now",
+      "endDate": "2026-07-31",
       "summary": "Working on arithmetic compilation and optimization within the Emeraude team, at the intersection of MLIR, HAriCo/FloPoCo, CIRCT, Faust, and open EDA/hardware flows. The research focuses on bridging high-level mathematical reasoning with low-level hardware synthesis and reproducible compiler-to-silicon validation.",
       "highlights": [
         "Developing multi-level arithmetic transformations from real-valued expressions to fixed-point polynomial approximations for ASIC and FPGA targets.",
