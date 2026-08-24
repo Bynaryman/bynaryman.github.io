@@ -127,6 +127,18 @@
   ],
   "teaching": [
     {
+      "name": "ACM Europe School on MLIR 2026",
+      "position": "Course Instructor - Digital Design with MLIR and CIRCT",
+      "url": "https://mlir-school.github.io/summer-2026/",
+      "startDate": "2026-08-13",
+      "endDate": "2026-08-13",
+      "location": "A Coruña, Spain",
+      "summary": "Designed and delivered a 1h45 interactive course for an international audience, using quizzes and guided exercises to teach digital-design fundamentals and practical MLIR/CIRCT flows: IR lowering, optimization, equivalence checking, logic synthesis, and SystemVerilog generation. Developed a capstone in which participants lowered E4M3 floating-point multiplication from arith.mulf to hw/comb circuitry; demonstrated the end-to-end path from MLIR input to a small Sky130 ASIC GDSII layout, alongside a taped-out TinyTapeout GF0P2 design.",
+      "highlights": [
+        "<a href=\"https://bynaryman.github.io/assets/courses/mlir-circt-summer-school-2026/mlir-circt-summer-school-2026.html\">Course slides</a> and <a href=\"https://github.com/Bynaryman/MLIR_ACM_Summer_School_2026_CIRCT\">source and exercises</a>."
+      ]
+    },
+    {
       "name": "INSA Lyon",
       "position": "Computer Architecture (ARC)",
       "url": "https://moodle.insa-lyon.fr/course/view.php?id=5227",
@@ -665,13 +677,6 @@
       "releaseDate": "2026-06-28",
       "url": "",
       "summary": "End-to-end compilation from Python matrix multiplication and activation functions to silicon, with OpenROAD EDA catching optimization opportunities in between."
-    },
-    {
-      "name": "MLIR Summer School",
-      "publisher": "Teacher - MLIR Summer School (Galicia, Spain)",
-      "releaseDate": "2026-08-10",
-      "url": "",
-      "summary": "CIRCT and hardware generation with MLIR."
     }
   ],
   "contributions": [
@@ -763,7 +768,7 @@
       "publisher": "Conference Peer Reviewing",
       "releaseDate": "2026",
       "url": "",
-      "summary": "FCCM (x1), ASAP (x2)."
+      "summary": "<a href=\"https://www.fccm.org/\">FCCM 2026</a> (x1), <a href=\"https://2026.asap-conf.org/\">ASAP 2026</a> (x2), and <a href=\"https://www.icecs2026.gr/\">ICECS 2026</a> (x1)."
     }
   ],
   "conference_organization": [
