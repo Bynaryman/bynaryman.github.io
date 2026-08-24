@@ -220,7 +220,7 @@
     {
       "institution": "Universitat Politècnica de Catalunya (UPC)",
       "location": "Barcelona, Spain",
-      "url": "https://futur.upc.edu/LuisEduardoLedouxPardo",
+      "url": "https://theses.hal.science/tel-04754167",
       "area": "Computer Architecture",
       "studyType": "PhD",
       "startDate": "2018-08-16",
@@ -297,6 +297,20 @@
       "releaseDate": "2024",
       "url": "https://ieeexplore.ieee.org/document/10584359",
       "summary": "Significant contributor (not listed author): manuscript drafting, academic formatting, and revisions. Evidence: github.com/mattvenn/tt-ieee-paper."
+    },
+    {
+      "name": "HAriCo: Floating-Point MLIR to CIRCT Datapaths",
+      "publisher": "Poster Presentation - ACM Europe School on MLIR 2026 (A Coruña, Spain; August 10-14, 2026)",
+      "releaseDate": "2026-08-10",
+      "url": "https://mlir-school.github.io/summer-2026/",
+      "summary": "L. Ledoux."
+    },
+    {
+      "name": "Multi-Level Compilation of AI Tensors and Activation Functions to Silicon",
+      "publisher": "Poster Presentation - PEPR IA Days (Rennes, France; June 22-24, 2026)",
+      "releaseDate": "2026-06-22",
+      "url": "https://hal.science/hal-05671676",
+      "summary": "L. Ledoux. HAL:05671676."
     },
     {
       "name": "Floating-point datapaths in CIRCT via HAriCo and harico-arith-to-comb lowering",
@@ -649,7 +663,7 @@
       "publisher": "International Peer-reviewed Journal - WiPiEC Journal (vol. 11, no. 1, 2025)",
       "releaseDate": "2025",
       "url": "https://doi.org/10.64552/wipiec.v11i1.90",
-      "summary": "L. Ledoux, P. Cochard, and F. de Dinechin. Associated conference presentation at the Euromicro Conference on Digital System Design (DSD). HAL:04277512."
+      "summary": "L. Ledoux, P. Cochard, and F. de Dinechin. Associated conference presentation at the Euromicro Conference on Digital System Design (DSD). HAL:05385229."
     }
   ],
   "conference_papers": [
@@ -701,6 +715,20 @@
     }
   ],
   "posters": [
+    {
+      "name": "HAriCo: Floating-Point MLIR to CIRCT Datapaths",
+      "publisher": "Poster Presentation - ACM Europe School on MLIR 2026 (A Coruña, Spain; August 10-14, 2026)",
+      "releaseDate": "2026-08-10",
+      "url": "https://mlir-school.github.io/summer-2026/",
+      "summary": "L. Ledoux."
+    },
+    {
+      "name": "Multi-Level Compilation of AI Tensors and Activation Functions to Silicon",
+      "publisher": "Poster Presentation - PEPR IA Days (Rennes, France; June 22-24, 2026)",
+      "releaseDate": "2026-06-22",
+      "url": "https://hal.science/hal-05671676",
+      "summary": "L. Ledoux. HAL:05671676."
+    },
     {
       "name": "Progressive Arithmetic Optimizations: Tensor and DSP Kernels to Synthesizable Datapaths",
       "publisher": "Poster Presentation - 3rd FPGA Developers' Forum (FDF) meeting, CERN (May 27-29, 2026)",
