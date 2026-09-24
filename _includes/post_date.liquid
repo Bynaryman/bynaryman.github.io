@@ -1,0 +1,6 @@
+{%- if include.post.display_date -%}
+  {{- include.post.display_date | escape -}}
+{%- else -%}
+  {%- assign date_format = include.format | default: '%b %d, %Y' -%}
+  {{- include.post.date | date: date_format -}}
+{%- endif -%}
