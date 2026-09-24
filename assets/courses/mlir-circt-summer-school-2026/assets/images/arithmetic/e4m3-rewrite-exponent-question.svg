@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="368.504pt" height="447.874pt"
+     viewBox="0 0 368.504 447.874">
+  <defs>
+    <marker id="arrow-blue" viewBox="0 0 8 8" refX="7" refY="4"
+            markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M 0 0 L 8 4 L 0 8 z" fill="#2563eb"/>
+    </marker>
+    <marker id="arrow-gold" viewBox="0 0 8 8" refX="7" refY="4"
+            markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M 0 0 L 8 4 L 0 8 z" fill="#b7791f"/>
+    </marker>
+  </defs>
+
+  <g fill="#eff6ff" stroke="#2563eb" stroke-width="1.5">
+    <rect x="41.0" y="17.2" width="65.2" height="19.8"/>
+    <rect x="210.9" y="17.2" width="65.2" height="19.8"/>
+    <rect x="140.0" y="70.0" width="49.0" height="260.0" rx="3.5"/>
+    <rect x="118.9" y="395.1" width="90.6" height="22.7"/>
+  </g>
+
+  <g fill="none" stroke="#2563eb" stroke-width="1.5"
+     stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 73.6 37.0 V 52.0 H 153.0 V 67.0"
+          marker-end="url(#arrow-blue)"/>
+    <path d="M 243.5 37.0 V 52.0 H 176.0 V 67.0"
+          marker-end="url(#arrow-blue)"/>
+    <path d="M 164.5 330.0 V 390.5" marker-end="url(#arrow-blue)"/>
+  </g>
+
+  <path d="M 222.0 270.0 H 193.5" fill="none" stroke="#b7791f"
+        stroke-width="1.5" stroke-linecap="round"
+        marker-end="url(#arrow-gold)"/>
+
+  <g fill="#2563eb" text-anchor="middle"
+     font-family="Inter, Arial, sans-serif">
+    <text x="164.5" y="186.0" font-size="35" font-weight="700">?</text>
+    <text x="164.5" y="208.0" font-size="9.5" font-weight="700">exponent</text>
+    <text x="164.5" y="219.5" font-size="9.5" font-weight="700">path</text>
+    <text x="164.2" y="410.4" font-family="monospace" font-size="8.8">%exp</text>
+  </g>
+</svg>

@@ -1,1 +1,307 @@
-const DEFAULT_THEME_SETTING="light",DEFAULT_THEME_VARIANT="modus",THEME_DEFAULTS_VERSION="2026-07-light-modus-default",THEME_DEFAULTS_VERSION_KEY="theme-defaults-version",THEME_USER_OVERRIDE_KEY="theme-user-override";let ensureInitialThemeDefaults=()=>{localStorage.getItem(THEME_DEFAULTS_VERSION_KEY)!==THEME_DEFAULTS_VERSION&&(localStorage.setItem("theme",DEFAULT_THEME_SETTING),localStorage.setItem("theme-variant",DEFAULT_THEME_VARIANT),localStorage.setItem(THEME_USER_OVERRIDE_KEY,"false"),localStorage.setItem(THEME_DEFAULTS_VERSION_KEY,THEME_DEFAULTS_VERSION))},toggleThemeSetting=()=>{let e=determineThemeSetting();setThemeSetting("dark"==e?"light":"dark")},setThemeSetting=(e,t=!0)=>{localStorage.setItem("theme",e),localStorage.setItem(THEME_USER_OVERRIDE_KEY,t?"true":"false"),document.documentElement.setAttribute("data-theme-setting",e),applyTheme()},setThemeVariant=e=>{localStorage.setItem("theme-variant",e),document.documentElement.setAttribute("data-theme-variant",e),applyTheme()},applyTheme=()=>{let e=determineComputedTheme(),t=determineThemeVariant();document.documentElement.setAttribute("data-theme-variant",t),transTheme(),setHighlight(e),setGiscusTheme(e),setSearchTheme(e),"undefined"!=typeof mermaid&&setMermaidTheme(e),"undefined"!=typeof Diff2HtmlUI&&setDiff2htmlTheme(e),"undefined"!=typeof echarts&&setEchartsTheme(e),"undefined"!=typeof vegaEmbed&&setVegaLiteTheme(e),document.documentElement.setAttribute("data-theme",e);let a=document.getElementsByTagName("table");for(let t=0;t<a.length;t++)"dark"==e?a[t].classList.add("table-dark"):a[t].classList.remove("table-dark");let m=document.getElementsByClassName("jupyter-notebook-iframe-container");for(let t=0;t<m.length;t++){let a=m[t].getElementsByTagName("iframe")[0].contentWindow.document.body;"dark"==e?(a.setAttribute("data-jp-theme-light","false"),a.setAttribute("data-jp-theme-name","JupyterLab Dark")):(a.setAttribute("data-jp-theme-light","true"),a.setAttribute("data-jp-theme-name","JupyterLab Light"))}"undefined"!=typeof medium_zoom&&medium_zoom.update({background:getComputedStyle(document.documentElement).getPropertyValue("--global-bg-color")+"ee"}),updateThemeMenuState()},setHighlight=e=>{"dark"==e?(document.getElementById("highlight_theme_light").media="none",document.getElementById("highlight_theme_dark").media=""):(document.getElementById("highlight_theme_dark").media="none",document.getElementById("highlight_theme_light").media="")},setGiscusTheme=e=>{function t(e){const t=document.querySelector("iframe.giscus-frame");t&&t.contentWindow.postMessage({giscus:e},"https://giscus.app")}t({setConfig:{theme:e}})},addMermaidZoom=(e,t)=>{d3.selectAll(".mermaid svg").each(function(){var e=d3.select(this);e.html("<g>"+e.html()+"</g>");var t=e.select("g"),a=d3.zoom().on("zoom",function(e){t.attr("transform",e.transform)});e.call(a)}),t.disconnect()},setMermaidTheme=e=>{"light"==e&&(e="default"),document.querySelectorAll(".mermaid").forEach(e=>{let t=e.previousSibling.childNodes[0].innerHTML;e.removeAttribute("data-processed"),e.innerHTML=t}),mermaid.initialize({theme:e}),window.mermaid.init(undefined,document.querySelectorAll(".mermaid"));const t=document.querySelector(".mermaid svg");if(null!==t){const e={childList:!0};new MutationObserver(addMermaidZoom).observe(t,e)}},setDiff2htmlTheme=e=>{document.querySelectorAll(".diff2html").forEach(t=>{let a=t.previousSibling.childNodes[0].innerHTML;t.innerHTML="",new Diff2HtmlUI(t,a,{colorScheme:e,drawFileList:!0,highlight:!0,matching:"lines"}).draw()})},setEchartsTheme=e=>{document.querySelectorAll(".echarts").forEach(t=>{let a=t.previousSibling.childNodes[0].innerHTML;if(echarts.dispose(t),"dark"===e)var m=echarts.init(t,"dark-fresh-cut");else m=echarts.init(t);m.setOption(JSON.parse(a))})},setVegaLiteTheme=e=>{document.querySelectorAll(".vega-lite").forEach(t=>{let a=t.previousSibling.childNodes[0].innerHTML;t.innerHTML="","dark"===e?vegaEmbed(t,JSON.parse(a),{theme:"dark"}):vegaEmbed(t,JSON.parse(a))})},setSearchTheme=e=>{const t=document.querySelector("ninja-keys");t&&("dark"===e?t.classList.add("dark"):t.classList.remove("dark"))},transTheme=()=>{document.documentElement.classList.add("transition"),window.setTimeout(()=>{document.documentElement.classList.remove("transition")},500)},determineThemeSetting=()=>{if(!("true"===localStorage.getItem(THEME_USER_OVERRIDE_KEY)))return localStorage.setItem("theme",DEFAULT_THEME_SETTING),DEFAULT_THEME_SETTING;let e=localStorage.getItem("theme");return"dark"!=e&&"light"!=e&&(e=DEFAULT_THEME_SETTING,localStorage.setItem("theme",e)),e},determineThemeVariant=()=>{let e=localStorage.getItem("theme-variant");return"binary"!=e&&"modus"!=e&&(e=DEFAULT_THEME_VARIANT),e},updateThemeMenuState=()=>{const e=determineThemeSetting(),t=determineThemeVariant();document.querySelectorAll("[data-theme-mode]").forEach(t=>{t.classList.toggle("active",t.dataset.themeMode===e),t.setAttribute("aria-checked",t.dataset.themeMode===e?"true":"false")}),document.querySelectorAll("[data-theme-variant]").forEach(e=>{e.classList.toggle("active",e.dataset.themeVariant===t),e.setAttribute("aria-checked",e.dataset.themeVariant===t?"true":"false")})},determineComputedTheme=()=>determineThemeSetting(),initTheme=()=>{ensureInitialThemeDefaults();let e=determineThemeSetting(),t=determineThemeVariant();setThemeSetting(e,!1),setThemeVariant(t),document.addEventListener("DOMContentLoaded",function(){document.querySelectorAll("[data-theme-mode]").forEach(e=>{e.addEventListener("click",function(){setThemeSetting(e.dataset.themeMode)})}),document.querySelectorAll("[data-theme-variant]").forEach(e=>{e.addEventListener("click",function(){setThemeVariant(e.dataset.themeVariant)})}),updateThemeMenuState()})};
+// Has to be in the head tag, otherwise a flicker effect will occur.
+
+const DEFAULT_THEME_SETTING = "light";
+const DEFAULT_THEME_VARIANT = "modus";
+const THEME_DEFAULTS_VERSION = "2026-07-light-modus-default";
+const THEME_DEFAULTS_VERSION_KEY = "theme-defaults-version";
+const THEME_USER_OVERRIDE_KEY = "theme-user-override";
+
+// Stored choices survive navigation; no migration overrides user preferences.
+const themeStorage = {
+  get: (key) => {
+    try {
+      return localStorage.getItem(key);
+    } catch {
+      return null;
+    }
+  },
+  set: (key, value) => {
+    try {
+      localStorage.setItem(key, value);
+    } catch {
+      /* Private browsing may deny storage. */
+    }
+  },
+};
+
+// Toggle between light and dark theme settings.
+let toggleThemeSetting = () => {
+  let themeSetting = determineThemeSetting();
+  if (themeSetting == "dark") {
+    setThemeSetting("light");
+  } else {
+    setThemeSetting("dark");
+  }
+};
+
+// Change the theme setting and apply the theme.
+let setThemeSetting = (themeSetting, userInitiated = true) => {
+  themeStorage.set("theme", themeSetting);
+  themeStorage.set(THEME_USER_OVERRIDE_KEY, userInitiated ? "true" : "false");
+
+  document.documentElement.setAttribute("data-theme-setting", themeSetting);
+
+  applyTheme();
+};
+
+let setThemeVariant = (themeVariant) => {
+  themeStorage.set("theme-variant", themeVariant);
+
+  document.documentElement.setAttribute("data-theme-variant", themeVariant);
+
+  applyTheme();
+};
+
+// Apply the computed dark or light theme to the website.
+let applyTheme = () => {
+  let theme = determineComputedTheme();
+  let themeVariant = determineThemeVariant();
+
+  document.documentElement.setAttribute("data-theme-variant", themeVariant);
+
+  transTheme();
+  setHighlight(theme);
+  setGiscusTheme(theme);
+  setSearchTheme(theme);
+
+  // if mermaid is not defined, do nothing
+  if (typeof mermaid !== "undefined") {
+    setMermaidTheme(theme);
+  }
+
+  // if diff2html is not defined, do nothing
+  if (typeof Diff2HtmlUI !== "undefined") {
+    setDiff2htmlTheme(theme);
+  }
+
+  // if echarts is not defined, do nothing
+  if (typeof echarts !== "undefined") {
+    setEchartsTheme(theme);
+  }
+
+  // if vegaEmbed is not defined, do nothing
+  if (typeof vegaEmbed !== "undefined") {
+    setVegaLiteTheme(theme);
+  }
+
+  document.documentElement.setAttribute("data-theme", theme);
+
+  // Add class to tables.
+  let tables = document.getElementsByTagName("table");
+  for (let i = 0; i < tables.length; i++) {
+    if (theme == "dark") {
+      tables[i].classList.add("table-dark");
+    } else {
+      tables[i].classList.remove("table-dark");
+    }
+  }
+
+  // Set jupyter notebooks themes.
+  let jupyterNotebooks = document.getElementsByClassName("jupyter-notebook-iframe-container");
+  for (let i = 0; i < jupyterNotebooks.length; i++) {
+    let bodyElement = jupyterNotebooks[i].getElementsByTagName("iframe")[0].contentWindow.document.body;
+    if (theme == "dark") {
+      bodyElement.setAttribute("data-jp-theme-light", "false");
+      bodyElement.setAttribute("data-jp-theme-name", "JupyterLab Dark");
+    } else {
+      bodyElement.setAttribute("data-jp-theme-light", "true");
+      bodyElement.setAttribute("data-jp-theme-name", "JupyterLab Light");
+    }
+  }
+
+  // Updates the background of medium-zoom overlay.
+  if (typeof medium_zoom !== "undefined") {
+    medium_zoom.update({
+      background: getComputedStyle(document.documentElement).getPropertyValue("--global-bg-color") + "ee", // + 'ee' for trasparency.
+    });
+  }
+
+  updateThemeMenuState();
+};
+
+let setHighlight = (theme) => {
+  if (theme == "dark") {
+    document.getElementById("highlight_theme_light").media = "none";
+    document.getElementById("highlight_theme_dark").media = "";
+  } else {
+    document.getElementById("highlight_theme_dark").media = "none";
+    document.getElementById("highlight_theme_light").media = "";
+  }
+};
+
+let setGiscusTheme = (theme) => {
+  function sendMessage(message) {
+    const iframe = document.querySelector("iframe.giscus-frame");
+    if (!iframe) return;
+    iframe.contentWindow.postMessage({ giscus: message }, "https://giscus.app");
+  }
+
+  sendMessage({
+    setConfig: {
+      theme: theme,
+    },
+  });
+};
+
+let addMermaidZoom = (records, observer) => {
+  var svgs = d3.selectAll(".mermaid svg");
+  svgs.each(function () {
+    var svg = d3.select(this);
+    svg.html("<g>" + svg.html() + "</g>");
+    var inner = svg.select("g");
+    var zoom = d3.zoom().on("zoom", function (event) {
+      inner.attr("transform", event.transform);
+    });
+    svg.call(zoom);
+  });
+  observer.disconnect();
+};
+
+let setMermaidTheme = (theme) => {
+  if (theme == "light") {
+    // light theme name in mermaid is 'default'
+    // https://mermaid.js.org/config/theming.html#available-themes
+    theme = "default";
+  }
+
+  /* Re-render the SVG, based on https://github.com/cotes2020/jekyll-theme-chirpy/blob/master/_includes/mermaid.html */
+  document.querySelectorAll(".mermaid").forEach((elem) => {
+    // Get the code block content from previous element, since it is the mermaid code itself as defined in Markdown, but it is hidden
+    let svgCode = elem.previousSibling.childNodes[0].innerHTML;
+    elem.removeAttribute("data-processed");
+    elem.innerHTML = svgCode;
+  });
+
+  mermaid.initialize({ theme: theme });
+  window.mermaid.init(undefined, document.querySelectorAll(".mermaid"));
+
+  const observable = document.querySelector(".mermaid svg");
+  if (observable !== null) {
+    var observer = new MutationObserver(addMermaidZoom);
+    const observerOptions = { childList: true };
+    observer.observe(observable, observerOptions);
+  }
+};
+
+let setDiff2htmlTheme = (theme) => {
+  document.querySelectorAll(".diff2html").forEach((elem) => {
+    // Get the code block content from previous element, since it is the diff code itself as defined in Markdown, but it is hidden
+    let textData = elem.previousSibling.childNodes[0].innerHTML;
+    elem.innerHTML = "";
+    const configuration = { colorScheme: theme, drawFileList: true, highlight: true, matching: "lines" };
+    const diff2htmlUi = new Diff2HtmlUI(elem, textData, configuration);
+    diff2htmlUi.draw();
+  });
+};
+
+let setEchartsTheme = (theme) => {
+  document.querySelectorAll(".echarts").forEach((elem) => {
+    // Get the code block content from previous element, since it is the echarts code itself as defined in Markdown, but it is hidden
+    let jsonData = elem.previousSibling.childNodes[0].innerHTML;
+    echarts.dispose(elem);
+
+    if (theme === "dark") {
+      var chart = echarts.init(elem, "dark-fresh-cut");
+    } else {
+      var chart = echarts.init(elem);
+    }
+
+    chart.setOption(JSON.parse(jsonData));
+  });
+};
+
+let setVegaLiteTheme = (theme) => {
+  document.querySelectorAll(".vega-lite").forEach((elem) => {
+    // Get the code block content from previous element, since it is the vega lite code itself as defined in Markdown, but it is hidden
+    let jsonData = elem.previousSibling.childNodes[0].innerHTML;
+    elem.innerHTML = "";
+    if (theme === "dark") {
+      vegaEmbed(elem, JSON.parse(jsonData), { theme: "dark" });
+    } else {
+      vegaEmbed(elem, JSON.parse(jsonData));
+    }
+  });
+};
+
+let setSearchTheme = (theme) => {
+  const ninjaKeys = document.querySelector("ninja-keys");
+  if (!ninjaKeys) return;
+
+  if (theme === "dark") {
+    ninjaKeys.classList.add("dark");
+  } else {
+    ninjaKeys.classList.remove("dark");
+  }
+};
+
+let transTheme = () => {
+  document.documentElement.classList.add("transition");
+  window.setTimeout(() => {
+    document.documentElement.classList.remove("transition");
+  }, 500);
+};
+
+// Determine the expected state of the theme toggle, which can be "dark" or "light".
+// Default is "light".
+let determineThemeSetting = () => {
+  const setting = document.documentElement.getAttribute("data-theme-setting") || themeStorage.get("theme");
+  return ["light", "dark", "system"].includes(setting) ? setting : DEFAULT_THEME_SETTING;
+};
+
+let determineThemeVariant = () => {
+  let themeVariant = document.documentElement.getAttribute("data-theme-variant") || themeStorage.get("theme-variant");
+  if (themeVariant != "binary" && themeVariant != "modus") {
+    themeVariant = DEFAULT_THEME_VARIANT;
+  }
+  return themeVariant;
+};
+
+let updateThemeMenuState = () => {
+  const themeSetting = determineThemeSetting();
+  const themeVariant = determineThemeVariant();
+
+  document.querySelectorAll("[data-theme-mode]").forEach((item) => {
+    item.classList.toggle("active", item.dataset.themeMode === themeSetting);
+    item.setAttribute("aria-pressed", item.dataset.themeMode === themeSetting ? "true" : "false");
+  });
+
+  document.querySelectorAll("button[data-theme-variant]").forEach((item) => {
+    item.classList.toggle("active", item.dataset.themeVariant === themeVariant);
+    item.setAttribute("aria-pressed", item.dataset.themeVariant === themeVariant ? "true" : "false");
+  });
+};
+
+// Determine the computed theme, which can be "dark" or "light".
+let determineComputedTheme = () => {
+  const setting = determineThemeSetting();
+  return setting === "system" ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : setting;
+};
+
+let initTheme = () => {
+  let themeSetting = determineThemeSetting();
+  let themeVariant = determineThemeVariant();
+
+  document.documentElement.setAttribute("data-theme-setting", themeSetting);
+  document.documentElement.setAttribute("data-theme-variant", themeVariant);
+  applyTheme();
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+    if (determineThemeSetting() === "system") applyTheme();
+  });
+
+  // Add event listener to the theme toggle button.
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll("[data-theme-mode]").forEach((item) => {
+      item.addEventListener("click", function () {
+        setThemeSetting(item.dataset.themeMode);
+      });
+    });
+
+    document.querySelectorAll("button[data-theme-variant]").forEach((item) => {
+      item.addEventListener("click", function () {
+        setThemeVariant(item.dataset.themeVariant);
+      });
+    });
+
+    updateThemeMenuState();
+  });
+};

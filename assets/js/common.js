@@ -1,1 +1,59 @@
-$(document).ready(function(){if($("a.abstract").click(function(){$(this).parent().parent().find(".abstract.hidden").toggleClass("open"),$(this).parent().parent().find(".award.hidden.open").toggleClass("open"),$(this).parent().parent().find(".bibtex.hidden.open").toggleClass("open")}),$("a.award").click(function(){$(this).parent().parent().find(".abstract.hidden.open").toggleClass("open"),$(this).parent().parent().find(".award.hidden").toggleClass("open"),$(this).parent().parent().find(".bibtex.hidden.open").toggleClass("open")}),$("a.bibtex").click(function(){$(this).parent().parent().find(".abstract.hidden.open").toggleClass("open"),$(this).parent().parent().find(".award.hidden.open").toggleClass("open"),$(this).parent().parent().find(".bibtex.hidden").toggleClass("open")}),$("a").removeClass("waves-effect waves-light"),$("#toc-sidebar").length){$(".publications h2").each(function(){$(this).attr("data-toc-skip","")});var e="#toc-sidebar",t=$(e);Toc.init(t),$("body").scrollspy({target:e})}const n=document.createElement("link");n.href="../css/jupyter.css",n.rel="stylesheet",n.type="text/css";let a=determineComputedTheme();$(".jupyter-notebook-iframe-container iframe").each(function(){$(this).contents().find("head").append(n),"dark"==a&&$(this).bind("load",function(){$(this).contents().find("body").attr({"data-jp-theme-light":"false","data-jp-theme-name":"JupyterLab Dark"})})})});
+$(document).ready(function () {
+  document.querySelectorAll(".publications button[aria-controls]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const entry = button.closest(".links").parentElement;
+      const expanded = button.getAttribute("aria-expanded") !== "true";
+      entry.querySelectorAll("button[aria-controls]").forEach((other) => {
+        const panel = document.getElementById(other.getAttribute("aria-controls"));
+        const open = other === button && expanded;
+        other.setAttribute("aria-expanded", String(open));
+        if (panel) {
+          panel.classList.toggle("open", open);
+          panel.hidden = !open;
+        }
+      });
+    });
+  });
+  document.querySelectorAll("button.more-authors").forEach((button) => {
+    button.addEventListener("click", () => {
+      const expanded = button.getAttribute("aria-expanded") !== "true";
+      button.setAttribute("aria-expanded", String(expanded));
+      button.textContent = expanded ? button.dataset.full : button.dataset.short;
+    });
+  });
+
+  // bootstrap-toc
+  if ($("#toc-sidebar").length) {
+    // remove related publications years from the TOC
+    $(".publications h2").each(function () {
+      $(this).attr("data-toc-skip", "");
+    });
+    var navSelector = "#toc-sidebar";
+    var $myNav = $(navSelector);
+    Toc.init($myNav);
+    $("body").scrollspy({
+      target: navSelector,
+    });
+  }
+
+  // add css to jupyter notebooks
+  const cssLink = document.createElement("link");
+  cssLink.href = "../css/jupyter.css";
+  cssLink.rel = "stylesheet";
+  cssLink.type = "text/css";
+
+  let theme = determineComputedTheme();
+
+  $(".jupyter-notebook-iframe-container iframe").each(function () {
+    $(this).contents().find("head").append(cssLink);
+
+    if (theme == "dark") {
+      $(this).bind("load", function () {
+        $(this).contents().find("body").attr({
+          "data-jp-theme-light": "false",
+          "data-jp-theme-name": "JupyterLab Dark",
+        });
+      });
+    }
+  });
+});
