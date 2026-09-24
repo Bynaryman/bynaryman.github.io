@@ -12,7 +12,7 @@ npm ci
 npm run check
 ```
 
-`npm run check` tests theme persistence, builds production HTML, purges unused CSS, and validates internal links, assets, anchors, duplicate IDs, homepage script exclusions, and unpublished blog drafts. Standalone course assets are included in link validation. Jupyter is unnecessary for the current published pages; the theme's example notebook is excluded.
+`npm run check` tests theme persistence, builds production HTML, purges unused CSS, and validates internal links, assets, anchors, duplicate IDs, homepage script exclusions, and unpublished blog drafts. The purge step also versions stylesheet URLs from the final CSS bytes, so changes to page classes invalidate cached CSS. Standalone course assets are included in link validation. Jupyter is unnecessary for the current published pages; the theme's example notebook is excluded.
 
 Preview the result:
 

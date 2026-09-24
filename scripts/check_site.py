@@ -3,11 +3,16 @@
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urljoin, urlsplit, unquote
+import hashlib
 import sys
 
 root = Path(sys.argv[1] if len(sys.argv) > 1 else '_site').resolve()
 origin = 'https://bynaryman.github.io'
 errors = []
+css_versions = {
+    path.resolve(): hashlib.sha256(path.read_bytes()).hexdigest()[:16]
+    for path in (root / 'assets/css').glob('*.css')
+}
 class Page(HTMLParser):
     def __init__(self):
         super().__init__()
@@ -38,6 +43,8 @@ for current, page in pages.items():
         if target.is_dir(): target /= 'index.html'
         if not target.is_file():
             errors.append(f'{current}: missing {href}')
+        elif target.resolve() in css_versions and url.query != css_versions[target.resolve()]:
+            errors.append(f'{current}: stale stylesheet version {href}')
         elif url.fragment and target.suffix == '.html':
             key = target.relative_to(root).as_posix()
             # Slide routers and PDF-style page fragments are handled by JavaScript.
@@ -53,4 +60,4 @@ for slug in draft_slugs:
 if errors:
     print('\n'.join(sorted(set(errors))))
     sys.exit(1)
-print(f'Checked {len(pages)} HTML files: local links, assets, anchors, IDs, homepage scripts, and draft exclusions pass.')
+print(f'Checked {len(pages)} HTML files: local links, assets, stylesheet versions, anchors, IDs, homepage scripts, and draft exclusions pass.')
