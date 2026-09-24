@@ -1,0 +1,64 @@
+diff --git a/my_cv.tex b/my_cv.tex
+index 821440a..6549c7f 100644
+--- a/my_cv.tex
++++ b/my_cv.tex
+@@ -101,7 +101,7 @@
+ }
+ 
+ \cventry{2025 -- 2026}{Postdoctoral Researcher}{\href{https://www.citi-lab.fr/}{INSA/INRIA -- Emeraude}}{Lyon}{}{
+-    Working on arithmetic compilation and optimization within the \textit{Emeraude} team, at the intersection of \textit{MLIR}, \textit{HAriCo/FloPoCo}, \textit{CIRCT}, \textit{Faust}, and open EDA/hardware flows. The research focuses on bridging high-level mathematical reasoning with low-level hardware synthesis and reproducible compiler-to-silicon validation.
++    Worked on arithmetic compilation and optimization within the \textit{Emeraude} team, at the intersection of \textit{MLIR}, \textit{HAriCo/FloPoCo}, \textit{CIRCT}, \textit{Faust}, and open EDA/hardware flows. The research focused on bridging high-level mathematical reasoning with low-level hardware synthesis and reproducible compiler-to-silicon validation.
+     \begin{itemize}
+         \item Developed multi-level arithmetic transformations and MLIR dialects for fixed-point approximation, ASIC, and FPGA targets.
+         \item Automated hardware generation from DSP code and contributed to FloPoCo's refactoring toward explicit IR-based circuit generation.
+@@ -215,11 +215,11 @@ $\bullet$ \urllink{https://theses.hal.science/tel-04754167}{HAL:tel-04754167}.
+ 
+ \section{International Peer-reviewed Journals}
+ 
+-\cvline{[Bar+26]}{B. Barbe, \textbf{L. Ledoux}, A. Volkova, and F. de Dinechin, ``Reconfigurable constant multipliers: hardware models, optimization algorithm and applications,'' \textit{Microprocessors and Microsystems}, 2026.
++\cvline{[Bar+26]}{B. Barbe, \textbf{L. Ledoux}, A. Volkova, and F. de Dinechin, ``Reconfigurable constant multipliers: hardware models, optimization algorithm and applications,'' \textit{Microprocessors and Microsystems}, vol.~122, article~105270, June 2026.
+ $\bullet$ \urllink{https://doi.org/10.1016/j.micpro.2026.105270}{DOI} $\bullet$
+ \urllink{https://hal.science/hal-05510936}{HAL:05510936}.}
+ 
+-\cvline{[Pop+25]}{M. Popoff, R. Michon, T. Risset, P. Cochard, \textbf{L. Ledoux}, et al., ``Frugality and circuit design for digital audio signal processing,'' \textit{Revue Francophone d'Informatique et Musique}, special issue ``Frugalité, pérennité et création,'' vol.~11, 2025.
++\cvline{[Pop+25]}{M. Popoff, R. Michon, T. Risset, P. Cochard, \textbf{L. Ledoux}, S. Letz, Y. Orlarey, and F. de Dinechin, ``Frugalité et conception de circuits pour le traitement du signal audio numérique,'' \textit{Revue Francophone d'Informatique et Musique}, special issue ``Frugalité, pérennité et création,'' vol.~11, 2025.
+ $\bullet$ \urllink{https://doi.org/10.56698/rfim.961}{DOI} $\bullet$
+ \urllink{https://hal.science/hal-05489376}{HAL:05489376}.}
+ 
+@@ -245,7 +245,8 @@ $\bullet$ \urllink{https://doi.org/10.1109/FCCM53951.2022.9786164}{DOI} $\bullet
+ \section{Tutorials, Workshops \& Demos}
+ 
+ \cvline{MLIRW26}{\textbf{7th MLIR Workshop @ EuroLLVM 2026}, Dublin, Ireland, April~13, 2026. \emph{Talk.} Progressive Arithmetic Lowering from Tensor Kernels to Synthesizable Datapaths. $\bullet$ \urllink{https://hal.science/hal-05594483v1}{HAL:05594483}.}
+-\cvline{ARITH26}{\textbf{ARITH 2026}, Fulda, Germany, June~28 -- July~1, 2026. \emph{Scheduled demo.} End-to-end compilation from Python matrix multiplication and activation functions to silicon, with OpenROAD EDA catching optimization opportunities in between.}
++\cvline{ARITH26}{\emph{Tutorial: Optimizing Datapath Circuits with MLIR and CIRCT}, with Sam Coward, June~27, 2026. \ghlink{https://github.com/cowardsa/CIRCT_TUTORIAL_2026}{Exercises and slides}.}
++\cvline{}{\emph{Demo: Printing Mathematical Intent onto Silicon with Emeraude-MLIR, HAriCo, and OpenROAD}, June~29, 2026, Fulda, Germany. \urllink{https://www.arith2026.org/program.html\#demo-session}{Programme}.}
+ \section{Contributions to Publications}
+ 
+ \cvline{[Ven24]}{Contributor (not a listed author) to: M. Venn, ``Tiny Tapeout: a shared silicon tapeout platform accessible to everyone,'' \textit{IEEE Solid-State Circuits Magazine}, 2024. Initiated manuscript drafting, ensured academic formatting, and contributed to revision.
+@@ -254,7 +255,7 @@ $\bullet$ \urllink{https://ieeexplore.ieee.org/document/10584359}{IEEE article}
+ 
+ \section{Poster Presentations}
+ 
+-\cvline{[Led26e]}{\textbf{L. Ledoux}, ``HAriCo: Floating-Point MLIR to CIRCT Datapaths,'' in \textit{ACM Europe School on MLIR 2026}, A Coru\~na, Spain, August~10--14, 2026.}
++\cvline{[Led26e]}{\textbf{L. Ledoux}, ``HAriCo: Floating-Point MLIR to CIRCT Datapaths,'' in \textit{ACM Europe School on MLIR 2026}, A Coru\~na, Spain, August~10--14, 2026. $\bullet$ \urllink{https://hal.science/hal-05725118}{HAL:05725118}.}
+ 
+ \cvline{[Led26d]}{\textbf{L. Ledoux}, ``Multi-Level Compilation of AI Tensors and Activation Functions to Silicon,'' in \textit{PEPR IA Days}, Rennes, France, June~22--24, 2026.
+ $\bullet$ \urllink{https://hal.science/hal-05671676}{HAL:05671676}.}
+@@ -268,7 +269,7 @@ $\bullet$ \urllink{https://hal.science/hal-05576131}{HAL:05576131}.}
+ \cvline{[Led+26a]}{\textbf{L. Ledoux}, P. Cochard, and F. de Dinechin, ``Arithmetic lowering with Emeraude-MLIR: bridging tensor and DSP kernels to silicon datapaths,'' Aussois, France.
+ $\bullet$ \urllink{https://hal.science/hal-05489427}{HAL:05489427}.}
+ 
+-\cvline{[Led+25a]}{\textbf{L. Ledoux}, P. Cochard, L. Forget, and F. de Dinechin, ``Towards multi-level arithmetic optimizations,'' in \textit{EuroLLVM 2025}, Berlin, Germany.
++\cvline{[Led+25a]}{P. Cochard, L. Forget, F. de Dinechin, and \textbf{L. Ledoux}, ``Towards multi-level arithmetic optimizations,'' in \textit{EuroLLVM 2025}, Berlin, Germany.
+ $\bullet$ \urllink{https://hal.science/hal-05063466}{HAL:05063466}.}
+ 
+ \cvline{[LC24b]}{\textbf{L. Ledoux} and M. Casas, ``LLMMMM: large language models matrix--matrix multiplications characterization on open silicon,'' in \textit{11th BSC Severo Ochoa Doctoral Symposium 2024}, Barcelona, Spain.
+@@ -283,7 +284,7 @@ $\bullet$ \urllink{https://arxiv.org/abs/2305.18328}{arXiv:2305.18328} $\bullet$
+ 
+ \section{Invited Talks \& Seminars}
+ 
+-\cvline{[LC25]}{\textbf{L. Ledoux} and P. Cochard, ``FloPoCo and MLIR: a multi-level compilation framework for many intents,'' Holigrail Seminar, Sorbonne University, Paris, France, September~18, 2025.
++\cvline{[LC25]}{P. Cochard and \textbf{L. Ledoux}, ``FloPoCo and MLIR: a multi-level compilation framework for many intents,'' Holigrail Seminar, Sorbonne University, Paris, France, September~18, 2025.
+ $\bullet$ \urllink{https://hal.science/hal-05412130}{HAL:05412130}.}
+ 
+ \cvline{[Led24]}{\textbf{L. Ledoux}, ``The walls and the dark silicon era: an arithmetic perspective,'' seminar at Inria Rennes (Team TARAN), Rennes, France, December~2, 2024.

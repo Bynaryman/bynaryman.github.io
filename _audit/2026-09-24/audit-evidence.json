@@ -1,0 +1,2139 @@
+{
+  "audit_date": "2026-09-24",
+  "site": "https://bynaryman.github.io/",
+  "git_head": "98564cfa9a7edc0948d6173a6be96e04f0876ab8",
+  "method_notes": [
+    "Read-only site audit; report artifacts are the only new repository files.",
+    "HTTP byte counts are asset sizes, not a browser transfer trace.",
+    "HAL name search returned 24 records; four unrelated namesakes were excluded based on names, subject and publication context.",
+    "No Lighthouse, Core Web Vitals or complete accessibility certification was performed."
+  ],
+  "crawl": {
+    "html_endpoint_count": 60,
+    "status_counts": {
+      "200": 59,
+      "404": 1
+    },
+    "same_origin_destination_checks": 111,
+    "pages": {
+      "https://bynaryman.github.io/blog/2024/rom-a-ranger/": {
+        "status": 200,
+        "bytes": 20535,
+        "title": " ROM à ranger | Louis Ledoux ",
+        "h1": [
+          "ROM à ranger"
+        ]
+      },
+      "https://bynaryman.github.io/blog/2024/ada-wavetable/": {
+        "status": 200,
+        "bytes": 21423,
+        "title": " ADA Wavetables | Louis Ledoux ",
+        "h1": [
+          "ADA Wavetables"
+        ]
+      },
+      "https://bynaryman.github.io/blog/2024/manim-slides/": {
+        "status": 200,
+        "bytes": 25211,
+        "title": " My Take on Manim Slides | Louis Ledoux ",
+        "h1": [
+          "My Take on Manim Slides"
+        ]
+      },
+      "https://bynaryman.github.io/blog/2024/djset-buying/": {
+        "status": 200,
+        "bytes": 21282,
+        "title": " Music/DJ set | Louis Ledoux ",
+        "h1": [
+          "Music/DJ set"
+        ]
+      },
+      "https://bynaryman.github.io/blog/2024/bryce-sky130hd-retro-raytracing/": {
+        "status": 200,
+        "bytes": 23247,
+        "title": " 90s Retro Raytracing of SKY130HD Cells with Bryce | Louis Ledoux ",
+        "h1": [
+          "90s Retro Raytracing of SKY130HD Cells with Bryce"
+        ]
+      },
+      "https://bynaryman.github.io/blog/2025/tinytapeout-sticker-competition-win/": {
+        "status": 200,
+        "bytes": 23669,
+        "title": " I Won the TinyTapeout Sticker Competition! | Louis Ledoux ",
+        "h1": [
+          "I Won the TinyTapeout Sticker Competition!"
+        ]
+      },
+      "https://bynaryman.github.io/blog/2026/ttsky26a-mlir-tinytapeout/": {
+        "status": 200,
+        "bytes": 32659,
+        "title": " My Latest TinyTapeout makes MLIR Arithmetic Silicon-Visible | Louis Ledoux ",
+        "h1": [
+          "My Latest TinyTapeout makes MLIR Arithmetic Silicon-Visible"
+        ]
+      },
+      "https://bynaryman.github.io/blog/2026/arith-2026-circt-tutorial-demo/": {
+        "status": 200,
+        "bytes": 27105,
+        "title": " ARITH 2026: CIRCT Tutorial and Mathematical Intent on Silicon | Louis Ledoux ",
+        "h1": [
+          "ARITH 2026: CIRCT Tutorial and Mathematical Intent on Silicon"
+        ]
+      },
+      "https://bynaryman.github.io/projects/osfntc/": {
+        "status": 200,
+        "bytes": 46403,
+        "title": " OSFNTC | Louis Ledoux ",
+        "h1": [
+          "OSFNTC"
+        ]
+      },
+      "https://bynaryman.github.io/projects/pof/": {
+        "status": 200,
+        "bytes": 22944,
+        "title": " POF | Louis Ledoux ",
+        "h1": [
+          "POF",
+          "POF (Posit Operators Framework) - Documentation"
+        ]
+      },
+      "https://bynaryman.github.io/projects/retrorchestre/": {
+        "status": 200,
+        "bytes": 28692,
+        "title": " Le RetrOrchestre | Louis Ledoux ",
+        "h1": [
+          "Le RetrOrchestre"
+        ]
+      },
+      "https://bynaryman.github.io/projects/suf/": {
+        "status": 200,
+        "bytes": 28805,
+        "title": " SUF | Louis Ledoux ",
+        "h1": [
+          "SUF"
+        ]
+      },
+      "https://bynaryman.github.io/": {
+        "status": 200,
+        "bytes": 35497,
+        "title": " Louis Ledoux ",
+        "h1": [
+          "Louis Ledoux"
+        ]
+      },
+      "https://bynaryman.github.io/courses/": {
+        "status": 200,
+        "bytes": 19164,
+        "title": " courses | Louis Ledoux ",
+        "h1": [
+          "courses"
+        ]
+      },
+      "https://bynaryman.github.io/cv/": {
+        "status": 200,
+        "bytes": 85910,
+        "title": " cv | Louis Ledoux ",
+        "h1": [
+          "cv"
+        ]
+      },
+      "https://bynaryman.github.io/_pages/dropdown/": {
+        "status": 404,
+        "bytes": 18141,
+        "title": " Page not found | Louis Ledoux ",
+        "h1": [
+          "Page not found"
+        ]
+      },
+      "https://bynaryman.github.io/news/": {
+        "status": 200,
+        "bytes": 18003,
+        "title": " news | Louis Ledoux ",
+        "h1": [
+          "news"
+        ]
+      },
+      "https://bynaryman.github.io/projects/": {
+        "status": 200,
+        "bytes": 20476,
+        "title": " projects | Louis Ledoux ",
+        "h1": [
+          "projects"
+        ]
+      },
+      "https://bynaryman.github.io/publications/": {
+        "status": 200,
+        "bytes": 80682,
+        "title": " publications | Louis Ledoux ",
+        "h1": [
+          "publications"
+        ]
+      },
+      "https://bynaryman.github.io/repositories/": {
+        "status": 200,
+        "bytes": 19877,
+        "title": " repositories | Louis Ledoux ",
+        "h1": [
+          "repositories"
+        ]
+      },
+      "https://bynaryman.github.io/blog/tag/videos/": {
+        "status": 200,
+        "bytes": 18272,
+        "title": " videos, | Louis Ledoux ",
+        "h1": [
+          "videos,"
+        ]
+      },
+      "https://bynaryman.github.io/blog/tag/art/": {
+        "status": 200,
+        "bytes": 18252,
+        "title": " art, | Louis Ledoux ",
+        "h1": [
+          "art,"
+        ]
+      },
+      "https://bynaryman.github.io/blog/tag/tapeout/": {
+        "status": 200,
+        "bytes": 18263,
+        "title": " tapeout | Louis Ledoux ",
+        "h1": [
+          "tapeout"
+        ]
+      },
+      "https://bynaryman.github.io/blog/tag/raytracing/": {
+        "status": 200,
+        "bytes": 18633,
+        "title": " raytracing | Louis Ledoux ",
+        "h1": [
+          "raytracing"
+        ]
+      },
+      "https://bynaryman.github.io/blog/tag/sorting/": {
+        "status": 200,
+        "bytes": 18263,
+        "title": " sorting | Louis Ledoux ",
+        "h1": [
+          "sorting"
+        ]
+      },
+      "https://bynaryman.github.io/blog/tag/wavetable/": {
+        "status": 200,
+        "bytes": 18271,
+        "title": " wavetable | Louis Ledoux ",
+        "h1": [
+          "wavetable"
+        ]
+      },
+      "https://bynaryman.github.io/blog/tag/music/": {
+        "status": 200,
+        "bytes": 18259,
+        "title": " music | Louis Ledoux ",
+        "h1": [
+          "music"
+        ]
+      },
+      "https://bynaryman.github.io/blog/tag/synthesis/": {
+        "status": 200,
+        "bytes": 18271,
+        "title": " synthesis | Louis Ledoux ",
+        "h1": [
+          "synthesis"
+        ]
+      },
+      "https://bynaryman.github.io/blog/tag/science/": {
+        "status": 200,
+        "bytes": 18275,
+        "title": " science, | Louis Ledoux ",
+        "h1": [
+          "science,"
+        ]
+      },
+      "https://bynaryman.github.io/blog/tag/communication/": {
+        "status": 200,
+        "bytes": 18293,
+        "title": " communication, | Louis Ledoux ",
+        "h1": [
+          "communication,"
+        ]
+      },
+      "https://bynaryman.github.io/blog/tag/mathematics/": {
+        "status": 200,
+        "bytes": 18285,
+        "title": " mathematics | Louis Ledoux ",
+        "h1": [
+          "mathematics"
+        ]
+      },
+      "https://bynaryman.github.io/blog/tag/retro/": {
+        "status": 200,
+        "bytes": 18312,
+        "title": " retro | Louis Ledoux ",
+        "h1": [
+          "retro"
+        ]
+      },
+      "https://bynaryman.github.io/blog/tag/goa/": {
+        "status": 200,
+        "bytes": 18252,
+        "title": " goa, | Louis Ledoux ",
+        "h1": [
+          "goa,"
+        ]
+      },
+      "https://bynaryman.github.io/blog/tag/mixing/": {
+        "status": 200,
+        "bytes": 18261,
+        "title": " mixing, | Louis Ledoux ",
+        "h1": [
+          "mixing,"
+        ]
+      },
+      "https://bynaryman.github.io/blog/tag/djset/": {
+        "status": 200,
+        "bytes": 18256,
+        "title": " djset | Louis Ledoux ",
+        "h1": [
+          "djset"
+        ]
+      },
+      "https://bynaryman.github.io/blog/tag/silicon/": {
+        "status": 200,
+        "bytes": 18504,
+        "title": " silicon | Louis Ledoux ",
+        "h1": [
+          "silicon"
+        ]
+      },
+      "https://bynaryman.github.io/blog/tag/bryce/": {
+        "status": 200,
+        "bytes": 18312,
+        "title": " bryce | Louis Ledoux ",
+        "h1": [
+          "bryce"
+        ]
+      },
+      "https://bynaryman.github.io/blog/tag/tinytapeout/": {
+        "status": 200,
+        "bytes": 18513,
+        "title": " tinytapeout | Louis Ledoux ",
+        "h1": [
+          "tinytapeout"
+        ]
+      },
+      "https://bynaryman.github.io/blog/tag/stickers/": {
+        "status": 200,
+        "bytes": 18318,
+        "title": " stickers | Louis Ledoux ",
+        "h1": [
+          "stickers"
+        ]
+      },
+      "https://bynaryman.github.io/blog/tag/gds/": {
+        "status": 200,
+        "bytes": 18303,
+        "title": " gds | Louis Ledoux ",
+        "h1": [
+          "gds"
+        ]
+      },
+      "https://bynaryman.github.io/blog/tag/blender/": {
+        "status": 200,
+        "bytes": 18315,
+        "title": " blender | Louis Ledoux ",
+        "h1": [
+          "blender"
+        ]
+      },
+      "https://bynaryman.github.io/blog/tag/touchdesigner/": {
+        "status": 200,
+        "bytes": 18333,
+        "title": " touchdesigner | Louis Ledoux ",
+        "h1": [
+          "touchdesigner"
+        ]
+      },
+      "https://bynaryman.github.io/blog/tag/mlir/": {
+        "status": 200,
+        "bytes": 18506,
+        "title": " mlir | Louis Ledoux ",
+        "h1": [
+          "mlir"
+        ]
+      },
+      "https://bynaryman.github.io/blog/tag/circt/": {
+        "status": 200,
+        "bytes": 18509,
+        "title": " circt | Louis Ledoux ",
+        "h1": [
+          "circt"
+        ]
+      },
+      "https://bynaryman.github.io/blog/tag/flopoco/": {
+        "status": 200,
+        "bytes": 18322,
+        "title": " flopoco | Louis Ledoux ",
+        "h1": [
+          "flopoco"
+        ]
+      },
+      "https://bynaryman.github.io/blog/tag/floating-point/": {
+        "status": 200,
+        "bytes": 18343,
+        "title": " floating-point | Louis Ledoux ",
+        "h1": [
+          "floating-point"
+        ]
+      },
+      "https://bynaryman.github.io/blog/tag/arith/": {
+        "status": 200,
+        "bytes": 18323,
+        "title": " arith | Louis Ledoux ",
+        "h1": [
+          "arith"
+        ]
+      },
+      "https://bynaryman.github.io/blog/tag/openroad/": {
+        "status": 200,
+        "bytes": 18332,
+        "title": " openroad | Louis Ledoux ",
+        "h1": [
+          "openroad"
+        ]
+      },
+      "https://bynaryman.github.io/blog/tag/tutorial/": {
+        "status": 200,
+        "bytes": 18332,
+        "title": " tutorial | Louis Ledoux ",
+        "h1": [
+          "tutorial"
+        ]
+      },
+      "https://bynaryman.github.io/blog/tag/demo/": {
+        "status": 200,
+        "bytes": 18320,
+        "title": " demo | Louis Ledoux ",
+        "h1": [
+          "demo"
+        ]
+      },
+      "https://bynaryman.github.io/blog/tag/arithmetic/": {
+        "status": 200,
+        "bytes": 18338,
+        "title": " arithmetic | Louis Ledoux ",
+        "h1": [
+          "arithmetic"
+        ]
+      },
+      "https://bynaryman.github.io/blog/category/arte-science/": {
+        "status": 200,
+        "bytes": 18772,
+        "title": " arte-science | Louis Ledoux ",
+        "h1": [
+          "arte-science"
+        ]
+      },
+      "https://bynaryman.github.io/blog/category/science/": {
+        "status": 200,
+        "bytes": 18656,
+        "title": " science | Louis Ledoux ",
+        "h1": [
+          "science"
+        ]
+      },
+      "https://bynaryman.github.io/blog/category/music/": {
+        "status": 200,
+        "bytes": 18260,
+        "title": " music | Louis Ledoux ",
+        "h1": [
+          "music"
+        ]
+      },
+      "https://bynaryman.github.io/blog/2024/": {
+        "status": 200,
+        "bytes": 18826,
+        "title": " 2024 | Louis Ledoux ",
+        "h1": [
+          "2024"
+        ]
+      },
+      "https://bynaryman.github.io/blog/2025/": {
+        "status": 200,
+        "bytes": 18304,
+        "title": " 2025 | Louis Ledoux ",
+        "h1": [
+          "2025"
+        ]
+      },
+      "https://bynaryman.github.io/blog/2026/": {
+        "status": 200,
+        "bytes": 18504,
+        "title": " 2026 | Louis Ledoux ",
+        "h1": [
+          "2026"
+        ]
+      },
+      "https://bynaryman.github.io/blog/": {
+        "status": 200,
+        "bytes": 24406,
+        "title": " blog | Louis Ledoux ",
+        "h1": [
+          "Vita Variabilis"
+        ]
+      },
+      "https://bynaryman.github.io/blog/page/2/": {
+        "status": 200,
+        "bytes": 21907,
+        "title": " blog - page 2 | Louis Ledoux ",
+        "h1": [
+          "Vita Variabilis"
+        ]
+      },
+      "https://bynaryman.github.io/404.html": {
+        "status": 200,
+        "bytes": 18141,
+        "title": " Page not found | Louis Ledoux ",
+        "h1": [
+          "Page not found"
+        ]
+      }
+    },
+    "failed_destinations": [
+      {
+        "url": "https://bynaryman.github.io/blog/category/artistic-science",
+        "status": 404,
+        "length": "5615",
+        "type": "text/html; charset=utf-8",
+        "encoding": "gzip",
+        "sources": [
+          "https://bynaryman.github.io/blog/",
+          "https://bynaryman.github.io/blog/page/2/"
+        ]
+      },
+      {
+        "url": "https://bynaryman.github.io/blog/tag/floats",
+        "status": 404,
+        "length": "5615",
+        "type": "text/html; charset=utf-8",
+        "encoding": "gzip",
+        "sources": [
+          "https://bynaryman.github.io/blog/",
+          "https://bynaryman.github.io/blog/page/2/"
+        ]
+      },
+      {
+        "url": "https://bynaryman.github.io/blog/tag/math",
+        "status": 404,
+        "length": "5615",
+        "type": "text/html; charset=utf-8",
+        "encoding": "gzip",
+        "sources": [
+          "https://bynaryman.github.io/blog/",
+          "https://bynaryman.github.io/blog/page/2/"
+        ]
+      },
+      {
+        "url": "https://bynaryman.github.io/blog/tag/systolic-algorithms",
+        "status": 404,
+        "length": "5615",
+        "type": "text/html; charset=utf-8",
+        "encoding": "gzip",
+        "sources": [
+          "https://bynaryman.github.io/blog/",
+          "https://bynaryman.github.io/blog/page/2/"
+        ]
+      }
+    ]
+  },
+  "asset_checks": [
+    {
+      "url": "https://bynaryman.github.io",
+      "status": 200,
+      "length": "9951",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/courses/mlir-circt-summer-school-2026/mlir-circt-summer-school-2026.html",
+      "status": 200,
+      "length": "56301",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/css/academicons.min.css?f0b7046b84e425c55f3463ac249818f5",
+      "status": 200,
+      "length": "322",
+      "type": "text/css; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/css/bootstrap-toc.min.css?6f5af0bb9aab25d79b2448143cbeaa88",
+      "status": 200,
+      "length": "453",
+      "type": "text/css; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/css/bootstrap.min.css?a4b3f509e79c54a512b890d73235ef04",
+      "status": 200,
+      "length": "6596",
+      "type": "text/css; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/css/jekyll-pygments-themes-github.css?591dab5a4e56573bf4ef7fd332894c99",
+      "status": 200,
+      "length": "301",
+      "type": "text/css; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/css/jekyll-pygments-themes-native.css?5847e5ed4a4568527aa6cfab446049ca",
+      "status": 200,
+      "length": "358",
+      "type": "text/css; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/css/main.css?d41d8cd98f00b204e9800998ecf8427e",
+      "status": 200,
+      "length": "11063",
+      "type": "text/css; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/html/iframe.html",
+      "status": 200,
+      "length": "2624348",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/8087_art.jpg?e4f9e8b4a5b350718f16586f024fa7c6",
+      "status": 200,
+      "length": "3724646",
+      "type": "image/jpeg",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/POF.png",
+      "status": 200,
+      "length": "143675",
+      "type": "image/png",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/SUF.png",
+      "status": 200,
+      "length": "710834",
+      "type": "image/png",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/ableton_waveforms.jpg",
+      "status": 200,
+      "length": "812756",
+      "type": "image/jpeg",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/arith-2026-tutorial/arith-demo-title.png",
+      "status": 200,
+      "length": "93843",
+      "type": "image/png",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/arith-2026-tutorial/circt-tutorial-title.png",
+      "status": 200,
+      "length": "93193",
+      "type": "image/png",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/arith-2026-tutorial/openroad-arith-placement.png",
+      "status": 200,
+      "length": "817583",
+      "type": "image/png",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/poster_SUF.png",
+      "status": 200,
+      "length": "2170956",
+      "type": "image/png",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/prof_pic.jpg?e71a656e634b757e71f4f4265e6cab2b",
+      "status": 200,
+      "length": "434200",
+      "type": "image/jpeg",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/publication_preview/hal-04094835-poster.png",
+      "status": 200,
+      "length": "132558",
+      "type": "image/png",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/publication_preview/hal-04094850.png",
+      "status": 200,
+      "length": "96447",
+      "type": "image/png",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/publication_preview/hal-04103774.png",
+      "status": 200,
+      "length": "160786",
+      "type": "image/png",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/publication_preview/hal-04277512.png",
+      "status": 200,
+      "length": "229731",
+      "type": "image/png",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/publication_preview/hal-04587458.png",
+      "status": 200,
+      "length": "208089",
+      "type": "image/png",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/publication_preview/hal-04592229-poster.png",
+      "status": 200,
+      "length": "207949",
+      "type": "image/png",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/publication_preview/hal-04823130.png",
+      "status": 200,
+      "length": "21235",
+      "type": "image/png",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/publication_preview/hal-05063466.png",
+      "status": 200,
+      "length": "157532",
+      "type": "image/png",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/publication_preview/hal-05385229.png",
+      "status": 200,
+      "length": "156004",
+      "type": "image/png",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/publication_preview/hal-05385247.png",
+      "status": 200,
+      "length": "160538",
+      "type": "image/png",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/publication_preview/hal-05412130.png",
+      "status": 200,
+      "length": "13607",
+      "type": "image/png",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/publication_preview/hal-05489376.png",
+      "status": 200,
+      "length": "107882",
+      "type": "image/png",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/publication_preview/hal-05489427.png",
+      "status": 200,
+      "length": "151737",
+      "type": "image/png",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/publication_preview/hal-05510936.png",
+      "status": 200,
+      "length": "101619",
+      "type": "image/png",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/publication_preview/hal-05576131.png",
+      "status": 200,
+      "length": "145893",
+      "type": "image/png",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/publication_preview/hal-05594483.png",
+      "status": 200,
+      "length": "19599",
+      "type": "image/png",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/publication_preview/hal-05631193.png",
+      "status": 200,
+      "length": "140003",
+      "type": "image/png",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/publication_preview/tel-04754167.png",
+      "status": 200,
+      "length": "49072",
+      "type": "image/png",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/retrorchestre.gif",
+      "status": 200,
+      "length": "9602806",
+      "type": "image/gif",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/runtime.jpg",
+      "status": 200,
+      "length": "597779",
+      "type": "image/jpeg",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/sky130hd-retro-raytrace-1.png",
+      "status": 200,
+      "length": "2435565",
+      "type": "image/png",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/sky130hd-retro-raytrace-2.png",
+      "status": 200,
+      "length": "1539485",
+      "type": "image/png",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/sky130hd-retro-raytrace-3.png",
+      "status": 200,
+      "length": "3129256",
+      "type": "image/png",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/tinytapeout-stickers/whatisend-1.png",
+      "status": 200,
+      "length": "9845478",
+      "type": "image/png",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/tinytapeout-stickers/whatisend-2.png",
+      "status": 200,
+      "length": "10066156",
+      "type": "image/png",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/tinytapeout-stickers/whatisend-3.png",
+      "status": 200,
+      "length": "5911726",
+      "type": "image/png",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/tinytapeout-stickers/whatisend-5.png",
+      "status": 200,
+      "length": "9966121",
+      "type": "image/png",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/tinytapeout-ttsky26a/ttsky26a-art.jpg",
+      "status": 200,
+      "length": "989899",
+      "type": "image/jpeg",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/tinytapeout-ttsky26a/ttsky26a-comb.png",
+      "status": 200,
+      "length": "119620",
+      "type": "image/png",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/img/tinytapeout-ttsky26a/ttsky26a-waves.png",
+      "status": 200,
+      "length": "65311",
+      "type": "image/png",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/js/bootstrap-toc.min.js?c82ff4de8b0955d6ff14f5b05eed7eb6",
+      "status": 200,
+      "length": "1015",
+      "type": "application/javascript; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/js/bootstrap.bundle.min.js",
+      "status": 200,
+      "length": "22409",
+      "type": "application/javascript; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/js/common.js?b7816bd189846d29eded8745f9c4cf77",
+      "status": 200,
+      "length": "485",
+      "type": "application/javascript; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/js/copy_code.js?12775fdf7f95e901d7119054556e495f",
+      "status": 200,
+      "length": "454",
+      "type": "application/javascript; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/js/jupyter_new_tab.js?d9f17b6adc2311cbabd747f4538bb15f",
+      "status": 200,
+      "length": "240",
+      "type": "application/javascript; charset=utf-8",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/js/masonry.js",
+      "status": 200,
+      "length": "173",
+      "type": "application/javascript; charset=utf-8",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/js/no_defer.js?2781658a0a2b13ed609542042a859126",
+      "status": 200,
+      "length": "212",
+      "type": "application/javascript; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/js/search/ninja-keys.min.js?601a2d3465e2a52bec38b600518d5f70",
+      "status": 200,
+      "length": "3136",
+      "type": "application/javascript; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/js/theme.js?aebe5a72e85ec97fcdcecfb209ea1f7a",
+      "status": 200,
+      "length": "1782",
+      "type": "application/javascript; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/js/vanilla-back-to-top.min.js?f40d453793ff4f64e238e420181a1d17",
+      "status": 200,
+      "length": "1346",
+      "type": "application/javascript; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/js/zoom.js?85ddb88934d28b74e78031fd54cf8308",
+      "status": 200,
+      "length": "172",
+      "type": "application/javascript; charset=utf-8",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/metrics/metrics-base.svg",
+      "status": 200,
+      "length": "37293",
+      "type": "image/svg+xml",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/metrics/metrics-calendar.svg",
+      "status": 200,
+      "length": "9892",
+      "type": "image/svg+xml",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/metrics/metrics-isocalendar.svg",
+      "status": 200,
+      "length": "5827",
+      "type": "image/svg+xml",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/metrics/metrics-languages.svg",
+      "status": 200,
+      "length": "2575",
+      "type": "image/svg+xml",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/metrics/metrics-notable.svg",
+      "status": 200,
+      "length": "164282",
+      "type": "image/svg+xml",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/metrics/metrics-stars.svg",
+      "status": 200,
+      "length": "4787",
+      "type": "image/svg+xml",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/pdf/LEDOUX_LOUIS_CV.pdf",
+      "status": 200,
+      "length": "527489",
+      "type": "application/pdf",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/video/merged_output_video.mp4",
+      "status": 200,
+      "length": "29836253",
+      "type": "video/mp4",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/video/rotation_movie.mp4",
+      "status": 200,
+      "length": "12622685",
+      "type": "video/mp4",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/2024",
+      "status": 200,
+      "length": "5767",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/2025",
+      "status": 200,
+      "length": "5684",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/2026",
+      "status": 200,
+      "length": "5700",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/category/arte-science",
+      "status": 200,
+      "length": "5775",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/category/artistic-science",
+      "status": 404,
+      "length": "5615",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/category/music",
+      "status": 200,
+      "length": "5685",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/category/science",
+      "status": 200,
+      "length": "5731",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/index.html",
+      "status": 200,
+      "length": "6486",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/page/2/index.html",
+      "status": 200,
+      "length": "6260",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/tag/arith",
+      "status": 200,
+      "length": "5675",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/tag/arithmetic",
+      "status": 200,
+      "length": "5675",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/tag/art",
+      "status": 200,
+      "length": "5683",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/tag/blender",
+      "status": 200,
+      "length": "5688",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/tag/bryce",
+      "status": 200,
+      "length": "5687",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/tag/circt",
+      "status": 200,
+      "length": "5702",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/tag/communication",
+      "status": 200,
+      "length": "5688",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/tag/demo",
+      "status": 200,
+      "length": "5675",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/tag/djset",
+      "status": 200,
+      "length": "5683",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/tag/floating-point",
+      "status": 200,
+      "length": "5683",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/tag/floats",
+      "status": 404,
+      "length": "5615",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/tag/flopoco",
+      "status": 200,
+      "length": "5688",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/tag/gds",
+      "status": 200,
+      "length": "5685",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/tag/goa",
+      "status": 200,
+      "length": "5684",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/tag/math",
+      "status": 404,
+      "length": "5615",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/tag/mathematics",
+      "status": 200,
+      "length": "5687",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/tag/mixing",
+      "status": 200,
+      "length": "5686",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/tag/mlir",
+      "status": 200,
+      "length": "5701",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/tag/music",
+      "status": 200,
+      "length": "5684",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/tag/openroad",
+      "status": 200,
+      "length": "5680",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/tag/raytracing",
+      "status": 200,
+      "length": "5743",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/tag/retro",
+      "status": 200,
+      "length": "5687",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/tag/science",
+      "status": 200,
+      "length": "5687",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/tag/silicon",
+      "status": 200,
+      "length": "5715",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/tag/sorting",
+      "status": 200,
+      "length": "5691",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/tag/stickers",
+      "status": 200,
+      "length": "5687",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/tag/synthesis",
+      "status": 200,
+      "length": "5682",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/tag/systolic-algorithms",
+      "status": 404,
+      "length": "5615",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/tag/tapeout",
+      "status": 200,
+      "length": "5692",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/tag/tinytapeout",
+      "status": 200,
+      "length": "5709",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/tag/touchdesigner",
+      "status": 200,
+      "length": "5691",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/tag/tutorial",
+      "status": 200,
+      "length": "5679",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/tag/videos",
+      "status": 200,
+      "length": "5688",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/blog/tag/wavetable",
+      "status": 200,
+      "length": "5681",
+      "type": "text/html; charset=utf-8",
+      "encoding": "gzip"
+    }
+  ],
+  "home_resources": [
+    {
+      "url": "https://www.googletagmanager.com/gtag/js?id=G-YSY28GB5L4",
+      "status": 200,
+      "decoded_bytes": 524855,
+      "encoded_bytes": "175938",
+      "encoding": "zstd"
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/js/theme.js?aebe5a72e85ec97fcdcecfb209ea1f7a",
+      "status": 200,
+      "decoded_bytes": 5710,
+      "encoded_bytes": "1782",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js",
+      "status": 200,
+      "decoded_bytes": 89501,
+      "encoded_bytes": null,
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/js/bootstrap.bundle.min.js",
+      "status": 200,
+      "decoded_bytes": 83376,
+      "encoded_bytes": "22409",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js",
+      "status": 200,
+      "decoded_bytes": 288442,
+      "encoded_bytes": null,
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js",
+      "status": 200,
+      "decoded_bytes": 24103,
+      "encoded_bytes": null,
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js",
+      "status": 200,
+      "decoded_bytes": 5485,
+      "encoded_bytes": null,
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/js/masonry.js",
+      "status": 200,
+      "decoded_bytes": 173,
+      "encoded_bytes": "173",
+      "encoding": null
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js",
+      "status": 200,
+      "decoded_bytes": 9637,
+      "encoded_bytes": null,
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/js/zoom.js?85ddb88934d28b74e78031fd54cf8308",
+      "status": 200,
+      "decoded_bytes": 172,
+      "encoded_bytes": "172",
+      "encoding": null
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/js/no_defer.js?2781658a0a2b13ed609542042a859126",
+      "status": 200,
+      "decoded_bytes": 404,
+      "encoded_bytes": "212",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/js/common.js?b7816bd189846d29eded8745f9c4cf77",
+      "status": 200,
+      "decoded_bytes": 1401,
+      "encoded_bytes": "485",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/js/copy_code.js?12775fdf7f95e901d7119054556e495f",
+      "status": 200,
+      "decoded_bytes": 1156,
+      "encoded_bytes": "454",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/js/jupyter_new_tab.js?d9f17b6adc2311cbabd747f4538bb15f",
+      "status": 200,
+      "decoded_bytes": 240,
+      "encoded_bytes": "240",
+      "encoding": null
+    },
+    {
+      "url": "https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js",
+      "status": 200,
+      "decoded_bytes": 687,
+      "encoded_bytes": "687",
+      "encoding": null
+    },
+    {
+      "url": "https://badge.dimensions.ai/badge.js",
+      "status": 200,
+      "decoded_bytes": 533262,
+      "encoded_bytes": null,
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.min.js",
+      "status": 200,
+      "decoded_bytes": 809059,
+      "encoded_bytes": null,
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6",
+      "status": 200,
+      "decoded_bytes": 84426,
+      "encoded_bytes": null,
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/js/vanilla-back-to-top.min.js?f40d453793ff4f64e238e420181a1d17",
+      "status": 200,
+      "decoded_bytes": 2982,
+      "encoded_bytes": "1346",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/js/search/ninja-keys.min.js?601a2d3465e2a52bec38b600518d5f70",
+      "status": 200,
+      "decoded_bytes": 10232,
+      "encoded_bytes": "3136",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/css/bootstrap.min.css?a4b3f509e79c54a512b890d73235ef04",
+      "status": 200,
+      "decoded_bytes": 30409,
+      "encoded_bytes": "6596",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css",
+      "status": 200,
+      "decoded_bytes": 277146,
+      "encoded_bytes": null,
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/css/academicons.min.css?f0b7046b84e425c55f3463ac249818f5",
+      "status": 200,
+      "decoded_bytes": 753,
+      "encoded_bytes": "322",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&display=swap",
+      "status": 200,
+      "decoded_bytes": 2676,
+      "encoded_bytes": null,
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/css/jekyll-pygments-themes-github.css?591dab5a4e56573bf4ef7fd332894c99",
+      "status": 200,
+      "decoded_bytes": 1445,
+      "encoded_bytes": "301",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/css/main.css?d41d8cd98f00b204e9800998ecf8427e",
+      "status": 200,
+      "decoded_bytes": 63516,
+      "encoded_bytes": "11063",
+      "encoding": "gzip"
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/css/jekyll-pygments-themes-native.css?5847e5ed4a4568527aa6cfab446049ca",
+      "status": 200,
+      "decoded_bytes": 1656,
+      "encoded_bytes": "358",
+      "encoding": "gzip"
+    }
+  ],
+  "hal_relevant_records": [
+    {
+      "title_s": [
+        "HAriCo: Floating-Point MLIR to CIRCT Datapaths"
+      ],
+      "authFullName_s": [
+        "Louis Ledoux"
+      ],
+      "halId_s": "hal-05725118",
+      "version_i": 1,
+      "docType_s": "POSTER",
+      "producedDate_s": "2026-08-10"
+    },
+    {
+      "title_s": [
+        "Multi-Level Compilation of AI Tensors and Activation Functions to Silicon"
+      ],
+      "authFullName_s": [
+        "Louis Ledoux"
+      ],
+      "halId_s": "hal-05671676",
+      "version_i": 1,
+      "docType_s": "POSTER",
+      "producedDate_s": "2026-06-22"
+    },
+    {
+      "title_s": [
+        "Progressive Arithmetic Optimizations : Tensor and DSP Kernels to Synthesizable Datapaths"
+      ],
+      "authFullName_s": [
+        "Louis Ledoux",
+        "Pierre Cochard",
+        "Florent de Dinechin"
+      ],
+      "halId_s": "hal-05631193",
+      "version_i": 1,
+      "docType_s": "POSTER",
+      "producedDate_s": "2026-05-27"
+    },
+    {
+      "title_s": [
+        "Progressive Arithmetic Lowering from Tensor Kernels to Synthesizable Datapaths"
+      ],
+      "authFullName_s": [
+        "Louis Ledoux",
+        "Pierre Cochard",
+        "Florent de Dinechin"
+      ],
+      "halId_s": "hal-05594483",
+      "version_i": 1,
+      "docType_s": "OTHER",
+      "producedDate_s": "2026-04-13"
+    },
+    {
+      "title_s": [
+        "Floating-Point Datapaths in CIRCT via HAriCo and harico-arith-to-comb Lowering"
+      ],
+      "authFullName_s": [
+        "Louis Ledoux",
+        "Pierre Cochard",
+        "Florent de Dinechin"
+      ],
+      "halId_s": "hal-05576131",
+      "version_i": 2,
+      "docType_s": "POSTER",
+      "producedDate_s": "2026-04-13"
+    },
+    {
+      "title_s": [
+        "Reconfigurable Constant Multipliers: Hardware Models, Optimization Algorithm and Applications"
+      ],
+      "authFullName_s": [
+        "Bastien Barbe",
+        "Louis Ledoux",
+        "Anastasia Volkova",
+        "Florent de Dinechin"
+      ],
+      "halId_s": "hal-05510936",
+      "version_i": 1,
+      "docType_s": "ART",
+      "doiId_s": "10.1016/j.micpro.2026.105270",
+      "producedDate_s": "2026-03"
+    },
+    {
+      "title_s": [
+        "Arithmetic Lowering with Emeraude-MLIR: Bridging Tensor and DSP Kernels to Silicon Datapaths"
+      ],
+      "authFullName_s": [
+        "Louis Ledoux",
+        "Pierre Cochard",
+        "Florent de Dinechin"
+      ],
+      "halId_s": "hal-05489427",
+      "version_i": 1,
+      "docType_s": "POSTER",
+      "producedDate_s": "2026-01-27"
+    },
+    {
+      "title_s": [
+        "Frugalité et conception de circuits pour le traitement du signal audio numérique"
+      ],
+      "authFullName_s": [
+        "Maxime Popoff",
+        "Romain Michon",
+        "Tanguy Risset",
+        "Pierre Cochard",
+        "Louis Ledoux",
+        "Stéphane Letz",
+        "Yann Orlarey",
+        "Forent de Dinechin"
+      ],
+      "halId_s": "hal-05489376",
+      "version_i": 1,
+      "docType_s": "ART",
+      "doiId_s": "10.56698/rfim.961",
+      "producedDate_s": "2025-12"
+    },
+    {
+      "title_s": [
+        "FloPoCo and MLIR: A Multi-Level Compilation Framework for Many Intents"
+      ],
+      "authFullName_s": [
+        "Pierre Cochard",
+        "Louis Ledoux"
+      ],
+      "halId_s": "hal-05412130",
+      "version_i": 1,
+      "docType_s": "REPORT",
+      "producedDate_s": "2025-09-18"
+    },
+    {
+      "title_s": [
+        "Design-Space Exploration of Serialized Floating-Point Division for DLP Architectures"
+      ],
+      "authFullName_s": [
+        "Louis Ledoux"
+      ],
+      "halId_s": "hal-05385247",
+      "version_i": 2,
+      "docType_s": "COMM",
+      "producedDate_s": "2025-09-10"
+    },
+    {
+      "title_s": [
+        "Towards Optimized Arithmetic Circuits with MLIR"
+      ],
+      "authFullName_s": [
+        "Louis Ledoux",
+        "Pierre Cochard",
+        "Florent de Dinechin"
+      ],
+      "halId_s": "hal-05385229",
+      "version_i": 1,
+      "docType_s": "ART",
+      "doiId_s": "10.64552/wipiec.v11i1.90",
+      "producedDate_s": "2025-09-02"
+    },
+    {
+      "title_s": [
+        "Towards Multi-Level Arithmetic Optimizations"
+      ],
+      "authFullName_s": [
+        "Pierre Cochard",
+        "Luc Forget",
+        "Florent de Dinechin",
+        "Louis Ledoux"
+      ],
+      "halId_s": "hal-05063466",
+      "version_i": 1,
+      "docType_s": "POSTER",
+      "producedDate_s": "2025-04-14"
+    },
+    {
+      "title_s": [
+        "The Walls and the Dark Silicon Era: An Arithmetic Perspective"
+      ],
+      "authFullName_s": [
+        "Louis Ledoux"
+      ],
+      "halId_s": "hal-04823130",
+      "version_i": 1,
+      "docType_s": "OTHER",
+      "producedDate_s": "2024-12-02"
+    },
+    {
+      "title_s": [
+        "Floating-Point Arithmetic Paradigms for High-Performance Computing: Software Algorithms and Hardware Designs",
+        "Paradigmes de l'Arithmétique à Virgule Flottante pour le Calcul Haute Performance : Algorithmes Logiciels et Conceptions Matérielles"
+      ],
+      "authFullName_s": [
+        "Louis Ledoux"
+      ],
+      "halId_s": "tel-04754167",
+      "version_i": 3,
+      "docType_s": "THESE",
+      "producedDate_s": "2024-10-02"
+    },
+    {
+      "title_s": [
+        "LLMMMM: Large Language Models Matrix-Matrix Multiplications Characterization on Open Silicon"
+      ],
+      "authFullName_s": [
+        "Louis Ledoux",
+        "Marc Casas"
+      ],
+      "halId_s": "hal-04592229",
+      "version_i": 1,
+      "docType_s": "POSTER",
+      "producedDate_s": "2024-05-07"
+    },
+    {
+      "title_s": [
+        "The Grafted Superset Approach: Bridging Python to Silicon with Asynchronous Compilation and Beyond"
+      ],
+      "authFullName_s": [
+        "Louis Ledoux",
+        "Marc Casas"
+      ],
+      "halId_s": "hal-04587458",
+      "version_i": 1,
+      "docType_s": "POSTER",
+      "producedDate_s": "2024-03-27"
+    },
+    {
+      "title_s": [
+        "An Open-Source Framework for Efficient Numerically-Tailored Computations"
+      ],
+      "authFullName_s": [
+        "Louis Ledoux",
+        "Marc Casas"
+      ],
+      "halId_s": "hal-04277512",
+      "version_i": 1,
+      "docType_s": "COMM",
+      "doiId_s": "10.1109/FPL60245.2023.00011",
+      "producedDate_s": "2023-09-04"
+    },
+    {
+      "title_s": [
+        "An Open-Source Framework for Efficient Numerically-Tailored Computations"
+      ],
+      "authFullName_s": [
+        "Louis Ledoux",
+        "Marc Casas"
+      ],
+      "halId_s": "hal-04094835",
+      "version_i": 1,
+      "docType_s": "POSTER",
+      "producedDate_s": "2023-05-09"
+    },
+    {
+      "title_s": [
+        "A Generator of Numerically-Tailored and High-Throughput Accelerators for Batched GEMMs"
+      ],
+      "authFullName_s": [
+        "Louis Ledoux",
+        "Marc Casas"
+      ],
+      "halId_s": "hal-04103774",
+      "version_i": 1,
+      "docType_s": "COMM",
+      "doiId_s": "10.1109/FCCM53951.2022.9786164",
+      "producedDate_s": "2022-05-15"
+    },
+    {
+      "title_s": [
+        "Accelerating DL inference with (Open)CAPI and posit numbers"
+      ],
+      "authFullName_s": [
+        "Louis Ledoux",
+        "Marc Casas"
+      ],
+      "halId_s": "hal-04094850",
+      "version_i": 1,
+      "docType_s": "COMM",
+      "producedDate_s": "2019-10-30"
+    }
+  ],
+  "hal_missing_from_bibliography": [
+    "hal-05725118",
+    "hal-05671676"
+  ],
+  "targeted_links": [
+    {
+      "url": "https://github.com/Bynaryman/emeraude-mlir",
+      "status": 404,
+      "final": "https://github.com/Bynaryman/emeraude-mlir"
+    },
+    {
+      "url": "https://github.com/Bynaryman/codez",
+      "status": 200,
+      "final": "https://github.com/Bynaryman/codez"
+    },
+    {
+      "url": "https://typst.app/universe/package/codez",
+      "status": 200,
+      "final": "https://typst.app/universe/package/codez"
+    },
+    {
+      "url": "https://www.wep-journal.org/",
+      "error": "HTTPSConnectionPool(host='www.wep-journal.org', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPSConnection(host='www.wep-journal.org', port=443): Failed to resolve 'www.wep-journal.org' ([Errno -2] Name or service not known)\"))"
+    },
+    {
+      "url": "https://www.bsc.es/ledoux-louis",
+      "status": 403,
+      "final": "https://www.bsc.es/ledoux-louis"
+    },
+    {
+      "url": "https://bynaryman.github.io/research/",
+      "status": 404,
+      "final": "https://bynaryman.github.io/research/"
+    },
+    {
+      "url": "https://bynaryman.github.io/assets/pdf/LEDOUX_LOUIS_CV.pdf",
+      "status": 200,
+      "final": "https://bynaryman.github.io/assets/pdf/LEDOUX_LOUIS_CV.pdf",
+      "matches_local": true
+    }
+  ],
+  "authored_page_status": [
+    {
+      "source": "_pages/impact.md",
+      "url": "https://bynaryman.github.io/impact/",
+      "status": 404,
+      "bytes": 18141
+    },
+    {
+      "source": "_pages/blog.md",
+      "url": "https://bynaryman.github.io/blog/",
+      "status": 200,
+      "bytes": 24406
+    },
+    {
+      "source": "_pages/software-stack.md",
+      "url": "https://bynaryman.github.io/software-stack/",
+      "status": 404,
+      "bytes": 18141
+    },
+    {
+      "source": "_pages/cv.md",
+      "url": "https://bynaryman.github.io/cv/",
+      "status": 200,
+      "bytes": 85910
+    },
+    {
+      "source": "_pages/talks-media.md",
+      "url": "https://bynaryman.github.io/talks-media/",
+      "status": 404,
+      "bytes": 18141
+    },
+    {
+      "source": "_pages/news.md",
+      "url": "https://bynaryman.github.io/news/",
+      "status": 200,
+      "bytes": 18003
+    },
+    {
+      "source": "_pages/bitmosh-privacy.html",
+      "url": "https://bynaryman.github.io/bitmosh/privacy/",
+      "status": 200,
+      "bytes": 7217
+    },
+    {
+      "source": "_pages/research.md",
+      "url": "https://bynaryman.github.io/research/",
+      "status": 404,
+      "bytes": 18141
+    },
+    {
+      "source": "_pages/opc-course-test.md",
+      "url": "https://bynaryman.github.io/courses/opc/",
+      "status": 404,
+      "bytes": 18141
+    },
+    {
+      "source": "_pages/about.md",
+      "url": "https://bynaryman.github.io/",
+      "status": 200,
+      "bytes": 35497
+    },
+    {
+      "source": "_pages/bitmosh-review-data-sync-export.md",
+      "url": "https://bynaryman.github.io/bitmosh/review/data-sync-export/",
+      "status": 200,
+      "bytes": 4011
+    },
+    {
+      "source": "_pages/repositories.md",
+      "url": "https://bynaryman.github.io/repositories/",
+      "status": 200,
+      "bytes": 19877
+    },
+    {
+      "source": "_pages/bitmosh-review-media-processing.md",
+      "url": "https://bynaryman.github.io/bitmosh/review/media-processing/",
+      "status": 200,
+      "bytes": 4083
+    },
+    {
+      "source": "_pages/publications.md",
+      "url": "https://bynaryman.github.io/publications/",
+      "status": 200,
+      "bytes": 80682
+    },
+    {
+      "source": "_pages/404.md",
+      "url": "https://bynaryman.github.io/404.html",
+      "status": 200,
+      "bytes": 18141
+    },
+    {
+      "source": "_pages/projects.md",
+      "url": "https://bynaryman.github.io/projects/",
+      "status": 200,
+      "bytes": 20476
+    },
+    {
+      "source": "_pages/tapeouts.md",
+      "url": "https://bynaryman.github.io/tapeouts/",
+      "status": 404,
+      "bytes": 18141
+    },
+    {
+      "source": "_pages/courses.md",
+      "url": "https://bynaryman.github.io/courses/",
+      "status": 200,
+      "bytes": 19164
+    },
+    {
+      "source": "_pages/bitmosh-review-data-sync-transcoding.md",
+      "url": "https://bynaryman.github.io/bitmosh/review/data-sync-transcoding/",
+      "status": 200,
+      "bytes": 3770
+    }
+  ],
+  "untracked_content_status": [
+    {
+      "path": "/blog/2026/codez-for-annotated-research-figures/",
+      "status": 404
+    },
+    {
+      "path": "/blog/2026/layout-feedback-that-changed-the-optimizer/",
+      "status": 404
+    },
+    {
+      "path": "/blog/2026/mlir-loop-to-silicon-with-visible-arithmetic/",
+      "status": 404
+    },
+    {
+      "path": "/blog/2026/ttihp-accumulator-variants/",
+      "status": 404
+    },
+    {
+      "path": "/blog/2026/openroad-placement-as-a-visual-medium/",
+      "status": 404
+    },
+    {
+      "path": "/blog/2026/suf-as-a-reproducible-software-to-silicon-instrument/",
+      "status": 404
+    },
+    {
+      "path": "/projects/codez/",
+      "status": 404
+    },
+    {
+      "path": "/projects/emeraude-mlir/",
+      "status": 404
+    },
+    {
+      "path": "/projects/gdsiistl/",
+      "status": 404
+    },
+    {
+      "path": "/projects/gpl/",
+      "status": 404
+    },
+    {
+      "path": "/projects/mlmodelmlirgen/",
+      "status": 404
+    },
+    {
+      "path": "/projects/vh2v/",
+      "status": 404
+    }
+  ],
+  "generated_link_check": {
+    "missing": {
+      "/blog/tag/systolic-algorithms": [
+        "blog/index.html",
+        "blog/page/2/index.html",
+        "blog/page/3/index.html"
+      ],
+      "/blog/tag/floats": [
+        "blog/index.html",
+        "blog/page/2/index.html",
+        "blog/page/3/index.html"
+      ],
+      "/blog/tag/math": [
+        "blog/index.html",
+        "blog/page/2/index.html",
+        "blog/page/3/index.html"
+      ],
+      "/blog/category/artistic-science": [
+        "blog/index.html",
+        "blog/page/2/index.html",
+        "blog/page/3/index.html"
+      ],
+      "assets/images/arithmetic/e4m3-rewrite-exponent-question.svg": [
+        "assets/courses/mlir-circt-summer-school-2026/mlir-circt-summer-school-2026.html"
+      ]
+    },
+    "pages_with_non_numeric_image_dimensions": [
+      "assets/courses/mlir-circt-summer-school-2026/mlir-circt-summer-school-2026.html",
+      "blog/2024/ada-wavetable/index.html",
+      "blog/2024/bryce-sky130hd-retro-raytracing/index.html",
+      "blog/2025/tinytapeout-sticker-competition-win/index.html",
+      "blog/2026/arith-2026-circt-tutorial-demo/index.html",
+      "blog/2026/ttsky26a-mlir-tinytapeout/index.html",
+      "index.html",
+      "projects/index.html",
+      "projects/osfntc/index.html",
+      "projects/suf/index.html",
+      "publications/index.html",
+      "repositories/index.html"
+    ]
+  },
+  "build": {
+    "initial_production": "Failed: jupyter not on PATH",
+    "retry_environment": "PATH prefixed with existing repository .venv/bin",
+    "production_seconds": 238.972,
+    "development_seconds": 12.435,
+    "production_output_bytes": 301890028,
+    "development_html_files": 108,
+    "warnings": [
+      "Liquid double-brace syntax in _projects/osfntc.md",
+      "Destination collisions for blog/tag/videos, art and retro",
+      "Sass deprecations"
+    ]
+  },
+  "browser_observations": [
+    {
+      "test": "Dark mode persistence",
+      "steps": "Choose Dark on Courses, navigate to CV",
+      "before": "dark",
+      "after": "light"
+    },
+    {
+      "test": "Tablet navbar, Binary theme",
+      "viewport_requested": {
+        "width": 768,
+        "height": 900
+      },
+      "document_client_width": 753,
+      "search_right_px": 799,
+      "theme_control_right_px": 849,
+      "hamburger_hidden": true
+    },
+    {
+      "test": "Mobile homepage portrait",
+      "viewport_requested": {
+        "width": 390,
+        "height": 844
+      },
+      "profile_block_height_px": 528.09375,
+      "profile_block_width_px": 359
+    },
+    {
+      "test": "Publication heading in Binary dark",
+      "computed_color": "rgba(226, 195, 153, 0.26)",
+      "computed_font_size": "36px"
+    },
+    {
+      "test": "Music/DJ search",
+      "result_count": 2,
+      "result_title": "[\"Music/DJ set\"]"
+    },
+    {
+      "test": "RCM date inconsistency",
+      "homepage": "Sep 2026",
+      "publications_page": "2026"
+    },
+    {
+      "test": "CV contact destinations",
+      "email_contains_literal_at_obfuscation": true,
+      "phone_contains_literal_seven_obfuscation": true
+    },
+    {
+      "test": "Browser cleanup",
+      "theme": "light",
+      "variant": "modus",
+      "viewport": "reset"
+    }
+  ],
+  "crossref_rcm": {
+    "source": "https://api.crossref.org/works/10.1016/j.micpro.2026.105270",
+    "first_author": "Bastien Barbe",
+    "volume": "122",
+    "article_number": "105270",
+    "published_print": [
+      2026,
+      6
+    ]
+  },
+  "key_resource_bytes": {
+    "favicon": 3724646,
+    "retrorchestre_gif": 9602806,
+    "sticker_post_images_total": 35789481,
+    "project_listing_images_total": 11055094,
+    "homepage_portrait": 434200,
+    "rom_video": 29836253,
+    "ada_video": 12622685,
+    "homepage_direct_css_js_decoded_total": 2852904
+  },
+  "pdf": {
+    "path": "assets/pdf/LEDOUX_LOUIS_CV.pdf",
+    "pages": 4,
+    "created": "2026-08-24",
+    "bytes": 527489,
+    "live_matches_local": true,
+    "visual_review": "All four pages inspected; readable, journal entry flows onto page 3; no obvious clipping."
+  }
+}

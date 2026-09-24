@@ -225,6 +225,7 @@ exclude:
   - scripts/
   - tests/
   - requirements.txt
+  - DEVELOPMENT.md
   - _pages/news.md
   - _pages/dropdown.md
   - _posts/2026-04-16-codez-for-annotated-research-figures.md

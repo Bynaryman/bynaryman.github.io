@@ -1,0 +1,128 @@
+{
+  "homepage_direct_css_js_decoded_bytes": 303049,
+  "homepage_scripts": 10,
+  "homepage_stylesheets": 5,
+  "favicon_bytes": 10968,
+  "portrait_320_bytes": 11634,
+  "retrorchestre_640_bytes": 22546,
+  "output_bytes": 265858303,
+  "resources": [
+    {
+      "url": "/assets/css/bootstrap.min.css?f886516f3d41e9e7",
+      "bytes": 28770,
+      "status": 200
+    },
+    {
+      "url": "/assets/css/academicons.min.css?d68cf5fabc76045f",
+      "bytes": 753,
+      "status": 200
+    },
+    {
+      "url": "/assets/css/jekyll-pygments-themes-github.css?d40ec7e75a874324",
+      "bytes": 1324,
+      "status": 200
+    },
+    {
+      "url": "/assets/css/main.css?0e9299861cffdfa8",
+      "bytes": 59438,
+      "status": 200
+    },
+    {
+      "url": "/assets/js/theme.js?822f48bd9b74286a",
+      "bytes": 10103,
+      "status": 200
+    },
+    {
+      "url": "/assets/css/jekyll-pygments-themes-native.css?53cee24c69c2a59b",
+      "bytes": 1515,
+      "status": 200
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js",
+      "bytes": 89501,
+      "status": 200
+    },
+    {
+      "url": "/assets/js/bootstrap.bundle.min.js",
+      "bytes": 83376,
+      "status": 200
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js",
+      "bytes": 9637,
+      "status": 200
+    },
+    {
+      "url": "/assets/js/zoom.js?59152047ed1ed352",
+      "bytes": 249,
+      "status": 200
+    },
+    {
+      "url": "/assets/js/no_defer.js?04c41c68d2f02b00",
+      "bytes": 816,
+      "status": 200
+    },
+    {
+      "url": "/assets/js/common.js?c9374390ec40eafa",
+      "bytes": 2003,
+      "status": 200
+    },
+    {
+      "url": "/assets/js/copy_code.js?aada6af8ac6f5b9f",
+      "bytes": 2350,
+      "status": 200
+    },
+    {
+      "url": "/assets/js/vanilla-back-to-top.min.js?10580ff98c86f02d",
+      "bytes": 2982,
+      "status": 200
+    },
+    {
+      "url": "/assets/js/search/ninja-keys.min.js?2acdfc7300bb253c",
+      "bytes": 10232,
+      "status": 200
+    }
+  ],
+  "generated_html_files": 78,
+  "bibliography_records": 20,
+  "theme_tests": 3,
+  "pdf_pages": 4,
+  "blog_source_diff": "",
+  "blog_source_sha256": {
+    "_posts/2024-08-19-rom-a-ranger.md": "a3518d5a559ddae31d78dd5d1b2349436c80b1b8dfe1aca8ba9bfd50153842f0",
+    "_posts/2026-07-04-arith-2026-circt-tutorial-demo.md": "4e1847e9091014784f3ca913e79b3af8e7fe2cea8b89b1b98c776ad5baffafc4",
+    "_posts/2026-04-21-suf-as-a-reproducible-software-to-silicon-instrument.md": "e90ada5d41ffac6b27a49a7534f2089785f971b421d085b351ab823f8f55b024",
+    "_posts/2024-10-28-bryce-sky130hd-retro-raytracing.md": "82c4ab2c75dafbc58a882f8c37939b84e847dc4301cb3e8aa9a68961f042d3ad",
+    "_posts/2025-12-07-tinytapeout-sticker-competition-win.md": "09c5c8fdee1a78a96a36ba1afdc7d477bf63c6573a8b2af979d552fcd3080c13",
+    "_posts/2026-04-20-openroad-placement-as-a-visual-medium.md": "40e311434ca8ee79399aebdd3079dfe01a3c055d52c4ed14f208cddc2161cad9",
+    "_posts/2024-10-20-djset-buying.md": "6cd6cb26ef6a15ca4b7c92bc672e68338ddf473db155e76e6f0adcfdecc0d0cd",
+    "_posts/2026-03-14-ttsky26a-mlir-tinytapeout.md": "c0be8b363efab4260a874b56afe8b2790b1d7aafa1ef0efeca64f1b5fda347cc",
+    "_posts/2026-04-16-codez-for-annotated-research-figures.md": "635c8f995ad7dc498ae23f77047de1a578a0e573c909a1f6ce829ccd4132df1f",
+    "_posts/2024-08-24-ada-wavetable.md": "0880a1734561d024feeb6c25e58fc9de3241cde3f8a4f527e86ca90662b9180f",
+    "_posts/2026-04-18-mlir-loop-to-silicon-with-visible-arithmetic.md": "1edf853fe5c78bf968f4fc76c8e558519cd7df6b62c93f23104cb517484e4444",
+    "_posts/2026-04-17-layout-feedback-that-changed-the-optimizer.md": "49341f7892ccdf2dafb647ae2c393b20377cba7d3e007b376caf4686c23f7136",
+    "_posts/2026-04-19-ttihp-accumulator-variants.md": "dd7bb640a30e39499cc7f00b28d81b72563b06d13b022aef725a053ef92dd801",
+    "_posts/2024-10-19-manim-slides.md": "60682607df81b94a5bde30984c16d98cf4662f0002f3f665400cb4234b4fad41"
+  },
+  "production_build_seconds": 22.033,
+  "browser_checks": {
+    "viewport_widths": [
+      1280,
+      768,
+      390
+    ],
+    "navigation": "passed",
+    "dark_theme_navigation": "passed",
+    "binary_palette": "passed",
+    "search_post_deduplication": "passed",
+    "publication_buttons": "passed",
+    "captions_without_markdown_markers": "passed",
+    "cv_contact_destinations": "passed",
+    "all_four_pdf_pages_inspected": true,
+    "final_horizontal_overflow": "none: 375px phone content width and 1265px desktop content width",
+    "final_title_top_px": {
+      "phone": 96,
+      "desktop": 112
+    }
+  }
+}
