@@ -43,3 +43,5 @@ I also used the silkscreen for artwork: waveforms along the bus boards and fract
 </div>
 
 This build is part of [Binary Instruments]({{ '/projects/binary-instruments/' | relative_url }}), my Eurorack hardware work. Related designs are collected in the [Binary Instruments repository](https://github.com/Bynaryman/binary_instruments).
+
+The [acacia case build from May 2021]({% post_url 2021-05-07-acacia-eurorack-case %}) shows these boards installed and wired, with a retrospective note on the bus-voltage error.
