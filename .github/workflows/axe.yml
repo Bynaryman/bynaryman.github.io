@@ -1,73 +1,37 @@
 name: Axe accessibility testing
-
 on:
-  # if you want to run this on every push uncomment the following lines
-  # push:
-  #   branches:
-  #     - master
-  #     - main
-  # pull_request:
-  #   branches:
-  #     - master
-  #     - main
   workflow_dispatch:
-    inputs:
-      url:
-        description: "URL to be checked (e.g.: blog/)"
-        required: false
-
-env:
-  URL: ""
-
+  pull_request:
+    paths: ["_layouts/**", "_includes/**", "_sass/**", "assets/js/**", "_pages/**", "_config.yml"]
+permissions:
+  contents: read
 jobs:
   check:
-    # available images: https://github.com/actions/runner-images#available-images
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout 🛎️
-        uses: actions/checkout@v4
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.2.2"
           bundler-cache: true
-      - name: Update _config.yml ⚙️
-        uses: fjogeleit/yaml-update-action@main
+      - uses: actions/setup-node@v4
         with:
-          commitChange: false
-          valueFile: "_config.yml"
-          changes: |
-            {
-              "giscus.repo": "${{ github.repository }}",
-              "baseurl": ""
-            }
-      - name: Install and Build 🔧
-        run: |
-          pip3 install --upgrade jupyter
-          export JEKYLL_ENV=production
-          bundle exec jekyll build
-      - name: Purge unused CSS 🧹
-        run: |
-          npm install -g purgecss
-          purgecss -c purgecss.config.js
-      - name: Get Chromium version 🌐
-        # https://github.com/GoogleChromeLabs/chrome-for-testing?tab=readme-ov-file#other-api-endpoints
-        run: |
-          CHROMIUM_VERSION=$(wget -qO- https://googlechromelabs.github.io/chrome-for-testing/LATEST_RELEASE_STABLE | cut -d. -f1)
-          echo "Chromium version: $CHROMIUM_VERSION"
-          echo "CHROMIUM_VERSION=$CHROMIUM_VERSION" >> $GITHUB_ENV
-      - name: Setup Chrome 🌐
-        id: setup-chrome
-        uses: browser-actions/setup-chrome@v1
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npm run build && npm run purge
+      - uses: browser-actions/setup-chrome@v1
+        id: chrome
         with:
-          chrome-version: ${{ env.CHROMIUM_VERSION }}
-      - name: Install chromedriver 🚗
+          chrome-version: stable
+          install-chromedriver: true
+      - name: Check representative pages
         run: |
-          npm install -g chromedriver@$CHROMIUM_VERSION
-      - name: Run axe 🪓
-        # https://github.com/dequelabs/axe-core-npm/tree/develop/packages/cli
-        run: |
-          npm install -g @axe-core/cli
-          npm install -g http-server
-          http-server _site/ &
-          axe --chromedriver-path $(npm root -g)/chromedriver/bin/chromedriver http://localhost:8080/${{ github.event.inputs.url || env.URL }} --load-delay=1500 --exit
+          python3 -m http.server 8080 --directory _site &
+          for attempt in 1 2 3 4 5; do curl -fsS http://localhost:8080/ -o /dev/null && break || sleep 1; done
+          npx --yes --package @axe-core/cli@4.13.0 axe http://localhost:8080/ http://localhost:8080/publications/ http://localhost:8080/cv/ http://localhost:8080/projects/ http://localhost:8080/courses/ http://localhost:8080/blog/ --chromedriver-path "${{ steps.chrome.outputs.chromedriver-path }}" --chrome-options="no-sandbox" --load-delay=1000 --save axe-results.json --exit
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: accessibility-results
+          path: axe-results.json

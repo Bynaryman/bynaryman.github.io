@@ -7,6 +7,11 @@ on:
       - main
     paths:
       - "assets/**"
+      - "_bibliography/**"
+      - "_plugins/**"
+      - "scripts/**"
+      - "tests/**"
+      - "package*.json"
       - "**.html"
       - "**.js"
       - "**.liquid"
@@ -34,6 +39,11 @@ on:
       - main
     paths:
       - "assets/**"
+      - "_bibliography/**"
+      - "_plugins/**"
+      - "scripts/**"
+      - "tests/**"
+      - "package*.json"
       - "**.html"
       - "**.js"
       - "**.liquid"
@@ -72,6 +82,10 @@ jobs:
         with:
           ruby-version: "3.2.2"
           bundler-cache: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
       - name: Update _config.yml ⚙️
         uses: fjogeleit/yaml-update-action@main
         with:
@@ -86,8 +100,10 @@ jobs:
           bundle exec jekyll build --trace
       - name: Purge unused CSS 🧹
         run: |
-          npm install -g purgecss
-          purgecss -c purgecss.config.js
+          npm ci
+          npm run purge
+          npm test
+          npm run check:site
       - name: Deploy 🚀
         if: github.event_name != 'pull_request'
         uses: JamesIves/github-pages-deploy-action@v4

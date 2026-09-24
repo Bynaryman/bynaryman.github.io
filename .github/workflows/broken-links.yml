@@ -1,52 +1,18 @@
-name: Check for broken links
-
+name: Check source metadata
 on:
-  push:
-    branches:
-      - master
-      - main
-    paths:
-      - "assets/**"
-      - "**.html"
-      - "**.js"
-      - "**.liquid"
-      - "**/*.md"
-      - "**.yml"
-      - "!.github/workflows/axe.yml"
-      - "!.github/workflows/deploy-docker-tag.yml"
-      - "!.github/workflows/deploy-image.yml"
-      - "!.github/workflows/docker-slim.yml"
-      - "!.github/workflows/lighthouse-badger.yml"
-      - "!.github/workflows/prettier.yml"
-      - "!lighthouse_results/**"
   pull_request:
-    branches:
-      - master
-      - main
-    paths:
-      - "assets/**"
-      - "**.html"
-      - "**.js"
-      - "**.liquid"
-      - "**/*.md"
-      - "**.yml"
-      - "!.github/workflows/axe.yml"
-      - "!.github/workflows/deploy-docker-tag.yml"
-      - "!.github/workflows/deploy-image.yml"
-      - "!.github/workflows/docker-slim.yml"
-      - "!.github/workflows/lighthouse-badger.yml"
-      - "!.github/workflows/prettier.yml"
-      - "!lighthouse_results/**"
-
+    paths: ["_bibliography/**", "assets/json/**", "_plugins/**", "_config.yml"]
+  workflow_dispatch:
+permissions:
+  contents: read
 jobs:
-  link-checker:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Link Checker 🔗
-        uses: lycheeverse/lychee-action@v1.9.0
+      - uses: ruby/setup-ruby@v1
         with:
-          fail: true
-          # removed md files that include liquid tags
-          args: --user-agent 'curl/7.54' --exclude-path README.md --exclude-path _pages/404.md --exclude-path _pages/blog.md --exclude-path _posts/2018-12-22-distill.md --exclude-path assets/courses --verbose --no-progress './**/*.md' './**/*.html'
+          ruby-version: "3.2.2"
+          bundler-cache: true
+      - run: bundle exec jekyll build --strict_front_matter
+      - run: python3 scripts/check_site.py _site
