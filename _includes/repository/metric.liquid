@@ -1,0 +1,7 @@
+{% assign metric_path = include.name | prepend: '/assets/metrics/metrics-' | append: '.svg' %}
+<section class="metric-card{% if include.wide %} metric-card--wide{% endif %}">
+  <h3>{{ include.title }}</h3>
+  <a href="{{ metric_path | relative_url }}" aria-label="Open {{ include.title | downcase }} at full size">
+    <img class="metric-img" src="{{ metric_path | relative_url }}" alt="{{ include.title }} — GitHub snapshot from December 2025" width="{{ include.width }}" height="{{ include.height }}" loading="lazy" decoding="async">
+  </a>
+</section>

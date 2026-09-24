@@ -785,6 +785,20 @@ html[data-theme-setting="dark"] .repositories .repo {
   border-radius: 10px;
 }
 
+.metrics-grid .metric-card h3 {
+  margin: 0.35rem 0.35rem 0.8rem;
+  font-size: 1.2rem;
+}
+
+// The saved SVGs use a fixed light palette; give their text a legible surface
+// in both site themes rather than displaying duplicate identical images.
+.metrics-grid .metric-card > a {
+  display: block;
+  padding: 0.6rem;
+  border-radius: 10px;
+  background: #fff;
+}
+
 .metrics-grid .repo-img-dark {
   display: none;
 }
