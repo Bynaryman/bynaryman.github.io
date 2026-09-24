@@ -468,7 +468,7 @@ footer.sticky-bottom {
 
     .list-group-item {
       background-color: inherit;
-      border-color: var(--global-divider-color);
+      border-color: var(--global-text-color);
 
       .badge {
         color: var(--global-card-bg-color) !important;
@@ -626,7 +626,7 @@ footer.sticky-bottom {
   }
 
   h2.category {
-    color: var(--global-divider-color);
+    color: var(--global-text-color);
     border-bottom: 1px solid var(--global-divider-color);
     padding-top: 0.5rem;
     margin-top: 2rem;
@@ -657,7 +657,7 @@ footer.sticky-bottom {
   }
 
   h2.bibliography {
-    color: var(--global-divider-color);
+    color: var(--global-text-color);
     border-top: 1px solid var(--global-divider-color);
     padding-top: 1rem;
     margin-top: 2rem;

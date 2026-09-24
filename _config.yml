@@ -45,7 +45,7 @@ rss_icon: false
 # -----------------------------------------------------------------------------
 
 navbar_fixed: true
-footer_fixed: true
+footer_fixed: false
 search_enabled: true
 socials_in_search: true
 
@@ -71,7 +71,7 @@ acm_id: # your dl.acm.org/profile/id
 blogger_url: # your blogger URL
 bluesky_url: # your bluesky URL
 dblp_url: https://dblp.org/pid/322/0396.html # your DBLP profile url
-discord_id: 230046078806917121 # your discord id (18-digit unique numerical identifier)
+discord_id: "230046078806917121" # your discord id (18-digit unique numerical identifier)
 facebook_id: # your facebook id
 flickr_id: # your flickr id
 github_username: Bynaryman # your GitHub user name
@@ -218,11 +218,15 @@ exclude:
   - assets/img/prof_pic_color.png
   - assets/pdf/example_pdf.pdf
   - assets/json/table_data.json
+  - assets/fonts/tabler-icons*
   - assets/css/mdb.min.css*
   - assets/js/mdb.min.js*
   - assets/courses/opc/
   - scripts/
+  - tests/
   - requirements.txt
+  - _pages/news.md
+  - _pages/dropdown.md
   - _posts/2026-04-16-codez-for-annotated-research-figures.md
   - _posts/2026-04-17-layout-feedback-that-changed-the-optimizer.md
   - _posts/2026-04-18-mlir-loop-to-silicon-with-visible-arithmetic.md
@@ -440,7 +444,7 @@ enable_masonry: false # enables automatic project cards arrangement
 enable_math: true # enables math typesetting (uses MathJax)
 enable_tooltips: false # enables automatic tooltip links generated for each section titles on pages and posts
 enable_darkmode: true # enables switching between light/dark modes
-enable_navbar_social: true # enables displaying social links in the navbar on the about page
+enable_navbar_social: false # enables displaying social links in the navbar on the about page
 enable_project_categories: true # enables categorization of projects into multiple categories
 enable_medium_zoom: true # enables image zoom feature (as on medium.com)
 enable_progressbar: true # enables a horizontal progress bar linked to the vertical scroll position

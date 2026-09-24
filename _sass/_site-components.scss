@@ -1,0 +1,108 @@
+// Shared geometry and readable content; theme colours remain in _retro.scss.
+.skip-link {
+  position: fixed;
+  top: -5rem;
+  left: 1rem;
+  z-index: 5000;
+  padding: 0.75rem;
+  background: var(--global-bg-color);
+}
+.skip-link:focus {
+  top: 1rem;
+}
+:focus-visible {
+  outline: 2px solid var(--global-theme-color);
+  outline-offset: 4px;
+}
+.about-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(180px, 28%);
+  gap: 2rem;
+  align-items: start;
+  margin-bottom: 2rem;
+}
+.about-intro .profile {
+  width: 100%;
+  margin: 0;
+}
+.about-copy {
+  max-width: 72ch;
+}
+.post article > p,
+.post article > ul,
+.post article > ol {
+  max-width: 78ch;
+}
+figure img {
+  max-width: 100%;
+  height: auto;
+}
+video {
+  max-width: 100%;
+  height: auto;
+}
+.projects .card figure {
+  margin: 0;
+}
+.projects .card-img-top {
+  height: 200px;
+  object-fit: contain;
+}
+.projects .card-title {
+  font-size: 1.3rem;
+}
+.cv h3.title {
+  font-size: 1.05rem;
+}
+.more-authors {
+  border: 0;
+  background: transparent;
+  color: var(--global-theme-color);
+  padding: 0;
+  font: inherit;
+  text-decoration: underline;
+}
+.caption p:last-child {
+  margin-bottom: 0;
+}
+@media (max-width: 767px) {
+  .about-intro {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .about-intro .profile {
+    max-width: 260px;
+    justify-self: center;
+  }
+  .shell-stage {
+    padding-top: 1rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body.sticky-bottom-footer {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 0;
+}
+body.sticky-bottom-footer .shell-stage {
+  flex: 1;
+}
+
+#navbar .theme-switcher {
+  align-self: flex-end;
+}
+
+// Bootstrap rows need room for their negative gutters at narrow widths.
+.shell-panel {
+  padding-inline: 1rem;
+}

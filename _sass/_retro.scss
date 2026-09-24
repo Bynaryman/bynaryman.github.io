@@ -131,10 +131,14 @@ body::after {
 
 @keyframes terminal-grid-shift {
   0% {
-    background-position: 0 0, 0 0;
+    background-position:
+      0 0,
+      0 0;
   }
   100% {
-    background-position: -320px 220px, 260px -260px;
+    background-position:
+      -320px 220px,
+      260px -260px;
   }
 }
 
@@ -314,17 +318,17 @@ html[data-theme-setting="dark"] .navbar .navbar-brand:hover {
 }
 
 .terminal-background__layer--grid {
-  background-image:
-    linear-gradient(rgba(var(--retro-ink), 0.08) 1px, transparent 1px),
+  background-image: linear-gradient(rgba(var(--retro-ink), 0.08) 1px, transparent 1px),
     linear-gradient(90deg, rgba(var(--retro-ink), 0.05) 1px, transparent 1px);
-  background-size: 140px 140px, 160px 160px;
+  background-size:
+    140px 140px,
+    160px 160px;
   opacity: 0.22;
   animation: terminal-grid-shift 45s linear infinite;
 }
 
 .terminal-background__layer--glow {
-  background-image:
-    radial-gradient(circle at 20% 20%, rgba(var(--retro-ink), 0.18), transparent 55%),
+  background-image: radial-gradient(circle at 20% 20%, rgba(var(--retro-ink), 0.18), transparent 55%),
     radial-gradient(circle at 75% 65%, rgba(var(--retro-ink), 0.12), transparent 60%);
   mix-blend-mode: screen;
   opacity: 0.4;
@@ -333,12 +337,12 @@ html[data-theme-setting="dark"] .navbar .navbar-brand:hover {
 
 .terminal-background__layer--scan {
   background: repeating-linear-gradient(
-      to bottom,
-      rgba(var(--retro-ink), 0.06) 0,
-      rgba(var(--retro-ink), 0.06) 2px,
-      rgba(4, 7, 12, 0.95) 2px,
-      rgba(4, 7, 12, 0.95) 4px
-    );
+    to bottom,
+    rgba(var(--retro-ink), 0.06) 0,
+    rgba(var(--retro-ink), 0.06) 2px,
+    rgba(4, 7, 12, 0.95) 2px,
+    rgba(4, 7, 12, 0.95) 4px
+  );
   opacity: 0.3;
   animation: terminal-scan 3.5s linear infinite;
   mix-blend-mode: screen;
@@ -399,7 +403,8 @@ html[data-theme-setting="dark"] .navbar .navbar-brand:hover {
   margin: 0;
   background: rgba(0, 0, 0, 0.88);
   border: 1px solid rgba(var(--retro-ink), 0.22);
-  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.45),
+  box-shadow:
+    0 18px 36px rgba(0, 0, 0, 0.45),
     inset 0 0 12px rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(4px);
   clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
@@ -428,22 +433,28 @@ html[data-theme-setting="dark"] .navbar .navbar-brand:hover {
 
 @keyframes terminal-pane-flicker {
   0% {
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.42), inset 0 0 6px rgba(var(--retro-ink), 0.08);
+    box-shadow:
+      0 12px 28px rgba(0, 0, 0, 0.42),
+      inset 0 0 6px rgba(var(--retro-ink), 0.08);
     opacity: 0.86;
   }
   50% {
-    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.5), inset 0 0 14px rgba(var(--retro-ink), 0.13);
+    box-shadow:
+      0 18px 36px rgba(0, 0, 0, 0.5),
+      inset 0 0 14px rgba(var(--retro-ink), 0.13);
     opacity: 0.94;
   }
   100% {
-    box-shadow: 0 22px 42px rgba(0, 0, 0, 0.56), inset 0 0 18px rgba(var(--retro-ink), 0.18);
+    box-shadow:
+      0 22px 42px rgba(0, 0, 0, 0.56),
+      inset 0 0 18px rgba(var(--retro-ink), 0.18);
     opacity: 0.9;
   }
 }
 
 .shell-stage {
   position: relative;
-  padding: 6rem 0 8rem;
+  padding: 2rem 0 4rem;
   display: flex;
   justify-content: center;
   width: 100%;
@@ -465,7 +476,6 @@ html[data-theme-setting="dark"] .navbar .navbar-brand:hover {
   margin-left: 0;
   margin-right: 0;
 }
-
 
 .container {
   position: relative;
@@ -1523,25 +1533,23 @@ html[data-theme-setting="dark"] .highlight code {
 }
 
 .terminal-background__layer--grid {
-  background-image:
-    linear-gradient(rgba(var(--retro-ink), 0.08) 1px, transparent 1px),
+  background-image: linear-gradient(rgba(var(--retro-ink), 0.08) 1px, transparent 1px),
     linear-gradient(90deg, rgba(var(--retro-ink), 0.05) 1px, transparent 1px);
 }
 
 .terminal-background__layer--glow {
-  background-image:
-    radial-gradient(circle at 20% 20%, rgba(var(--retro-ink), 0.18), transparent 55%),
+  background-image: radial-gradient(circle at 20% 20%, rgba(var(--retro-ink), 0.18), transparent 55%),
     radial-gradient(circle at 75% 65%, rgba(var(--retro-ink), 0.12), transparent 60%);
 }
 
 .terminal-background__layer--scan {
   background: repeating-linear-gradient(
-      to bottom,
-      rgba(var(--retro-ink), 0.06) 0,
-      rgba(var(--retro-ink), 0.06) 2px,
-      rgba(4, 7, 12, 0.95) 2px,
-      rgba(4, 7, 12, 0.95) 4px
-    );
+    to bottom,
+    rgba(var(--retro-ink), 0.06) 0,
+    rgba(var(--retro-ink), 0.06) 2px,
+    rgba(4, 7, 12, 0.95) 2px,
+    rgba(4, 7, 12, 0.95) 4px
+  );
 }
 
 .terminal-background__scroll {
@@ -1659,17 +1667,12 @@ html[data-theme-setting="dark"] .navbar .nav-link {
 }
 
 footer.sticky-bottom {
-  margin-top: 0 !important;
-  padding-top: 12px !important;
-  padding-bottom: 12px !important;
-  background: rgba(255, 255, 255, 0.92) !important;
-  color: #0a0a0a !important;
-  border-top: 1px solid rgba(0, 0, 0, 0.18) !important;
-  position: fixed !important;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 2000;
+  margin-top: auto;
+  padding: 1rem 0;
+  position: relative;
+  color: var(--global-text-color);
+  background: var(--global-bg-color);
+  border-top: 1px solid var(--global-divider-color);
 }
 
 footer.sticky-bottom .container {
@@ -2000,7 +2003,8 @@ body {
   background: transparent !important;
 }
 
-body > *:not(.binary-background) {
+body > .shell-stage,
+body > footer {
   position: relative;
   z-index: 1;
 }

@@ -13,7 +13,7 @@ profile:
 
 news: false # includes a list of news items
 selected_papers: true # includes a list of papers marked as "selected={true}"
-social: false # includes social icons at the bottom of the page
+social: true # includes social icons at the bottom of the page
 ---
 
 I am **Louis Ledoux** (or **Luis Eduardo Yves Ledoux Pardo** for completeness), a postdoctoral researcher within the [Emeraude team at Inria/INSA Lyon](https://team.inria.fr/emeraude/). I completed my PhD at the [Barcelona Supercomputing Center (BSC)](https://www.bsc.es) and [Universitat Politècnica de Catalunya (UPC)](https://www.upc.edu).

@@ -6,15 +6,22 @@ const THEME_DEFAULTS_VERSION = "2026-07-light-modus-default";
 const THEME_DEFAULTS_VERSION_KEY = "theme-defaults-version";
 const THEME_USER_OVERRIDE_KEY = "theme-user-override";
 
-// One-time migration so first visit after deployment starts on light + modus.
-let ensureInitialThemeDefaults = () => {
-  let appliedVersion = localStorage.getItem(THEME_DEFAULTS_VERSION_KEY);
-  if (appliedVersion === THEME_DEFAULTS_VERSION) return;
-
-  localStorage.setItem("theme", DEFAULT_THEME_SETTING);
-  localStorage.setItem("theme-variant", DEFAULT_THEME_VARIANT);
-  localStorage.setItem(THEME_USER_OVERRIDE_KEY, "false");
-  localStorage.setItem(THEME_DEFAULTS_VERSION_KEY, THEME_DEFAULTS_VERSION);
+// Stored choices survive navigation; no migration overrides user preferences.
+const themeStorage = {
+  get: (key) => {
+    try {
+      return localStorage.getItem(key);
+    } catch {
+      return null;
+    }
+  },
+  set: (key, value) => {
+    try {
+      localStorage.setItem(key, value);
+    } catch {
+      /* Private browsing may deny storage. */
+    }
+  },
 };
 
 // Toggle between light and dark theme settings.
@@ -29,8 +36,8 @@ let toggleThemeSetting = () => {
 
 // Change the theme setting and apply the theme.
 let setThemeSetting = (themeSetting, userInitiated = true) => {
-  localStorage.setItem("theme", themeSetting);
-  localStorage.setItem(THEME_USER_OVERRIDE_KEY, userInitiated ? "true" : "false");
+  themeStorage.set("theme", themeSetting);
+  themeStorage.set(THEME_USER_OVERRIDE_KEY, userInitiated ? "true" : "false");
 
   document.documentElement.setAttribute("data-theme-setting", themeSetting);
 
@@ -38,7 +45,7 @@ let setThemeSetting = (themeSetting, userInitiated = true) => {
 };
 
 let setThemeVariant = (themeVariant) => {
-  localStorage.setItem("theme-variant", themeVariant);
+  themeStorage.set("theme-variant", themeVariant);
 
   document.documentElement.setAttribute("data-theme-variant", themeVariant);
 
@@ -237,22 +244,12 @@ let transTheme = () => {
 // Determine the expected state of the theme toggle, which can be "dark" or "light".
 // Default is "light".
 let determineThemeSetting = () => {
-  let userOverride = localStorage.getItem(THEME_USER_OVERRIDE_KEY) === "true";
-  if (!userOverride) {
-    localStorage.setItem("theme", DEFAULT_THEME_SETTING);
-    return DEFAULT_THEME_SETTING;
-  }
-
-  let themeSetting = localStorage.getItem("theme");
-  if (themeSetting != "dark" && themeSetting != "light") {
-    themeSetting = DEFAULT_THEME_SETTING;
-    localStorage.setItem("theme", themeSetting);
-  }
-  return themeSetting;
+  const setting = document.documentElement.getAttribute("data-theme-setting") || themeStorage.get("theme");
+  return ["light", "dark", "system"].includes(setting) ? setting : DEFAULT_THEME_SETTING;
 };
 
 let determineThemeVariant = () => {
-  let themeVariant = localStorage.getItem("theme-variant");
+  let themeVariant = document.documentElement.getAttribute("data-theme-variant") || themeStorage.get("theme-variant");
   if (themeVariant != "binary" && themeVariant != "modus") {
     themeVariant = DEFAULT_THEME_VARIANT;
   }
@@ -265,28 +262,31 @@ let updateThemeMenuState = () => {
 
   document.querySelectorAll("[data-theme-mode]").forEach((item) => {
     item.classList.toggle("active", item.dataset.themeMode === themeSetting);
-    item.setAttribute("aria-checked", item.dataset.themeMode === themeSetting ? "true" : "false");
+    item.setAttribute("aria-pressed", item.dataset.themeMode === themeSetting ? "true" : "false");
   });
 
-  document.querySelectorAll("[data-theme-variant]").forEach((item) => {
+  document.querySelectorAll("button[data-theme-variant]").forEach((item) => {
     item.classList.toggle("active", item.dataset.themeVariant === themeVariant);
-    item.setAttribute("aria-checked", item.dataset.themeVariant === themeVariant ? "true" : "false");
+    item.setAttribute("aria-pressed", item.dataset.themeVariant === themeVariant ? "true" : "false");
   });
 };
 
 // Determine the computed theme, which can be "dark" or "light".
 let determineComputedTheme = () => {
-  return determineThemeSetting();
+  const setting = determineThemeSetting();
+  return setting === "system" ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : setting;
 };
 
 let initTheme = () => {
-  ensureInitialThemeDefaults();
-
   let themeSetting = determineThemeSetting();
   let themeVariant = determineThemeVariant();
 
-  setThemeSetting(themeSetting, false);
-  setThemeVariant(themeVariant);
+  document.documentElement.setAttribute("data-theme-setting", themeSetting);
+  document.documentElement.setAttribute("data-theme-variant", themeVariant);
+  applyTheme();
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+    if (determineThemeSetting() === "system") applyTheme();
+  });
 
   // Add event listener to the theme toggle button.
   document.addEventListener("DOMContentLoaded", function () {
@@ -296,7 +296,7 @@ let initTheme = () => {
       });
     });
 
-    document.querySelectorAll("[data-theme-variant]").forEach((item) => {
+    document.querySelectorAll("button[data-theme-variant]").forEach((item) => {
       item.addEventListener("click", function () {
         setThemeVariant(item.dataset.themeVariant);
       });
@@ -304,5 +304,4 @@ let initTheme = () => {
 
     updateThemeMenuState();
   });
-
 };

@@ -17,37 +17,38 @@
 
   <!-- Body -->
   <body class="{% if site.navbar_fixed %}fixed-top-nav{% endif %} {% unless site.footer_fixed %}sticky-bottom-footer{% endunless %}">
+    <a class="skip-link" href="#main-content">Skip to content</a>
     {% include binary-background.html %}
     <!-- Header -->
     {% include header.liquid %}
 
     <!-- Content -->
     <div class="shell-stage">
-      <div class="container mt-5 shell-panel" role="main">
+      <main id="main-content" class="container mt-4 shell-panel" tabindex="-1">
         {% if page.toc and page.toc.sidebar %}
           {% if page.toc.sidebar == 'right' %}
             <div class="row">
               <!-- main content area -->
-              <div class="col-sm-9">{{ content }}</div>
+              <div class="col-md-9">{{ content }}</div>
               <!-- sidebar, which will move to the top on a small screen -->
-              <div class="col-sm-3">
+              <div class="col-md-3 d-none d-md-block">
                 <nav id="toc-sidebar" class="sticky-top"></nav>
               </div>
             </div>
           {% else %}
             <div class="row">
               <!-- sidebar, which will move to the top on a small screen -->
-              <div class="col-sm-3">
+              <div class="col-md-3 d-none d-md-block">
                 <nav id="toc-sidebar" class="sticky-top"></nav>
               </div>
               <!-- main content area -->
-              <div class="col-sm-9">{{ content }}</div>
+              <div class="col-md-9">{{ content }}</div>
             </div>
           {% endif %}
         {% else %}
           {{ content }}
         {% endif %}
-      </div>
+      </main>
     </div>
 
     <!-- Footer -->
