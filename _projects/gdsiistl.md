@@ -2,6 +2,8 @@
 layout: page
 title: gdsiistl
 description: Convert GDS layouts into layered STL meshes for 3D visualization and mediation
+img: assets/img/sky130hd-retro-raytrace-1.png
+img_alt: Artistic render of SKY130 full-adder layers extracted with gdsiistl.
 importance: 7
 category: work
 github: https://github.com/Bynaryman/gdsiistl

@@ -2,6 +2,8 @@
 layout: page
 title: VH2V
 description: VHDL-to-Verilog bridge utility for open hardware and tapeout integration flows
+img: assets/img/projects/vh2v.svg
+img_alt: Pipeline diagram from VHDL entities through GHDL and Yosys to Verilog modules.
 importance: 6
 category: work
 github: https://github.com/Bynaryman/vh2v

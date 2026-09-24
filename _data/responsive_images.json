@@ -160,6 +160,121 @@
     ],
     "src": "/assets/img/generated/prof_pic-69d22da8d5-1440.webp"
   },
+  "assets/img/projects/bitmosh-flow.png": {
+    "width": 1080,
+    "height": 1920,
+    "variants": [
+      {
+        "path": "/assets/img/generated/bitmosh-flow-7bf419d6d7-320.webp",
+        "width": 320
+      },
+      {
+        "path": "/assets/img/generated/bitmosh-flow-7bf419d6d7-640.webp",
+        "width": 640
+      },
+      {
+        "path": "/assets/img/generated/bitmosh-flow-7bf419d6d7-960.webp",
+        "width": 960
+      },
+      {
+        "path": "/assets/img/generated/bitmosh-flow-7bf419d6d7-1080.webp",
+        "width": 1080
+      }
+    ],
+    "src": "/assets/img/generated/bitmosh-flow-7bf419d6d7-1080.webp"
+  },
+  "assets/img/projects/bitmosh-repeat.png": {
+    "width": 1080,
+    "height": 1920,
+    "variants": [
+      {
+        "path": "/assets/img/generated/bitmosh-repeat-35c8316053-320.webp",
+        "width": 320
+      },
+      {
+        "path": "/assets/img/generated/bitmosh-repeat-35c8316053-640.webp",
+        "width": 640
+      },
+      {
+        "path": "/assets/img/generated/bitmosh-repeat-35c8316053-960.webp",
+        "width": 960
+      },
+      {
+        "path": "/assets/img/generated/bitmosh-repeat-35c8316053-1080.webp",
+        "width": 1080
+      }
+    ],
+    "src": "/assets/img/generated/bitmosh-repeat-35c8316053-1080.webp"
+  },
+  "assets/img/projects/bitmosh.png": {
+    "width": 1024,
+    "height": 500,
+    "variants": [
+      {
+        "path": "/assets/img/generated/bitmosh-0cf5d12c39-320.webp",
+        "width": 320
+      },
+      {
+        "path": "/assets/img/generated/bitmosh-0cf5d12c39-640.webp",
+        "width": 640
+      },
+      {
+        "path": "/assets/img/generated/bitmosh-0cf5d12c39-960.webp",
+        "width": 960
+      },
+      {
+        "path": "/assets/img/generated/bitmosh-0cf5d12c39-1024.webp",
+        "width": 1024
+      }
+    ],
+    "src": "/assets/img/generated/bitmosh-0cf5d12c39-1024.webp"
+  },
+  "assets/img/projects/codez.png": {
+    "width": 2138,
+    "height": 702,
+    "variants": [
+      {
+        "path": "/assets/img/generated/codez-e254eaa3ae-320.webp",
+        "width": 320
+      },
+      {
+        "path": "/assets/img/generated/codez-e254eaa3ae-640.webp",
+        "width": 640
+      },
+      {
+        "path": "/assets/img/generated/codez-e254eaa3ae-960.webp",
+        "width": 960
+      },
+      {
+        "path": "/assets/img/generated/codez-e254eaa3ae-1440.webp",
+        "width": 1440
+      }
+    ],
+    "src": "/assets/img/generated/codez-e254eaa3ae-1440.webp"
+  },
+  "assets/img/projects/quantizer-rev-a.png": {
+    "width": 1568,
+    "height": 1176,
+    "variants": [
+      {
+        "path": "/assets/img/generated/quantizer-rev-a-bd923a2f35-320.webp",
+        "width": 320
+      },
+      {
+        "path": "/assets/img/generated/quantizer-rev-a-bd923a2f35-640.webp",
+        "width": 640
+      },
+      {
+        "path": "/assets/img/generated/quantizer-rev-a-bd923a2f35-960.webp",
+        "width": 960
+      },
+      {
+        "path": "/assets/img/generated/quantizer-rev-a-bd923a2f35-1440.webp",
+        "width": 1440
+      }
+    ],
+    "src": "/assets/img/generated/quantizer-rev-a-bd923a2f35-1440.webp"
+  },
   "assets/img/publication_preview/collage_thesis_small.png": {
     "width": 500,
     "height": 500,

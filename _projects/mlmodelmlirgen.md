@@ -2,6 +2,8 @@
 layout: page
 title: MLModelMLIRGEN
 description: Batch export utility from PyTorch models to MLIR linalg-on-tensors artifacts
+img: assets/img/projects/mlmodelmlirgen.svg
+img_alt: Pipeline diagram from PyTorch models through torch-mlir to linalg-on-tensors.
 importance: 5
 category: work
 github: https://github.com/Bynaryman/MLModelMLIRGEN

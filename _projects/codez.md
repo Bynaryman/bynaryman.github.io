@@ -2,6 +2,8 @@
 layout: page
 title: Codez
 description: Typst/CeTZ package for geometry-aware code rendering and annotation in technical figures
+img: assets/img/projects/codez.png
+img_alt: An annotated MLIR code excerpt rendered with Codez.
 importance: 9
 category: work
 github: https://github.com/Bynaryman/codez

@@ -2,6 +2,8 @@
 layout: page
 title: OpenROAD-GPL Experiments
 description: Visualization-oriented global placement experiments, blockages, and shaped-chip mediation
+img: assets/img/arith-2026-tutorial/openroad-arith-placement.png
+img_alt: OpenROAD placement visualization from the arithmetic tutorial.
 importance: 8
 category: work
 github: https://github.com/Bynaryman/gpl

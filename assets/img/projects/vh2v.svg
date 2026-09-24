@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+<title>VH2V</title>
+<desc>VHDL → GHDL + Yosys → Verilog</desc>
+<rect width="1200" height="675" fill="#f6f3eb"/>
+<g font-family="sans-serif" fill="#182d3a">
+<text x="64" y="100" font-size="42" font-weight="700">VH2V</text>
+<text x="64" y="151" font-size="25">One VHDL source, separate Verilog modules</text>
+<rect x="64" y="246" width="320" height="200" rx="8" fill="#ffffff" stroke="#315a69" stroke-width="3"/>
+<text x="88" y="289" font-size="19" fill="#587887">01</text>
+<text x="88" y="350" font-size="30" font-weight="700">VHDL</text>
+<text x="88" y="397" font-size="22">Multiple entities</text>
+<path d="M397 346 h28 m-10 -10 10 10 -10 10" fill="none" stroke="#315a69" stroke-width="3"/>
+<rect x="440" y="246" width="320" height="200" rx="8" fill="#ffffff" stroke="#315a69" stroke-width="3"/>
+<text x="464" y="289" font-size="19" fill="#587887">02</text>
+<text x="464" y="350" font-size="30" font-weight="700">GHDL + Yosys</text>
+<text x="464" y="397" font-size="22">Synthesis frontend</text>
+<path d="M773 346 h28 m-10 -10 10 10 -10 10" fill="none" stroke="#315a69" stroke-width="3"/>
+<rect x="816" y="246" width="320" height="200" rx="8" fill="#ffffff" stroke="#315a69" stroke-width="3"/>
+<text x="840" y="289" font-size="19" fill="#587887">03</text>
+<text x="840" y="350" font-size="30" font-weight="700">Verilog</text>
+<text x="840" y="397" font-size="22">Per-entity export</text>
+<text x="64" y="552" font-size="25">A Python wrapper for open hardware flows.</text>
+</g>
+</svg>

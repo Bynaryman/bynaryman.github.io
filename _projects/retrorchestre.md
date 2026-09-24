@@ -3,7 +3,7 @@ layout: page
 title: Le RetrOrchestre
 description: "MIDI-controlled instruments built from floppy drives and scanners."
 img: assets/img/retrorchestre.gif
-importance: 1
+importance: 3
 category: fun
 ---
 
