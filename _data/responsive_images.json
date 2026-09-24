@@ -849,6 +849,121 @@
     ],
     "src": "/assets/img/generated/retrorchestre-27231a41d9-368.webp"
   },
+  "assets/img/rodec-mx180/channel-controls.png": {
+    "width": 1058,
+    "height": 1411,
+    "variants": [
+      {
+        "path": "/assets/img/generated/channel-controls-b9b68c31cb-320.webp",
+        "width": 320
+      },
+      {
+        "path": "/assets/img/generated/channel-controls-b9b68c31cb-640.webp",
+        "width": 640
+      },
+      {
+        "path": "/assets/img/generated/channel-controls-b9b68c31cb-960.webp",
+        "width": 960
+      },
+      {
+        "path": "/assets/img/generated/channel-controls-b9b68c31cb-1058.webp",
+        "width": 1058
+      }
+    ],
+    "src": "/assets/img/generated/channel-controls-b9b68c31cb-1058.webp"
+  },
+  "assets/img/rodec-mx180/fader-wiring.png": {
+    "width": 1058,
+    "height": 794,
+    "variants": [
+      {
+        "path": "/assets/img/generated/fader-wiring-767fef7a4d-320.webp",
+        "width": 320
+      },
+      {
+        "path": "/assets/img/generated/fader-wiring-767fef7a4d-640.webp",
+        "width": 640
+      },
+      {
+        "path": "/assets/img/generated/fader-wiring-767fef7a4d-960.webp",
+        "width": 960
+      },
+      {
+        "path": "/assets/img/generated/fader-wiring-767fef7a4d-1058.webp",
+        "width": 1058
+      }
+    ],
+    "src": "/assets/img/generated/fader-wiring-767fef7a4d-1058.webp"
+  },
+  "assets/img/rodec-mx180/faders-and-channel-boards.png": {
+    "width": 1058,
+    "height": 794,
+    "variants": [
+      {
+        "path": "/assets/img/generated/faders-and-channel-boards-8b3568d23d-320.webp",
+        "width": 320
+      },
+      {
+        "path": "/assets/img/generated/faders-and-channel-boards-8b3568d23d-640.webp",
+        "width": 640
+      },
+      {
+        "path": "/assets/img/generated/faders-and-channel-boards-8b3568d23d-960.webp",
+        "width": 960
+      },
+      {
+        "path": "/assets/img/generated/faders-and-channel-boards-8b3568d23d-1058.webp",
+        "width": 1058
+      }
+    ],
+    "src": "/assets/img/generated/faders-and-channel-boards-8b3568d23d-1058.webp"
+  },
+  "assets/img/rodec-mx180/front-panel.png": {
+    "width": 1058,
+    "height": 794,
+    "variants": [
+      {
+        "path": "/assets/img/generated/front-panel-78ba2b1544-320.webp",
+        "width": 320
+      },
+      {
+        "path": "/assets/img/generated/front-panel-78ba2b1544-640.webp",
+        "width": 640
+      },
+      {
+        "path": "/assets/img/generated/front-panel-78ba2b1544-960.webp",
+        "width": 960
+      },
+      {
+        "path": "/assets/img/generated/front-panel-78ba2b1544-1058.webp",
+        "width": 1058
+      }
+    ],
+    "src": "/assets/img/generated/front-panel-78ba2b1544-1058.webp"
+  },
+  "assets/img/rodec-mx180/meters-and-controls.png": {
+    "width": 1058,
+    "height": 794,
+    "variants": [
+      {
+        "path": "/assets/img/generated/meters-and-controls-ee268cb9b0-320.webp",
+        "width": 320
+      },
+      {
+        "path": "/assets/img/generated/meters-and-controls-ee268cb9b0-640.webp",
+        "width": 640
+      },
+      {
+        "path": "/assets/img/generated/meters-and-controls-ee268cb9b0-960.webp",
+        "width": 960
+      },
+      {
+        "path": "/assets/img/generated/meters-and-controls-ee268cb9b0-1058.webp",
+        "width": 1058
+      }
+    ],
+    "src": "/assets/img/generated/meters-and-controls-ee268cb9b0-1058.webp"
+  },
   "assets/img/runtime.jpg": {
     "width": 2014,
     "height": 1213,
