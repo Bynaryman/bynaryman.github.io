@@ -5,7 +5,7 @@
     "email": "i.f.lledoux[at]gmail.com",
     "phone": "+33 [seven] 70 49 11 98",
     "url": "https://bynaryman.github.io/",
-    "summary": "Teaching-and-research faculty member in computer architecture, arithmetic-aware compilation, tensor accelerators, and open EDA flows.",
+    "summary": "Research in computer arithmetic, compiler transformations, and hardware architectures.",
     "location": {
       "address": "",
       "postalCode": "35000",
@@ -60,12 +60,12 @@
       "url": "https://www.citi-lab.fr/",
       "startDate": "2025-01-01",
       "endDate": "2026-07-31",
-      "summary": "Working on arithmetic compilation and optimization within the Emeraude team, at the intersection of MLIR, HAriCo/FloPoCo, CIRCT, Faust, and open EDA/hardware flows. The research focuses on bridging high-level mathematical reasoning with low-level hardware synthesis and reproducible compiler-to-silicon validation.",
+      "summary": "Researched arithmetic compilation and optimization using MLIR, HAriCo/FloPoCo, CIRCT, Faust, and open EDA flows.",
       "highlights": [
-        "Developing multi-level arithmetic transformations from real-valued expressions to fixed-point polynomial approximations for ASIC and FPGA targets.",
-        "Extending MLIR with custom dialects to support arithmetic abstraction, reasoning, and approximation.",
-        "Automating the generation of hardware architectures directly from DSP-oriented code (e.g., Faust), enabling end-to-end lowering from mathematical expressions to silicon.",
-        "Contributing to the refactoring of FloPoCo toward explicit IR-based circuit generation, in connection with HAriCo/CIRCT-compatible lowering.",
+        "Developed multi-level arithmetic transformations from real-valued expressions to fixed-point polynomial approximations for ASIC and FPGA targets.",
+        "Extended MLIR with custom dialects to support arithmetic abstraction, reasoning, and approximation.",
+        "Automated the generation of hardware architectures directly from DSP-oriented code (e.g., Faust), enabling end-to-end lowering from mathematical expressions to silicon.",
+        "Contributed to the refactoring of FloPoCo toward explicit IR-based circuit generation, in connection with HAriCo/CIRCT-compatible lowering.",
         "Presented results at DSD 2025, EuroLLVM 2025, the PEPR IA Embarquee workshop in Aussois (2026), and EuroLLVM 2026."
       ]
     },
@@ -106,10 +106,7 @@
       "startDate": "2017-07-01",
       "endDate": "2017-08-31",
       "summary": "Developed the entire back end of a people security application. Ensured secure data transmission and deployed the application on AWS.",
-      "highlights": [
-        "Developed backend services and APIs.",
-        "Deployed and managed the application on AWS."
-      ]
+      "highlights": ["Developed backend services and APIs.", "Deployed and managed the application on AWS."]
     },
     {
       "name": "ASKIA",
@@ -131,10 +128,7 @@
       "startDate": "2014-07-01",
       "endDate": "2014-07-31",
       "summary": "Responsible for repairing various electronic devices, with an emphasis on audio equipment.",
-      "highlights": [
-        "Repaired various electronic devices, focusing on audio equipmenters.",
-        "Soldered and reverse engineered amplifier circuits."
-      ]
+      "highlights": ["Repaired various electronic devices, focusing on audio equipmenters.", "Soldered and reverse engineered amplifier circuits."]
     }
   ],
   "teaching": [
@@ -158,10 +152,7 @@
       "endDate": "2026-12-31",
       "location": "Lyon, France",
       "summary": "Practical sessions in computer architecture for the Telecommunications curriculum, covering instruction execution, pipelining, cache memories, performance evaluation, and RISC-V assembly programming.",
-      "highlights": [
-        "Level: 1st year of engineering school (Telecommunications track, 3TC).",
-        "Teaching load: 24h."
-      ]
+      "highlights": ["Level: 1st year of engineering school (Telecommunications track, 3TC).", "Teaching load: 24h."]
     },
     {
       "name": "INSA Lyon",
@@ -171,10 +162,7 @@
       "endDate": "2026-12-31",
       "location": "Lyon, France",
       "summary": "Core operating system mechanisms, including kernel and system calls, process scheduling, virtual memory, concurrency, and file systems.",
-      "highlights": [
-        "Level: 1st year of engineering school / Bachelor equivalent (Computer Science, INSA 3IF).",
-        "Teaching load: 16h."
-      ]
+      "highlights": ["Level: 1st year of engineering school / Bachelor equivalent (Computer Science, INSA 3IF).", "Teaching load: 16h."]
     },
     {
       "name": "INSA Lyon",
@@ -184,10 +172,7 @@
       "endDate": "2026-12-31",
       "location": "Lyon, France",
       "summary": "Supervision of long-term group projects on compiler design and implementation, covering intermediate representations, program analysis, and backend code generation.",
-      "highlights": [
-        "Level: 2nd year of engineering school / Master 1 (Computer Science, INSA 4IF).",
-        "Teaching load: 36h."
-      ]
+      "highlights": ["Level: 2nd year of engineering school / Master 1 (Computer Science, INSA 4IF).", "Teaching load: 36h."]
     },
     {
       "name": "INSA Lyon",
@@ -197,10 +182,7 @@
       "endDate": "2026-06-30",
       "location": "Lyon, France",
       "summary": "Problem-solving and practical sessions on processor organization and instruction set architectures, based on the MSP430 microcontroller, including instruction execution, addressing modes, and memory hierarchy.",
-      "highlights": [
-        "Level: 1st year of engineering school / Bachelor equivalent (Computer Science, INSA 3IF).",
-        "Teaching load: 12h."
-      ]
+      "highlights": ["Level: 1st year of engineering school / Bachelor equivalent (Computer Science, INSA 3IF).", "Teaching load: 12h."]
     },
     {
       "name": "INSA Lyon",
@@ -210,10 +192,7 @@
       "endDate": "2026-06-30",
       "location": "Lyon, France",
       "summary": "Exercises and guided sessions on digital circuit design, including combinational and sequential logic, finite state machines, and introductory hardware description languages.",
-      "highlights": [
-        "Level: 1st year of engineering school / Bachelor equivalent (Computer Science, INSA 3IF).",
-        "Teaching load: 12h."
-      ]
+      "highlights": ["Level: 1st year of engineering school / Bachelor equivalent (Computer Science, INSA 3IF).", "Teaching load: 12h."]
     }
   ],
   "education": [
@@ -223,8 +202,8 @@
       "url": "https://theses.hal.science/tel-04754167",
       "area": "Computer Architecture",
       "studyType": "PhD",
-      "startDate": "2018-08-16",
-      "endDate": "2024-08-03",
+      "startDate": "2018",
+      "endDate": "2024",
       "summary": "Thesis: Floating-Point Arithmetic Paradigms for High-Performance Computing: Software Algorithms and Hardware Designs. Thesis tutor: Marc Casas. Jury attributed the grade of excellent."
     },
     {
@@ -246,141 +225,6 @@
       "startDate": "2013-09-01",
       "endDate": "2015-06-01",
       "summary": "Intensive program with a strong emphasis on Mathematics and Computer Sciences."
-    }
-  ],
-  "publications": [
-    {
-      "name": "Reconfigurable constant multipliers: hardware models, optimization algorithm and applications",
-      "publisher": "International Peer-reviewed Journal - Microprocessors and Microsystems (article 105270, 2026)",
-      "releaseDate": "2026",
-      "url": "https://doi.org/10.1016/j.micpro.2026.105270",
-      "summary": "B. Barbe, L. Ledoux, A. Volkova, and F. de Dinechin. DOI:10.1016/j.micpro.2026.105270; HAL:05510936."
-    },
-    {
-      "name": "Frugality and circuit design for digital audio signal processing",
-      "publisher": "International Peer-reviewed Journal - Revue Francophone d'Informatique et Musique (vol. 11, 2025)",
-      "releaseDate": "2025",
-      "url": "https://doi.org/10.56698/rfim.961",
-      "summary": "M. Popoff, R. Michon, T. Risset, P. Cochard, L. Ledoux, et al. DOI:10.56698/rfim.961; HAL:05489376."
-    },
-    {
-      "name": "Towards optimized arithmetic circuits with MLIR",
-      "publisher": "International Peer-reviewed Journal - WiPiEC Journal (vol. 11, no. 1, 2025)",
-      "releaseDate": "2025",
-      "url": "https://doi.org/10.64552/wipiec.v11i1.90",
-      "summary": "L. Ledoux, P. Cochard, and F. de Dinechin. Associated conference presentation at DSD 2025; HAL:05385229."
-    },
-    {
-      "name": "Design-space exploration of serialized floating-point division for DLP architectures",
-      "publisher": "International Peer-reviewed Conference Paper - 28th Euromicro DSD 2025 (Salerno, Italy)",
-      "releaseDate": "2025",
-      "url": "https://dsd-seaa.com/dsd2025/",
-      "summary": "L. Ledoux."
-    },
-    {
-      "name": "An open-source framework for efficient numerically-tailored computations",
-      "publisher": "International Peer-reviewed Conference Paper - FPL 2023 (Gothenburg, Sweden)",
-      "releaseDate": "2023-09",
-      "url": "https://doi.org/10.1109/FPL60245.2023.00011",
-      "summary": "L. Ledoux and M. Casas. DOI:10.1109/FPL60245.2023.00011; arXiv:2406.02579; HAL:04277512."
-    },
-    {
-      "name": "A generator of numerically-tailored and high-throughput accelerators for batched GEMMs",
-      "publisher": "International Peer-reviewed Conference Paper - FCCM 2022 (New York, USA)",
-      "releaseDate": "2022-05",
-      "url": "https://doi.org/10.1109/FCCM53951.2022.9786164",
-      "summary": "L. Ledoux and M. Casas. DOI:10.1109/FCCM53951.2022.9786164; HAL:04103774."
-    },
-    {
-      "name": "Tiny Tapeout: a shared silicon tapeout platform accessible to everyone",
-      "publisher": "Contribution to Publication - IEEE Solid-State Circuits Magazine (2024)",
-      "releaseDate": "2024",
-      "url": "https://ieeexplore.ieee.org/document/10584359",
-      "summary": "Significant contributor (not listed author): manuscript drafting, academic formatting, and revisions. Evidence: github.com/mattvenn/tt-ieee-paper."
-    },
-    {
-      "name": "HAriCo: Floating-Point MLIR to CIRCT Datapaths",
-      "publisher": "Poster Presentation - ACM Europe School on MLIR 2026 (A Coruña, Spain; August 10-14, 2026)",
-      "releaseDate": "2026-08-10",
-      "url": "https://mlir-school.github.io/summer-2026/",
-      "summary": "L. Ledoux."
-    },
-    {
-      "name": "Multi-Level Compilation of AI Tensors and Activation Functions to Silicon",
-      "publisher": "Poster Presentation - PEPR IA Days (Rennes, France; June 22-24, 2026)",
-      "releaseDate": "2026-06-22",
-      "url": "https://hal.science/hal-05671676",
-      "summary": "L. Ledoux. HAL:05671676."
-    },
-    {
-      "name": "Floating-point datapaths in CIRCT via HAriCo and harico-arith-to-comb lowering",
-      "publisher": "Poster Presentation - EuroLLVM Developers' Meeting 2026 (Dublin, Ireland)",
-      "releaseDate": "2026-04-15",
-      "url": "https://hal.science/hal-05576131",
-      "summary": "L. Ledoux, P. Cochard, and F. de Dinechin. HAL:05576131."
-    },
-    {
-      "name": "Progressive Arithmetic Lowering to Synthesizable Datapaths",
-      "publisher": "Workshop Communication - MLIR Workshop, EuroLLVM Developers' Meeting 2026 (Dublin, Ireland)",
-      "releaseDate": "2026-04-13",
-      "url": "https://hal.science/hal-05594483",
-      "summary": "L. Ledoux, P. Cochard, and F. de Dinechin. HAL:05594483."
-    },
-    {
-      "name": "Arithmetic lowering with Emeraude-MLIR: bridging tensor and DSP kernels to silicon datapaths",
-      "publisher": "Poster Presentation - Aussois, France",
-      "releaseDate": "2026",
-      "url": "https://hal.science/hal-05489427",
-      "summary": "L. Ledoux, P. Cochard, and F. de Dinechin. HAL:05489427."
-    },
-    {
-      "name": "Towards multi-level arithmetic optimizations",
-      "publisher": "Poster Presentation - EuroLLVM 2025 (Berlin, Germany)",
-      "releaseDate": "2025",
-      "url": "https://hal.science/hal-05063466",
-      "summary": "L. Ledoux, P. Cochard, L. Forget, and F. de Dinechin. HAL:05063466."
-    },
-    {
-      "name": "LLMMMM: large language models matrix-matrix multiplications characterization on open silicon",
-      "publisher": "Poster Presentation - 11th BSC Severo Ochoa Doctoral Symposium 2024 (Barcelona, Spain)",
-      "releaseDate": "2024-05",
-      "url": "https://hal.science/hal-04592229",
-      "summary": "L. Ledoux and M. Casas. HAL:04592229."
-    },
-    {
-      "name": "The grafted superset approach: bridging Python to silicon with asynchronous compilation and beyond",
-      "publisher": "Poster Presentation - OSDA 2024 (hosted at DATE, Valencia, Spain)",
-      "releaseDate": "2024-03-25",
-      "url": "https://hal.science/hal-04587458",
-      "summary": "L. Ledoux and M. Casas. HAL:04587458."
-    },
-    {
-      "name": "Open-source GEMM hardware kernels generator: toward numerically-tailored computations",
-      "publisher": "Poster Presentation - 10th BSC Severo Ochoa Doctoral Symposium 2023 (Barcelona, Spain)",
-      "releaseDate": "2023-05",
-      "url": "https://arxiv.org/abs/2305.18328",
-      "summary": "L. Ledoux and M. Casas. arXiv:2305.18328; HAL:04094835."
-    },
-    {
-      "name": "FloPoCo and MLIR: a multi-level compilation framework for many intents",
-      "publisher": "Invited Talk / Seminar - Holigrail Seminar, Sorbonne University (Paris, France)",
-      "releaseDate": "2025-09-18",
-      "url": "https://www.sorbonne-universite.fr/",
-      "summary": "L. Ledoux and P. Cochard."
-    },
-    {
-      "name": "The walls and the dark silicon era: an arithmetic perspective",
-      "publisher": "Invited Talk / Seminar - Inria Rennes (Team TARAN)",
-      "releaseDate": "2024-12-02",
-      "url": "https://www.inria.fr/en/taran",
-      "summary": "L. Ledoux."
-    },
-    {
-      "name": "Accelerating DL inference with (Open)CAPI and posit numbers",
-      "publisher": "Invited Talk / Seminar - OpenPOWER Summit Europe 2019 (Lyon, France)",
-      "releaseDate": "2019-10",
-      "url": "https://hal.science/hal-04094850",
-      "summary": "L. Ledoux and M. Casas. HAL:04094850."
     }
   ],
   "projects": [
@@ -447,9 +291,7 @@
       "startDate": "2025-05",
       "endDate": "2025-05",
       "summary": "Responsible for sound, YouTube streaming, and microphone management.",
-      "highlights": [
-        "Conference organization support."
-      ]
+      "highlights": ["Conference organization support."]
     },
     {
       "organization": "Journees de l'Informatique Musicale",
@@ -459,9 +301,7 @@
       "startDate": "2025-05",
       "endDate": "2025-05",
       "summary": "Responsible for sound, YouTube streaming, and microphone management.",
-      "highlights": [
-        "Conference organization support."
-      ]
+      "highlights": ["Conference organization support."]
     },
     {
       "organization": "HotChips 32nd",
@@ -471,9 +311,7 @@
       "startDate": "2020-04-16",
       "endDate": "2020-04-18",
       "summary": "Assisted with digital entrance management, conference link distribution, and attendee support during the event.",
-      "highlights": [
-        "Conference operations support."
-      ]
+      "highlights": ["Conference operations support."]
     },
     {
       "organization": "Field-Programmable Logic Conference 29th",
@@ -483,9 +321,7 @@
       "startDate": "2019-09-09",
       "endDate": "2019-09-13",
       "summary": "Managed reception desk activities, including badge distribution and providing microphones for speakers during presentations.",
-      "highlights": [
-        "Conference operations support."
-      ]
+      "highlights": ["Conference operations support."]
     }
   ],
   "certificates": [
@@ -494,36 +330,28 @@
       "issuer": "ACM Europe",
       "date": "2021",
       "url": "https://europe.acm.org/summer-school",
-      "items": [
-        "Participant"
-      ]
+      "items": ["Participant"]
     },
     {
       "name": "Yale Patt Computer Architecture Summer School",
       "issuer": "Academic Summer School",
       "date": "2019",
       "url": "https://www.cs.utexas.edu/~patt/",
-      "items": [
-        "Participant"
-      ]
+      "items": ["Participant"]
     },
     {
       "name": "Xilinx Machine Learning and Artificial Intelligence Seminar",
       "issuer": "Xilinx",
       "date": "2019",
       "url": "https://www.xilinx.com/",
-      "items": [
-        "Participant"
-      ]
+      "items": ["Participant"]
     },
     {
       "name": "PRACE Summer School on Heterogeneous Programming with OmpSs@FPGA",
       "issuer": "PRACE",
       "date": "2019",
       "url": "https://prace-ri.eu/",
-      "items": [
-        "Participant"
-      ]
+      "items": ["Participant"]
     }
   ],
   "skills": [
@@ -566,22 +394,11 @@
     },
     {
       "name": "Scripting",
-      "keywords": [
-        "Python",
-        "Bash",
-        "Shell",
-        "Linux",
-        "Tcl"
-      ]
+      "keywords": ["Python", "Bash", "Shell", "Linux", "Tcl"]
     },
     {
       "name": "Dissemination",
-      "keywords": [
-        "LaTeX",
-        "Matplotlib",
-        "Inkscape",
-        "Top-tier conferences article"
-      ]
+      "keywords": ["LaTeX", "Matplotlib", "Inkscape", "Top-tier conferences article"]
     },
     {
       "name": "FPGA",
@@ -603,30 +420,11 @@
     },
     {
       "name": "GPU",
-      "keywords": [
-        "CUDA 8",
-        "CUDA 9",
-        "OpenCL",
-        "Warp",
-        "MIMD",
-        "SIMT",
-        "Branch divergence",
-        "Coalesced Access Patterns",
-        "PTX",
-        "Tensor Cores"
-      ]
+      "keywords": ["CUDA 8", "CUDA 9", "OpenCL", "Warp", "MIMD", "SIMT", "Branch divergence", "Coalesced Access Patterns", "PTX", "Tensor Cores"]
     },
     {
       "name": "Version Control",
-      "keywords": [
-        "Git",
-        "GitHub",
-        "GitLab",
-        "SVN",
-        "Pull Requests",
-        "branches",
-        "rebases"
-      ]
+      "keywords": ["Git", "GitHub", "GitLab", "SVN", "Pull Requests", "branches", "rebases"]
     }
   ],
   "languages": [
@@ -645,64 +443,43 @@
   ],
   "journals": [
     {
-      "name": "Reconfigurable constant multipliers: hardware models, optimization algorithm and applications",
-      "publisher": "International Peer-reviewed Journal - Microprocessors and Microsystems (2026)",
-      "releaseDate": "2026",
-      "url": "https://doi.org/10.1016/j.micpro.2026.105270",
-      "summary": "B. Barbe, L. Ledoux, A. Volkova, and F. de Dinechin. HAL:05510936."
+      "bibkey": "barbe_rcm_2026"
     },
     {
-      "name": "Frugality and circuit design for digital audio signal processing",
-      "publisher": "International Peer-reviewed Journal - Revue Francophone d'Informatique et Musique (vol. 11, 2025)",
-      "releaseDate": "2025",
-      "url": "https://doi.org/10.56698/rfim.961",
-      "summary": "M. Popoff, R. Michon, T. Risset, P. Cochard, L. Ledoux, et al. DOI:10.56698/rfim.961; HAL:05489376."
+      "bibkey": "popoff_rfim_2025"
     },
     {
-      "name": "Towards optimized arithmetic circuits with MLIR",
-      "publisher": "International Peer-reviewed Journal - WiPiEC Journal (vol. 11, no. 1, 2025)",
-      "releaseDate": "2025",
-      "url": "https://doi.org/10.64552/wipiec.v11i1.90",
-      "summary": "L. Ledoux, P. Cochard, and F. de Dinechin. Associated conference presentation at the Euromicro Conference on Digital System Design (DSD). HAL:05385229."
+      "bibkey": "ledoux_mlir_2025"
     }
   ],
   "conference_papers": [
     {
-      "name": "Design-space exploration of serialized floating-point division for DLP architectures",
-      "publisher": "International Peer-reviewed Conference Paper - 28th Euromicro Conference Series on Digital System Design (DSD 2025)",
-      "releaseDate": "2025",
-      "url": "https://doi.org/10.1109/DSD67783.2025.00020",
-      "summary": "L. Ledoux. HAL:05385247."
+      "bibkey": "ledoux_dlp_2025"
     },
     {
-      "name": "An open-source framework for efficient numerically-tailored computations",
-      "publisher": "International Peer-reviewed Conference Paper - FPL 2023 (Gothenburg, Sweden)",
-      "releaseDate": "2023-09",
-      "url": "https://doi.org/10.1109/FPL60245.2023.00011",
-      "summary": "L. Ledoux and M. Casas. DOI:10.1109/FPL60245.2023.00011; arXiv:2406.02579; HAL:04277512."
+      "bibkey": "ledoux_framework_2023"
     },
     {
-      "name": "A generator of numerically-tailored and high-throughput accelerators for batched GEMMs",
-      "publisher": "International Peer-reviewed Conference Paper - FCCM 2022 (New York, USA)",
-      "releaseDate": "2022-05",
-      "url": "https://doi.org/10.1109/FCCM53951.2022.9786164",
-      "summary": "L. Ledoux and M. Casas. DOI:10.1109/FCCM53951.2022.9786164; HAL:04103774."
+      "bibkey": "ledoux_generator_2022"
     }
   ],
   "tutorials": [
     {
-      "name": "Progressive Arithmetic Lowering from Tensor Kernels to Synthesizable Datapaths",
-      "publisher": "Tutorial / Talk - 7th MLIR Workshop @ EuroLLVM 2026 (Dublin, Ireland)",
-      "releaseDate": "2026-04-13",
-      "url": "https://hal.science/hal-05594483v1",
-      "summary": "L. Ledoux, P. Cochard, and F. de Dinechin. HAL:05594483."
+      "bibkey": "ledoux_mlir_workshop_2026"
     },
     {
-      "name": "ARITH 2026",
-      "publisher": "Demo - ARITH 2026 (Fulda, Germany)",
-      "releaseDate": "2026-06-28",
-      "url": "",
-      "summary": "End-to-end compilation from Python matrix multiplication and activation functions to silicon, with OpenROAD EDA catching optimization opportunities in between."
+      "name": "Optimizing Datapath Circuits with MLIR and CIRCT",
+      "publisher": "ARITH 2026 tutorial, Fulda, Germany",
+      "releaseDate": "2026-06-27",
+      "url": "https://github.com/cowardsa/CIRCT_TUTORIAL_2026",
+      "summary": "Sam Coward and Louis Ledoux. Verilog import, circuit optimization, equivalence checking, and synthesis with CIRCT."
+    },
+    {
+      "name": "Printing Mathematical Intent onto Silicon with Emeraude-MLIR, HAriCo, and OpenROAD",
+      "publisher": "ARITH 2026 demonstration, Fulda, Germany",
+      "releaseDate": "2026-06-29",
+      "url": "https://www.arith2026.org/program.html#demo-session",
+      "summary": "Louis Ledoux. Compilation of tensor and DSP kernels to arithmetic circuits and physical layouts."
     }
   ],
   "contributions": [
@@ -716,90 +493,42 @@
   ],
   "posters": [
     {
-      "name": "HAriCo: Floating-Point MLIR to CIRCT Datapaths",
-      "publisher": "Poster Presentation - ACM Europe School on MLIR 2026 (A Coruña, Spain; August 10-14, 2026)",
-      "releaseDate": "2026-08-10",
-      "url": "https://mlir-school.github.io/summer-2026/",
-      "summary": "L. Ledoux."
+      "bibkey": "ledoux_harico_school_2026"
     },
     {
-      "name": "Multi-Level Compilation of AI Tensors and Activation Functions to Silicon",
-      "publisher": "Poster Presentation - PEPR IA Days (Rennes, France; June 22-24, 2026)",
-      "releaseDate": "2026-06-22",
-      "url": "https://hal.science/hal-05671676",
-      "summary": "L. Ledoux. HAL:05671676."
+      "bibkey": "ledoux_pepr_2026"
     },
     {
-      "name": "Progressive Arithmetic Optimizations: Tensor and DSP Kernels to Synthesizable Datapaths",
-      "publisher": "Poster Presentation - 3rd FPGA Developers' Forum (FDF) meeting, CERN (May 27-29, 2026)",
-      "releaseDate": "2026-05-27",
-      "url": "https://indico.cern.ch/event/1549296/timetable/?view=standard",
-      "summary": "L. Ledoux, P. Cochard, and F. de Dinechin. HAL:05631193v1."
+      "bibkey": "ledoux_fdf_2026"
     },
     {
-      "name": "Floating-point datapaths in CIRCT via HAriCo and harico-arith-to-comb lowering",
-      "publisher": "Poster Presentation - EuroLLVM Developers' Meeting 2026 (Dublin, Ireland)",
-      "releaseDate": "2026-04-15",
-      "url": "https://hal.science/hal-05576131",
-      "summary": "L. Ledoux, P. Cochard, and F. de Dinechin. HAL:05576131."
+      "bibkey": "ledoux_eurollvm_2026_poster"
     },
     {
-      "name": "Arithmetic lowering with Emeraude-MLIR: bridging tensor and DSP kernels to silicon datapaths",
-      "publisher": "Poster Presentation - Aussois, France",
-      "releaseDate": "2026",
-      "url": "https://hal.science/hal-05489427",
-      "summary": "L. Ledoux, P. Cochard, and F. de Dinechin. HAL:05489427."
+      "bibkey": "ledoux_aussois_2026"
     },
     {
-      "name": "Towards multi-level arithmetic optimizations",
-      "publisher": "Poster Presentation - EuroLLVM 2025 (Berlin, Germany)",
-      "releaseDate": "2025",
-      "url": "https://hal.science/hal-05063466",
-      "summary": "L. Ledoux, P. Cochard, L. Forget, and F. de Dinechin. HAL:05063466."
+      "bibkey": "ledoux_eurollvm_2025"
     },
     {
-      "name": "LLMMMM: large language models matrix-matrix multiplications characterization on open silicon",
-      "publisher": "Poster Presentation - 11th BSC Severo Ochoa Doctoral Symposium 2024 (Barcelona, Spain)",
-      "releaseDate": "2024-05",
-      "url": "https://hal.science/hal-04592229",
-      "summary": "L. Ledoux and M. Casas. HAL:04592229."
+      "bibkey": "ledoux_llmmmm_2024"
     },
     {
-      "name": "The grafted superset approach: bridging Python to silicon with asynchronous compilation and beyond",
-      "publisher": "Poster Presentation - OSDA 2024 (hosted at DATE, Valencia, Spain)",
-      "releaseDate": "2024-03-25",
-      "url": "https://hal.science/hal-04587458",
-      "summary": "L. Ledoux and M. Casas. HAL:04587458."
+      "bibkey": "ledoux_suf_2024"
     },
     {
-      "name": "Open-source GEMM hardware kernels generator: toward numerically-tailored computations",
-      "publisher": "Poster Presentation - 10th BSC Severo Ochoa Doctoral Symposium 2023 (Barcelona, Spain)",
-      "releaseDate": "2023-05",
-      "url": "https://arxiv.org/abs/2305.18328",
-      "summary": "L. Ledoux and M. Casas. arXiv:2305.18328; HAL:04094835."
+      "bibkey": "ledoux_osfntc_poster_2023"
     }
   ],
   "invited_talks": [
     {
-      "name": "FloPoCo and MLIR: a multi-level compilation framework for many intents",
-      "publisher": "Invited Talk / Seminar - Holigrail Seminar, Sorbonne University (Paris, France)",
-      "releaseDate": "2025-09-18",
-      "url": "https://hal.science/hal-05412130",
-      "summary": "L. Ledoux and P. Cochard. HAL:05412130."
+      "bibkey": "ledoux_holigrail_2025"
     },
     {
-      "name": "The walls and the dark silicon era: an arithmetic perspective",
-      "publisher": "Invited Talk / Seminar - Inria Rennes (Team TARAN)",
-      "releaseDate": "2024-12-02",
-      "url": "https://hal.science/hal-04823130",
-      "summary": "L. Ledoux. HAL:04823130."
+      "bibkey": "ledoux_taran_dark_era_2024"
     },
     {
-      "name": "Accelerating DL inference with (Open)CAPI and posit numbers",
-      "publisher": "Invited Talk / Seminar - OpenPOWER Summit Europe 2019 (Lyon, France)",
-      "releaseDate": "2019-10",
-      "url": "https://hal.science/hal-04094850",
-      "summary": "L. Ledoux and M. Casas. HAL:04094850."
+      "bibkey": "ledoux_accelerating_2019"
     }
   ],
   "academic_reviewing": [

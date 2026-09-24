@@ -38,11 +38,14 @@
           </div>
         {% endif %}
         <div class="{% if date_text != '' or content.location %}cv-content-column col-12 col-md-9{% else %}cv-content-column cv-content-column-full col-12{% endif %} mt-2 mt-md-0">
-          <h6 class="title font-weight-bold ml-1 ml-md-4">
+          <h3 class="title font-weight-bold ml-1 ml-md-4">
             <a href="{{ content.url }}">{{ content.studyType }}</a>
-          </h6>
-          <h6 class="ml-1 ml-md-4" style="font-size: 0.95rem">{{ content.institution }}</h6>
-          <h6 class="ml-1 ml-md-4" style="font-size: 0.95rem; font-style: italic">{{ content.area }}</h6>
+          </h3>
+          <p class="ml-1 ml-md-4" style="font-size: 0.95rem">{{ content.institution }}</p>
+          <p class="ml-1 ml-md-4" style="font-size: 0.95rem; font-style: italic">{{ content.area }}</p>
+          {% if content.summary %}
+            <p class="ml-1 ml-md-4">{{ content.summary }}</p>
+          {% endif %}
           <ul class="items">
             {% for item in content.courses %}
               <li>
