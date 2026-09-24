@@ -213,6 +213,12 @@ kramdown:
 # Includes & excludes
 include: ["_pages"]
 exclude:
+  - _posts/2026-04-16-codez-for-annotated-research-figures.md
+  - _posts/2026-04-17-layout-feedback-that-changed-the-optimizer.md
+  - _posts/2026-04-18-mlir-loop-to-silicon-with-visible-arithmetic.md
+  - _posts/2026-04-19-ttihp-accumulator-variants.md
+  - _posts/2026-04-20-openroad-placement-as-a-visual-medium.md
+  - _posts/2026-04-21-suf-as-a-reproducible-software-to-silicon-instrument.md
   - bin/
   - CONTRIBUTING.md
   - CUSTOMIZE.md

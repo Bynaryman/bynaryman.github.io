@@ -31,7 +31,7 @@
       {%- endfor -%}
       {
         id: "nav-{{ about_title | slugify }}",
-        title: "{{ about_title }}",
+        title: {{ about_title | jsonify }},
         section: "Navigation",
         handler: () => {
           window.location.href = "{{ '/' | relative_url }}";
@@ -44,11 +44,11 @@
             {%- for child in p.children -%}
               {%- unless child.title == 'divider' -%}
                 {
-                  {%- assign title = child.title | escape -%}
+                  {%- assign title = child.title -%}
                   {%- if child.permalink contains "/blog/" -%}{%- assign url = "/blog/" -%} {%- else -%}{%- assign url = child.url -%}{%- endif -%}
                   id: "dropdown-{{ title | slugify }}",
-                  title: "{{ title }}",
-                  description: "{{ child.description | strip_html | strip_newlines | escape }}",
+                  title: {{ title | jsonify }},
+                  description: {{ child.description | strip_html | strip_newlines | jsonify }},
                   section: "Dropdown",
                   handler: () => {
                     window.location.href = "{{ url | relative_url }}";
@@ -59,11 +59,11 @@
 
           {%- else -%}
             {
-              {%- assign title = p.title | escape -%}
+              {%- assign title = p.title -%}
               {%- if p.permalink contains "/blog/" -%}{%- assign url = "/blog/" -%} {%- else -%}{%- assign url = p.url -%}{%- endif -%}
               id: "nav-{{ title | slugify }}",
-              title: "{{ title }}",
-              description: "{{ p.description | strip_html | strip_newlines | escape }}",
+              title: {{ title | jsonify }},
+              description: {{ p.description | strip_html | strip_newlines | jsonify }},
               section: "Navigation",
               handler: () => {
                 window.location.href = "{{ url | relative_url }}";
@@ -74,10 +74,10 @@
       {%- endfor -%}
       {%- for post in site.posts -%}
         {
-          {%- assign title = post.title | escape -%}
+          {%- assign title = post.title -%}
           id: "post-{{ title | slugify }}",
-          title: "{{ title }}",
-          description: "{{ post.description | strip_html | strip_newlines | escape }}",
+          title: {{ title | jsonify }},
+          description: {{ post.description | strip_html | strip_newlines | jsonify }},
           section: "Posts",
           handler: () => {
             window.location.href = "{{ post.url | relative_url }}";
@@ -85,16 +85,17 @@
         },
       {%- endfor -%}
       {%- for collection in site.collections -%}
+        {%- if collection.label == "posts" -%}{%- continue -%}{%- endif -%}
         {%- for item in collection.docs -%}
           {
             {%- if item.inline -%}
               {%- assign title = item.content | remove: '<p>' | remove: '</p>' | escape | strip -%}
             {%- else -%}
-              {%- assign title = item.title | escape -%}
+              {%- assign title = item.title -%}
             {%- endif -%}
             id: "{{ collection.label }}-{{ title | slugify }}",
-            title: '{{ title | emojify }}',
-            description: "{{ item.description | strip_html | strip_newlines | escape }}",
+            title: {{ title | jsonify }},
+            description: {{ item.description | strip_html | strip_newlines | jsonify }},
             section: "{{ collection.label | capitalize }}",
             {%- unless item.inline -%}
               handler: () => {
