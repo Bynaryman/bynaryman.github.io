@@ -1407,5 +1407,43 @@
       }
     ],
     "src": "/assets/img/generated/ttsky26a-waves-befd567d0c-1440.webp"
+  },
+  "assets/img/x0x-thermistor/board-detail.png": {
+    "width": 698,
+    "height": 931,
+    "variants": [
+      {
+        "path": "/assets/img/generated/board-detail-1511846f54-320.webp",
+        "width": 320
+      },
+      {
+        "path": "/assets/img/generated/board-detail-1511846f54-640.webp",
+        "width": 640
+      },
+      {
+        "path": "/assets/img/generated/board-detail-1511846f54-698.webp",
+        "width": 698
+      }
+    ],
+    "src": "/assets/img/generated/board-detail-1511846f54-698.webp"
+  },
+  "assets/img/x0x-thermistor/workbench.png": {
+    "width": 698,
+    "height": 524,
+    "variants": [
+      {
+        "path": "/assets/img/generated/workbench-b3291e30a0-320.webp",
+        "width": 320
+      },
+      {
+        "path": "/assets/img/generated/workbench-b3291e30a0-640.webp",
+        "width": 640
+      },
+      {
+        "path": "/assets/img/generated/workbench-b3291e30a0-698.webp",
+        "width": 698
+      }
+    ],
+    "src": "/assets/img/generated/workbench-b3291e30a0-698.webp"
   }
 }
