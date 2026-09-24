@@ -1,45 +1,18 @@
 {% assign extension = include.path | split: '.' | last %}
-
+{% assign video_key = include.path %}
+{% assign first_character = video_key | slice: 0, 1 %}
+{% if first_character == '/' %}{% assign video_key = video_key | remove_first: '/' %}{% endif %}
+{% assign poster = include.poster | default: site.data.video_posters[video_key] %}
 <figure>
   {% if extension == 'mp4' or extension == 'webm' or extension == 'ogg' %}
     <video
-      src="{% if include.cache_bust %}{{ include.path | relative_url | bust_file_cache }}{% else %}{{ include.path | relative_url }}{% endif %}"
-      {% if include.class %}
-        class="{{ include.class }}"
-      {% endif %}
-      {% if include.width %}
-        width="{{ include.width }}"
-      {% else %}
-        width="auto"
-      {% endif %}
-      {% if include.height %}
-        height="{{ include.height }}"
-      {% else %}
-        height="auto"
-      {% endif %}
-      {% if include['min-width'] %}
-        min-width="{{ include.min-width }}"
-      {% endif %}
-      {% if include['min-height'] %}
-        min-height="{{ include.min-height }}"
-      {% endif %}
-      {% if include['max-width'] %}
-        max-width="{{ include.max-width }}"
-      {% endif %}
-      {% if include['max-height'] %}
-        height="{{ include.max-height }}"
-      {% endif %}
-      {% if include.title %}
-        title="{{ include.title }}"
-      {% endif %}
-      {% if include.alt %}
-        alt="{{ include.alt }}"
-      {% endif %}
-      {% if include.autoplay %}
-        autoplay
-      {% endif %}
-      {% if include.controls %}
-        controls
+      src="{{ include.path | relative_url }}"
+      class="{{ include.class }}"
+      controls
+      playsinline
+      preload="none"
+      {% if poster %}
+        poster="{{ poster | relative_url }}"
       {% endif %}
       {% if include.loop %}
         loop
@@ -47,51 +20,22 @@
       {% if include.muted %}
         muted
       {% endif %}
-      {% if include.poster %}
-        poster="{{ include.poster }}"
-      {% endif %}
-    />
-
+      aria-label="{{ include.title | default: include.alt | default: 'Video player' | escape }}"
+    >
+      <a href="{{ include.path | relative_url }}">Download video</a>
+    </video>
   {% else %}
     <iframe
       src="{{ include.path }}"
-      {% if include.class %}
-        class="{{ include.class }}"
-      {% endif %}
-      frameborder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      class="{{ include.class }}"
+      loading="lazy"
+      style="width:100%;aspect-ratio:16/9;border:0"
+      title="{{ include.title | default: include.alt | default: 'Embedded video' | escape }}"
+      allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
       allowfullscreen
-      {% if include.width %}
-        width="{{ include.width }}"
-      {% else %}
-        width="auto"
-      {% endif %}
-      {% if include.height %}
-        height="{{ include.height }}"
-      {% else %}
-        height="auto"
-      {% endif %}
-      {% if include['min-width'] %}
-        min-width="{{ include.min-width }}"
-      {% endif %}
-      {% if include['min-height'] %}
-        min-height="{{ include.min-height }}"
-      {% endif %}
-      {% if include['max-width'] %}
-        max-width="{{ include.max-width }}"
-      {% endif %}
-      {% if include['max-height'] %}
-        height="{{ include.max-height }}"
-      {% endif %}
-      {% if include.alt %}
-        alt="{{ include.alt }}"
-      {% endif %}
-      {% if include.title %}
-        title="{{ include.title }}"
-      {% endif %}
-    />
+    ></iframe>
   {% endif %}
   {% if include.caption %}
-    <figcaption class="caption">{{ include.caption }}</figcaption>
+    <figcaption class="caption">{{ include.caption | markdownify }}</figcaption>
   {% endif %}
 </figure>

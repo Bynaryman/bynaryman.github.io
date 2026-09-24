@@ -12,7 +12,7 @@ description: > # the ">" symbol means to ignore newlines until "footer_text:"
 footer_text: ""
 keywords: Computer Architect, Computer Scientist, Arithmetics, Floating-Point, Systolic Arrays, GEMM/BLAS, High-Performance Computing, Artificial Intelligence # add your own keywords or leave empty
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
-icon: 8087_art.jpg # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
+icon: favicon.png # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
 
 url: https://bynaryman.github.io # the base hostname & protocol for your site
 baseurl: # the subpath of your site, e.g. /blog/. Leave blank for root
@@ -59,9 +59,9 @@ max_width: 1200px
 # -----------------------------------------------------------------------------
 # Display links to the page with a preview object on social media.
 # see https://schema.org/docs/faq.html for more information
-serve_og_meta: false # Include Open Graph meta tags in the HTML head
+serve_og_meta: true # Include Open Graph meta tags in the HTML head
 serve_schema_org: false # Include Schema.org in the HTML head
-og_image: # The site-wide (default for all links) Open Graph preview image
+og_image: https://bynaryman.github.io/assets/img/generated/prof_pic-69d22da8d5-960.webp # The site-wide (default for all links) Open Graph preview image
 
 # -----------------------------------------------------------------------------
 # Social integration
@@ -213,6 +213,7 @@ kramdown:
 # Includes & excludes
 include: ["_pages"]
 exclude:
+  - scripts/
   - _posts/2026-04-16-codez-for-annotated-research-figures.md
   - _posts/2026-04-17-layout-feedback-that-changed-the-optimizer.md
   - _posts/2026-04-18-mlir-loop-to-silicon-with-visible-arithmetic.md
