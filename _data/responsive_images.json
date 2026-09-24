@@ -137,6 +137,29 @@
     ],
     "src": "/assets/img/generated/openroad-arith-placement-d43092610d-1440.webp"
   },
+  "assets/img/goa-day/604-oscilloscope.png": {
+    "width": 1058,
+    "height": 1411,
+    "variants": [
+      {
+        "path": "/assets/img/generated/604-oscilloscope-dbe3d9f4d6-320.webp",
+        "width": 320
+      },
+      {
+        "path": "/assets/img/generated/604-oscilloscope-dbe3d9f4d6-640.webp",
+        "width": 640
+      },
+      {
+        "path": "/assets/img/generated/604-oscilloscope-dbe3d9f4d6-960.webp",
+        "width": 960
+      },
+      {
+        "path": "/assets/img/generated/604-oscilloscope-dbe3d9f4d6-1058.webp",
+        "width": 1058
+      }
+    ],
+    "src": "/assets/img/generated/604-oscilloscope-dbe3d9f4d6-1058.webp"
+  },
   "assets/img/prof_pic.jpg": {
     "width": 1536,
     "height": 2048,
