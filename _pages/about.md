@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: "Post Hoc Ergo Propter Hoc."
+subtitle: "Computer arithmetic, compilers, and hardware architectures."
 
 profile:
   align: right
@@ -16,10 +16,12 @@ selected_papers: true # includes a list of papers marked as "selected={true}"
 social: true # includes social icons at the bottom of the page
 ---
 
-I am **Louis Ledoux** (or **Luis Eduardo Yves Ledoux Pardo** for completeness), a postdoctoral researcher within the [Emeraude team at Inria/INSA Lyon](https://team.inria.fr/emeraude/). I completed my PhD at the [Barcelona Supercomputing Center (BSC)](https://www.bsc.es) and [Universitat Politècnica de Catalunya (UPC)](https://www.upc.edu).
+I am Louis Ledoux, Associate Professor (Maître de conférences) at [Université de Rennes / ISTIC](https://istic.univ-rennes.fr/) and a member of the [Taran team](https://team.inria.fr/taran/) at IRISA and Inria.
 
-My academic focus is on **floating-point arithmetic paradigms**, spanning from high-level problems down to silicon implementation. I work with tools such as **MLIR**, **FloPoCo**, and **Faust** to explore hardware generation from various problem domains, including **linear algebra, machine learning, and digital signal processing**, bringing arithmetic optimization to different levels of abstraction. I am also familiar with systolic arrays for matrix multiplications, real number representation, and automated pipelines on [ASIC](https://en.wikipedia.org/wiki/Application-specific_integrated_circuit) and [FPGA](https://en.wikipedia.org/wiki/Field-programmable_gate_array) technologies. I run **chip tapeouts** using open source flows like [OpenROAD](https://theopenroadproject.org) and through open silicon programs including [Google’s Open MPW](https://developers.google.com/silicon), [Tiny Tapeout](https://tinytapeout.com/), and [Efabless chipIgnite](https://efabless.com/kb-articles/submitting-a-chipignite-project).
+My research connects computer arithmetic, compiler transformations, and hardware architectures. I work on floating-point datapaths, tensor accelerators, and the compilation of numerical kernels to FPGA and ASIC implementations, using MLIR, CIRCT, and FloPoCo.
 
-On a more daily basis, my hobbies include DJing, producing music, crafting synthesizers, and more generally fusing art and science. I create digital art in many forms, from “chip birth” visualizations to audiovisual work in [TouchDesigner](https://derivative.ca) and instrument building beyond synthesizers. I might have been too inspired by [Ovid's](https://en.wikipedia.org/wiki/Ovid) saying, *"ars similis cassus."* I also share my life with my cat, **Ada** (named after [Ada Lovelace](https://en.wikipedia.org/wiki/Ada_Lovelace)), who ensures that curiosity and playfulness remain part of my daily routine and keeps this ongoing dialogue between science and art alive.
+I joined Rennes in August 2026. Previously, I was a postdoctoral researcher in the Emeraude team at Inria / INSA Lyon. I completed my PhD at the Barcelona Supercomputing Center and Universitat Politècnica de Catalunya.
 
-This page is also part of **binaryman**, reflecting the duality of art and science in my work and personal projects.
+See my [research](/research/), [publications](/publications/), [software projects](/projects/), and [teaching material](/courses/).
+
+Outside research, I make music, build instruments, and create visual work from circuit layouts. I share my home with Ada, the cat in the photograph.

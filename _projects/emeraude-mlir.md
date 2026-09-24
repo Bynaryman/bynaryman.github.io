@@ -1,0 +1,28 @@
+---
+layout: page
+title: Emeraude-MLIR
+description: Multi-level arithmetic compilation from real-valued intent to synthesizable hardware
+importance: 4
+category: work
+---
+
+`emeraude-mlir` is my research compiler for keeping arithmetic intent explicit from high-level kernels down to hardware generation.
+
+## What It Adds
+
+- Custom dialects for real-valued and fixed-point arithmetic (`RealArith`, `FixedPointArith`, plus Faust integration).
+- Conversion passes between standard MLIR dialects and arithmetic-aware representations.
+- Approximation hooks (FloPoCo/Sollya) for controlled polynomial materialization.
+- End-to-end HLS driver pipelines to run reproducible experiments.
+
+## Scope
+
+The compiler exposes precision, circuit structure, and lowering choices before RTL generation.
+
+This project feeds my EuroLLVM/MLIR workshop work and the TinyTapeout demonstrators where the path from software kernel to silicon artifact remains inspectable.
+
+## Links
+
+- Availability: the compiler repository is not public. The [ttsky26a demonstrator](https://app.tinytapeout.com/projects/4001) and publications document parts of the flow.
+- Related post: [My Latest TinyTapeout makes MLIR Arithmetic Silicon-Visible](/blog/2026/ttsky26a-mlir-tinytapeout/)
+- Related publication entry: [HAL 05594483](https://hal.science/hal-05594483)

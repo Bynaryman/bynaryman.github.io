@@ -4,11 +4,11 @@
 
 title: blank # the website title (if blank, full name will be used instead)
 first_name: Louis
-middle_name:  #
+middle_name: #
 last_name: Ledoux
 email: i.f.lledoux@gmail.com
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
-  My personal webpage including my academic and industrial work as well as my artistic hobbies. Based on [*folio](https://github.com/bogoli/-folio) design.
+  Louis Ledoux, Associate Professor at Université de Rennes. Research in computer arithmetic, compilation, and hardware architectures.
 footer_text: ""
 keywords: Computer Architect, Computer Scientist, Arithmetics, Floating-Point, Systolic Arrays, GEMM/BLAS, High-Performance Computing, Artificial Intelligence # add your own keywords or leave empty
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
@@ -25,7 +25,7 @@ back_to_top: true # set to false to disable the back to top button
 # -----------------------------------------------------------------------------
 
 # repo color theme
-repo_theme_light: light  # https://github.com/anuraghazra/github-readme-stats/blob/master/themes/README.md
+repo_theme_light: light # https://github.com/anuraghazra/github-readme-stats/blob/master/themes/README.md
 repo_theme_dark: dark # https://github.com/anuraghazra/github-readme-stats/blob/master/themes/README.md
 repo_trophies:
   enabled: true
@@ -102,7 +102,7 @@ wechat_qr: # filename of your wechat qr-code saved as an image (e.g., wechat-qr.
 whatsapp_number: # your WhatsApp number (full phone number in international format. Omit any zeroes, brackets, or dashes when adding the phone number in international format.)
 wikidata_id: # your wikidata id
 wikipedia_id: # your wikipedia id (Case sensitive)
-work_url: https://www.bsc.es/ledoux-louis # work page URL
+work_url: https://team.inria.fr/taran/ # work page URL
 x_username: L0u1s73doux # your X handle
 youtube_id: bynaryman # your youtube channel id (youtube.com/@<youtube_id>)
 zotero_username: binaryman # your zotero username

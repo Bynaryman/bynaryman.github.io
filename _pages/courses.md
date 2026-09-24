@@ -7,22 +7,20 @@ nav: true
 nav_order: 7
 ---
 
-This section collects teaching material and hands-on exercises.
+## Digital Design with MLIR and CIRCT
 
-## Available Courses
+ACM Europe School on MLIR, A Coruña · 13 August 2026 · 1 h 45 min
 
-<div class="row row-cols-1 row-cols-md-2">
-  <div class="col mb-4">
-    <div class="card h-100">
-      <div class="card-body">
-        <h5 class="card-title">Digital Design with MLIR and CIRCT</h5>
-        <p class="card-text">
-          Course delivered at the ACM Europe School on MLIR 2026 in A Coruña, combining quizzes with hands-on exercises on digital design, CIRCT tools, hardware dialects, equivalence checking, logic synthesis, and SystemVerilog generation. The capstone lowers an E4M3 floating-point multiplier from MLIR arithmetic to a circuit and follows the path to a small ASIC layout.
-        </p>
-        <a class="btn btn-sm btn-outline-primary" href="https://mlir-school.github.io/summer-2026/">School website</a>
-        <a class="btn btn-sm btn-primary" href="{{ '/assets/courses/mlir-circt-summer-school-2026/mlir-circt-summer-school-2026.html' | relative_url }}">Open slides</a>
-        <a class="btn btn-sm btn-outline-primary" href="https://github.com/Bynaryman/MLIR_ACM_Summer_School_2026_CIRCT">Source and exercises</a>
-      </div>
-    </div>
-  </div>
-</div>
+A practical introduction to digital design with CIRCT. The course covers hardware dialects, equivalence checking, logic synthesis, and SystemVerilog generation. The capstone lowers an E4M3 floating-point multiplier to a circuit and follows its physical implementation.
+
+Prerequisites: familiarity with MLIR and basic digital logic.
+
+[Slides](/assets/courses/mlir-circt-summer-school-2026/mlir-circt-summer-school-2026.html) · [Exercises and source](https://github.com/Bynaryman/MLIR_ACM_Summer_School_2026_CIRCT) · [School programme](https://mlir-school.github.io/summer-2026/)
+
+## Optimizing Datapath Circuits with MLIR and CIRCT
+
+ARITH 2026 tutorial day, Fulda · 27 June 2026 · Sam Coward and Louis Ledoux
+
+Hands-on exercises in Verilog import, optimization passes, equivalence checking with `circt-lec`, and synthesis. Intended for participants familiar with digital circuits; the material introduces the CIRCT workflow.
+
+[Exercises and slides](https://github.com/cowardsa/CIRCT_TUTORIAL_2026) · [Tutorial programme](https://www.arith2026.org/tutorial_day.html)

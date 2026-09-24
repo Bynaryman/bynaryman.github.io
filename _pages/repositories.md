@@ -2,93 +2,27 @@
 layout: page
 permalink: /repositories/
 title: repositories
-description: GitHub metrics dashboard with activity, achievements, languages, and habits.
+description: Research software, source repositories, and upstream contributions.
 nav: true
 nav_order: 4
 ---
 
-## GitHub metrics
+## Research software
 
-<div class="metrics-grid">
-  <div class="metric-card metric-card--wide">
-    <img
-      class="repo-img-light metric-img"
-      alt="GitHub metrics summary (light)"
-      src="{{ '/assets/metrics/metrics-base.svg' | relative_url }}"
-    >
-    <img
-      class="repo-img-dark metric-img"
-      alt="GitHub metrics summary (dark)"
-      src="{{ '/assets/metrics/metrics-base.svg' | relative_url }}"
-    >
-  </div>
+| Repository                                                    | Purpose                                                      |
+| ------------------------------------------------------------- | ------------------------------------------------------------ |
+| [OSFNTC](https://github.com/Bynaryman/OSFNTC)                 | Numerically tailored GEMM accelerators and host integration. |
+| [SUF](/projects/suf/)                                         | Parallel orchestration of open EDA experiments.              |
+| [MLModelMLIRGEN](https://github.com/Bynaryman/MLModelMLIRGEN) | Export PyTorch models to MLIR.                               |
+| [VH2V](https://github.com/Bynaryman/vh2v)                     | VHDL-to-Verilog conversion using GHDL and Yosys.             |
+| [POF](https://github.com/Bynaryman/POF)                       | Posit arithmetic operators in SystemVerilog.                 |
+| [Codez](https://github.com/Bynaryman/codez)                   | Annotated code figures in Typst / CeTZ.                      |
+| [gdsiistl](https://github.com/Bynaryman/gdsiistl)             | Convert GDSII geometry to STL meshes.                        |
 
-  <div class="metric-card metric-card--wide">
-    <img
-      class="repo-img-light metric-img"
-      alt="GitHub isometric commit calendar (light)"
-      src="{{ '/assets/metrics/metrics-isocalendar.svg' | relative_url }}"
-    >
-    <img
-      class="repo-img-dark metric-img"
-      alt="GitHub isometric commit calendar (dark)"
-      src="{{ '/assets/metrics/metrics-isocalendar.svg' | relative_url }}"
-    >
-  </div>
+See [project descriptions](/projects/) for context and [upstream contributions](/impact/) for changes to other projects. My [GitHub profile](https://github.com/Bynaryman) provides current repository activity.
 
-  <div class="metric-card metric-card--wide">
-    <img
-      class="repo-img-light metric-img"
-      alt="GitHub full history commit calendar (light)"
-      loading="eager"
-      src="{{ '/assets/metrics/metrics-calendar.svg' | relative_url }}"
-    >
-    <img
-      class="repo-img-dark metric-img"
-      alt="GitHub full history commit calendar (dark)"
-      loading="eager"
-      src="{{ '/assets/metrics/metrics-calendar.svg' | relative_url }}"
-    >
-  </div>
-
-  <div class="metric-card">
-    <img
-      class="repo-img-light metric-img"
-      alt="GitHub languages (light)"
-      src="{{ '/assets/metrics/metrics-languages.svg' | relative_url }}"
-    >
-    <img
-      class="repo-img-dark metric-img"
-      alt="GitHub languages (dark)"
-      src="{{ '/assets/metrics/metrics-languages.svg' | relative_url }}"
-    >
-  </div>
-
-  <div class="metric-card">
-    <img
-      class="repo-img-light metric-img"
-      alt="GitHub notable contributions (light)"
-      loading="eager"
-      src="{{ '/assets/metrics/metrics-notable.svg' | relative_url }}"
-    >
-    <img
-      class="repo-img-dark metric-img"
-      alt="GitHub notable contributions (dark)"
-      loading="eager"
-      src="{{ '/assets/metrics/metrics-notable.svg' | relative_url }}"
-    >
-  </div>
-
-  <div class="metric-card metric-card--wide">
-    <img
-      class="repo-img-light metric-img"
-      alt="GitHub stars (light)"
-      src="{{ '/assets/metrics/metrics-stars.svg' | relative_url }}"
-    >
-    <img
-      class="repo-img-dark metric-img"
-      alt="GitHub stars (dark)"
-      src="{{ '/assets/metrics/metrics-stars.svg' | relative_url }}"
-    >
-  </div>
-</div>
+<details>
+<summary>Archived GitHub activity snapshot — 26 December 2025</summary>
+<p>This saved snapshot is historical. It is refreshed manually.</p>
+<img src="/assets/metrics/metrics-base.svg" alt="GitHub activity snapshot from December 2025" loading="lazy" class="img-fluid">
+</details>

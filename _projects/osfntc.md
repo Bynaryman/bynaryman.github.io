@@ -15,6 +15,7 @@ This project is "An Open-Source Framework for Efficient Numerically-Tailored Com
 The title of the corresponding paper is enclosed in the quotation marks.
 
 ## Table of Contents
+
 - [About the Paper](#about-the-paper)
 - [Project Structure](#project-structure)
 - [Installation](#installation)
@@ -36,9 +37,7 @@ For AI inference, we consider a variety of leading-edge neural network models. T
 
 In the context of SSH computation, our methodology obtains fully reproducible results using double-precision words, which exceed the accuracy of traditional double- and quad-precision arithmetic in FPUs. Our approach increases SSH computation accuracy by a minimum of 5x and 27x compared to IEEE754-64 and IEEE754-128, respectively. As a result, we achieve improvements in accuracy per power cost by 5.6x and 15.1x, respectively.
 
-
 The two phases framework is depicted by the following image. On the left we observe the runtime execution flow, whereas the rightmost part depicts the a priori hardware generation flow:
-
 
 <div class="row">
     <div class="col-sm mt-3 mt-md-0">
@@ -48,7 +47,6 @@ The two phases framework is depicted by the following image. On the left we obse
 <div class="caption">
 The 2 phases of the framework: right, the a priori Hardware generation flow, and left, the runtime execution flow.
 </div>
-
 
 ## Project Structure
 
@@ -92,15 +90,18 @@ This process is iterative and may require several attempts to succeed. Testing o
 Below are specific commands and comments required to install some of the frameworks.
 
 ### OCSE (OpenCAPI Simulation Engine)
+
 The libocxl/Makefile has been modified to ensure the correct misc/ocxl version is pulled.
 
 ### OpenBLAS
+
 ```bash
 make USE_OPENMP=1
 sudo make install #(will put on default path in /opt which is ok)
 ```
 
 ### Pytorch
+
 ```bash
 git submodule sync
 git submodule update --init --recursive
@@ -111,15 +112,19 @@ python setup.py install
 ```
 
 ### Numpy
+
 ```bash
 pip install cython
 git submodule update --init
 ```
+
 ### PySigmoid
+
 Our modified PySigmoid to handle any kind of accumulators.
-Among other things, we use  the library to generate input matrices.
+Among other things, we use the library to generate input matrices.
 
 ### OpenNMT Ctranslate2
+
 ```bash
 # Requires OpenBLAS to be installed in /usr
 git clone --recursive https://github.com/OpenNMT/CTranslate2.git
@@ -130,6 +135,7 @@ sudo make install
 ```
 
 #### Python wrapper
+
 ```bash
 # Set CTRANSLATE2_ROOT to build folder
 export CTRANSLATE2_ROOT="$(pwd)"
@@ -140,6 +146,7 @@ pip install dist/*.whl
 ```
 
 #### Runtime
+
 ```bash
 pip install  OpenNMT-py sentencepiece
 wget https://s3.amazonaws.com/opennmt-models/transformer-ende-wmt-pyOnmt.tar.gz
@@ -148,7 +155,6 @@ ct2-opennmt-py-converter --model_path averaged-10-epoch.pt --output_dir ende_ctr
 #export LD_LIBRARY_PATH to build path
 ```
 
-
 ## Usage
 
 This section is currently under development, but the basic process involves following the steps laid out by oc-accel to create a custom action and generate a bitstream. Once the setup is complete, you can run high-level code that invokes General Matrix Multiply (GEMM) operations, which will then be processed by the FPGA.
@@ -156,12 +162,14 @@ This section is currently under development, but the basic process involves foll
 User-level code and numerical libraries do not need to be changed or recompiled to redirect GEMM calls to our customized Matrix-Matrix Multiplication (MMM) units. Typically, an application would allocate some virtual memory space for the input and output matrices, then call one of the GEMM subroutines (sgemm, dgemm, zgemm, cgemm). This process is illustrated in steps 1) and 2) of the overall framework figure provided in the introduction. Often, these applications are statically or dynamically linked with a Basic Linear Algebra Subprograms (BLAS) library.
 
 The execution of the GEMM operation can be dispatched to the FPGA or executed normally on the CPU or GPU, depending on the dimensions of the matrix. This is demonstrated in the following example:
+
 ```bash
 LD_LIBRARY_PATH=/opt/lib/our_openblas.lib ./gemm.py # will dispatch the GEMM execution to the FPGA (depending on matrix dimensions)
 LD_LIBRARY_PATH=/opt/lib/OpenBLAS.lib ./gemm.py # will work as normal, either on CPU or GPU execution
 ```
 
 Here's how to call the dgemm and sgemm functions in Python:
+
 ```python
 m,n,k = 1024, 1024, 1024
 # calls dgemm
@@ -214,6 +222,7 @@ To reduce errors and approximate the correct result, several techniques are util
 This study focuses on the effectiveness of hardware units, comparing our Fused Dot Products (FDPs) to the double- and quad-precision FMAs found in computational systems. The units compared are the IEEE-754 double-precision FMA, the IEEE-754 quad-precision FMA, and our 91-bit FDP fed with IEEE754-64 words.
 
 We assessed average, relative standard deviation (RSD), accuracy, and power cost per accurate bit of SSH variable for different vector sizes.
+
 <div class="row">
     <div class="col-sm mt-3 mt-md-0">
         {% include figure.liquid loading="eager" path="https://github.com/Bynaryman/OSFNTC/assets/937470/338d6221-c4e1-4b67-9e35-685b3abec5ba" title="SSH results" class="img-fluid rounded z-depth-1" %}
@@ -259,7 +268,6 @@ The following Figure depicts the myriad of evaluated configurations in terms of 
 Top1/Top5 Accuracies and Top1/Top5 Accuracy Costs for various datasets, models, computer formats, and accumulators.
 </div>
 
-
 ## ASIC Tapeout
 
 This work is both target-agnostic and open source, which inspired us to push its boundaries by trying to make it a chip. Utilizing the exact same toolchain, we were able to successfully manufacture a functional, open-source tapeout. This achievement was made possible through a fruitful collaboration with Google, Skywater, and Efabless.
@@ -283,7 +291,6 @@ We invite you to explore the following links for a deeper understanding of this 
 2. [MPW5 Submitted Article](https://zerotoasiccourse.com/post/mpw5_submitted/)
 3. [Wrapped Teras](https://github.com/Bynaryman/wrapped_teras)
 4. [Teras Main Repository](https://github.com/Bynaryman/teras/tree/master)
-
 
 ## Contribution
 
@@ -335,6 +342,8 @@ Academic Free License (“AFL”) v. 3.0
 
 To cite this work, please refer to the articles published in FCCM2022 and FPL2023 whose bibtex are shown below
 
+{% raw %}
+
 ```
 @INPROCEEDINGS{
     ledoux2022,
@@ -345,6 +354,10 @@ To cite this work, please refer to the articles published in FCCM2022 and FPL202
     doi={10.1109/FCCM53951.2022.9786164}
 }
 ```
+
+{% endraw %}
+
+{% raw %}
 
 ```
 @SUBMITTED{
@@ -357,7 +370,11 @@ To cite this work, please refer to the articles published in FCCM2022 and FPL202
 }
 ```
 
+{% endraw %}
+
 Some Subsets of this work have also been presented in other not peer reviewed venues such as BSCSymposium23 and OpenPOWER Summit 2019, again bibtex below
+
+{% raw %}
 
 ```
 @misc{ledoux:hal-04094835,
@@ -377,6 +394,10 @@ Some Subsets of this work have also been presented in other not peer reviewed ve
 
 ```
 
+{% endraw %}
+
+{% raw %}
+
 ```
 @inproceedings{ledoux:hal-04094850,
   TITLE = {{Accelerating DL inference with (Open)CAPI and posit numbers}},
@@ -392,6 +413,9 @@ Some Subsets of this work have also been presented in other not peer reviewed ve
   HAL_VERSION = {v1},
 }
 ```
+
+{% endraw %}
+
 ## Authors
 
 - Me / Bynaryman / Louis Ledoux [@Bynaryman](https://github.com/Bynaryman)
