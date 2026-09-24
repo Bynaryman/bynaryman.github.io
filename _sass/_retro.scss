@@ -104,6 +104,28 @@
   }
 }
 
+// VT323 has a smaller apparent size than the Modus font at the same CSS size.
+// Scale the Binary reading text independently of the monospace navigation.
+html[data-theme-variant="binary"] {
+  --retro-type-base: 1.375rem;
+  --retro-type-md: 1.625rem;
+  --retro-leading-body: 1.45;
+}
+
+@media (min-width: 768px) {
+  html[data-theme-variant="binary"] {
+    --retro-type-base: 1.5rem;
+    --retro-type-md: 1.8rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  html[data-theme-variant="binary"] {
+    --retro-type-base: 1.625rem;
+    --retro-type-md: 1.95rem;
+  }
+}
+
 html,
 body {
   font-family: var(--retro-type-stack);

@@ -1,7 +1,8 @@
 <div class="col mb-4">
   <article class="card h-100">
     {% if project.img -%}
-      {%- include figure.liquid path=project.img sizes="(min-width: 768px) 360px, 90vw" alt=project.title class="card-img-top" -%}
+      {%- assign project_image_alt = project.img_alt | default: project.title -%}
+      {%- include figure.liquid path=project.img sizes="(min-width: 992px) 360px, (min-width: 576px) 45vw, 90vw" alt=project_image_alt class="card-img-top" -%}
     {%- endif %}
     <div class="card-body">
       <h3 class="card-title">
