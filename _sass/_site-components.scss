@@ -106,3 +106,19 @@ body.sticky-bottom-footer .shell-stage {
 .shell-panel {
   padding-inline: 1rem;
 }
+
+.post-header .post-title.cv-heading {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.cv-heading .cv-download {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  font-size: 0.65em;
+  text-decoration: none;
+}
