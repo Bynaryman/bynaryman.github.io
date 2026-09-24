@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Binary Instruments
-description: Eurorack panels and a dual pitch quantizer with digital calibration.
+description: Eurorack power boards, front panels, and a dual pitch quantizer with digital calibration.
 img: assets/img/projects/quantizer-rev-a.png
 img_alt: KiCad 3D render of the quantizer PCB with its display, encoder, and jack sockets.
 importance: 4
@@ -9,7 +9,17 @@ category: fun
 github: https://github.com/Bynaryman/binary_instruments
 ---
 
-Binary Instruments collects my Eurorack hardware work, including front panels and a dual 1 V/oct pitch quantizer.
+Binary Instruments collects my Eurorack hardware work: power supply and distribution boards, front panels, and a dual 1 V/oct pitch quantizer.
+
+## Power supply and bus boards
+
+Compact supply cards and long distribution boards provide power connections throughout the modular case. Low noise is the supply design goal. The boards use through-hole components and include waveform and fractal silkscreen artwork.
+
+{% include figure.liquid path="assets/img/eurorack-power/boards-and-components.png" alt="Eurorack bus boards and components laid out before soldering." caption="Power distribution boards during assembly." %}
+
+[Read the build post]({% post_url 2026-09-24-eurorack-power-boards %}) for photographs of the supply cards, bus boards, and assembly. The repository contains related Eurorack designs; it does not currently include these power boards.
+
+## Dual pitch quantizer
 
 {% include figure.liquid path="assets/img/projects/quantizer-rev-a.png" alt="KiCad 3D render of the Binary Instruments quantizer Rev A PCB." caption="Quantizer Rev A board render. This is a design preview, not a photograph of assembled hardware." %}
 
