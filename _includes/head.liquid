@@ -3,17 +3,10 @@
 
 <!-- Bootstrap & MDB -->
 <link rel="stylesheet" href="{{ '/assets/css/bootstrap.min.css' | relative_url | bust_file_cache }}">
-<link
-  rel="stylesheet"
-  href="{{ site.third_party_libraries.mdb.url.css }}"
-  integrity="{{ site.third_party_libraries.mdb.integrity.css }}"
-  crossorigin="anonymous"
->
 
 <!-- Bootstrap Table -->
 {% if page.pretty_table %}
   <link
-    defer
     rel="stylesheet"
     href="{{ site.third_party_libraries.bootstrap-table.url.css }}"
     integrity="{{ site.third_party_libraries.bootstrap-table.integrity.css }}"
@@ -22,13 +15,7 @@
 {% endif %}
 
 <!-- Fonts & Icons -->
-<link defer rel="stylesheet" href="{{ '/assets/css/academicons.min.css' | relative_url | bust_file_cache }}">
-<link
-  defer
-  rel="stylesheet"
-  type="text/css"
-  href="{{ site.third_party_libraries.google_fonts.url.fonts }}"
->
+<link rel="stylesheet" href="{{ '/assets/css/academicons.min.css' | relative_url | bust_file_cache }}">
 
 <!-- Code Syntax Highlighting -->
 <link
@@ -41,7 +28,7 @@
 
 {% if page.toc and page.toc.sidebar %}
   <!-- Sidebar Table of Contents -->
-  <link defer href="{{ '/assets/css/bootstrap-toc.min.css' | relative_url | bust_file_cache }}" rel="stylesheet">
+  <link href="{{ '/assets/css/bootstrap-toc.min.css' | relative_url | bust_file_cache }}" rel="stylesheet">
 {% endif %}
 
 <!-- Styles -->
@@ -49,7 +36,6 @@
 <!-- pseudocode -->
 {% if page.pseudocode %}
   <link
-    defer
     rel="stylesheet"
     href="{{ site.third_party_libraries.pseudocode.url.css }}"
     integrity="{{ site.third_party_libraries.pseudocode.integrity.css }}"
@@ -72,7 +58,6 @@
 <script src="{{ '/assets/js/theme.js' | relative_url | bust_file_cache }}"></script>
 {% if site.enable_darkmode %}
   <link
-    defer
     rel="stylesheet"
     href="{{ '/assets/css/jekyll-pygments-themes-native.css' | relative_url | bust_file_cache }}"
     media="none"
@@ -86,7 +71,6 @@
 <!-- GeoJSON support via Leaflet -->
 {% if page.map %}
   <link
-    defer
     rel="stylesheet"
     href="{{ site.third_party_libraries.leaflet.url.css }}"
     integrity="{{ site.third_party_libraries.leaflet.integrity.css }}"
@@ -97,7 +81,6 @@
 <!-- diff2html -->
 {% if page.code_diff %}
   <link
-    defer
     rel="stylesheet"
     href="{{ site.third_party_libraries.highlightjs.url.css.light }}"
     integrity="{{ site.third_party_libraries.highlightjs.integrity.css.light }}"
@@ -105,7 +88,6 @@
     media="screen and (prefers-color-scheme: light)"
   >
   <link
-    defer
     rel="stylesheet"
     href="{{ site.third_party_libraries.highlightjs.url.css.dark }}"
     integrity="{{ site.third_party_libraries.highlightjs.integrity.css.dark }}"
@@ -113,7 +95,6 @@
     media="screen and (prefers-color-scheme: dark)"
   >
   <link
-    defer
     rel="stylesheet"
     href="{{ site.third_party_libraries.diff2html.url.css }}"
     integrity="{{ site.third_party_libraries.diff2html.integrity.css }}"
@@ -125,7 +106,6 @@
   <!-- Image comparison slider -->
   {% if page.images.compare %}
     <link
-      defer
       rel="stylesheet"
       href="{{ site.third_party_libraries.img-comparison-slider.url.css }}"
       integrity="{{ site.third_party_libraries.img-comparison-slider.integrity.css }}"
@@ -135,7 +115,6 @@
   <!-- Image slider -->
   {% if page.images.slider %}
     <link
-      defer
       rel="stylesheet"
       href="{{ site.third_party_libraries.swiper.url.css }}"
       integrity="{{ site.third_party_libraries.swiper.integrity.css }}"
@@ -145,5 +124,5 @@
 {% endif %}
 
 {% if page.tikzjax %}
-  <link defer rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
+  <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
 {% endif %}
