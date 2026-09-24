@@ -137,6 +137,201 @@
     ],
     "src": "/assets/img/generated/openroad-arith-placement-d43092610d-1440.webp"
   },
+  "assets/img/eurorack-case/acacia-case-workshop.png": {
+    "width": 1058,
+    "height": 1410,
+    "variants": [
+      {
+        "path": "/assets/img/generated/acacia-case-workshop-0ac6b435b4-320.webp",
+        "width": 320
+      },
+      {
+        "path": "/assets/img/generated/acacia-case-workshop-0ac6b435b4-640.webp",
+        "width": 640
+      },
+      {
+        "path": "/assets/img/generated/acacia-case-workshop-0ac6b435b4-960.webp",
+        "width": 960
+      },
+      {
+        "path": "/assets/img/generated/acacia-case-workshop-0ac6b435b4-1058.webp",
+        "width": 1058
+      }
+    ],
+    "src": "/assets/img/generated/acacia-case-workshop-0ac6b435b4-1058.webp"
+  },
+  "assets/img/eurorack-case/bright-indicator-leds.png": {
+    "width": 698,
+    "height": 524,
+    "variants": [
+      {
+        "path": "/assets/img/generated/bright-indicator-leds-c373fe45b7-320.webp",
+        "width": 320
+      },
+      {
+        "path": "/assets/img/generated/bright-indicator-leds-c373fe45b7-640.webp",
+        "width": 640
+      },
+      {
+        "path": "/assets/img/generated/bright-indicator-leds-c373fe45b7-698.webp",
+        "width": 698
+      }
+    ],
+    "src": "/assets/img/generated/bright-indicator-leds-c373fe45b7-698.webp"
+  },
+  "assets/img/eurorack-case/bus-board-placement.png": {
+    "width": 1058,
+    "height": 1410,
+    "variants": [
+      {
+        "path": "/assets/img/generated/bus-board-placement-babc260183-320.webp",
+        "width": 320
+      },
+      {
+        "path": "/assets/img/generated/bus-board-placement-babc260183-640.webp",
+        "width": 640
+      },
+      {
+        "path": "/assets/img/generated/bus-board-placement-babc260183-960.webp",
+        "width": 960
+      },
+      {
+        "path": "/assets/img/generated/bus-board-placement-babc260183-1058.webp",
+        "width": 1058
+      }
+    ],
+    "src": "/assets/img/generated/bus-board-placement-babc260183-1058.webp"
+  },
+  "assets/img/eurorack-case/bus-wiring-detail.png": {
+    "width": 1058,
+    "height": 794,
+    "variants": [
+      {
+        "path": "/assets/img/generated/bus-wiring-detail-288e8e754e-320.webp",
+        "width": 320
+      },
+      {
+        "path": "/assets/img/generated/bus-wiring-detail-288e8e754e-640.webp",
+        "width": 640
+      },
+      {
+        "path": "/assets/img/generated/bus-wiring-detail-288e8e754e-960.webp",
+        "width": 960
+      },
+      {
+        "path": "/assets/img/generated/bus-wiring-detail-288e8e754e-1058.webp",
+        "width": 1058
+      }
+    ],
+    "src": "/assets/img/generated/bus-wiring-detail-288e8e754e-1058.webp"
+  },
+  "assets/img/eurorack-case/component-layout.png": {
+    "width": 1058,
+    "height": 794,
+    "variants": [
+      {
+        "path": "/assets/img/generated/component-layout-2a38745c95-320.webp",
+        "width": 320
+      },
+      {
+        "path": "/assets/img/generated/component-layout-2a38745c95-640.webp",
+        "width": 640
+      },
+      {
+        "path": "/assets/img/generated/component-layout-2a38745c95-960.webp",
+        "width": 960
+      },
+      {
+        "path": "/assets/img/generated/component-layout-2a38745c95-1058.webp",
+        "width": 1058
+      }
+    ],
+    "src": "/assets/img/generated/component-layout-2a38745c95-1058.webp"
+  },
+  "assets/img/eurorack-case/fitting-rails.png": {
+    "width": 1058,
+    "height": 1410,
+    "variants": [
+      {
+        "path": "/assets/img/generated/fitting-rails-cc153e0f18-320.webp",
+        "width": 320
+      },
+      {
+        "path": "/assets/img/generated/fitting-rails-cc153e0f18-640.webp",
+        "width": 640
+      },
+      {
+        "path": "/assets/img/generated/fitting-rails-cc153e0f18-960.webp",
+        "width": 960
+      },
+      {
+        "path": "/assets/img/generated/fitting-rails-cc153e0f18-1058.webp",
+        "width": 1058
+      }
+    ],
+    "src": "/assets/img/generated/fitting-rails-cc153e0f18-1058.webp"
+  },
+  "assets/img/eurorack-case/mean-well-supplies.png": {
+    "width": 698,
+    "height": 931,
+    "variants": [
+      {
+        "path": "/assets/img/generated/mean-well-supplies-e1b5922752-320.webp",
+        "width": 320
+      },
+      {
+        "path": "/assets/img/generated/mean-well-supplies-e1b5922752-640.webp",
+        "width": 640
+      },
+      {
+        "path": "/assets/img/generated/mean-well-supplies-e1b5922752-698.webp",
+        "width": 698
+      }
+    ],
+    "src": "/assets/img/generated/mean-well-supplies-e1b5922752-698.webp"
+  },
+  "assets/img/eurorack-case/supply-card-wiring.png": {
+    "width": 698,
+    "height": 524,
+    "variants": [
+      {
+        "path": "/assets/img/generated/supply-card-wiring-971df1e611-320.webp",
+        "width": 320
+      },
+      {
+        "path": "/assets/img/generated/supply-card-wiring-971df1e611-640.webp",
+        "width": 640
+      },
+      {
+        "path": "/assets/img/generated/supply-card-wiring-971df1e611-698.webp",
+        "width": 698
+      }
+    ],
+    "src": "/assets/img/generated/supply-card-wiring-971df1e611-698.webp"
+  },
+  "assets/img/eurorack-case/wired-case.png": {
+    "width": 1058,
+    "height": 1410,
+    "variants": [
+      {
+        "path": "/assets/img/generated/wired-case-411a36dcc7-320.webp",
+        "width": 320
+      },
+      {
+        "path": "/assets/img/generated/wired-case-411a36dcc7-640.webp",
+        "width": 640
+      },
+      {
+        "path": "/assets/img/generated/wired-case-411a36dcc7-960.webp",
+        "width": 960
+      },
+      {
+        "path": "/assets/img/generated/wired-case-411a36dcc7-1058.webp",
+        "width": 1058
+      }
+    ],
+    "src": "/assets/img/generated/wired-case-411a36dcc7-1058.webp"
+  },
   "assets/img/eurorack-power/boards-and-components.png": {
     "width": 1058,
     "height": 794,
