@@ -5,6 +5,7 @@ date: 2024-10-28 19:00:00
 description: "Extracting SKY130HD full adder geometry from GDS to Bryce for a 90s retro render pass."
 tags: silicon art raytracing retro bryce
 categories: arte-science
+thumbnail: assets/img/sky130hd-retro-raytrace-1.png
 ---
 
 <!-- {: .lead }

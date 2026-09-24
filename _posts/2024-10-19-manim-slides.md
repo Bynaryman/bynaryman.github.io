@@ -5,6 +5,7 @@ date: 2024-10-19 19:00:00
 description: "Exploring Manim Slides for interactive website embedding and dynamic presentations."
 tags: videos, science, communication, mathematics
 categories: science
+thumbnail: assets/img/blog-previews/manim-slides.png
 ---
 
 ### Introduction

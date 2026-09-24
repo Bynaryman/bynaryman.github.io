@@ -5,6 +5,7 @@ date: 2026-03-14 00:00:00
 description: "A 2x2 TinyTapeout design built from an MLIR loop, carrying a generated floating-point accumulation core down to open silicon."
 tags: tinytapeout mlir circt flopoco floating-point silicon
 categories: science
+thumbnail: assets/img/tinytapeout-ttsky26a/ttsky26a-art.jpg
 ---
 
 My latest TinyTapeout project is [`ttsky26a`](https://github.com/Bynaryman/ttsky26a), a compact open-silicon artifact for a compiler question I keep coming back to: how far can I keep arithmetic decisions visible before they collapse into opaque RTL? It also fits directly into the thread running across my [publications](/publications/), my [projects](/projects/), and my broader work on arithmetic-aware compilation.

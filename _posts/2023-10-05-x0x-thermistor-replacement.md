@@ -6,7 +6,7 @@ description: "A thermistor change, guided by Open Music Labs' analysis of temper
 tags: [x0x, electronics, analog, diy]
 categories: [music, hardware]
 related_posts: false
-thumbnail: /assets/img/generated/workbench-b3291e30a0-320.webp
+thumbnail: assets/img/x0x-thermistor/workbench.png
 ---
 
 I replaced the thermistor in my x0x, following Open Music Labs' [Thermal Compensation of Analog Exponential Converters](http://www.openmusiclabs.com/files/expotemp.pdf). The aim was to reduce the oscillator's sensitivity to temperature.

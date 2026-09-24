@@ -6,7 +6,7 @@ description: "An acacia case, two Mean Well supplies, and a bus-voltage mistake 
 tags: [eurorack, electronics, diy, woodworking]
 categories: [music, hardware]
 related_posts: false
-thumbnail: /assets/img/generated/acacia-case-workshop-0ac6b435b4-320.webp
+thumbnail: assets/img/eurorack-case/acacia-case-workshop.png
 ---
 
 I built a two-row Eurorack case from acacia, with aluminium rails and my own power-distribution boards.

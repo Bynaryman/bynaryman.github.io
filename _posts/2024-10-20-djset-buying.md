@@ -5,6 +5,7 @@ date: 2024-10-20 19:00:00
 description: "Another 1h GOA set"
 tags: art, retro, goa, mixing, djset
 categories: music
+thumbnail: assets/img/rodec-mx180/meters-and-controls.png
 ---
 
 <div class="row mt-5">

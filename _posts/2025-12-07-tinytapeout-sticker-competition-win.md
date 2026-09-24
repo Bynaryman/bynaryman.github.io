@@ -5,6 +5,7 @@ date: 2025-12-07 10:00:00
 description: "The sticker set built from my GDS-to-raytrace pipeline took first place and earned a free tapeout on the next TinyTapeout shuttle."
 tags: tinytapeout stickers gds blender raytracing touchdesigner
 categories: arte-science
+thumbnail: assets/img/tinytapeout-stickers/whatisend-3.png
 ---
 
 I am happy to share that my sticker set just won the [TinyTapeout sticker design competition](https://tinytapeout.com/competitions/sticker-design-competition/) — and with it, a **free tapeout on a next shuttle**. Huge thanks to everyone who cheered for mixing silicon and art.

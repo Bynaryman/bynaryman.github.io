@@ -7,7 +7,7 @@ description: "Cleaning my Rodec MX180 MKIII, buying replacement faders, and a lo
 tags: [rodec, electronics, dj]
 categories: [music, hardware]
 related_posts: false
-thumbnail: /assets/img/generated/front-panel-78ba2b1544-320.webp
+thumbnail: assets/img/rodec-mx180/front-panel.png
 ---
 
 I gave my Rodec MX180 MKIII a spring clean and bought new faders. These photographs are from around spring 2023.

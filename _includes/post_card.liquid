@@ -1,0 +1,28 @@
+{% assign card_post = include.post %}
+{% assign card_url = card_post.redirect | default: card_post.url %}
+{% unless card_url contains '://' %}{% assign card_url = card_url | relative_url %}{% endunless %}
+{% assign card_heading = include.heading | default: 'h2' %}
+<article class="post-card{% if include.compact %} post-card--compact{% endif %}">
+  {% if card_post.thumbnail %}
+    <a class="post-card__preview" href="{{ card_url }}" tabindex="-1" aria-hidden="true">
+      {% include figure.liquid path=card_post.thumbnail alt="" sizes="(min-width: 768px) 280px, 90vw" %}
+    </a>
+  {% endif %}
+  <div class="post-card__body">
+    <{{ card_heading }} class="post-card__title accent-heading"><a href="{{ card_url }}">{{ card_post.title }}</a></{{ card_heading }}>
+    <p class="post-card__date">{% include post_date.liquid post=card_post format='%B %d, %Y' %}{% if card_post.external_source %} · {{ card_post.external_source }}{% endif %}</p>
+    {% unless include.compact %}
+      <p class="post-card__description">{{ card_post.description }}</p>
+      <div class="post-card__tags">
+        {% assign card_year = card_post.date | date: '%Y' %}
+        <a href="{{ card_year | prepend: '/blog/' | relative_url }}">{{ card_year }}</a>
+        {% for tag in card_post.tags %}
+          <a href="{{ tag | slugify | prepend: '/blog/tag/' | relative_url }}">#{{ tag }}</a>
+        {% endfor %}
+        {% for category in card_post.categories %}
+          <a href="{{ category | slugify | prepend: '/blog/category/' | relative_url }}">{{ category }}</a>
+        {% endfor %}
+      </div>
+    {% endunless %}
+  </div>
+</article>

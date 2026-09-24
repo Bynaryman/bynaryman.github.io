@@ -6,7 +6,7 @@ description: "Low-noise supply cards and power distribution for my modular rack.
 tags: [eurorack, electronics, pcb, diy]
 categories: [music, hardware]
 related_posts: false
-thumbnail: /assets/img/generated/boards-and-components-de78dcb342-320.webp
+thumbnail: assets/img/eurorack-power/boards-and-components.png
 ---
 
 I made two kinds of boards for my Eurorack case: compact supply cards, designed with low noise in mind, and long bus boards for power distribution.

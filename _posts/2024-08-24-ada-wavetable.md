@@ -5,6 +5,7 @@ date: 2024-08-24 19:00:00
 description: "Sampling my cat and performing Wavetable synthesis out of it"
 tags: videos art wavetable music synthesis
 categories: arte-science
+thumbnail: assets/img/ableton_waveforms.jpg
 ---
 
 With a final objective that diverges from this, i.e., building a mega drone out of a video, I ended up sampling my cat to play around with a Python library called [osc_gen](https://github.com/harveyormston/osc_gen), which is made to craft wavetables. After a few modifications, I took the direction of playing around with the visualization class helper they provide and added this rotating 3D wireframe.

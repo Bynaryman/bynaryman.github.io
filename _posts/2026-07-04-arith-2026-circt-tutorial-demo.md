@@ -5,6 +5,7 @@ date: 2026-07-04 00:00:00
 description: "A short report from ARITH 2026, where I co-ran a CIRCT tutorial with Sam Coward and demoed Emeraude-MLIR, HAriCo, and OpenROAD."
 tags: arith mlir circt openroad tutorial demo arithmetic
 categories: science
+thumbnail: assets/img/arith-2026-tutorial/openroad-arith-placement.png
 ---
 
 At [ARITH 2026](https://www.arith2026.org/), I was happy to co-run the tutorial **Optimizing Datapath Circuits with MLIR and CIRCT** with [Sam Coward](https://github.com/cowardsa). The tutorial was part of the [ARITH tutorial day](https://www.arith2026.org/tutorial_day.html), on Saturday June 27, 2026, and focused on a question I care about a lot: how compiler infrastructure can make hardware design more inspectable, transformable, and testable.
