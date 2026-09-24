@@ -137,6 +137,144 @@
     ],
     "src": "/assets/img/generated/openroad-arith-placement-d43092610d-1440.webp"
   },
+  "assets/img/eurorack-power/boards-and-components.png": {
+    "width": 1058,
+    "height": 794,
+    "variants": [
+      {
+        "path": "/assets/img/generated/boards-and-components-de78dcb342-320.webp",
+        "width": 320
+      },
+      {
+        "path": "/assets/img/generated/boards-and-components-de78dcb342-640.webp",
+        "width": 640
+      },
+      {
+        "path": "/assets/img/generated/boards-and-components-de78dcb342-960.webp",
+        "width": 960
+      },
+      {
+        "path": "/assets/img/generated/boards-and-components-de78dcb342-1058.webp",
+        "width": 1058
+      }
+    ],
+    "src": "/assets/img/generated/boards-and-components-de78dcb342-1058.webp"
+  },
+  "assets/img/eurorack-power/bus-connectors-and-artwork.png": {
+    "width": 1058,
+    "height": 1410,
+    "variants": [
+      {
+        "path": "/assets/img/generated/bus-connectors-and-artwork-0de0b42ceb-320.webp",
+        "width": 320
+      },
+      {
+        "path": "/assets/img/generated/bus-connectors-and-artwork-0de0b42ceb-640.webp",
+        "width": 640
+      },
+      {
+        "path": "/assets/img/generated/bus-connectors-and-artwork-0de0b42ceb-960.webp",
+        "width": 960
+      },
+      {
+        "path": "/assets/img/generated/bus-connectors-and-artwork-0de0b42ceb-1058.webp",
+        "width": 1058
+      }
+    ],
+    "src": "/assets/img/generated/bus-connectors-and-artwork-0de0b42ceb-1058.webp"
+  },
+  "assets/img/eurorack-power/busboards-assembly.png": {
+    "width": 1058,
+    "height": 1410,
+    "variants": [
+      {
+        "path": "/assets/img/generated/busboards-assembly-3afcf480cd-320.webp",
+        "width": 320
+      },
+      {
+        "path": "/assets/img/generated/busboards-assembly-3afcf480cd-640.webp",
+        "width": 640
+      },
+      {
+        "path": "/assets/img/generated/busboards-assembly-3afcf480cd-960.webp",
+        "width": 960
+      },
+      {
+        "path": "/assets/img/generated/busboards-assembly-3afcf480cd-1058.webp",
+        "width": 1058
+      }
+    ],
+    "src": "/assets/img/generated/busboards-assembly-3afcf480cd-1058.webp"
+  },
+  "assets/img/eurorack-power/supply-assembled.png": {
+    "width": 1058,
+    "height": 1410,
+    "variants": [
+      {
+        "path": "/assets/img/generated/supply-assembled-fdc27a4158-320.webp",
+        "width": 320
+      },
+      {
+        "path": "/assets/img/generated/supply-assembled-fdc27a4158-640.webp",
+        "width": 640
+      },
+      {
+        "path": "/assets/img/generated/supply-assembled-fdc27a4158-960.webp",
+        "width": 960
+      },
+      {
+        "path": "/assets/img/generated/supply-assembled-fdc27a4158-1058.webp",
+        "width": 1058
+      }
+    ],
+    "src": "/assets/img/generated/supply-assembled-fdc27a4158-1058.webp"
+  },
+  "assets/img/eurorack-power/supply-bare.png": {
+    "width": 1058,
+    "height": 794,
+    "variants": [
+      {
+        "path": "/assets/img/generated/supply-bare-06f49c8de7-320.webp",
+        "width": 320
+      },
+      {
+        "path": "/assets/img/generated/supply-bare-06f49c8de7-640.webp",
+        "width": 640
+      },
+      {
+        "path": "/assets/img/generated/supply-bare-06f49c8de7-960.webp",
+        "width": 960
+      },
+      {
+        "path": "/assets/img/generated/supply-bare-06f49c8de7-1058.webp",
+        "width": 1058
+      }
+    ],
+    "src": "/assets/img/generated/supply-bare-06f49c8de7-1058.webp"
+  },
+  "assets/img/eurorack-power/supply-front-and-back.png": {
+    "width": 1058,
+    "height": 794,
+    "variants": [
+      {
+        "path": "/assets/img/generated/supply-front-and-back-b4741df1c2-320.webp",
+        "width": 320
+      },
+      {
+        "path": "/assets/img/generated/supply-front-and-back-b4741df1c2-640.webp",
+        "width": 640
+      },
+      {
+        "path": "/assets/img/generated/supply-front-and-back-b4741df1c2-960.webp",
+        "width": 960
+      },
+      {
+        "path": "/assets/img/generated/supply-front-and-back-b4741df1c2-1058.webp",
+        "width": 1058
+      }
+    ],
+    "src": "/assets/img/generated/supply-front-and-back-b4741df1c2-1058.webp"
+  },
   "assets/img/goa-day/604-oscilloscope.png": {
     "width": 1058,
     "height": 1411,
