@@ -326,14 +326,16 @@ scholar:
   details_link: Details
 
   query: "@*"
+  sort_by: year, month
+  order: descending
   group_by: type, year
-  group_order: descending
+  group_order: [ascending, descending]
 
   # I use misc for posters, and techreports for invited talks and seminars
   # type_aliases: {} useful to merge types
   #type_order: [thesis, inproceedings, articles, misc, techreport]
-  type_order: [techreport, misc, articles, inproceedings, thesis]
-  type_names: { misc: Posters, techreport: Invited talks and Seminars}
+  type_order: [article, inproceedings, thesis, misc, techreport]
+  type_names: { misc: Posters, techreport: Talks and seminars }
 
 # Display different badges withs stats for your publications
 enable_publication_badges:

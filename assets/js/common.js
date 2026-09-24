@@ -1,21 +1,26 @@
 $(document).ready(function () {
-  // add toggle functionality to abstract, award and bibtex buttons
-  $("a.abstract").click(function () {
-    $(this).parent().parent().find(".abstract.hidden").toggleClass("open");
-    $(this).parent().parent().find(".award.hidden.open").toggleClass("open");
-    $(this).parent().parent().find(".bibtex.hidden.open").toggleClass("open");
+  document.querySelectorAll(".publications button[aria-controls]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const entry = button.closest(".links").parentElement;
+      const expanded = button.getAttribute("aria-expanded") !== "true";
+      entry.querySelectorAll("button[aria-controls]").forEach((other) => {
+        const panel = document.getElementById(other.getAttribute("aria-controls"));
+        const open = other === button && expanded;
+        other.setAttribute("aria-expanded", String(open));
+        if (panel) {
+          panel.classList.toggle("open", open);
+          panel.hidden = !open;
+        }
+      });
+    });
   });
-  $("a.award").click(function () {
-    $(this).parent().parent().find(".abstract.hidden.open").toggleClass("open");
-    $(this).parent().parent().find(".award.hidden").toggleClass("open");
-    $(this).parent().parent().find(".bibtex.hidden.open").toggleClass("open");
+  document.querySelectorAll("button.more-authors").forEach((button) => {
+    button.addEventListener("click", () => {
+      const expanded = button.getAttribute("aria-expanded") !== "true";
+      button.setAttribute("aria-expanded", String(expanded));
+      button.textContent = expanded ? button.dataset.full : button.dataset.short;
+    });
   });
-  $("a.bibtex").click(function () {
-    $(this).parent().parent().find(".abstract.hidden.open").toggleClass("open");
-    $(this).parent().parent().find(".award.hidden.open").toggleClass("open");
-    $(this).parent().parent().find(".bibtex.hidden").toggleClass("open");
-  });
-  $("a").removeClass("waves-effect waves-light");
 
   // bootstrap-toc
   if ($("#toc-sidebar").length) {
