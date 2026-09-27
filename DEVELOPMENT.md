@@ -22,6 +22,25 @@ python3 -m http.server 4001 --directory _site
 
 Check the homepage, publications, CV, projects, courses, and blog at desktop, tablet, and phone widths. Test both palettes, light/dark/system mode, navigation, search, and publication disclosures. Accessibility runs on pull requests through Axe; Lighthouse uploads reports for the actual deployed site after deployment or a manual run. Neither report is a substitute for visual and keyboard checks.
 
+## OPC course material
+
+`_pages/opc.md` is the course landing page, linked from `_pages/courses.md`.
+Refresh the allocation lecture export after rendering both formats in the OPC source
+repository with `make all`:
+
+```sh
+python3 scripts/sync_opc.py /path/to/OPC
+npm run check
+```
+
+The importer writes `assets/courses/opc/2026-2027/`. Public slide buttons download
+the matching C source; they do not call a compiler API on GitHub Pages. The ZIP
+retains the original live editor, rendered slides, teaching sources and local
+presenter, and starts with `make serve` without Quarto. Its file list is restricted
+to teaching material; it does not contain inherited PowerPoints, assessments,
+student records, compiler binaries, local tool installations or Git history.
+The earlier CM3 test assets remain excluded from the site.
+
 ## Publications and CV
 
 `_bibliography/papers.bib` is the source for publication metadata. Use `article` for journals, `inproceedings` for conference papers, `misc` for posters, and `techreport` for deposited talks/seminars. Supply the publication month explicitly when known. HAL `/document` links follow the latest deposited version.

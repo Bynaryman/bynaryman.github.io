@@ -220,7 +220,7 @@ exclude:
   - assets/fonts/tabler-icons*
   - assets/css/mdb.min.css*
   - assets/js/mdb.min.js*
-  - assets/courses/opc/
+  - assets/courses/opc/cm3/
   - scripts/
   - tests/
   - requirements.txt

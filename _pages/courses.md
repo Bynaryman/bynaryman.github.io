@@ -7,6 +7,14 @@ nav: true
 nav_order: 7
 ---
 
+## OPC · C programming
+
+ISTIC · University of Rennes · 2026–2027 · Louis Ledoux
+
+Dynamic memory allocation and user-defined types in C.
+
+[Course material]({{ '/courses/opc/' | relative_url }}) · [Allocation slides]({{ '/assets/courses/opc/2026-2027/01-allocation.html' | relative_url }})
+
 ## Digital Design with MLIR and CIRCT
 
 ACM Europe School on MLIR, A Coruña · 13 August 2026 · 1 h 45 min
