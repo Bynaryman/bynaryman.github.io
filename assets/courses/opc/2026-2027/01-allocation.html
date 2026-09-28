@@ -96,7 +96,7 @@
     code span.vs { color: #4070a0; } /* VerbatimString */
     code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="01-allocation_files/libs/revealjs/dist/theme/quarto-3770a759c0849970d5daf74ba6bb3510.css">
+  <link rel="stylesheet" href="01-allocation_files/libs/revealjs/dist/theme/quarto-6fe77baa2bb392776924d06ee7b03e91.css">
   <link href="01-allocation_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="01-allocation_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="01-allocation_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -397,14 +397,24 @@ Louis Ledoux
 <section id="free" class="slide level2">
 <h2>Release the block after its last use</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"first=</span><span class="sc">%d</span><span class="st">, last=</span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span> p<span class="op">[</span><span class="dv">0</span><span class="op">],</span> p<span class="op">[</span>count <span class="op">-</span> <span class="dv">1</span><span class="op">]);</span></span>
-<span id="cb5-2"><a href="" aria-hidden="true" tabindex="-1"></a>free<span class="op">(</span>p<span class="op">);</span></span></code></pre></div>
-<p>Run Valgrind again: <strong>all heap blocks freed</strong>.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> free<span class="op">(</span><span class="dt">void</span> <span class="op">*</span>pointer<span class="op">);</span>   <span class="co">// &lt;stdlib.h&gt;; no return value</span></span></code></pre></div>
-<p>Pass the allocation’s start address <strong>once</strong>. <code>free(NULL)</code> does nothing; an invalid or repeated release is <strong>undefined behaviour</strong>.</p>
-<div class="terminal-example" data-example="00-allocation" data-file="checkpoints/03-heap.c"><p><a href="examples/00-allocation/checkpoints/03-heap.c" download><code>demos/00-allocation/checkpoints/03-heap.c</code></a></p><p>Terminal: <code>make valgrind STEP=03-heap</code></p></div>
+<div class="lesson-flow">
+<div class="columns walkthrough">
+<div class="column" style="width:60%;">
+<h3 id="add-the-release">1 · Add the release</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"first=</span><span class="sc">%d</span><span class="st">, last=</span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span></span>
+<span id="cb5-2"><a href="" aria-hidden="true" tabindex="-1"></a>       p<span class="op">[</span><span class="dv">0</span><span class="op">],</span> p<span class="op">[</span>count <span class="op">-</span> <span class="dv">1</span><span class="op">]);</span></span>
+<span id="cb5-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="" aria-hidden="true" tabindex="-1"></a>free<span class="op">(</span>p<span class="op">);</span></span></code></pre></div>
+</div><div class="column fragment" data-fragment-index="0" style="width:35%;">
+<h3 id="check-again">2 · Check again</h3>
+<p>Rerun Valgrind.</p>
+<div class="step-result green">
+<p><strong>All heap blocks freed.</strong></p>
+</div>
+</div></div>
+</div>
 <aside class="notes">
-<p>Only show this after students have seen the leak. Add free(p) after printf in the same working file and rerun make valgrind with input 100. Read both zero errors and all heap blocks freed. The saved repaired version is 03-heap.c. Explain the function’s contract now that it solves an observed problem. Freeing the block does not erase the pointer or update aliases. We will deliberately move the release too early later. The original fixed-100 program is retained in demos/01-malloc/main.c.</p>
+<p>Reveal the right column after rerunning Valgrind. Terminal fallback: demos/00-allocation/checkpoints/03-heap.c, make valgrind STEP=03-heap. The formal free contract is collected later on its own reference slide. Only show this after students have seen the leak. Add free(p) after printf in the same working file and rerun make valgrind with input 100. Read both zero errors and all heap blocks freed. The saved repaired version is 03-heap.c. Explain the function’s contract now that it solves an observed problem. Freeing the block does not erase the pointer or update aliases. We will deliberately move the release too early later. The original fixed-100 program is retained in demos/01-malloc/main.c.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -422,10 +432,10 @@ Louis Ledoux
 <h2>Where does the program keep its data?</h2>
 <div class="slide-body">
 <div class="diagram">
-<p><img data-src="assets/diagrams/memory-layout.svg" alt="Typical process memory: code and static data at lower addresses, heap growing upwards, stack growing downwards from higher addresses, with space between them."></p>
+<p><img data-src="assets/diagrams/memory-layout.svg" alt="Illustrative address range 0x0000 to 0xffff: code and static data low, heap growing upwards, stack growing downwards, with space between them."></p>
 </div>
 <div class="small-note">
-<p>A typical layout, not a C language guarantee. Not to scale.</p>
+<p>Illustrative 16-bit address space; real address widths and layouts vary.</p>
 </div>
 <aside class="notes">
 <p>Show the diagram after the missing-free repair. Locate the local count and pointer p in the active stack frame, and the allocated integer block on the heap. The pointer and its target are distinct objects. Calls grow the stack downward in this typical model; allocations occupy heap storage growing upward. Separate allocations need not be adjacent; real allocators may use other mappings. The layout is not a C guarantee.</p>
@@ -445,11 +455,22 @@ Louis Ledoux
 <section id="uninitialised" class="slide level2">
 <h2>Does malloc fill the array with zeros?</h2>
 <div class="slide-body">
-<p>Remove the loop that writes the values. What will this print?</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"first=</span><span class="sc">%d</span><span class="st">, last=</span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span> p<span class="op">[</span><span class="dv">0</span><span class="op">],</span> p<span class="op">[</span>count <span class="op">-</span> <span class="dv">1</span><span class="op">]);</span></span></code></pre></div>
-<div class="terminal-example" data-example="00-allocation" data-file="checkpoints/05-uninitialised.c"><p><a href="examples/00-allocation/checkpoints/05-uninitialised.c" download><code>demos/00-allocation/checkpoints/05-uninitialised.c</code></a></p><p>Terminal: <code>make valgrind STEP=05-uninitialised</code></p></div>
+<div class="lesson-flow">
+<div class="columns walkthrough">
+<div class="column" style="width:60%;">
+<h3 id="remove-the-writes">1 · Remove the writes</h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"first=</span><span class="sc">%d</span><span class="st">, last=</span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span></span>
+<span id="cb6-2"><a href="" aria-hidden="true" tabindex="-1"></a>       p<span class="op">[</span><span class="dv">0</span><span class="op">],</span> p<span class="op">[</span>count <span class="op">-</span> <span class="dv">1</span><span class="op">]);</span></span></code></pre></div>
+</div><div class="column fragment" data-fragment-index="0" style="width:35%;">
+<h3 id="inspect-the-read">2 · Inspect the read</h3>
+<div class="step-result red">
+<p><strong>Uninitialised value</strong></p>
+</div>
+<p>Allocated storage has no initial value.</p>
+</div></div>
+</div>
 <aside class="notes">
-<p>Start from repaired 03-heap.c and delete only the initialization loop in Vim. Keep malloc, printf and free. Ask students to predict the first and last values; run normally and then with Valgrind, entering 4. A displayed zero is not evidence of initialization. Read the uninitialised-value diagnostic and its origin at malloc. Ask what must happen before printf. Do not state the initialization rule until the run has exposed the missing writes. The next slide shows the repair.</p>
+<p>Reveal the diagnostic explanation only after the terminal run. Fallback: demos/00-allocation/checkpoints/05-uninitialised.c, make valgrind STEP=05-uninitialised. Start from repaired 03-heap.c and delete only the initialization loop in Vim. Keep malloc, printf and free. Ask students to predict the first and last values; run normally and then with Valgrind, entering 4. A displayed zero is not evidence of initialization. Read the uninitialised-value diagnostic and its origin at malloc. Ask what must happen before printf. Do not state the initialization rule until the run has exposed the missing writes. The next slide shows the repair.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -466,14 +487,22 @@ Louis Ledoux
 <section id="initialise" class="slide level2">
 <h2>Write values before reading them</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> count<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
-<span id="cb8-2"><a href="" aria-hidden="true" tabindex="-1"></a>    p<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb8-3"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"first=</span><span class="sc">%d</span><span class="st">, last=</span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span> p<span class="op">[</span><span class="dv">0</span><span class="op">],</span> p<span class="op">[</span>count <span class="op">-</span> <span class="dv">1</span><span class="op">]);</span></span></code></pre></div>
-<p><code>malloc</code> reserves storage; <strong>these assignments give it values</strong>.</p>
-<p>Run Valgrind again. The uninitialised-value report should disappear.</p>
-<div class="terminal-example" data-example="00-allocation" data-file="checkpoints/03-heap.c"><p><a href="examples/00-allocation/checkpoints/03-heap.c" download><code>demos/00-allocation/checkpoints/03-heap.c</code></a></p><p>Terminal: <code>make valgrind STEP=03-heap</code></p></div>
+<div class="lesson-flow">
+<div class="columns walkthrough">
+<div class="column" style="width:60%;">
+<h3 id="restore-the-loop">1 · Restore the loop</h3>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> count<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
+<span id="cb7-2"><a href="" aria-hidden="true" tabindex="-1"></a>    p<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span></code></pre></div>
+</div><div class="column fragment" data-fragment-index="0" style="width:35%;">
+<h3 id="check-again-1">2 · Check again</h3>
+<p>Rerun Valgrind.</p>
+<div class="step-result green">
+<p><strong>Zero errors</strong></p>
+</div>
+</div></div>
+</div>
 <aside class="notes">
-<p>Restore the whole loop in Vim and rerun with input 4. Read zero reported errors. Both p[0] and p[count - 1] must be initialized, so setting only the first element is not a repair. Change the assigned value to 7 and ask for the result before running; undo it afterward. This slide explains the observed repair, rather than introducing an isolated rule. The original 100-integer allocation/check/zero-loop/free example is retained in demos/01-malloc/main.c; running this version with 100 exercises the same sequence.</p>
+<p>The repair column is followed by one reveal for verification. Fallback: demos/00-allocation/checkpoints/03-heap.c, make valgrind STEP=03-heap. Restore the whole loop in Vim and rerun with input 4. Read zero reported errors. Both p[0] and p[count - 1] must be initialized, so setting only the first element is not a repair. Change the assigned value to 7 and ask for the result before running; undo it afterward. This slide explains the observed repair, rather than introducing an isolated rule. The original 100-integer allocation/check/zero-loop/free example is retained in demos/01-malloc/main.c; running this version with 100 exercises the same sequence.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -490,15 +519,26 @@ Louis Ledoux
 <section id="overrun" class="slide level2">
 <h2>Where does this loop stop?</h2>
 <div class="slide-body">
-<div class="question">
-<p>Which iteration writes outside the allocation?</p>
+<div class="lesson-flow">
+<div class="columns walkthrough">
+<div class="column" style="width:60%;">
+<h3 id="predict-count-4">1 · Predict · count = 4</h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;=</span> count<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
+<span id="cb8-2"><a href="" aria-hidden="true" tabindex="-1"></a>    p<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span></code></pre></div>
+</div><div class="column fragment" data-fragment-index="0" style="width:35%;">
+<h3 id="inspect">2 · Inspect</h3>
+<p>First invalid write:</p>
+<div class="step-result red">
+<p><strong><code>p[4]</code></strong></p>
 </div>
-<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;=</span> count<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
-<span id="cb9-2"><a href="" aria-hidden="true" tabindex="-1"></a>    p<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb9-3"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"first=</span><span class="sc">%d</span><span class="st">, last=</span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span> p<span class="op">[</span><span class="dv">0</span><span class="op">],</span> p<span class="op">[</span>count <span class="op">-</span> <span class="dv">1</span><span class="op">]);</span></span></code></pre></div>
-<div class="terminal-example" data-example="00-allocation" data-file="checkpoints/04-overrun.c"><p><a href="examples/00-allocation/checkpoints/04-overrun.c" download><code>demos/00-allocation/checkpoints/04-overrun.c</code></a></p><p>Terminal: <code>make valgrind STEP=04-overrun</code></p></div>
+<div class="fragment repair-step" data-fragment-index="1">
+<h3 id="repair">3 · Repair</h3>
+<p><strong><code>i &lt; count</code></strong></p>
+</div>
+</div></div>
+</div>
 <aside class="notes">
-<p>In step 3 change i &lt; count to i &lt;= count, or open checkpoint 4. Use input 4. Predict which iteration is invalid, then run Valgrind and read Invalid write, the line, and the block boundary. Repair &lt;= to &lt; and rerun. The rest of the program is unchanged. Show the slide after the diagnostic; compiler success and expected printed output do not establish memory safety.</p>
+<p>Two reveals: show p[4] only after the Valgrind run, then reveal the repaired comparison after discussion. Fallback: demos/00-allocation/checkpoints/04-overrun.c, make valgrind STEP=04-overrun. In step 3 change i &lt; count to i &lt;= count, or open checkpoint 4. Use input 4. Predict which iteration is invalid, then run Valgrind and read Invalid write, the line, and the block boundary. Repair &lt;= to &lt; and rerun. The rest of the program is unchanged. Show the slide after the diagnostic; compiler success and expected printed output do not establish memory safety.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -515,14 +555,26 @@ Louis Ledoux
 <section id="dangling" class="slide level2">
 <h2>What if we free the block too early?</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="" aria-hidden="true" tabindex="-1"></a>free<span class="op">(</span>p<span class="op">);</span></span>
-<span id="cb10-2"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"first=</span><span class="sc">%d</span><span class="st">, last=</span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span> p<span class="op">[</span><span class="dv">0</span><span class="op">],</span> p<span class="op">[</span>count <span class="op">-</span> <span class="dv">1</span><span class="op">]);</span></span></code></pre></div>
-<div class="diagram">
-<p><img data-src="assets/diagrams/dangling.svg" alt="The allocated object is released by free, while the pointer is left dangling."></p>
+<div class="lesson-flow">
+<div class="columns walkthrough">
+<div class="column" style="width:60%;">
+<h3 id="predict-the-read">1 · Predict the read</h3>
+<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="" aria-hidden="true" tabindex="-1"></a>free<span class="op">(</span>p<span class="op">);</span></span>
+<span id="cb9-2"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"first=</span><span class="sc">%d</span><span class="st">, last=</span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span></span>
+<span id="cb9-3"><a href="" aria-hidden="true" tabindex="-1"></a>       p<span class="op">[</span><span class="dv">0</span><span class="op">],</span> p<span class="op">[</span>count <span class="op">-</span> <span class="dv">1</span><span class="op">]);</span></span></code></pre></div>
+</div><div class="column fragment" data-fragment-index="0" style="width:35%;">
+<h3 id="name-the-problem">2 · Name the problem</h3>
+<div class="step-result red">
+<p><strong>Dangling pointer</strong></p>
 </div>
-<div class="terminal-example" data-example="00-allocation" data-file="checkpoints/07-dangling.c"><p><a href="examples/00-allocation/checkpoints/07-dangling.c" download><code>demos/00-allocation/checkpoints/07-dangling.c</code></a></p><p>Terminal: <code>make valgrind STEP=07-dangling</code></p></div>
+<p>The object is gone.</p>
+</div></div>
+<div class="diagram fragment" data-fragment-index="0">
+<p><img data-src="assets/diagrams/dangling.svg" alt="The pointer still contains the address, but free has ended the allocated object's lifetime."></p>
+</div>
+</div>
 <aside class="notes">
-<p>From clean step 3, move free(p) before printf, or open checkpoint 7. Run Valgrind with input 4 and follow Invalid read back to free and malloc. Then use the diagram to show p outliving its block. Move free after the final read and verify the repair. A second free is also invalid. A leak retains the block; a dangling pointer refers to an object whose lifetime has ended.</p>
+<p>Keep only the code visible while students predict and you run Valgrind. On the next reveal, name the error explicitly: DANGLING POINTER. The diagram appears with that term. A pointer still holds an address to an object whose lifetime has ended. Fallback: demos/00-allocation/checkpoints/07-dangling.c, make valgrind STEP=07-dangling. From clean step 3, move free(p) before printf, or open checkpoint 7. Run Valgrind with input 4 and follow Invalid read back to free and malloc. Then use the diagram to show p outliving its block. Move free after the final read and verify the repair. A second free is also invalid. A leak retains the block; a dangling pointer refers to an object whose lifetime has ended.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -539,13 +591,25 @@ Louis Ledoux
 <section id="leak" class="slide level2">
 <h2>Can we still free it after losing its address?</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> NULL<span class="op">;</span>  <span class="co">// No free before the only address is lost.</span></span></code></pre></div>
-<div class="diagram">
-<p><img data-src="assets/diagrams/leak.svg" alt="The pointer is overwritten but the block containing four zero-initialised integers remains allocated and unreachable."></p>
+<div class="lesson-flow">
+<div class="columns walkthrough">
+<div class="column" style="width:60%;">
+<h3 id="lose-the-address">1 · Lose the address</h3>
+<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> NULL<span class="op">;</span></span>
+<span id="cb10-2"><a href="" aria-hidden="true" tabindex="-1"></a>free<span class="op">(</span>p<span class="op">);</span></span></code></pre></div>
+</div><div class="column fragment" data-fragment-index="0" style="width:35%;">
+<h3 id="name-the-problem-1">2 · Name the problem</h3>
+<div class="step-result red">
+<p><strong>Memory leak</strong></p>
 </div>
-<div class="terminal-example" data-example="00-allocation" data-file="checkpoints/06-leak.c"><p><a href="examples/00-allocation/checkpoints/06-leak.c" download><code>demos/00-allocation/checkpoints/06-leak.c</code></a></p><p>Terminal: <code>make valgrind STEP=06-leak</code></p></div>
+<p>The block is still allocated.</p>
+</div></div>
+<div class="diagram fragment" data-fragment-index="0">
+<p><img data-src="assets/diagrams/leak.svg" alt="After p is set to NULL, the allocated block remains but its address is lost."></p>
+</div>
+</div>
 <aside class="notes">
-<p>From clean step 3, insert p = NULL immediately before free(p), or open checkpoint 6. The call becomes free(NULL), leaving the original block allocated. Run Valgrind with input 4, locate definitely lost and the allocation call site, then use the diagram to explain the lost address. Move p = NULL after free(p) and rerun. Repeated leaks increase memory use; process-exit cleanup does not fix a long-running program.</p>
+<p>Reveal the name and diagram together after the failed cleanup. Contrast with the previous example: the block is still alive, but its address is gone. Fallback: demos/00-allocation/checkpoints/06-leak.c, make valgrind STEP=06-leak. From clean step 3, insert p = NULL immediately before free(p), or open checkpoint 6. The call becomes free(NULL), leaving the original block allocated. Run Valgrind with input 4, locate definitely lost and the allocation call site, then use the diagram to explain the lost address. Move p = NULL after free(p) and rerun. Repeated leaks increase memory use; process-exit cleanup does not fix a long-running program.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -562,10 +626,10 @@ Louis Ledoux
 <section id="local-lifetime" class="slide level2">
 <h2>Local objects can expire too</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>bad_result<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb12-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> value <span class="op">=</span> <span class="dv">42</span><span class="op">;</span></span>
-<span id="cb12-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="op">&amp;</span>value<span class="op">;</span>  <span class="co">// The local dies when this call ends.</span></span>
-<span id="cb12-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>bad_result<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> value <span class="op">=</span> <span class="dv">42</span><span class="op">;</span></span>
+<span id="cb11-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="op">&amp;</span>value<span class="op">;</span>  <span class="co">// The local dies when this call ends.</span></span>
+<span id="cb11-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <div class="block alert" title="A dangling pointer need not come from free">
 <div class="block-title">
 <p>A dangling pointer need not come from free</p>
@@ -684,6 +748,30 @@ Louis Ledoux
 </table>
 <aside class="notes">
 <p>Summarize the API after the investigations and their repairs. Original overview only, not a new calloc/realloc lesson. For a nonzero request, realloc failure leaves the old block valid; assign through a temporary pointer. calloc sets all bits to zero, which is not a universal guarantee for pointer/floating representations.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="free-contract" class="slide level2">
+<h2>The <code>free</code> contract</h2>
+<div class="slide-body">
+<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> free<span class="op">(</span><span class="dt">void</span> <span class="op">*</span>pointer<span class="op">);</span>   <span class="co">// Declared in &lt;stdlib.h&gt;</span></span></code></pre></div>
+<ul>
+<li>Pass the allocation’s <strong>start address</strong>, once.</li>
+<li><code>free(NULL)</code> does nothing; <code>free</code> returns no value.</li>
+<li>An invalid or repeated release is <strong>undefined behaviour</strong>.</li>
+</ul>
+<aside class="notes">
+<p>Collect the formal details here, after students have investigated leaks and dangling pointers. The repair slide deliberately carries only the edit and verification. An interior pointer, an automatic array address, or a previously freed address is not a valid argument.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
