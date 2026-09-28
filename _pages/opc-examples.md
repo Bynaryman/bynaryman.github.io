@@ -16,7 +16,7 @@ vim 01-copy-alias.c
 make run FILE=01-copy-alias.c
 ```
 
-Files 01–04 develop a string copy: shared storage, a missing byte, a leak, then the repair. File 05 introduces integers; each of 06–09 introduces one fault into 05-integers.c. Repair and rerun each.
+Files 01–04 develop a string copy: shared storage, a missing byte, a leak, then the repair. File 12 completes the string section with pointer assignment. File 05 introduces integers; each of 06–09 introduces one fault into 05-integers.c. Repair and rerun each.
 
 [Structure starter]({{ '/assets/courses/opc/2026-2027/examples/allocation/types-start.c' | relative_url }}) · copy to `live-types.c` for incremental coding.
 
@@ -137,6 +137,34 @@ int main(void) {
     printf("original: %s\n", original);
     printf("copy:     %s\n", copy);
     free(copy);
+    return EXIT_SUCCESS;
+}
+```
+
+</details>
+
+<details id="12-string-assignment" markdown="1">
+<summary>12-string-assignment.c · Pointer assignment is not copying text</summary>
+
+```sh
+vim 12-string-assignment.c
+make valgrind FILE=12-string-assignment.c
+```
+
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/12-string-assignment.c' | relative_url }})
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+int main(void) {
+    char *s = malloc(100);
+    if (!s) return EXIT_FAILURE;
+    // Intentional error from the original string example.
+    s = "hello";  // The allocated block is now unreachable.
+    char *p = s;
+    s = "bye";
+    printf("p=%s; s=%s\n", p, s);
+    // Neither pointer now points into the allocated block.
     return EXIT_SUCCESS;
 }
 ```
@@ -319,7 +347,7 @@ int main(void) {
 
 </details>
 
-## Arrays, strings and matrices
+## One row, then a grid
 
 <details id="10-array" markdown="1">
 <summary>10-array.c · Array elements and their addresses</summary>
@@ -342,62 +370,6 @@ int main(void) {
     for (int i = 0; i < 4; ++i)
         printf("a[%d]=%d at %p\n", i, a[i], (void *)&a[i]);
     free(a);
-    return EXIT_SUCCESS;
-}
-```
-
-</details>
-
-<details id="11-string" markdown="1">
-<summary>11-string.c · Characters and the terminator</summary>
-
-```sh
-vim 11-string.c
-make run FILE=11-string.c
-```
-
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/11-string.c' | relative_url }})
-
-```c
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-int main(void) {
-    char *s = malloc(4 * sizeof(char));
-    if (!s) return EXIT_FAILURE;
-    strcpy(s, "cat");  // Three letters and the terminator.
-    for (int i = 0; i < 4; ++i)
-        printf("s[%d] = %u\n", i, (unsigned char)s[i]);
-    puts(s);
-    free(s);
-    return EXIT_SUCCESS;
-}
-```
-
-</details>
-
-<details id="12-string-assignment" markdown="1">
-<summary>12-string-assignment.c · Pointer assignment is not copying text</summary>
-
-```sh
-vim 12-string-assignment.c
-make valgrind FILE=12-string-assignment.c
-```
-
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/12-string-assignment.c' | relative_url }})
-
-```c
-#include <stdio.h>
-#include <stdlib.h>
-int main(void) {
-    char *s = malloc(100);
-    if (!s) return EXIT_FAILURE;
-    // Intentional error from the original string example.
-    s = "hello";  // The allocated block is now unreachable.
-    char *p = s;
-    s = "bye";
-    printf("p=%s; s=%s\n", p, s);
-    // Neither pointer now points into the allocated block.
     return EXIT_SUCCESS;
 }
 ```
@@ -616,6 +588,36 @@ int main(void) {
     p->day = today.day;
     p->date.year = 2026;
     printf("day code=%d; %d/%d/%d\n", today.day, today.date.day, today.date.month, today.date.year);
+    return EXIT_SUCCESS;
+}
+```
+
+</details>
+
+## Optional reference
+
+<details id="11-string" markdown="1">
+<summary>11-string.c · Characters and the terminator</summary>
+
+```sh
+vim 11-string.c
+make run FILE=11-string.c
+```
+
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/11-string.c' | relative_url }})
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+int main(void) {
+    char *s = malloc(4 * sizeof(char));
+    if (!s) return EXIT_FAILURE;
+    strcpy(s, "cat");  // Three letters and the terminator.
+    for (int i = 0; i < 4; ++i)
+        printf("s[%d] = %u\n", i, (unsigned char)s[i]);
+    puts(s);
+    free(s);
     return EXIT_SUCCESS;
 }
 ```
