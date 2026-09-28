@@ -57,18 +57,19 @@ Louis Ledoux · ISTIC, University of Rennes · 2026–2027
 ## Slides and C examples
 
 Open cours/_output/01-allocation.html in Firefox. No server is needed.
-Use demos/allocation/README.md: files 01 through 17 are in lecture order.
+Use demos/allocation/README.md: files 01 through 18 are in lecture order.
 Install GCC, Make and Valgrind on Linux or WSL, then run:
 
 ```sh
 cd demos/allocation
-vim 01-fixed-array.c
-make run FILE=01-fixed-array.c
+vim 01-copy-alias.c
+make run FILE=01-copy-alias.c
 ```
 
 Open the next numbered file and pass the same filename to Make.
-For example: make valgrind FILE=07-dangling.c (enter 4).
-Files 05–08 each introduce one fault into the working 04-free.c program.
+For example: make valgrind FILE=08-dangling.c (enter 4).
+Files 01–04 develop a string copy, fixing its size and then its leak.
+File 05 introduces integers; 06–09 each introduce one fault into 05-integers.c.
 Repair and rerun each before continuing. See docs/allocation-runbook.md.
 
 ## Rebuild or print
@@ -165,7 +166,10 @@ def main():
     for name in sorted(examples):
         target = DESTINATION / "examples" / name
         target.mkdir(parents=True, exist_ok=True)
-        for file in (source / "demos" / name).rglob("*.c"):
+        for relative in sources:
+            if relative.parts[:2] != ("demos", name) or relative.suffix != ".c":
+                continue
+            file = source / relative
             copy = target / file.relative_to(source / "demos" / name)
             copy.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(file, copy)
@@ -173,11 +177,11 @@ def main():
     page = ['---', 'layout: page', 'title: OPC · C examples', 'permalink: /courses/opc/examples/',
             'description: C files in lecture order.', 'nav: false', '---', '',
             "[Course and download]({{ '/courses/opc/' | relative_url }})", '',
-            'Follow **01 → 17**, all in `demos/allocation/`.', '',
-            '```sh', 'cd demos/allocation', 'vim 01-fixed-array.c',
-            'make run FILE=01-fixed-array.c', '```', '',
-            'Files 01–04 develop one working program. Each of 05–08 introduces one fault into 04-free.c. '
-            'Repair and rerun it before opening the next file.', '']
+            'Follow **01 → 18**, all in `demos/allocation/`.', '',
+            '```sh', 'cd demos/allocation', 'vim 01-copy-alias.c',
+            'make run FILE=01-copy-alias.c', '```', '',
+            'Files 01–04 develop a string copy: shared storage, a missing byte, a leak, then the repair. '
+            'File 05 introduces integers; each of 06–09 introduces one fault into 05-integers.c. Repair and rerun each.', '']
     stages = json.loads((source / 'demos/allocation/steps.json').read_text())
     section = None
     for index, stage in enumerate(stages):

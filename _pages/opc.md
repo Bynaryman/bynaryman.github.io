@@ -25,15 +25,15 @@ unzip opc-course.zip
 cd opc-course
 firefox cours/_output/01-allocation.html
 cd demos/allocation
-vim 01-fixed-array.c
-make run FILE=01-fixed-array.c
+vim 01-copy-alias.c
+make run FILE=01-copy-alias.c
 ```
 
-Follow files **01 → 17** in this folder. The [example index]({{ '/courses/opc/examples/' | relative_url }}) gives the order and commands.
+Follow files **01 → 18** in this folder. The [example index]({{ '/courses/opc/examples/' | relative_url }}) gives the order and commands.
 
 ```sh
-vim 07-dangling.c
-make valgrind FILE=07-dangling.c  # Enter 4; inspect the invalid reads
+vim 08-dangling.c
+make valgrind FILE=08-dangling.c  # Enter 4; inspect the invalid reads
 ```
 
-Files 05–08 each introduce one fault into the working `04-free.c` program. Repair and rerun each before continuing.
+Files 01–04 develop a string copy, fixing a missing byte and a leak. File 05 introduces integers. Files 06–09 each introduce one fault into `05-integers.c`; repair and rerun each before continuing.

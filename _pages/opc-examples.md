@@ -8,122 +8,152 @@ nav: false
 
 [Course and download]({{ '/courses/opc/' | relative_url }})
 
-Follow **01 → 17**, all in `demos/allocation/`.
+Follow **01 → 18**, all in `demos/allocation/`.
 
 ```sh
 cd demos/allocation
-vim 01-fixed-array.c
-make run FILE=01-fixed-array.c
+vim 01-copy-alias.c
+make run FILE=01-copy-alias.c
 ```
 
-Files 01–04 develop one working program. Each of 05–08 introduces one fault into 04-free.c. Repair and rerun it before opening the next file.
+Files 01–04 develop a string copy: shared storage, a missing byte, a leak, then the repair. File 05 introduces integers; each of 06–09 introduces one fault into 05-integers.c. Repair and rerun each.
 
-## Allocate an array
+## Copy a string
 
-<details id="01-fixed-array" markdown="1" open>
-<summary>01-fixed-array.c · Four integers</summary>
+<details id="01-copy-alias" markdown="1" open>
+<summary>01-copy-alias.c · Change the copy; the original changes too</summary>
 
 ```sh
-vim 01-fixed-array.c
-make run FILE=01-fixed-array.c
+vim 01-copy-alias.c
+make run FILE=01-copy-alias.c
 ```
 
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/01-fixed-array.c' | relative_url }})
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/01-copy-alias.c' | relative_url }})
 
 ```c
 #include <stdio.h>
 #include <stdlib.h>
 
 int main(void) {
-    int count = 4;
-    int p[4];
-    for (int i = 0; i < count; ++i)
-        p[i] = 0;
-    printf("first=%d, last=%d\n", p[0], p[count - 1]);
+    char original[] = "hello";
+    char *copy = original;
+
+    copy[0] = 'H';
+    printf("original: %s\n", original);
+    printf("copy:     %s\n", copy);
     return EXIT_SUCCESS;
 }
 ```
 
 </details>
 
-<details id="02-capacity" markdown="1">
-<summary>02-capacity.c · Read a count; the array still holds four</summary>
+<details id="02-copy-short" markdown="1">
+<summary>02-copy-short.c · Allocate and copy; inspect the invalid write</summary>
 
 ```sh
-vim 02-capacity.c
-make run FILE=02-capacity.c
+vim 02-copy-short.c
+make valgrind FILE=02-copy-short.c
 ```
 
-Enter **100**.
-
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/02-capacity.c' | relative_url }})
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/02-copy-short.c' | relative_url }})
 
 ```c
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 int main(void) {
-    int count;
-    int p[4];
-    if (scanf("%d", &count) != 1) return EXIT_FAILURE;
-    if (count <= 0 || count > 4) {
-        fputs("Choose 1 to 4: the array has four elements.\n", stderr);
+    char original[] = "hello";
+    char *copy = malloc(strlen(original));
+    if (copy == NULL)
         return EXIT_FAILURE;
-    }
-    for (int i = 0; i < count; ++i)
-        p[i] = 0;
-    printf("first=%d, last=%d\n", p[0], p[count - 1]);
+
+    strcpy(copy, original);
+    copy[0] = 'H';
+    printf("original: %s\n", original);
+    printf("copy:     %s\n", copy);
     return EXIT_SUCCESS;
 }
 ```
 
 </details>
 
-<details id="03-missing-free" markdown="1">
-<summary>03-missing-free.c · Allocate by count; find the missing release</summary>
+<details id="03-copy-leak" markdown="1">
+<summary>03-copy-leak.c · Add room for the terminator; inspect the leak</summary>
 
 ```sh
-vim 03-missing-free.c
-make valgrind FILE=03-missing-free.c
+vim 03-copy-leak.c
+make valgrind FILE=03-copy-leak.c
 ```
 
-Enter **100**.
-
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/03-missing-free.c' | relative_url }})
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/03-copy-leak.c' | relative_url }})
 
 ```c
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 int main(void) {
-    int count;
-    if (scanf("%d", &count) != 1) return EXIT_FAILURE;
-    if (count <= 0 || count > 1000) return EXIT_FAILURE;
-    int *p = malloc(count * sizeof(int));
-    if (p == NULL) {
-        fputs("Allocation failed\n", stderr);
+    char original[] = "hello";
+    char *copy = malloc(strlen(original) + 1);
+    if (copy == NULL)
         return EXIT_FAILURE;
-    }
-    for (int i = 0; i < count; ++i)
-        p[i] = 0;
-    printf("first=%d, last=%d\n", p[0], p[count - 1]);
+
+    strcpy(copy, original);
+    copy[0] = 'H';
+    printf("original: %s\n", original);
+    printf("copy:     %s\n", copy);
     return EXIT_SUCCESS;
 }
 ```
 
 </details>
 
-<details id="04-free" markdown="1">
-<summary>04-free.c · Release after the final read</summary>
+<details id="04-copy-free" markdown="1">
+<summary>04-copy-free.c · Release the copy after printing</summary>
 
 ```sh
-vim 04-free.c
-make valgrind FILE=04-free.c
+vim 04-copy-free.c
+make valgrind FILE=04-copy-free.c
+```
+
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/04-copy-free.c' | relative_url }})
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main(void) {
+    char original[] = "hello";
+    char *copy = malloc(strlen(original) + 1);
+    if (copy == NULL)
+        return EXIT_FAILURE;
+
+    strcpy(copy, original);
+    copy[0] = 'H';
+    printf("original: %s\n", original);
+    printf("copy:     %s\n", copy);
+    free(copy);
+    return EXIT_SUCCESS;
+}
+```
+
+</details>
+
+## Arrays and memory errors
+
+<details id="05-integers" markdown="1">
+<summary>05-integers.c · Allocate and initialise a requested number of integers</summary>
+
+```sh
+vim 05-integers.c
+make valgrind FILE=05-integers.c
 ```
 
 Enter **100**.
 
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/04-free.c' | relative_url }})
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/05-integers.c' | relative_url }})
 
 ```c
 #include <stdio.h>
@@ -148,19 +178,17 @@ int main(void) {
 
 </details>
 
-## Memory errors
-
-<details id="05-uninitialised" markdown="1">
-<summary>05-uninitialised.c · Remove initialisation; inspect the read</summary>
+<details id="06-uninitialised" markdown="1">
+<summary>06-uninitialised.c · Remove initialisation; inspect the read</summary>
 
 ```sh
-vim 05-uninitialised.c
-make valgrind FILE=05-uninitialised.c
+vim 06-uninitialised.c
+make valgrind FILE=06-uninitialised.c
 ```
 
 Enter **4**.
 
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/05-uninitialised.c' | relative_url }})
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/06-uninitialised.c' | relative_url }})
 
 ```c
 #include <stdio.h>
@@ -183,17 +211,17 @@ int main(void) {
 
 </details>
 
-<details id="06-overrun" markdown="1">
-<summary>06-overrun.c · Write one element too far</summary>
+<details id="07-overrun" markdown="1">
+<summary>07-overrun.c · Write one element too far</summary>
 
 ```sh
-vim 06-overrun.c
-make valgrind FILE=06-overrun.c
+vim 07-overrun.c
+make valgrind FILE=07-overrun.c
 ```
 
 Enter **4**.
 
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/06-overrun.c' | relative_url }})
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/07-overrun.c' | relative_url }})
 
 ```c
 #include <stdio.h>
@@ -218,17 +246,17 @@ int main(void) {
 
 </details>
 
-<details id="07-dangling" markdown="1">
-<summary>07-dangling.c · Read after free</summary>
+<details id="08-dangling" markdown="1">
+<summary>08-dangling.c · Read after free</summary>
 
 ```sh
-vim 07-dangling.c
-make valgrind FILE=07-dangling.c
+vim 08-dangling.c
+make valgrind FILE=08-dangling.c
 ```
 
 Enter **4**.
 
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/07-dangling.c' | relative_url }})
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/08-dangling.c' | relative_url }})
 
 ```c
 #include <stdio.h>
@@ -253,17 +281,17 @@ int main(void) {
 
 </details>
 
-<details id="08-leak" markdown="1">
-<summary>08-leak.c · Lose the address before free</summary>
+<details id="09-leak" markdown="1">
+<summary>09-leak.c · Lose the address before free</summary>
 
 ```sh
-vim 08-leak.c
-make valgrind FILE=08-leak.c
+vim 09-leak.c
+make valgrind FILE=09-leak.c
 ```
 
 Enter **4**.
 
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/08-leak.c' | relative_url }})
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/09-leak.c' | relative_url }})
 
 ```c
 #include <stdio.h>
@@ -291,15 +319,15 @@ int main(void) {
 
 ## Arrays, strings and matrices
 
-<details id="09-array" markdown="1">
-<summary>09-array.c · Array elements and their addresses</summary>
+<details id="10-array" markdown="1">
+<summary>10-array.c · Array elements and their addresses</summary>
 
 ```sh
-vim 09-array.c
-make run FILE=09-array.c
+vim 10-array.c
+make run FILE=10-array.c
 ```
 
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/09-array.c' | relative_url }})
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/10-array.c' | relative_url }})
 
 ```c
 #include <stdio.h>
@@ -318,15 +346,15 @@ int main(void) {
 
 </details>
 
-<details id="10-string" markdown="1">
-<summary>10-string.c · Characters and the terminator</summary>
+<details id="11-string" markdown="1">
+<summary>11-string.c · Characters and the terminator</summary>
 
 ```sh
-vim 10-string.c
-make run FILE=10-string.c
+vim 11-string.c
+make run FILE=11-string.c
 ```
 
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/10-string.c' | relative_url }})
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/11-string.c' | relative_url }})
 
 ```c
 #include <stdio.h>
@@ -346,15 +374,15 @@ int main(void) {
 
 </details>
 
-<details id="11-string-assignment" markdown="1">
-<summary>11-string-assignment.c · Pointer assignment is not copying text</summary>
+<details id="12-string-assignment" markdown="1">
+<summary>12-string-assignment.c · Pointer assignment is not copying text</summary>
 
 ```sh
-vim 11-string-assignment.c
-make valgrind FILE=11-string-assignment.c
+vim 12-string-assignment.c
+make valgrind FILE=12-string-assignment.c
 ```
 
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/11-string-assignment.c' | relative_url }})
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/12-string-assignment.c' | relative_url }})
 
 ```c
 #include <stdio.h>
@@ -374,15 +402,15 @@ int main(void) {
 
 </details>
 
-<details id="12-matrix-flat" markdown="1">
-<summary>12-matrix-flat.c · Matrix in one allocation</summary>
+<details id="13-matrix-flat" markdown="1">
+<summary>13-matrix-flat.c · Matrix in one allocation</summary>
 
 ```sh
-vim 12-matrix-flat.c
-make run FILE=12-matrix-flat.c
+vim 13-matrix-flat.c
+make run FILE=13-matrix-flat.c
 ```
 
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/12-matrix-flat.c' | relative_url }})
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/13-matrix-flat.c' | relative_url }})
 
 ```c
 #include <stdio.h>
@@ -405,15 +433,15 @@ int main(void) {
 
 </details>
 
-<details id="13-matrix-rows" markdown="1">
-<summary>13-matrix-rows.c · Fixed pointer table; allocated rows</summary>
+<details id="14-matrix-rows" markdown="1">
+<summary>14-matrix-rows.c · Fixed pointer table; allocated rows</summary>
 
 ```sh
-vim 13-matrix-rows.c
-make run FILE=13-matrix-rows.c
+vim 14-matrix-rows.c
+make run FILE=14-matrix-rows.c
 ```
 
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/13-matrix-rows.c' | relative_url }})
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/14-matrix-rows.c' | relative_url }})
 
 ```c
 #include <stdio.h>
@@ -443,15 +471,15 @@ int main(void) {
 
 </details>
 
-<details id="14-matrix-dynamic" markdown="1">
-<summary>14-matrix-dynamic.c · Allocated pointer table and rows</summary>
+<details id="15-matrix-dynamic" markdown="1">
+<summary>15-matrix-dynamic.c · Allocated pointer table and rows</summary>
 
 ```sh
-vim 14-matrix-dynamic.c
-make run FILE=14-matrix-dynamic.c
+vim 15-matrix-dynamic.c
+make run FILE=15-matrix-dynamic.c
 ```
 
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/14-matrix-dynamic.c' | relative_url }})
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/15-matrix-dynamic.c' | relative_url }})
 
 ```c
 #include <stdio.h>
@@ -487,15 +515,15 @@ int main(void) {
 
 ## User-defined types
 
-<details id="15-types" markdown="1">
-<summary>15-types.c · Enumerations and structure members</summary>
+<details id="16-types" markdown="1">
+<summary>16-types.c · Enumerations and structure members</summary>
 
 ```sh
-vim 15-types.c
-make run FILE=15-types.c
+vim 16-types.c
+make run FILE=16-types.c
 ```
 
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/15-types.c' | relative_url }})
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/16-types.c' | relative_url }})
 
 ```c
 #include <stdio.h>
@@ -527,15 +555,15 @@ int main(void) {
 
 </details>
 
-<details id="16-padding" markdown="1">
-<summary>16-padding.c · Measure structure sizes and offsets</summary>
+<details id="17-padding" markdown="1">
+<summary>17-padding.c · Measure structure sizes and offsets</summary>
 
 ```sh
-vim 16-padding.c
-make run FILE=16-padding.c
+vim 17-padding.c
+make run FILE=17-padding.c
 ```
 
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/16-padding.c' | relative_url }})
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/17-padding.c' | relative_url }})
 
 ```c
 #include <stdio.h>
@@ -562,15 +590,15 @@ int main(void) {
 
 </details>
 
-<details id="17-nested" markdown="1">
-<summary>17-nested.c · Nested structures</summary>
+<details id="18-nested" markdown="1">
+<summary>18-nested.c · Nested structures</summary>
 
 ```sh
-vim 17-nested.c
-make run FILE=17-nested.c
+vim 18-nested.c
+make run FILE=18-nested.c
 ```
 
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/17-nested.c' | relative_url }})
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/18-nested.c' | relative_url }})
 
 ```c
 #include <stdio.h>
