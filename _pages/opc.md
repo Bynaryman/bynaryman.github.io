@@ -32,7 +32,7 @@ make run
 Saved versions are in `checkpoints/`. For example:
 
 ```sh
-vim checkpoints/03-heap.c
-make run STEP=03-heap       # Enter 100
-make valgrind STEP=04-overrun  # Enter 4; find the error
+vim checkpoints/03-missing-free.c
+make run STEP=03-missing-free       # Enter 100
+make valgrind STEP=03-missing-free  # Find the leak, then add free
 ```

@@ -69,9 +69,9 @@ Install GCC, Make and Valgrind on Linux or WSL, then run:
 cd demos/00-allocation
 vim main.c
 make run
-vim checkpoints/03-heap.c
-make run STEP=03-heap       # Enter 100
-make valgrind STEP=04-overrun  # Enter 4; an error is expected
+vim checkpoints/03-missing-free.c
+make run STEP=03-missing-free       # Enter 100
+make valgrind STEP=03-missing-free  # Observe the leak; add free after printf
 ```
 
 Each slide shows its source file and command. Run the command inside that
@@ -133,7 +133,7 @@ def main():
                 parser.error(f"Missing or invalid example: {name}/{file}")
             examples.add(name)
         qmd = (source / "cours" / f"{deck}.qmd").read_text()
-        examples.update(re.findall(r'file="\.\./demos/([a-z0-9-]+)/', qmd))
+        examples.update(re.findall(r'demos/([a-z0-9-]+)/', qmd))
         # Make the existing path a download link without adding another slide row.
         html = TERMINAL.sub(
             lambda match: match[0].replace(

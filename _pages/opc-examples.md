@@ -13,7 +13,7 @@ Start with `demos/00-allocation/main.c`. The saved steps below develop the same 
 ## Allocation and memory errors
 
 <details id="00-allocation-01-array" markdown="1" open>
-<summary>1. Four integers</summary>
+<summary>Four integers</summary>
 
 `demos/00-allocation/main.c`
 
@@ -36,7 +36,7 @@ int main(void) {
 </details>
 
 <details id="00-allocation-02-capacity" markdown="1">
-<summary>2. Read the count</summary>
+<summary>Read the count</summary>
 
 `demos/00-allocation/checkpoints/02-capacity.c`
 
@@ -63,8 +63,37 @@ int main(void) {
 
 </details>
 
+<details id="00-allocation-03-missing-free" markdown="1">
+<summary>Allocated, but not released</summary>
+
+`demos/00-allocation/checkpoints/03-missing-free.c`
+
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/00-allocation/checkpoints/03-missing-free.c' | relative_url }})
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(void) {
+    int count;
+    if (scanf("%d", &count) != 1) return EXIT_FAILURE;
+    if (count <= 0 || count > 1000) return EXIT_FAILURE;
+    int *p = malloc(count * sizeof(int));
+    if (p == NULL) {
+        fputs("Allocation failed\n", stderr);
+        return EXIT_FAILURE;
+    }
+    for (int i = 0; i < count; ++i)
+        p[i] = 0;
+    printf("first=%d, last=%d\n", p[0], p[count - 1]);
+    return EXIT_SUCCESS;
+}
+```
+
+</details>
+
 <details id="00-allocation-03-heap" markdown="1">
-<summary>3. Allocate the array</summary>
+<summary>Repair: release after use</summary>
 
 `demos/00-allocation/checkpoints/03-heap.c`
 
@@ -93,8 +122,36 @@ int main(void) {
 
 </details>
 
+<details id="00-allocation-05-uninitialised" markdown="1">
+<summary>Skip initialisation</summary>
+
+`demos/00-allocation/checkpoints/05-uninitialised.c`
+
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/00-allocation/checkpoints/05-uninitialised.c' | relative_url }})
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(void) {
+    int count;
+    if (scanf("%d", &count) != 1) return EXIT_FAILURE;
+    if (count <= 0 || count > 1000) return EXIT_FAILURE;
+    int *p = malloc(count * sizeof(int));
+    if (p == NULL) {
+        fputs("Allocation failed\n", stderr);
+        return EXIT_FAILURE;
+    }
+    printf("first=%d, last=%d\n", p[0], p[count - 1]);
+    free(p);
+    return EXIT_SUCCESS;
+}
+```
+
+</details>
+
 <details id="00-allocation-04-overrun" markdown="1">
-<summary>4. One extra iteration</summary>
+<summary>One extra iteration</summary>
 
 `demos/00-allocation/checkpoints/04-overrun.c`
 
@@ -123,12 +180,12 @@ int main(void) {
 
 </details>
 
-<details id="00-allocation-05-uninitialised" markdown="1">
-<summary>5. Skip initialisation</summary>
+<details id="00-allocation-07-dangling" markdown="1">
+<summary>Free before reading</summary>
 
-`demos/00-allocation/checkpoints/05-uninitialised.c`
+`demos/00-allocation/checkpoints/07-dangling.c`
 
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/00-allocation/checkpoints/05-uninitialised.c' | relative_url }})
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/00-allocation/checkpoints/07-dangling.c' | relative_url }})
 
 ```c
 #include <stdio.h>
@@ -143,8 +200,10 @@ int main(void) {
         fputs("Allocation failed\n", stderr);
         return EXIT_FAILURE;
     }
-    printf("first=%d, last=%d\n", p[0], p[count - 1]);
+    for (int i = 0; i < count; ++i)
+        p[i] = 0;
     free(p);
+    printf("first=%d, last=%d\n", p[0], p[count - 1]);
     return EXIT_SUCCESS;
 }
 ```
@@ -152,7 +211,7 @@ int main(void) {
 </details>
 
 <details id="00-allocation-06-leak" markdown="1">
-<summary>6. Lose the address</summary>
+<summary>Lose the address</summary>
 
 `demos/00-allocation/checkpoints/06-leak.c`
 
@@ -176,36 +235,6 @@ int main(void) {
     printf("first=%d, last=%d\n", p[0], p[count - 1]);
     p = NULL;
     free(p);
-    return EXIT_SUCCESS;
-}
-```
-
-</details>
-
-<details id="00-allocation-07-dangling" markdown="1">
-<summary>7. Free before reading</summary>
-
-`demos/00-allocation/checkpoints/07-dangling.c`
-
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/00-allocation/checkpoints/07-dangling.c' | relative_url }})
-
-```c
-#include <stdio.h>
-#include <stdlib.h>
-
-int main(void) {
-    int count;
-    if (scanf("%d", &count) != 1) return EXIT_FAILURE;
-    if (count <= 0 || count > 1000) return EXIT_FAILURE;
-    int *p = malloc(count * sizeof(int));
-    if (p == NULL) {
-        fputs("Allocation failed\n", stderr);
-        return EXIT_FAILURE;
-    }
-    for (int i = 0; i < count; ++i)
-        p[i] = 0;
-    free(p);
-    printf("first=%d, last=%d\n", p[0], p[count - 1]);
     return EXIT_SUCCESS;
 }
 ```
