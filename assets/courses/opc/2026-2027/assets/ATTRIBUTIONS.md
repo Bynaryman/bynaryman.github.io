@@ -21,4 +21,4 @@
   Original PDF and PowerPoint remain in `CM/`. English adaptation and technical
   corrections are documented in `cours/SOURCE-MAP.md`.
 
-- `photos/marenostrum-4.jpg`: [2017 BSC Superordenador MareNostrum-4 Barcelona-Supercomputing-Center](https://commons.wikimedia.org/wiki/File:2017_BSC_Superordenador_MareNostrum-4_Barcelona-Supercomputing-Center.jpg), 27 June 2017. Commons author: Martidaniel; embedded copyright credit: Lucia Meler (www.luciameler.com). Both credited on the slide. [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). Original JPEG reproduced unchanged, without cropping or colour edits.
+- `photos/marenostrum-4.jpg`: [2017 BSC Superordenador MareNostrum-4 Barcelona-Supercomputing-Center](https://commons.wikimedia.org/wiki/File:2017_BSC_Superordenador_MareNostrum-4_Barcelona-Supercomputing-Center.jpg), 27 June 2017. Commons author: Martidaniel; embedded copyright credit: Lucia Meler (www.luciameler.com). Attribution retained in the slide notes and this file. [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). Original JPEG reproduced unchanged, without cropping or colour edits.
