@@ -18,14 +18,21 @@ For printing, select **four pages per sheet** in your PDF viewer.
 
 ## Run the examples {#run-examples}
 
-Requires Python 3, GCC, Make and Valgrind on Linux or WSL.
-
-Start with `demos/00-allocation/main.c`. Its saved steps build the same program from a fixed array to `malloc` and `free`.
+Requires GCC, Make and Valgrind on Linux or WSL. Open the slides in Firefox and the C files in Vim.
 
 ```sh
 unzip opc-course.zip
 cd opc-course
-make serve
+firefox cours/_output/01-allocation.html
+cd demos/00-allocation
+vim main.c
+make run
 ```
 
-Open [the local slides](http://127.0.0.1:8877/01-allocation.html) and click **Run live C**. Choose a saved version in the **Step** menu, or edit the code directly. Keep the terminal open; **Ctrl+C** stops the server.
+Saved versions are in `checkpoints/`. For example:
+
+```sh
+vim checkpoints/03-heap.c
+make run STEP=03-heap       # Enter 100
+make valgrind STEP=04-overrun  # Enter 4; find the error
+```

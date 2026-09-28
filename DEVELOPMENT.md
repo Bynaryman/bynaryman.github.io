@@ -33,14 +33,13 @@ python3 scripts/sync_opc.py /path/to/OPC
 npm run check
 ```
 
-The importer writes `assets/courses/opc/2026-2027/`. Public slide buttons download
-the matching C source (including the selected checkpoint). It also generates
-`_pages/opc-examples.md` with readable, highlighted code and individual downloads.
-The public slides do not call a compiler API on GitHub Pages. The ZIP
-retains the original live editor, rendered slides, teaching sources and local
-presenter, and starts with `make serve` without Quarto. Its file list is restricted
-to teaching material; it does not contain inherited PowerPoints, assessments,
-student records, compiler binaries, local tool installations or Git history.
+The importer writes `assets/courses/opc/2026-2027/`. Source paths on the slides
+link to the matching C file, including checkpoints. It also generates
+`_pages/opc-examples.md` with highlighted code and individual downloads.
+The ZIP contains rendered slides and teaching sources. Open the HTML directly
+in Firefox, edit the examples in Vim, and run GCC/Valgrind from a terminal.
+Its file list excludes inherited PowerPoints, assessments, student records,
+compiler binaries, local tool installations and Git history.
 The earlier CM3 test assets remain excluded from the site.
 
 ## Publications and CV

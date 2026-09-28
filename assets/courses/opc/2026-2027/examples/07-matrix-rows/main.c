@@ -3,9 +3,9 @@
 int main(void) {
     // slide:matrix:begin
     int *m[4];
-    size_t i = 0;
+    int i = 0;
     for (; i < 4; ++i) {
-        m[i] = malloc(3 * sizeof *m[i]);
+        m[i] = malloc(3 * sizeof(int));
         if (!m[i]) break;
     }
     // slide:matrix:end
@@ -14,7 +14,7 @@ int main(void) {
         return EXIT_FAILURE;
     }
     for (i = 0; i < 4; ++i) {
-        for (size_t j = 0; j < 3; ++j) {
+        for (int j = 0; j < 3; ++j) {
             m[i][j] = (int)(10 * i + j);
             printf("%3d", m[i][j]);
         }

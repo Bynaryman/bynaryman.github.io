@@ -1,8 +1,2 @@
-.reveal a.c-example-download {
-  display: inline-block; font-size: 36px; font-weight: 650;
-  color: #006644; background: #fff; border: 2px solid #006644;
-  padding: .35em .65em; border-radius: 4px; text-decoration: none;
-}
-.reveal a.c-example-download:hover { color: #00502e; border-color: #00502e; }
-.reveal a.c-example-download:focus-visible { outline: 3px solid #003b80; outline-offset: 3px; }
-@media print { .c-example-download { display: none !important; } }
+.reveal .terminal-example a { color: #00502e; text-decoration: underline; }
+.reveal .terminal-example a:focus-visible { outline: 3px solid #003b80; outline-offset: 3px; }

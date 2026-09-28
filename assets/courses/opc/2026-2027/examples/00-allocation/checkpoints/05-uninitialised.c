@@ -2,11 +2,11 @@
 #include <stdlib.h>
 
 int main(void) {
-    size_t count;
-    if (scanf("%zu", &count) != 1) return EXIT_FAILURE;
-    if (count == 0 || count > 1000) return EXIT_FAILURE;
+    int count;
+    if (scanf("%d", &count) != 1) return EXIT_FAILURE;
+    if (count <= 0 || count > 1000) return EXIT_FAILURE;
     // slide:allocation:begin
-    int *p = malloc(count * sizeof *p);
+    int *p = malloc(count * sizeof(int));
     if (p == NULL) {
         fputs("Allocation failed\n", stderr);
         return EXIT_FAILURE;

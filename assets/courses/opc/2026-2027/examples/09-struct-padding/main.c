@@ -14,8 +14,9 @@ struct interleaved {
 };
 // slide:types:end
 int main(void) {
-    printf("int=%zu float=%zu\n", sizeof(int), sizeof(float));
-    printf("grouped: %zu bytes; ratio at %zu\n", sizeof(struct grouped), offsetof(struct grouped, ratio));
-    printf("mixed:   %zu bytes; ratio at %zu\n", sizeof(struct interleaved), offsetof(struct interleaved, ratio));
+    // These small sizes fit in int; convert explicitly for printf("%d").
+    printf("int=%d float=%d\n", (int)sizeof(int), (int)sizeof(float));
+    printf("grouped: %d bytes; ratio at %d\n", (int)sizeof(struct grouped), (int)offsetof(struct grouped, ratio));
+    printf("mixed:   %d bytes; ratio at %d\n", (int)sizeof(struct interleaved), (int)offsetof(struct interleaved, ratio));
     return EXIT_SUCCESS;
 }

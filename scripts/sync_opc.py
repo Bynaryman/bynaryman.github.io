@@ -17,8 +17,8 @@ import zipfile
 SITE = Path(__file__).resolve().parents[1]
 DESTINATION = SITE / "assets/courses/opc/2026-2027"
 DECKS = ("01-allocation",)
-BUTTON = re.compile(
-    r'<button type="button" class="live-c-button" data-live-example="([a-z0-9-]+)"(?: data-live-stage="([a-z0-9-]+)")?>Run live C ↗</button>'
+TERMINAL = re.compile(
+    r'<div class="terminal-example" data-example="([a-z0-9-]+)" data-file="([a-z0-9/.-]+)">(.*?)</div>', re.DOTALL
 )
 EXAMPLE_TITLES = {
     "01-malloc": "100 integers",
@@ -33,14 +33,8 @@ EXAMPLE_TITLES = {
     "14-memory-layout": "Static and automatic storage",
     "19-types": "Enumerations and structure members",
 }
-DOWNLOAD_CSS = """.reveal a.c-example-download {
-  display: inline-block; font-size: 36px; font-weight: 650;
-  color: #006644; background: #fff; border: 2px solid #006644;
-  padding: .35em .65em; border-radius: 4px; text-decoration: none;
-}
-.reveal a.c-example-download:hover { color: #00502e; border-color: #00502e; }
-.reveal a.c-example-download:focus-visible { outline: 3px solid #003b80; outline-offset: 3px; }
-@media print { .c-example-download { display: none !important; } }
+DOWNLOAD_CSS = """.reveal .terminal-example a { color: #00502e; text-decoration: underline; }
+.reveal .terminal-example a:focus-visible { outline: 3px solid #003b80; outline-offset: 3px; }
 """
 BUNDLE_MAKEFILE = """PYTHON ?= python3
 .PHONY: help serve present slides pdf figures
@@ -66,50 +60,32 @@ Original PowerPoints are not included in this bundle.
 See cours/SOURCE-MAP.md for coverage and cours/assets/ATTRIBUTIONS.md for credits.
 Original authorship is retained; this bundle does not grant a new blanket licence.
 
-## Start the slides and live C
+## Present and run C
 
-On Linux or WSL, install Python 3, GCC, Make and Valgrind using your system's
-package manager. From this extracted opc-course directory, run:
-
-```sh
-make serve
-```
-
-Open http://127.0.0.1:8877/01-allocation.html. Keep the terminal running; Ctrl+C stops
-it. Choose Run live C, edit the highlighted C source, and Compile & run (Ctrl+Enter).
-Select Valgrind for memory diagnostics. Each run compiles a fresh native program.
-The local presenter executes trusted code as your user; it is not a sandbox.
-Save permanent edits in demos/<example>/main.c; browser edits are temporary.
-
-You can also run examples in a terminal, from this course directory:
+Open cours/_output/01-allocation.html in Firefox. No server is needed.
+Install GCC, Make and Valgrind on Linux or WSL, then run:
 
 ```sh
 cd demos/00-allocation
 vim main.c
 make run
-make valgrind
+vim checkpoints/03-heap.c
+make run STEP=03-heap       # Enter 100
+make valgrind STEP=04-overrun  # Enter 4; an error is expected
 ```
 
-Start with the four-element array in main.c. The Step menu and
-demos/00-allocation/README.md give seven saved versions of the same program.
-To run a checkpoint in the terminal, use make run STEP=03-heap and enter 100.
+Each slide shows its source file and command. Run the command inside that
+example's folder. See demos/00-allocation/README.md for the saved versions,
+and docs/allocation-runbook.md for the 90-minute sequence and repairs.
 
-Some examples deliberately contain errors. See their README files and
-docs/allocation-runbook.md for the intended investigation and repair sequence.
+## Rebuild or print
 
-## View or rebuild
+Rendered slides and PDFs are included. To rebuild, install Quarto and run
+make slides. PDF rendering (make pdf) also requires LuaLaTeX, Beamer and the
+DejaVu fonts. To change diagrams, edit cours/figures and run make figures
+(Python 3, LuaLaTeX, TikZ and Poppler required).
 
-For static viewing, open the HTML or PDFs in cours/_output. PDFs contain one slide
-per page; your PDF viewer can print four pages per sheet. Static HTML opened as
-a file displays the slides, but live C requires the presenter above.
-
-Rendered slides are included: Quarto is not required for make serve.
-To rebuild, install Quarto and run make slides, or make present to rebuild and
-start the presenter. PDF rendering (make pdf) additionally requires LuaLaTeX,
-Beamer, DejaVu Sans and DejaVu Sans Mono. To change a diagram, edit its TikZ source
-under cours/figures and run make figures (LuaLaTeX, TikZ and Poppler required).
-The C editor is already bundled; rebuilding it is documented in
-cours/_extensions/live-c/README.md.
+PDFs have one slide per page. Select four pages per sheet when printing.
 """
 
 
@@ -142,38 +118,29 @@ def main():
     # Validate the known export shape before changing the website assets.
     static_html = {}
     examples = set()
-    source_files = {}
     diagrams = set()
     for deck in DECKS:
         html = (output / f"{deck}.html").read_text()
         diagrams.update(re.findall(r'assets/diagrams/([a-z0-9-]+)\.svg', html))
-        buttons = list(BUTTON.finditer(html))
-        names = [match[1] for match in buttons]
-        if not names or "RevealLiveC," not in html:
-            parser.error(f"Unrecognized live-C markup in {deck}; update this exporter.")
-        for name in names:
-            if not (source / "demos" / name / "main.c").is_file():
-                parser.error(f"Missing example: {name}")
-        examples.update(names)
-        # Included code regions also need their sources, even without a button.
+        cues = list(TERMINAL.finditer(html))
+        if not cues or "RevealLiveC," in html:
+            parser.error(f"Unrecognized terminal-demo markup in {deck}; update this exporter.")
+        for match in cues:
+            name, file = match[1], match[2]
+            example_dir = (source / "demos" / name).resolve()
+            source_file = (example_dir / file).resolve()
+            if not source_file.is_relative_to(example_dir) or not source_file.is_file():
+                parser.error(f"Missing or invalid example: {name}/{file}")
+            examples.add(name)
         qmd = (source / "cours" / f"{deck}.qmd").read_text()
         examples.update(re.findall(r'file="\.\./demos/([a-z0-9-]+)/', qmd))
-        for match in buttons:
-            name, step = match[1], match[2]
-            file = "main.c"
-            if step:
-                stages = json.loads((source / "demos" / name / "steps.json").read_text())
-                selected = next(item for item in stages if item["id"] == step)
-                file = selected["file"]
-            source_files[(name, step)] = file
-        html = BUTTON.sub(
-            lambda match: f'<a class="c-example-download" href="examples/{match[1]}/{source_files[(match[1], match[2])]}" '
-                          f'download="{match[1]}-{match[2] or "main"}.c" aria-label="Download C example: {match[1]}">Download C example ↓</a>',
-            html,
+        # Make the existing path a download link without adding another slide row.
+        html = TERMINAL.sub(
+            lambda match: match[0].replace(
+                f'<code>demos/{match[1]}/{match[2]}</code>',
+                f'<a href="examples/{match[1]}/{match[2]}" download><code>demos/{match[1]}/{match[2]}</code></a>'
+            ), html,
         )
-        # Public slides offer downloads. Keep the original live plugin in the ZIP.
-        html = re.sub(r'^.*<(?:script|link)\b[^\n]*reveal-live-c/[^\n]*\n', "", html, flags=re.MULTILINE)
-        html = html.replace("RevealLiveC,", "")
         html = html.replace("</head>", '<link rel="stylesheet" href="downloads.css">\n</head>')
         static_html[deck] = html
 
@@ -194,7 +161,7 @@ def main():
             file.unlink()
     for deck, html in static_html.items():
         (DESTINATION / f"{deck}.html").write_text(html)
-        shutil.rmtree(DESTINATION / f"{deck}_files/libs/revealjs/plugin/reveal-live-c")
+        shutil.rmtree(DESTINATION / f"{deck}_files/libs/revealjs/plugin/reveal-live-c", ignore_errors=True)
     (DESTINATION / "downloads.css").write_text(DOWNLOAD_CSS)
     for name in sorted(examples):
         target = DESTINATION / "examples" / name

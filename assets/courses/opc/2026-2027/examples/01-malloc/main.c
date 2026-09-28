@@ -2,15 +2,15 @@
 #include <stdlib.h>
 int main(void) {
     // slide:allocation:begin
-    size_t count = 100;
-    int *p = malloc(count * sizeof *p);
+    int count = 100;
+    int *p = malloc(count * sizeof(int));
     if (p == NULL) {
         fputs("Allocation failed\n", stderr);
         return EXIT_FAILURE;
     }
     // slide:allocation:end
     // slide:use:begin
-    for (size_t i = 0; i < count; ++i)
+    for (int i = 0; i < count; ++i)
         p[i] = 0;
     printf("first=%d, last=%d\n", p[0], p[count - 1]);
     // slide:use:end

@@ -24,9 +24,9 @@ Start with `demos/00-allocation/main.c`. The saved steps below develop the same 
 #include <stdlib.h>
 
 int main(void) {
-    size_t count = 4;
+    int count = 4;
     int p[4];
-    for (size_t i = 0; i < count; ++i)
+    for (int i = 0; i < count; ++i)
         p[i] = 0;
     printf("first=%d, last=%d\n", p[0], p[count - 1]);
     return EXIT_SUCCESS;
@@ -47,14 +47,14 @@ int main(void) {
 #include <stdlib.h>
 
 int main(void) {
-    size_t count;
+    int count;
     int p[4];
-    if (scanf("%zu", &count) != 1) return EXIT_FAILURE;
-    if (count == 0 || count > 4) {
+    if (scanf("%d", &count) != 1) return EXIT_FAILURE;
+    if (count <= 0 || count > 4) {
         fputs("Choose 1 to 4: the array has four elements.\n", stderr);
         return EXIT_FAILURE;
     }
-    for (size_t i = 0; i < count; ++i)
+    for (int i = 0; i < count; ++i)
         p[i] = 0;
     printf("first=%d, last=%d\n", p[0], p[count - 1]);
     return EXIT_SUCCESS;
@@ -75,15 +75,15 @@ int main(void) {
 #include <stdlib.h>
 
 int main(void) {
-    size_t count;
-    if (scanf("%zu", &count) != 1) return EXIT_FAILURE;
-    if (count == 0 || count > 1000) return EXIT_FAILURE;
-    int *p = malloc(count * sizeof *p);
+    int count;
+    if (scanf("%d", &count) != 1) return EXIT_FAILURE;
+    if (count <= 0 || count > 1000) return EXIT_FAILURE;
+    int *p = malloc(count * sizeof(int));
     if (p == NULL) {
         fputs("Allocation failed\n", stderr);
         return EXIT_FAILURE;
     }
-    for (size_t i = 0; i < count; ++i)
+    for (int i = 0; i < count; ++i)
         p[i] = 0;
     printf("first=%d, last=%d\n", p[0], p[count - 1]);
     free(p);
@@ -105,15 +105,15 @@ int main(void) {
 #include <stdlib.h>
 
 int main(void) {
-    size_t count;
-    if (scanf("%zu", &count) != 1) return EXIT_FAILURE;
-    if (count == 0 || count > 1000) return EXIT_FAILURE;
-    int *p = malloc(count * sizeof *p);
+    int count;
+    if (scanf("%d", &count) != 1) return EXIT_FAILURE;
+    if (count <= 0 || count > 1000) return EXIT_FAILURE;
+    int *p = malloc(count * sizeof(int));
     if (p == NULL) {
         fputs("Allocation failed\n", stderr);
         return EXIT_FAILURE;
     }
-    for (size_t i = 0; i <= count; ++i)
+    for (int i = 0; i <= count; ++i)
         p[i] = 0;
     printf("first=%d, last=%d\n", p[0], p[count - 1]);
     free(p);
@@ -135,10 +135,10 @@ int main(void) {
 #include <stdlib.h>
 
 int main(void) {
-    size_t count;
-    if (scanf("%zu", &count) != 1) return EXIT_FAILURE;
-    if (count == 0 || count > 1000) return EXIT_FAILURE;
-    int *p = malloc(count * sizeof *p);
+    int count;
+    if (scanf("%d", &count) != 1) return EXIT_FAILURE;
+    if (count <= 0 || count > 1000) return EXIT_FAILURE;
+    int *p = malloc(count * sizeof(int));
     if (p == NULL) {
         fputs("Allocation failed\n", stderr);
         return EXIT_FAILURE;
@@ -163,15 +163,15 @@ int main(void) {
 #include <stdlib.h>
 
 int main(void) {
-    size_t count;
-    if (scanf("%zu", &count) != 1) return EXIT_FAILURE;
-    if (count == 0 || count > 1000) return EXIT_FAILURE;
-    int *p = malloc(count * sizeof *p);
+    int count;
+    if (scanf("%d", &count) != 1) return EXIT_FAILURE;
+    if (count <= 0 || count > 1000) return EXIT_FAILURE;
+    int *p = malloc(count * sizeof(int));
     if (p == NULL) {
         fputs("Allocation failed\n", stderr);
         return EXIT_FAILURE;
     }
-    for (size_t i = 0; i < count; ++i)
+    for (int i = 0; i < count; ++i)
         p[i] = 0;
     printf("first=%d, last=%d\n", p[0], p[count - 1]);
     p = NULL;
@@ -194,15 +194,15 @@ int main(void) {
 #include <stdlib.h>
 
 int main(void) {
-    size_t count;
-    if (scanf("%zu", &count) != 1) return EXIT_FAILURE;
-    if (count == 0 || count > 1000) return EXIT_FAILURE;
-    int *p = malloc(count * sizeof *p);
+    int count;
+    if (scanf("%d", &count) != 1) return EXIT_FAILURE;
+    if (count <= 0 || count > 1000) return EXIT_FAILURE;
+    int *p = malloc(count * sizeof(int));
     if (p == NULL) {
         fputs("Allocation failed\n", stderr);
         return EXIT_FAILURE;
     }
-    for (size_t i = 0; i < count; ++i)
+    for (int i = 0; i < count; ++i)
         p[i] = 0;
     free(p);
     printf("first=%d, last=%d\n", p[0], p[count - 1]);
@@ -225,13 +225,13 @@ int main(void) {
 #include <stdio.h>
 #include <stdlib.h>
 int main(void) {
-    size_t count = 100;
-    int *p = malloc(count * sizeof *p);
+    int count = 100;
+    int *p = malloc(count * sizeof(int));
     if (p == NULL) {
         fputs("Allocation failed\n", stderr);
         return EXIT_FAILURE;
     }
-    for (size_t i = 0; i < count; ++i)
+    for (int i = 0; i < count; ++i)
         p[i] = 0;
     printf("first=%d, last=%d\n", p[0], p[count - 1]);
     free(p);
@@ -277,12 +277,12 @@ int main(void) {
 #include <stdio.h>
 #include <stdlib.h>
 int main(void) {
-    int *a = malloc(4 * sizeof *a);
+    int *a = malloc(4 * sizeof(int));
     if (!a) return EXIT_FAILURE;
-    for (size_t i = 0; i < 4; ++i)
+    for (int i = 0; i < 4; ++i)
         a[i] = (int)(10 * (i + 1));
-    for (size_t i = 0; i < 4; ++i)
-        printf("a[%zu]=%d at %p\n", i, a[i], (void *)&a[i]);
+    for (int i = 0; i < 4; ++i)
+        printf("a[%d]=%d at %p\n", i, a[i], (void *)&a[i]);
     free(a);
     return EXIT_SUCCESS;
 }
@@ -302,11 +302,11 @@ int main(void) {
 #include <stdlib.h>
 #include <string.h>
 int main(void) {
-    char *s = malloc(4 * sizeof *s);
+    char *s = malloc(4 * sizeof(char));
     if (!s) return EXIT_FAILURE;
     strcpy(s, "cat");  // Three letters and the terminator.
-    for (size_t i = 0; i < 4; ++i)
-        printf("s[%zu] = %u\n", i, (unsigned char)s[i]);
+    for (int i = 0; i < 4; ++i)
+        printf("s[%d] = %u\n", i, (unsigned char)s[i]);
     puts(s);
     free(s);
     return EXIT_SUCCESS;
@@ -326,14 +326,14 @@ int main(void) {
 #include <stdio.h>
 #include <stdlib.h>
 int main(void) {
-    size_t rows = 4, cols = 3;
-    int *m = malloc(rows * cols * sizeof *m);
+    int rows = 4, cols = 3;
+    int *m = malloc(rows * cols * sizeof(int));
     if (!m) return EXIT_FAILURE;
-    for (size_t i = 0; i < rows; ++i)
-        for (size_t j = 0; j < cols; ++j)
+    for (int i = 0; i < rows; ++i)
+        for (int j = 0; j < cols; ++j)
             m[i * cols + j] = (int)(10 * i + j);
-    for (size_t i = 0; i < rows; ++i) {
-        for (size_t j = 0; j < cols; ++j) printf("%3d", m[i * cols + j]);
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) printf("%3d", m[i * cols + j]);
         puts("");
     }
     free(m);
@@ -355,9 +355,9 @@ int main(void) {
 #include <stdlib.h>
 int main(void) {
     int *m[4];
-    size_t i = 0;
+    int i = 0;
     for (; i < 4; ++i) {
-        m[i] = malloc(3 * sizeof *m[i]);
+        m[i] = malloc(3 * sizeof(int));
         if (!m[i]) break;
     }
     if (i != 4) {
@@ -365,7 +365,7 @@ int main(void) {
         return EXIT_FAILURE;
     }
     for (i = 0; i < 4; ++i) {
-        for (size_t j = 0; j < 3; ++j) {
+        for (int j = 0; j < 3; ++j) {
             m[i][j] = (int)(10 * i + j);
             printf("%3d", m[i][j]);
         }
@@ -389,12 +389,12 @@ int main(void) {
 #include <stdio.h>
 #include <stdlib.h>
 int main(void) {
-    size_t rows = 4, cols = 3;
-    int **m = malloc(rows * sizeof *m);
+    int rows = 4, cols = 3;
+    int **m = malloc(rows * sizeof(int *));
     if (!m) return EXIT_FAILURE;
-    size_t i = 0;
+    int i = 0;
     for (; i < rows; ++i) {
-        m[i] = malloc(cols * sizeof *m[i]);
+        m[i] = malloc(cols * sizeof(int));
         if (!m[i]) break;
     }
     if (i != rows) {
@@ -403,7 +403,7 @@ int main(void) {
         return EXIT_FAILURE;
     }
     for (i = 0; i < rows; ++i) {
-        for (size_t j = 0; j < cols; ++j) {
+        for (int j = 0; j < cols; ++j) {
             m[i][j] = (int)(10 * i + j);
             printf("%3d", m[i][j]);
         }
@@ -439,9 +439,10 @@ struct interleaved {
     float ratio;
 };
 int main(void) {
-    printf("int=%zu float=%zu\n", sizeof(int), sizeof(float));
-    printf("grouped: %zu bytes; ratio at %zu\n", sizeof(struct grouped), offsetof(struct grouped, ratio));
-    printf("mixed:   %zu bytes; ratio at %zu\n", sizeof(struct interleaved), offsetof(struct interleaved, ratio));
+    // These small sizes fit in int; convert explicitly for printf("%d").
+    printf("int=%d float=%d\n", (int)sizeof(int), (int)sizeof(float));
+    printf("grouped: %d bytes; ratio at %d\n", (int)sizeof(struct grouped), (int)offsetof(struct grouped, ratio));
+    printf("mixed:   %d bytes; ratio at %d\n", (int)sizeof(struct interleaved), (int)offsetof(struct interleaved, ratio));
     return EXIT_SUCCESS;
 }
 ```

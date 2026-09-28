@@ -3,12 +3,12 @@
 #include <string.h>
 int main(void) {
     // slide:string:begin
-    char *s = malloc(4 * sizeof *s);
+    char *s = malloc(4 * sizeof(char));
     if (!s) return EXIT_FAILURE;
     strcpy(s, "cat");  // Three letters and the terminator.
     // slide:string:end
-    for (size_t i = 0; i < 4; ++i)
-        printf("s[%zu] = %u\n", i, (unsigned char)s[i]);
+    for (int i = 0; i < 4; ++i)
+        printf("s[%d] = %u\n", i, (unsigned char)s[i]);
     puts(s);
     free(s);
     return EXIT_SUCCESS;
