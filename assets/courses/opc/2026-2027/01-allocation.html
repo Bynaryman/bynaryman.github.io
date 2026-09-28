@@ -297,10 +297,9 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <div class="lesson-flow">
 <p>Keep <strong><code>hello</code></strong> in the original.</p>
 <p>Change its copy to <strong><code>Hello</code></strong>.</p>
-<div class="terminal-example" data-example="allocation" data-file="01-copy-alias.c"><p><a href="examples/allocation/01-copy-alias.c" download><code>demos/allocation/01-copy-alias.c</code></a></p><p>Terminal: <code>make run FILE=01-copy-alias.c</code></p></div>
 </div>
 <aside class="notes">
-<p>Open 01-copy-alias.c in Vim. State the desired two outputs before reading the code. Ask whether assigning original to copy makes a separate string. Run before revealing the next slide’s result. original is a writable character array, not a pointer to a string literal. All opening examples stay inside main and need no input. Teaching sequence inspired by CS50 Lecture 4, Copying and malloc: https://cs50.harvard.edu/college/2025/spring/notes/4/#copying-and-malloc . These are independent OPC examples using the standard C library, without get_string or the CS50 string alias.</p>
+<p>State only the goal: preserve hello in original and change the copy to Hello. Do not run anything here. Advance to the next slide to read the code and collect predictions before the first run. original is a writable character array, not a pointer to a string literal. All opening examples stay inside main and need no input. Teaching sequence inspired by CS50 Lecture 4, Copying and malloc: https://cs50.harvard.edu/college/2025/spring/notes/4/#copying-and-malloc . These are independent OPC examples using the standard C library, without get_string or the CS50 string alias.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -315,7 +314,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 </div>
 </section>
 <section id="copy-alias" class="slide level2">
-<h2>Did we copy the characters?</h2>
+<h2>What will the two lines print?</h2>
 <div class="slide-body">
 <div class="lesson-flow">
 <div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> original<span class="op">[]</span> <span class="op">=</span> <span class="st">"hello"</span><span class="op">;</span></span>
@@ -330,7 +329,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 </div>
 </div>
 <aside class="notes">
-<p>Ask for both outputs, run make run FILE=01-copy-alias.c, then reveal the observed result. The code is valid C and Valgrind reports no memory error. This is a logical mistake: the output fails our intended independent-copy behaviour. Do not describe it as a crash or an invalid write.</p>
+<p>Keep the output fragment hidden. Read the code together, then ask students to predict both printed lines and explain their reasoning. Only after collecting answers, switch to Vim/terminal and run make run FILE=live-copy.c in demos/allocation, using the working copy prepared from 01-copy-alias.c. Saved-file fallback: make run FILE=01-copy-alias.c. Return to this slide and press Right once to reveal the observed result. This is the only run across slides 6–8. The code is valid C and Valgrind reports no memory error. This is a logical mistake: the output fails our intended independent-copy behaviour. Do not describe it as a crash or an invalid write.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -356,7 +355,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 </div>
 </div>
 <aside class="notes">
-<p>Trace copy[0] to original[0]. original is the array itself; copy is a pointer to its first character. We need separate writable storage to keep the original unchanged. A second array could also do this. Here we learn malloc as a way to request that storage; do not claim it is the only solution or that runtime-sized arrays are impossible.</p>
+<p>Do not run again. Ask why the original changed in the run just observed. Trace copy[0] to original[0], then reveal the address explanation. original is the array itself; copy is a pointer to its first character. We need separate writable storage to keep the original unchanged. A second array could also do this. Here we learn malloc as a way to request that storage; do not claim it is the only solution or that runtime-sized arrays are impossible.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
