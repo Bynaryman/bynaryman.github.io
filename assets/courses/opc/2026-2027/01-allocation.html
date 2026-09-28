@@ -259,14 +259,20 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <section id="roadmap" class="slide level2">
 <h2>Today</h2>
 <div class="slide-body">
+<div class="lesson-flow">
+<div>
+<p><strong>Dynamic memory allocation on the heap</strong></p>
+<p>We open an image and discover its dimensions. Where do we store its pixels?</p>
+</div>
 <ol type="1">
-<li>Copy a string.</li>
-<li>Arrays and memory errors.</li>
-<li>Arrays, strings and matrices.</li>
-<li>User-defined types.</li>
+<li>Make an independent copy.</li>
+<li>Store values and find memory errors.</li>
+<li>Organise arrays, strings and matrices.</li>
+<li>Group data with user-defined types.</li>
 </ol>
+</div>
 <aside class="notes">
-<p>Keep Vim and a terminal beside Firefox. Start each investigation with a question, ask for a prediction, edit/run the C program, read the actual diagnostic, then use the slide to explain the fix. Use the quiz breaks to check understanding; there are no per-section time targets.</p>
+<p>Say: “An image editor opens a file, discovers its dimensions and needs storage for its pixels. It may also need a separate copy to edit while preserving the original. Today we learn how to request that storage on the heap, use it correctly and release it.” This motivates allocation without claiming that malloc is the only way to use a runtime size. We are not implementing an image decoder: use a tiny string to make copying visible, integers to learn byte counts and initialisation, then matrices to organise rows and columns. Structures group related data; retain the source course’s address example. Keep Vim and a terminal beside Firefox. Ask for a prediction, edit/run C, inspect the result, then explain with the slide. There are no per-section time targets.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -555,13 +561,27 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <section>
 <section id="section-errors" class="title-slide slide level1 center">
 <h1>2. Arrays and memory errors</h1>
-<p>The same operations, with integers.</p>
+<p>We copied existing characters. Now we create an array of values.</p>
+<p>How many <strong>bytes</strong>? What values are there <strong>before we write</strong>?</p>
+<aside class="notes">
+<p>Say: “strcpy filled our allocation with existing characters. What if we need fresh storage for numbers, such as a row of pixel intensities? malloc gives us bytes, but we must calculate how many and write the values ourselves.” The next integer program uses zero values so the later memory faults are easy to isolate. This is a simple numeric model; image formats need not store pixels as C int values.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="runtime-size" class="slide level2">
 <h2>How much space for integers?</h2>
 <div class="slide-body">
 <div class="lesson-flow">
-<p>The user asks for <strong>100 integers</strong>.</p>
+<p>We need space for <strong>100 values</strong>, initially set to zero.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>p <span class="op">=</span> malloc<span class="op">(</span>count <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">));</span></span>
 <span id="cb8-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>p <span class="op">==</span> NULL<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb8-3"><a href="" aria-hidden="true" tabindex="-1"></a>    fputs<span class="op">(</span><span class="st">"Allocation failed</span><span class="sc">\n</span><span class="st">"</span><span class="op">,</span> stderr<span class="op">);</span></span>
@@ -570,7 +590,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <div class="terminal-example" data-example="allocation" data-file="05-integers.c"><p><a href="examples/allocation/05-integers.c" download><code>demos/allocation/05-integers.c</code></a></p><p>Terminal: <code>make run FILE=05-integers.c</code></p></div>
 </div>
 <aside class="notes">
-<p>Open 05-integers.c as a new worked example, not another fault in the string program. Enter 100, then 4. Inspect the complete program: bounded input 1–1000, count * sizeof(int), NULL check, a loop writing zero, printf, then free. Run make valgrind FILE=05-integers.c with 100 to establish a clean baseline before the next four faults. This retains the original slide 292’s 100-integer demonstration. Some C implementations support VLAs; runtime size alone is not an impossibility proof. The no-VLA compiler flag is a course-scope choice only.</p>
+<p>Say: “For a string, strcpy wrote the characters into the new block. For our numbers, a loop will write the initial values.” Open 05-integers.c as a new worked example, not another fault in the string program. Enter 100, then 4. Inspect the complete program: bounded input 1–1000, count * sizeof(int), NULL check, a loop writing zero, printf, then free. Run make valgrind FILE=05-integers.c with 100 to establish a clean baseline before the next four faults. This retains the original slide 292’s 100-integer demonstration. Some C implementations support VLAs; runtime size alone is not an impossibility proof. The no-VLA compiler flag is a course-scope choice only.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -598,7 +618,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p>Sizes depend on the platform. In C, the <code>void *</code> result needs no cast.</p>
 </div>
 <aside class="notes">
-<p>Connect back to the character copy: one byte per char, sizeof(int) bytes per int. Inspect count * sizeof(int) in the program just run. sizeof is an operator, not a function. size_t is unsigned and can represent at least 0 through 65535. No cast of malloc is required in C. For unrestricted external counts, check multiplication overflow before allocation.</p>
+<p>Make the new point explicit: malloc takes bytes, whatever the element type. The string needed one byte per char; the numeric array needs sizeof(int) bytes per int. strcpy performed the writes in the opening; here our loop performs them. Inspect count * sizeof(int) in the program just run. sizeof is an operator, not a function. size_t is unsigned and can represent at least 0 through 65535. No cast of malloc is required in C. For unrestricted external counts, check multiplication overflow before allocation.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1023,7 +1043,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <section>
 <section id="section-arrays" class="title-slide slide level1 center">
 <h1>3. Arrays, strings and matrices</h1>
-<p>Allocate data, then locate each element.</p>
+<p>An image is a grid of values. How can we organise its rows in memory?</p>
 </section>
 <section id="array" class="slide level2">
 <h2>A one-dimensional integer array</h2>
@@ -1160,7 +1180,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p>One allocation, one <strong><code>free(m)</code></strong>.</p>
 <div class="terminal-example" data-example="allocation" data-file="13-matrix-flat.c"><p><a href="examples/allocation/13-matrix-flat.c" download><code>demos/allocation/13-matrix-flat.c</code></a></p><p>Terminal: <code>make run FILE=13-matrix-flat.c</code></p></div>
 <aside class="notes">
-<p>Open allocation/13-matrix-flat.c, run it, and locate m[i * columns + j] before showing the diagram. Generalise to rows * columns * sizeof(type). Index = i * columns + j. Count rows/columns and bytes; do not confuse the flat pointer with an int**. The complete example checks malloc.</p>
+<p>Connect back to the opening motivation: imagine a tiny grayscale image with four rows and three intensity values per row. This int matrix illustrates the layout, not a particular image-file format. Open allocation/13-matrix-flat.c, run it, and locate m[i * columns + j] before showing the diagram. Generalise to rows * columns * sizeof(type). Index = i * columns + j. Count rows/columns and bytes; do not confuse the flat pointer with an int**. The complete example checks malloc.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
