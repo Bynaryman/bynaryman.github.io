@@ -54,38 +54,36 @@ BUNDLE_README = """# OPC · C programming
 
 Louis Ledoux · ISTIC, University of Rennes · 2026–2027
 
-English adaptation of A. Kritikakou's OPC teaching material. Allocation and
-user-defined types follow CM/CM-all-2025.pptx, slides 281–312.
-Original PowerPoints are not included in this bundle.
-See cours/SOURCE-MAP.md for coverage and cours/assets/ATTRIBUTIONS.md for credits.
-Original authorship is retained; this bundle does not grant a new blanket licence.
-
-## Present and run C
+## Slides and C examples
 
 Open cours/_output/01-allocation.html in Firefox. No server is needed.
+Use demos/allocation/README.md: files 01 through 17 are in lecture order.
 Install GCC, Make and Valgrind on Linux or WSL, then run:
 
 ```sh
-cd demos/00-allocation
-vim main.c
-make run
-vim checkpoints/03-missing-free.c
-make run STEP=03-missing-free       # Enter 100
-make valgrind STEP=03-missing-free  # Observe the leak; add free after printf
+cd demos/allocation
+vim 01-fixed-array.c
+make run FILE=01-fixed-array.c
 ```
 
-Each slide shows its source file and command. Run the command inside that
-example's folder. See demos/00-allocation/README.md for the saved versions,
-and docs/allocation-runbook.md for the 90-minute sequence and repairs.
+Open the next numbered file and pass the same filename to Make.
+For example: make valgrind FILE=07-dangling.c (enter 4).
+Files 05–08 each introduce one fault into the working 04-free.c program.
+Repair and rerun each before continuing. See docs/allocation-runbook.md.
 
 ## Rebuild or print
 
-Rendered slides and PDFs are included. To rebuild, install Quarto and run
-make slides. PDF rendering (make pdf) also requires LuaLaTeX, Beamer and the
-DejaVu fonts. To change diagrams, edit cours/figures and run make figures
-(Python 3, LuaLaTeX, TikZ and Poppler required).
+Rendered HTML and PDF are included. Rebuild with Quarto: make slides.
+PDF rendering also needs LuaLaTeX, Beamer and DejaVu fonts: make pdf.
+Edit TikZ diagrams in cours/figures and run make figures (Poppler required).
+The PDF has one slide per page; choose four pages per sheet when printing.
 
-PDFs have one slide per page. Select four pages per sheet when printing.
+## Sources
+
+Required content: A. Kritikakou's CM/CM-all-2025.pptx, slides 281–312.
+See cours/SOURCE-MAP.md and cours/assets/ATTRIBUTIONS.md. Original authorship
+is retained; this bundle does not grant a new blanket licence.
+Original PowerPoints are not included.
 """
 
 
@@ -134,6 +132,7 @@ def main():
             examples.add(name)
         qmd = (source / "cours" / f"{deck}.qmd").read_text()
         examples.update(re.findall(r'demos/([a-z0-9-]+)/', qmd))
+        examples.discard("reference")
         # Make the existing path a download link without adding another slide row.
         html = TERMINAL.sub(
             lambda match: match[0].replace(
@@ -172,30 +171,36 @@ def main():
             shutil.copy2(file, copy)
 
     page = ['---', 'layout: page', 'title: OPC · C examples', 'permalink: /courses/opc/examples/',
-            'description: Source files for the dynamic memory lecture.', 'nav: false', '---', '',
+            'description: C files in lecture order.', 'nav: false', '---', '',
             "[Course and download]({{ '/courses/opc/' | relative_url }})", '',
-            'Start with `demos/00-allocation/main.c`. The saved steps below develop the same program.', '',
-            '## Allocation and memory errors', '']
-    def show_code(name, step, label, file, opened=False):
-        text = (source / 'demos' / name / file).read_text()
-        text = re.sub(r'^[ \t]*// slide:[^\n]*\n', '', text, flags=re.MULTILINE)
-        page.extend([f'<details id="{name}-{step}" markdown="1"' + (' open>' if opened else '>'),
-                     f'<summary>{html_lib.escape(label)}</summary>', '',
-                     '`demos/' + name + '/' + file + '`', '',
-                     "[Download C]({{ '/assets/courses/opc/2026-2027/examples/" + name + '/' + file + "' | relative_url }})", '',
-                     '```c', text.rstrip(), '```', '', '</details>', ''])
-    stages = json.loads((source / 'demos/00-allocation/steps.json').read_text())
+            'Follow **01 → 17**, all in `demos/allocation/`.', '',
+            '```sh', 'cd demos/allocation', 'vim 01-fixed-array.c',
+            'make run FILE=01-fixed-array.c', '```', '',
+            'Files 01–04 develop one working program. Each of 05–08 introduces one fault into 04-free.c. '
+            'Repair and rerun it before opening the next file.', '']
+    stages = json.loads((source / 'demos/allocation/steps.json').read_text())
+    section = None
     for index, stage in enumerate(stages):
-        show_code('00-allocation', stage['id'], stage['label'], stage['file'], opened=index == 0)
-    page.extend(['## Other examples', ''])
-    for name in sorted(examples - {'00-allocation'}):
-        show_code(name, 'main', EXAMPLE_TITLES.get(name, name), 'main.c')
+        if stage['section'] != section:
+            section = stage['section']
+            page.extend(['## ' + section, ''])
+        file = stage['file']
+        text = (source / 'demos/allocation' / file).read_text()
+        text = re.sub(r'^[ \t]*// slide:[^\n]*\n', '', text, flags=re.MULTILINE)
+        mode = 'valgrind' if stage['mode'] == 'valgrind' else 'run'
+        page.extend([f'<details id="{stage["id"]}" markdown="1"' + (' open>' if index == 0 else '>'),
+                     f'<summary>{file} · {html_lib.escape(stage["label"])}</summary>', '',
+                     '```sh', f'vim {file}', f'make {mode} FILE={file}', '```', ''])
+        if stage['stdin']:
+            page.extend(['Enter **' + stage['stdin'].strip() + '**.', ''])
+        page.extend(["[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/" + file + "' | relative_url }})", '',
+                     '```c', text.rstrip(), '```', '', '</details>', ''])
     (SITE / '_pages/opc-examples.md').write_text('\n'.join(page))
 
     with zipfile.ZipFile(DESTINATION / "opc-course.zip", "w", zipfile.ZIP_DEFLATED) as archive:
         for relative in sorted(sources):
             name = relative.as_posix()
-            if relative.parts[0] == "demos" and len(relative.parts) > 2 and relative.parts[1] not in examples:
+            if relative.parts[0] == "demos" and len(relative.parts) > 2 and relative.parts[1] not in examples | {"reference"}:
                 continue
             if name.startswith(("cours/figures/", "cours/assets/diagrams/")) and relative.stem not in diagrams | {"style"}:
                 continue

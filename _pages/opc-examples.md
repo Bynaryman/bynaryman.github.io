@@ -2,22 +2,33 @@
 layout: page
 title: OPC · C examples
 permalink: /courses/opc/examples/
-description: Source files for the dynamic memory lecture.
+description: C files in lecture order.
 nav: false
 ---
 
 [Course and download]({{ '/courses/opc/' | relative_url }})
 
-Start with `demos/00-allocation/main.c`. The saved steps below develop the same program.
+Follow **01 → 17**, all in `demos/allocation/`.
 
-## Allocation and memory errors
+```sh
+cd demos/allocation
+vim 01-fixed-array.c
+make run FILE=01-fixed-array.c
+```
 
-<details id="00-allocation-01-array" markdown="1" open>
-<summary>Four integers</summary>
+Files 01–04 develop one working program. Each of 05–08 introduces one fault into 04-free.c. Repair and rerun it before opening the next file.
 
-`demos/00-allocation/main.c`
+## Allocate an array
 
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/00-allocation/main.c' | relative_url }})
+<details id="01-fixed-array" markdown="1" open>
+<summary>01-fixed-array.c · Four integers</summary>
+
+```sh
+vim 01-fixed-array.c
+make run FILE=01-fixed-array.c
+```
+
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/01-fixed-array.c' | relative_url }})
 
 ```c
 #include <stdio.h>
@@ -35,12 +46,17 @@ int main(void) {
 
 </details>
 
-<details id="00-allocation-02-capacity" markdown="1">
-<summary>Read the count</summary>
+<details id="02-capacity" markdown="1">
+<summary>02-capacity.c · Read a count; the array still holds four</summary>
 
-`demos/00-allocation/checkpoints/02-capacity.c`
+```sh
+vim 02-capacity.c
+make run FILE=02-capacity.c
+```
 
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/00-allocation/checkpoints/02-capacity.c' | relative_url }})
+Enter **100**.
+
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/02-capacity.c' | relative_url }})
 
 ```c
 #include <stdio.h>
@@ -63,12 +79,17 @@ int main(void) {
 
 </details>
 
-<details id="00-allocation-03-missing-free" markdown="1">
-<summary>Allocated, but not released</summary>
+<details id="03-missing-free" markdown="1">
+<summary>03-missing-free.c · Allocate by count; find the missing release</summary>
 
-`demos/00-allocation/checkpoints/03-missing-free.c`
+```sh
+vim 03-missing-free.c
+make valgrind FILE=03-missing-free.c
+```
 
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/00-allocation/checkpoints/03-missing-free.c' | relative_url }})
+Enter **100**.
+
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/03-missing-free.c' | relative_url }})
 
 ```c
 #include <stdio.h>
@@ -92,12 +113,17 @@ int main(void) {
 
 </details>
 
-<details id="00-allocation-03-heap" markdown="1">
-<summary>Repair: release after use</summary>
+<details id="04-free" markdown="1">
+<summary>04-free.c · Release after the final read</summary>
 
-`demos/00-allocation/checkpoints/03-heap.c`
+```sh
+vim 04-free.c
+make valgrind FILE=04-free.c
+```
 
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/00-allocation/checkpoints/03-heap.c' | relative_url }})
+Enter **100**.
+
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/04-free.c' | relative_url }})
 
 ```c
 #include <stdio.h>
@@ -122,12 +148,19 @@ int main(void) {
 
 </details>
 
-<details id="00-allocation-05-uninitialised" markdown="1">
-<summary>Skip initialisation</summary>
+## Memory errors
 
-`demos/00-allocation/checkpoints/05-uninitialised.c`
+<details id="05-uninitialised" markdown="1">
+<summary>05-uninitialised.c · Remove initialisation; inspect the read</summary>
 
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/00-allocation/checkpoints/05-uninitialised.c' | relative_url }})
+```sh
+vim 05-uninitialised.c
+make valgrind FILE=05-uninitialised.c
+```
+
+Enter **4**.
+
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/05-uninitialised.c' | relative_url }})
 
 ```c
 #include <stdio.h>
@@ -150,12 +183,17 @@ int main(void) {
 
 </details>
 
-<details id="00-allocation-04-overrun" markdown="1">
-<summary>One extra iteration</summary>
+<details id="06-overrun" markdown="1">
+<summary>06-overrun.c · Write one element too far</summary>
 
-`demos/00-allocation/checkpoints/04-overrun.c`
+```sh
+vim 06-overrun.c
+make valgrind FILE=06-overrun.c
+```
 
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/00-allocation/checkpoints/04-overrun.c' | relative_url }})
+Enter **4**.
+
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/06-overrun.c' | relative_url }})
 
 ```c
 #include <stdio.h>
@@ -180,12 +218,17 @@ int main(void) {
 
 </details>
 
-<details id="00-allocation-07-dangling" markdown="1">
-<summary>Free before reading</summary>
+<details id="07-dangling" markdown="1">
+<summary>07-dangling.c · Read after free</summary>
 
-`demos/00-allocation/checkpoints/07-dangling.c`
+```sh
+vim 07-dangling.c
+make valgrind FILE=07-dangling.c
+```
 
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/00-allocation/checkpoints/07-dangling.c' | relative_url }})
+Enter **4**.
+
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/07-dangling.c' | relative_url }})
 
 ```c
 #include <stdio.h>
@@ -210,12 +253,17 @@ int main(void) {
 
 </details>
 
-<details id="00-allocation-06-leak" markdown="1">
-<summary>Lose the address</summary>
+<details id="08-leak" markdown="1">
+<summary>08-leak.c · Lose the address before free</summary>
 
-`demos/00-allocation/checkpoints/06-leak.c`
+```sh
+vim 08-leak.c
+make valgrind FILE=08-leak.c
+```
 
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/00-allocation/checkpoints/06-leak.c' | relative_url }})
+Enter **4**.
+
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/08-leak.c' | relative_url }})
 
 ```c
 #include <stdio.h>
@@ -241,66 +289,17 @@ int main(void) {
 
 </details>
 
-## Other examples
+## Arrays, strings and matrices
 
-<details id="01-malloc-main" markdown="1">
-<summary>100 integers</summary>
+<details id="09-array" markdown="1">
+<summary>09-array.c · Array elements and their addresses</summary>
 
-`demos/01-malloc/main.c`
-
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/01-malloc/main.c' | relative_url }})
-
-```c
-#include <stdio.h>
-#include <stdlib.h>
-int main(void) {
-    int count = 100;
-    int *p = malloc(count * sizeof(int));
-    if (p == NULL) {
-        fputs("Allocation failed\n", stderr);
-        return EXIT_FAILURE;
-    }
-    for (int i = 0; i < count; ++i)
-        p[i] = 0;
-    printf("first=%d, last=%d\n", p[0], p[count - 1]);
-    free(p);
-    return EXIT_SUCCESS;
-}
+```sh
+vim 09-array.c
+make run FILE=09-array.c
 ```
 
-</details>
-
-<details id="03-leak-main" markdown="1">
-<summary>Pointer assignment and strings</summary>
-
-`demos/03-leak/main.c`
-
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/03-leak/main.c' | relative_url }})
-
-```c
-#include <stdio.h>
-#include <stdlib.h>
-int main(void) {
-    char *s = malloc(100);
-    if (!s) return EXIT_FAILURE;
-    // Intentional error from the original string example.
-    s = "hello";  // The allocated block is now unreachable.
-    char *p = s;
-    s = "bye";
-    printf("p=%s; s=%s\n", p, s);
-    // Neither pointer now points into the allocated block.
-    return EXIT_SUCCESS;
-}
-```
-
-</details>
-
-<details id="04-array-main" markdown="1">
-<summary>Array elements and addresses</summary>
-
-`demos/04-array/main.c`
-
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/04-array/main.c' | relative_url }})
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/09-array.c' | relative_url }})
 
 ```c
 #include <stdio.h>
@@ -319,12 +318,15 @@ int main(void) {
 
 </details>
 
-<details id="05-string-main" markdown="1">
-<summary>A string and its terminator</summary>
+<details id="10-string" markdown="1">
+<summary>10-string.c · Characters and the terminator</summary>
 
-`demos/05-string/main.c`
+```sh
+vim 10-string.c
+make run FILE=10-string.c
+```
 
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/05-string/main.c' | relative_url }})
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/10-string.c' | relative_url }})
 
 ```c
 #include <stdio.h>
@@ -344,12 +346,43 @@ int main(void) {
 
 </details>
 
-<details id="06-matrix-flat-main" markdown="1">
-<summary>Matrix in one block</summary>
+<details id="11-string-assignment" markdown="1">
+<summary>11-string-assignment.c · Pointer assignment is not copying text</summary>
 
-`demos/06-matrix-flat/main.c`
+```sh
+vim 11-string-assignment.c
+make valgrind FILE=11-string-assignment.c
+```
 
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/06-matrix-flat/main.c' | relative_url }})
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/11-string-assignment.c' | relative_url }})
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+int main(void) {
+    char *s = malloc(100);
+    if (!s) return EXIT_FAILURE;
+    // Intentional error from the original string example.
+    s = "hello";  // The allocated block is now unreachable.
+    char *p = s;
+    s = "bye";
+    printf("p=%s; s=%s\n", p, s);
+    // Neither pointer now points into the allocated block.
+    return EXIT_SUCCESS;
+}
+```
+
+</details>
+
+<details id="12-matrix-flat" markdown="1">
+<summary>12-matrix-flat.c · Matrix in one allocation</summary>
+
+```sh
+vim 12-matrix-flat.c
+make run FILE=12-matrix-flat.c
+```
+
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/12-matrix-flat.c' | relative_url }})
 
 ```c
 #include <stdio.h>
@@ -372,12 +405,15 @@ int main(void) {
 
 </details>
 
-<details id="07-matrix-rows-main" markdown="1">
-<summary>Matrix with a fixed row-pointer table</summary>
+<details id="13-matrix-rows" markdown="1">
+<summary>13-matrix-rows.c · Fixed pointer table; allocated rows</summary>
 
-`demos/07-matrix-rows/main.c`
+```sh
+vim 13-matrix-rows.c
+make run FILE=13-matrix-rows.c
+```
 
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/07-matrix-rows/main.c' | relative_url }})
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/13-matrix-rows.c' | relative_url }})
 
 ```c
 #include <stdio.h>
@@ -407,12 +443,15 @@ int main(void) {
 
 </details>
 
-<details id="08-matrix-dynamic-main" markdown="1">
-<summary>Matrix with an allocated row-pointer table</summary>
+<details id="14-matrix-dynamic" markdown="1">
+<summary>14-matrix-dynamic.c · Allocated pointer table and rows</summary>
 
-`demos/08-matrix-dynamic/main.c`
+```sh
+vim 14-matrix-dynamic.c
+make run FILE=14-matrix-dynamic.c
+```
 
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/08-matrix-dynamic/main.c' | relative_url }})
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/14-matrix-dynamic.c' | relative_url }})
 
 ```c
 #include <stdio.h>
@@ -446,12 +485,57 @@ int main(void) {
 
 </details>
 
-<details id="09-struct-padding-main" markdown="1">
-<summary>Structure padding</summary>
+## User-defined types
 
-`demos/09-struct-padding/main.c`
+<details id="15-types" markdown="1">
+<summary>15-types.c · Enumerations and structure members</summary>
 
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/09-struct-padding/main.c' | relative_url }})
+```sh
+vim 15-types.c
+make run FILE=15-types.c
+```
+
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/15-types.c' | relative_url }})
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+enum day { mon, tue, wed, thu, fri, sat, sun };
+struct address {
+    char street[100];
+    int number;
+};
+
+int main(void) {
+    enum day today;
+    today = wed;
+    printf("mon=%d, today=%d, sun=%d\n", mon, today, sun);
+    struct address home = { "Paul Bert", 12 };
+    printf("initial: %d %s\n", home.number, home.street);
+    strcpy(home.street, "Rue de Paris");
+    home.number = 14;
+    printf("dot:     %d %s\n", home.number, home.street);
+    struct address *p = &home;
+    strcpy(p->street, "Rue de Paris");
+    p->number = 16;
+    printf("arrow:   %d %s\n", home.number, home.street);
+    return EXIT_SUCCESS;
+}
+```
+
+</details>
+
+<details id="16-padding" markdown="1">
+<summary>16-padding.c · Measure structure sizes and offsets</summary>
+
+```sh
+vim 16-padding.c
+make run FILE=16-padding.c
+```
+
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/16-padding.c' | relative_url }})
 
 ```c
 #include <stdio.h>
@@ -478,12 +562,15 @@ int main(void) {
 
 </details>
 
-<details id="10-nested-struct-main" markdown="1">
-<summary>Nested structures</summary>
+<details id="17-nested" markdown="1">
+<summary>17-nested.c · Nested structures</summary>
 
-`demos/10-nested-struct/main.c`
+```sh
+vim 17-nested.c
+make run FILE=17-nested.c
+```
 
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/10-nested-struct/main.c' | relative_url }})
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/17-nested.c' | relative_url }})
 
 ```c
 #include <stdio.h>
@@ -499,67 +586,6 @@ int main(void) {
     p->day = today.day;
     p->date.year = 2026;
     printf("day code=%d; %d/%d/%d\n", today.day, today.date.day, today.date.month, today.date.year);
-    return EXIT_SUCCESS;
-}
-```
-
-</details>
-
-<details id="14-memory-layout-main" markdown="1">
-<summary>Static and automatic storage</summary>
-
-`demos/14-memory-layout/main.c`
-
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/14-memory-layout/main.c' | relative_url }})
-
-```c
-#include <stdio.h>
-int total = 0;
-void visit(void) {
-    int values[4] = {10, 20, 30, 40};
-    total += values[0];
-}
-int main(void) {
-    visit();
-    visit();
-    printf("total = %d\n", total);
-    return 0;
-}
-```
-
-</details>
-
-<details id="19-types-main" markdown="1">
-<summary>Enumerations and structure members</summary>
-
-`demos/19-types/main.c`
-
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/19-types/main.c' | relative_url }})
-
-```c
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-enum day { mon, tue, wed, thu, fri, sat, sun };
-struct address {
-    char street[100];
-    int number;
-};
-
-int main(void) {
-    enum day today;
-    today = wed;
-    printf("mon=%d, today=%d, sun=%d\n", mon, today, sun);
-    struct address home = { "Paul Bert", 12 };
-    printf("initial: %d %s\n", home.number, home.street);
-    strcpy(home.street, "Rue de Paris");
-    home.number = 14;
-    printf("dot:     %d %s\n", home.number, home.street);
-    struct address *p = &home;
-    strcpy(p->street, "Rue de Paris");
-    p->number = 16;
-    printf("arrow:   %d %s\n", home.number, home.street);
     return EXIT_SUCCESS;
 }
 ```

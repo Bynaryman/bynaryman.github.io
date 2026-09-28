@@ -24,15 +24,16 @@ Requires GCC, Make and Valgrind on Linux or WSL. Open the slides in Firefox and 
 unzip opc-course.zip
 cd opc-course
 firefox cours/_output/01-allocation.html
-cd demos/00-allocation
-vim main.c
-make run
+cd demos/allocation
+vim 01-fixed-array.c
+make run FILE=01-fixed-array.c
 ```
 
-Saved versions are in `checkpoints/`. For example:
+Follow files **01 → 17** in this folder. The [example index]({{ '/courses/opc/examples/' | relative_url }}) gives the order and commands.
 
 ```sh
-vim checkpoints/03-missing-free.c
-make run STEP=03-missing-free       # Enter 100
-make valgrind STEP=03-missing-free  # Find the leak, then add free
+vim 07-dangling.c
+make valgrind FILE=07-dangling.c  # Enter 4; inspect the invalid reads
 ```
+
+Files 05–08 each introduce one fault into the working `04-free.c` program. Repair and rerun each before continuing.
