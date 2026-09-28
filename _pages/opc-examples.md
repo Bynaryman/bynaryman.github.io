@@ -8,7 +8,7 @@ nav: false
 
 [Course and download]({{ '/courses/opc/' | relative_url }})
 
-Follow **01 → 18**, all in `demos/allocation/`.
+References **01 → 18**, all in `demos/allocation/`. Follow the lecture runbook for when to run.
 
 ```sh
 cd demos/allocation
@@ -17,6 +17,8 @@ make run FILE=01-copy-alias.c
 ```
 
 Files 01–04 develop a string copy: shared storage, a missing byte, a leak, then the repair. File 05 introduces integers; each of 06–09 introduces one fault into 05-integers.c. Repair and rerun each.
+
+[Structure starter]({{ '/assets/courses/opc/2026-2027/examples/allocation/types-start.c' | relative_url }}) · copy to `live-types.c` for incremental coding.
 
 ## Copy a string
 

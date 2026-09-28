@@ -44,8 +44,10 @@ serve:
 	$(PYTHON) scripts/present.py
 present: slides serve
 slides:
+	$(PYTHON) scripts/teacher_cues.py
 	quarto render cours --to revealjs
 pdf:
+	$(PYTHON) scripts/teacher_cues.py
 	quarto render cours --to beamer
 figures:
 	$(PYTHON) scripts/diagrams.py
@@ -57,7 +59,8 @@ Louis Ledoux · ISTIC, University of Rennes · 2026–2027
 ## Slides and C examples
 
 Open cours/_output/01-allocation.html in Firefox. No server is needed.
-Use demos/allocation/README.md: files 01 through 18 are in lecture order.
+Follow docs/allocation-runbook.md for the teaching sequence.
+Files 01 through 18 are numbered references, not a command to run on every slide.
 Install GCC, Make and Valgrind on Linux or WSL, then run:
 
 ```sh
@@ -66,7 +69,9 @@ vim 01-copy-alias.c
 make run FILE=01-copy-alias.c
 ```
 
-Open the next numbered file and pass the same filename to Make.
+For live edits use working copies as described in the runbook.
+Ask for predictions before each run; reveal explanations afterward.
+Open a numbered reference only for a prepared comparison or recovery.
 For example: make valgrind FILE=08-dangling.c (enter 4).
 Files 01–04 develop a string copy, fixing its size and then its leak.
 File 05 introduces integers; 06–09 each introduce one fault into 05-integers.c.
@@ -108,8 +113,8 @@ def main():
     sources = [Path(name) for name in tracked if name and not name.startswith(("cours/notebooks/", "cours/examples/"))
                and name not in {"cours/PLAN.md", "cours/.gitignore", "demos/README.md"}
                and (not name.endswith(".qmd") or Path(name).stem in DECKS)]
-    sources += [Path("scripts") / name for name in ("present.py", "c_runner.py", "valgrind.sh", "diagrams.py")]
-    sources.append(Path("docs/allocation-runbook.md"))
+    sources += [Path("scripts") / name for name in ("present.py", "c_runner.py", "valgrind.sh", "diagrams.py", "teacher_cues.py")]
+    sources.extend([Path("docs/allocation-runbook.md"), Path("docs/allocation-teacher-cues.json")])
     for path in sources:
         if not (source / path).is_file():
             parser.error(f"Missing source file: {path}")
@@ -122,8 +127,8 @@ def main():
         html = (output / f"{deck}.html").read_text()
         diagrams.update(re.findall(r'assets/diagrams/([a-z0-9-]+)\.svg', html))
         cues = list(TERMINAL.finditer(html))
-        if not cues or "RevealLiveC," in html:
-            parser.error(f"Unrecognized terminal-demo markup in {deck}; update this exporter.")
+        if "RevealLiveC," in html or 'id="start-code"' not in html:
+            parser.error(f"Unrecognized allocation deck in {deck}; update this exporter.")
         for match in cues:
             name, file = match[1], match[2]
             example_dir = (source / "demos" / name).resolve()
@@ -177,12 +182,13 @@ def main():
     page = ['---', 'layout: page', 'title: OPC · C examples', 'permalink: /courses/opc/examples/',
             'description: C files in lecture order.', 'nav: false', '---', '',
             "[Course and download]({{ '/courses/opc/' | relative_url }})", '',
-            'Follow **01 → 18**, all in `demos/allocation/`.', '',
+            'References **01 → 18**, all in `demos/allocation/`. Follow the lecture runbook for when to run.', '',
             '```sh', 'cd demos/allocation', 'vim 01-copy-alias.c',
             'make run FILE=01-copy-alias.c', '```', '',
             'Files 01–04 develop a string copy: shared storage, a missing byte, a leak, then the repair. '
             'File 05 introduces integers; each of 06–09 introduces one fault into 05-integers.c. Repair and rerun each.', '']
     stages = json.loads((source / 'demos/allocation/steps.json').read_text())
+    page.extend(["[Structure starter]({{ '/assets/courses/opc/2026-2027/examples/allocation/types-start.c' | relative_url }}) · copy to `live-types.c` for incremental coding.", ''])
     section = None
     for index, stage in enumerate(stages):
         if stage['section'] != section:
