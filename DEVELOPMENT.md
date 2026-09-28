@@ -34,7 +34,9 @@ npm run check
 ```
 
 The importer writes `assets/courses/opc/2026-2027/`. Public slide buttons download
-the matching C source; they do not call a compiler API on GitHub Pages. The ZIP
+the matching C source (including the selected checkpoint). It also generates
+`_pages/opc-examples.md` with readable, highlighted code and individual downloads.
+The public slides do not call a compiler API on GitHub Pages. The ZIP
 retains the original live editor, rendered slides, teaching sources and local
 presenter, and starts with `make serve` without Quarto. Its file list is restricted
 to teaching material; it does not contain inherited PowerPoints, assessments,

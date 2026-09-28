@@ -6,6 +6,8 @@ positional argument. Only selected teaching sources and outputs are published;
 the inherited PowerPoints, assessments, student records and Git data are omitted.
 """
 import argparse
+import html as html_lib
+import json
 from pathlib import Path
 import re
 import shutil
@@ -16,8 +18,21 @@ SITE = Path(__file__).resolve().parents[1]
 DESTINATION = SITE / "assets/courses/opc/2026-2027"
 DECKS = ("01-allocation",)
 BUTTON = re.compile(
-    r'<button type="button" class="live-c-button" data-live-example="([a-z0-9-]+)">Run live C ↗</button>'
+    r'<button type="button" class="live-c-button" data-live-example="([a-z0-9-]+)"(?: data-live-stage="([a-z0-9-]+)")?>Run live C ↗</button>'
 )
+EXAMPLE_TITLES = {
+    "01-malloc": "100 integers",
+    "03-leak": "Pointer assignment and strings",
+    "04-array": "Array elements and addresses",
+    "05-string": "A string and its terminator",
+    "06-matrix-flat": "Matrix in one block",
+    "07-matrix-rows": "Matrix with a fixed row-pointer table",
+    "08-matrix-dynamic": "Matrix with an allocated row-pointer table",
+    "09-struct-padding": "Structure padding",
+    "10-nested-struct": "Nested structures",
+    "14-memory-layout": "Static and automatic storage",
+    "19-types": "Enumerations and structure members",
+}
 DOWNLOAD_CSS = """.reveal a.c-example-download {
   display: inline-block; font-size: 36px; font-weight: 650;
   color: #006644; background: #fff; border: 2px solid #006644;
@@ -69,10 +84,15 @@ Save permanent edits in demos/<example>/main.c; browser edits are temporary.
 You can also run examples in a terminal, from this course directory:
 
 ```sh
-cd demos/04-array
+cd demos/00-allocation
+vim main.c
 make run
 make valgrind
 ```
+
+Start with the four-element array in main.c. The Step menu and
+demos/00-allocation/README.md give seven saved versions of the same program.
+To run a checkpoint in the terminal, use make run STEP=03-heap and enter 100.
 
 Some examples deliberately contain errors. See their README files and
 docs/allocation-runbook.md for the intended investigation and repair sequence.
@@ -110,7 +130,7 @@ def main():
         ["git", "-C", str(source), "ls-files", "-z", "cours", "demos", "scripts/live-c-editor"],
         text=True,
     ).split("\0")
-    sources = [Path(name) for name in tracked if name and not name.startswith("cours/notebooks/")
+    sources = [Path(name) for name in tracked if name and not name.startswith(("cours/notebooks/", "cours/examples/"))
                and name not in {"cours/PLAN.md", "cours/.gitignore", "demos/README.md"}
                and (not name.endswith(".qmd") or Path(name).stem in DECKS)]
     sources += [Path("scripts") / name for name in ("present.py", "c_runner.py", "valgrind.sh", "diagrams.py")]
@@ -122,20 +142,33 @@ def main():
     # Validate the known export shape before changing the website assets.
     static_html = {}
     examples = set()
+    source_files = {}
     diagrams = set()
     for deck in DECKS:
         html = (output / f"{deck}.html").read_text()
         diagrams.update(re.findall(r'assets/diagrams/([a-z0-9-]+)\.svg', html))
-        names = BUTTON.findall(html)
+        buttons = list(BUTTON.finditer(html))
+        names = [match[1] for match in buttons]
         if not names or "RevealLiveC," not in html:
             parser.error(f"Unrecognized live-C markup in {deck}; update this exporter.")
         for name in names:
             if not (source / "demos" / name / "main.c").is_file():
                 parser.error(f"Missing example: {name}")
         examples.update(names)
+        # Included code regions also need their sources, even without a button.
+        qmd = (source / "cours" / f"{deck}.qmd").read_text()
+        examples.update(re.findall(r'file="\.\./demos/([a-z0-9-]+)/', qmd))
+        for match in buttons:
+            name, step = match[1], match[2]
+            file = "main.c"
+            if step:
+                stages = json.loads((source / "demos" / name / "steps.json").read_text())
+                selected = next(item for item in stages if item["id"] == step)
+                file = selected["file"]
+            source_files[(name, step)] = file
         html = BUTTON.sub(
-            lambda match: f'<a class="c-example-download" href="examples/{match[1]}/main.c" '
-                          f'download="{match[1]}.c" aria-label="Download C example: {match[1]}">Download C example ↓</a>',
+            lambda match: f'<a class="c-example-download" href="examples/{match[1]}/{source_files[(match[1], match[2])]}" '
+                          f'download="{match[1]}-{match[2] or "main"}.c" aria-label="Download C example: {match[1]}">Download C example ↓</a>',
             html,
         )
         # Public slides offer downloads. Keep the original live plugin in the ZIP.
@@ -166,7 +199,31 @@ def main():
     for name in sorted(examples):
         target = DESTINATION / "examples" / name
         target.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(source / "demos" / name / "main.c", target / "main.c")
+        for file in (source / "demos" / name).rglob("*.c"):
+            copy = target / file.relative_to(source / "demos" / name)
+            copy.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(file, copy)
+
+    page = ['---', 'layout: page', 'title: OPC · C examples', 'permalink: /courses/opc/examples/',
+            'description: Source files for the dynamic memory lecture.', 'nav: false', '---', '',
+            "[Course and download]({{ '/courses/opc/' | relative_url }})", '',
+            'Start with `demos/00-allocation/main.c`. The saved steps below develop the same program.', '',
+            '## Allocation and memory errors', '']
+    def show_code(name, step, label, file, opened=False):
+        text = (source / 'demos' / name / file).read_text()
+        text = re.sub(r'^[ \t]*// slide:[^\n]*\n', '', text, flags=re.MULTILINE)
+        page.extend([f'<details id="{name}-{step}" markdown="1"' + (' open>' if opened else '>'),
+                     f'<summary>{html_lib.escape(label)}</summary>', '',
+                     '`demos/' + name + '/' + file + '`', '',
+                     "[Download C]({{ '/assets/courses/opc/2026-2027/examples/" + name + '/' + file + "' | relative_url }})", '',
+                     '```c', text.rstrip(), '```', '', '</details>', ''])
+    stages = json.loads((source / 'demos/00-allocation/steps.json').read_text())
+    for index, stage in enumerate(stages):
+        show_code('00-allocation', stage['id'], stage['label'], stage['file'], opened=index == 0)
+    page.extend(['## Other examples', ''])
+    for name in sorted(examples - {'00-allocation'}):
+        show_code(name, 'main', EXAMPLE_TITLES.get(name, name), 'main.c')
+    (SITE / '_pages/opc-examples.md').write_text('\n'.join(page))
 
     with zipfile.ZipFile(DESTINATION / "opc-course.zip", "w", zipfile.ZIP_DEFLATED) as archive:
         for relative in sorted(sources):
