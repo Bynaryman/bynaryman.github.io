@@ -811,7 +811,100 @@ PhD: <strong>BSC / UPC</strong>.</p>
 </div>
 </div>
 <aside class="notes">
-<p>Distinguish the dangling pointer (state after the object’s lifetime ends) from the invalid read (using it to access that object). free does not remove the pointer variable or set it to NULL; the storage can be reused. The drawing is a lifetime model, not a claim about preserved byte values or a valid pointer value after free. Ask where free should go, then reveal the repair and edit it in Vim. Run make valgrind FILE=05-integers.c with input 4 and read zero errors. Do not suggest setting p to NULL makes a subsequent read legal. Any other aliases would still be dangling. A second free is invalid too.</p>
+<p>Distinguish the dangling pointer (state after the object’s lifetime ends) from the invalid read (using it to access that object). free does not remove the pointer variable or set it to NULL; the storage can be reused. The drawing is a lifetime model, not a claim about preserved byte values or a valid pointer value after free. Ask where free should go, then reveal the repair and edit it in Vim. Run make valgrind FILE=05-integers.c with input 4 and read zero errors. Do not suggest setting p to NULL makes a subsequent read legal. Any other aliases would still be dangling. A second free is invalid too. Bridge: “We fixed when we call free. Now suppose array creation moves into a helper function: can returning an address keep a local array alive?”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="local-lifetime" class="slide level2">
+<h2>Can we return this array?</h2>
+<div class="slide-body">
+<div class="lesson-flow">
+<p>Move array creation into a function. Can its caller use the array?</p>
+<div class="columns walkthrough">
+<div class="column" style="width:56%;">
+<div class="sourceCode" id="cb15"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb15-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>make_values<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb15-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> values<span class="op">[</span><span class="dv">4</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span><span class="dv">0</span><span class="op">};</span></span>
+<span id="cb15-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> values<span class="op">;</span></span>
+<span id="cb15-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb15-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">// In the caller:</span></span>
+<span id="cb15-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>p <span class="op">=</span> make_values<span class="op">();</span></span></code></pre></div>
+</div><div class="column" style="width:38%;">
+<div class="fragment" data-fragment-index="0">
+<p><strong>During the call</strong></p>
+<p><code>values</code> exists and contains four zeros.</p>
+</div>
+<div class="fragment" data-fragment-index="1">
+<p><strong>After the return</strong></p>
+<p><code>values</code> no longer exists. <strong><code>p</code> is dangling</strong>, without any <code>free</code>.</p>
+</div>
+</div></div>
+<div class="fragment takeaway red" data-fragment-index="2">
+<p>Returning an address <strong>does not keep a local object alive</strong>.</p>
+</div>
+</div>
+<aside class="notes">
+<p>Bridge from the repaired free example: “We now read before releasing the array. Suppose we move array creation into a helper function. Can we return a local array’s address?” Read the function without running an invalid access. Ask when values exists, then reveal During the call. Trace return values: the array expression supplies its first element’s address, not a copy of the array. Ask what ends when the call returns; reveal After the return. Say: “This is the same lifetime problem as before. Here leaving the function ends the array’s lifetime; no free is involved.” Reveal the takeaway. Do not promise a particular returned pointer value or printed result: GCC may warn and generate code that returns NULL. For this task, the caller can supply its own array, or the helper can allocate on the heap and the caller must later free it. The heap block survives the helper’s return even though its local pointer variable does not. Next compare these lifetimes explicitly. Memcheck is not a reliable detector for every automatic-storage lifetime error.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="storage-duration" class="slide level2">
+<h2>When does the storage end?</h2>
+<div class="slide-body">
+<div class="lesson-flow">
+<p>The pointer and the object it refers to have <strong>separate lifetimes</strong>.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 36%">
+<col style="width: 64%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Storage</th>
+<th style="text-align: left;">Lifetime ends</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Ordinary local array</td>
+<td style="text-align: left;">When its block ends</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Block from <code>malloc</code></td>
+<td style="text-align: left;">When it is released with <code>free</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Global or <code>static</code> object</td>
+<td style="text-align: left;">When the program ends</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment" data-fragment-index="0">
+<p>Each recursive call has its own locals. Too many calls can <strong>exhaust the stack</strong>.</p>
+</div>
+</div>
+<aside class="notes">
+<p>Use the two examples just seen: free ended the allocated array; return ended the helper’s local array. Point back to the stack/heap diagram, then read the table. A pointer being in scope is not proof that its target is alive. Globals/static objects have storage reserved before execution and remain for the program; ordinary locals have automatic storage duration. Recursive calls have separate locals: reveal the recursion sentence as a consequence, not a new topic. The heap block remains allocated even if a pointer goes out of scope or is overwritten. Bridge: “So changing the pointer does not release the block. What happens if we erase the only address before calling free?” Return to the repaired live-integers.c for the next experiment.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -829,11 +922,11 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <h2>Does setting <code>p</code> to <code>NULL</code> free the block?</h2>
 <div class="slide-body">
 <div class="lesson-flow">
-<p><code>p</code> is the <strong>only pointer</strong> to the allocated block.</p>
+<p>The block is still allocated. What if we erase its <strong>only address</strong>?</p>
 <div class="columns walkthrough">
 <div class="column" style="width:56%;">
-<div class="sourceCode" id="cb15"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb15-1"><a href="" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> NULL<span class="op">;</span></span>
-<span id="cb15-2"><a href="" aria-hidden="true" tabindex="-1"></a>free<span class="op">(</span>p<span class="op">);</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb16-1"><a href="" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> NULL<span class="op">;</span></span>
+<span id="cb16-2"><a href="" aria-hidden="true" tabindex="-1"></a>free<span class="op">(</span>p<span class="op">);</span></span></code></pre></div>
 </div><div class="column fragment" data-fragment-index="0" style="width:38%;">
 <p><code>free(NULL)</code> does nothing.</p>
 <p>We lost the address: a <strong>memory leak</strong>.</p>
@@ -843,66 +936,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 </div>
 </div>
 <aside class="notes">
-<p>Start from clean 05-integers.c; insert p = NULL before free. Fallback: demos/allocation/09-leak.c. Run make valgrind FILE=09-leak.c in demos/allocation with input 4 and locate definitely lost. Reveal the explanation and diagram. Contrast with the previous experiment: a leak leaves the allocation alive but unreachable; a dangling pointer refers to an object that no longer exists. Repair by preserving p until free(p), then setting p = NULL only if useful. Edit that order and rerun. Repeated leaks consume more memory; process-exit cleanup does not repair a long-running program.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</div>
-</section>
-<section id="local-lifetime" class="slide level2">
-<h2>Local objects can expire too</h2>
-<div class="slide-body">
-<div class="sourceCode" id="cb16"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb16-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>bad_result<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb16-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> value <span class="op">=</span> <span class="dv">42</span><span class="op">;</span></span>
-<span id="cb16-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="op">&amp;</span>value<span class="op">;</span>  <span class="co">// The local dies when this call ends.</span></span>
-<span id="cb16-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<div class="block alert" title="A dangling pointer need not come from free">
-<div class="block-title">
-<p>A dangling pointer need not come from free</p>
-</div>
-<p>Returning an address does not extend an automatic object’s lifetime.</p>
-</div>
-<aside class="notes">
-<p>Tie this back to the stack frame in the opening diagram. Do not execute the invalid access. A function may instead return the value, fill caller-owned storage, or allocate a result with an agreed owner. Memcheck does not detect every stack lifetime error; the C lifetime rule is what matters here.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</div>
-</section>
-<section id="storage-duration" class="slide level2">
-<h2>Who controls an object’s lifetime?</h2>
-<div class="slide-body">
-<div class="block definition" title="Static storage">
-<div class="block-title">
-<p>Static storage</p>
-</div>
-<p>Globals and <code>static</code> objects last for the <strong>whole program</strong>, with storage reserved before execution.</p>
-</div>
-<div class="block example" title="Automatic storage">
-<div class="block-title">
-<p>Automatic storage</p>
-</div>
-<p>Locals last for their <strong>block execution</strong>. Recursive calls have separate locals.</p>
-</div>
-<p>Storage is managed automatically. Deep recursion can <strong>exhaust the stack</strong>.</p>
-<aside class="notes">
-<p>Compare three lifetimes only after the observed lifetime errors: globals/static objects last for the program; ordinary locals last for their block/call; the heap block lasts until free. Example 14 is optional supporting code for static versus automatic storage, not the lecture opening. Storage for static objects is prepared before execution. Recursive calls get distinct locals and can exhaust stack space; C implementations may also offer variable-length automatic arrays. Padding and layout affect frame storage, and separate heap allocations have no adjacency guarantee.</p>
+<p>Start from clean 05-integers.c; insert p = NULL before free. Fallback: demos/allocation/09-leak.c. Run make valgrind FILE=09-leak.c in demos/allocation with input 4 and locate definitely lost. Reveal the explanation and diagram. Connect to the lifetime comparison: a leak leaves the allocation alive but unreachable; a dangling pointer refers to an object that no longer exists. Repair by preserving p until free(p), then setting p = NULL only if useful. Edit that order and rerun. Repeated leaks consume more memory; process-exit cleanup does not repair a long-running program.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -917,7 +951,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 </div>
 </section>
 <section id="ownership" class="slide level2">
-<h2>Who is responsible for reclamation?</h2>
+<h2>Who releases an unreachable block?</h2>
 <div class="slide-body">
 <div class="block definition" title="C: explicit responsibility">
 <div class="block-title">
@@ -932,7 +966,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p>The runtime can reclaim unreachable objects automatically.</p>
 </div>
 <aside class="notes">
-<p>Source slide 287 comparison. Garbage collection is not necessarily immediate and cannot reclaim reachable-but-unwanted objects. This is a short recap of responsibility, after students have observed a leak rather than before their first allocation.</p>
+<p>Start with the leak report still in mind: “We erased the only address. Will C find and reclaim that block for us?” Answer no, then contrast Java. Source slide 287 comparison. Garbage collection is not necessarily immediate and cannot reclaim reachable-but-unwanted objects. This is a short recap of responsibility, after students have observed a leak rather than before their first allocation.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -949,6 +983,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <section id="allocation-api" class="slide level2">
 <h2>Four functions in <code>&lt;stdlib.h&gt;</code></h2>
 <div class="slide-body">
+<p>We allocated, filled and released a block. We can also request zeros or resize it.</p>
 <table class="caption-top">
 <colgroup>
 <col style="width: 36%">
@@ -980,7 +1015,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 </tbody>
 </table>
 <aside class="notes">
-<p>Summarize the API after the investigations and their repairs. Original overview only, not a new calloc/realloc lesson. For a nonzero request, realloc failure leaves the old block valid; assign through a temporary pointer. calloc sets all bits to zero, which is not a universal guarantee for pointer/floating representations.</p>
+<p>Bridge: “Our program used malloc, a loop to write zeros, and free. The library also offers calloc for zeroed storage and realloc when a block must change size.” Summarize the API after the investigations and their repairs. Original overview only, not a new calloc/realloc lesson. For a nonzero request, realloc failure leaves the old block valid; assign through a temporary pointer. calloc sets all bits to zero, which is not a universal guarantee for pointer/floating representations.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1004,7 +1039,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <li>An invalid or repeated release is <strong>undefined behaviour</strong>.</li>
 </ul>
 <aside class="notes">
-<p>Collect the formal details here, after students have investigated leaks and dangling pointers. The repair slide deliberately carries only the edit and verification. An interior pointer, an automatic array address, or a previously freed address is not a valid argument.</p>
+<p>Bridge from the API table: “Before we use these blocks in larger structures, which addresses may we pass to free?” Ask about the malloc start address, p + 1, the local values array and NULL; then collect the formal details here. The repair slide deliberately carries only the edit and verification. An interior pointer, an automatic array address, or a previously freed address is not a valid argument.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
