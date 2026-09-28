@@ -639,7 +639,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p>How many <strong>bytes</strong>? What values are there <strong>before we write</strong>?</p>
 <aside class="notes">
 <p><strong>SLIDES</strong></p>
-<p>Say: “Imagine storing a row of pixel intensities. A char occupies one byte; an int needs sizeof(int) bytes. Who writes the initial values?” Switch to the prepared integer program next.</p>
+<p>Say: “strcpy filled our copy with existing characters. Now imagine creating a row of numeric values. We need storage and must write their initial values.” Keep the integer file closed until after the next prediction.</p>
 <p><strong>Expect:</strong> This section adds byte-count calculations, explicit initialisation, then bounds and lifetime errors. Pixels need not use int in a real image format.</p>
 <p><strong>Context:</strong> Say: “strcpy filled our allocation with existing characters. What if we need fresh storage for numbers, such as a row of pixel intensities? malloc gives us bytes, but we must calculate how many and write the values ourselves.” The next integer program uses zero values so the later memory faults are easy to isolate. This is a simple numeric model; image formats need not store pixels as C int values.</p>
 <style type="text/css">
@@ -660,19 +660,12 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <div class="lesson-flow">
 <p>We need space for <strong>100 integers</strong>, initially set to zero.</p>
 <p>How many bytes should we request?</p>
-<div class="fragment" data-fragment-index="0">
-<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>p <span class="op">=</span> malloc<span class="op">(</span>count <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">));</span></span>
-<span id="cb10-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>p <span class="op">==</span> NULL<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb10-3"><a href="" aria-hidden="true" tabindex="-1"></a>    fputs<span class="op">(</span><span class="st">"Allocation failed</span><span class="sc">\n</span><span class="st">"</span><span class="op">,</span> stderr<span class="op">);</span></span>
-<span id="cb10-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> EXIT_FAILURE<span class="op">;</span></span>
-<span id="cb10-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-</div>
 </div>
 <aside class="notes">
 <p><strong>SLIDES &gt; VIM &gt; TERMINAL</strong></p>
-<p>Ask the byte count for 100 integers. Reveal the allocation. Open live-integers.c, prepared from 05-integers.c; locate the zero-writing loop. Predict the ends, then run make valgrind FILE=live-integers.c; enter 100.</p>
+<p>Keep Vim hidden. Ask: “How many bytes for 100 integers? Is 100 enough?” Collect answers first. Then open live-integers.c, inspect its allocation and zero-writing loop, predict the end values and run make valgrind FILE=live-integers.c; enter 100.</p>
 <p><strong>Expect:</strong> first=0, last=0; zero errors. Later faults use 4.</p>
-<p><strong>Reveal:</strong> One Right reveals count * sizeof(int). Explain that the loop writes what strcpy wrote earlier.</p>
+<p><strong>Reveal:</strong> No reveal on this slide. Show the C file only after predictions. After the run, advance to slide 18 to explain the formula.</p>
 <p><strong>Context:</strong> The complete program bounds input to 1–1000, checks allocation, writes zeros, prints and frees. This retains the source course’s 100-integer demonstration. VLAs exist in some C implementations; -Werror=vla is a teaching restriction, not a C prohibition.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -690,8 +683,8 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <section id="allocation-size" class="slide level2">
 <h2>Count elements, request bytes</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> <span class="op">*</span>malloc<span class="op">(</span><span class="dt">size_t</span> size<span class="op">);</span>   <span class="co">// From &lt;stdlib.h&gt;</span></span>
-<span id="cb11-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>p <span class="op">=</span> malloc<span class="op">(</span><span class="dv">100</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">));</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> <span class="op">*</span>malloc<span class="op">(</span><span class="dt">size_t</span> size<span class="op">);</span>   <span class="co">// From &lt;stdlib.h&gt;</span></span>
+<span id="cb10-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>p <span class="op">=</span> malloc<span class="op">(</span><span class="dv">100</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">));</span></span></code></pre></div>
 <ul>
 <li><code>size_t</code> is unsigned, with at least <strong>16 value bits</strong>.</li>
 <li><code>sizeof</code> is an <strong>operator</strong> giving a size in bytes.</li>
@@ -754,8 +747,8 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p><code>malloc</code> succeeded. We removed the loop that wrote zeros.</p>
 <div class="columns walkthrough">
 <div class="column" style="width:56%;">
-<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"first=</span><span class="sc">%d</span><span class="st">, last=</span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span></span>
-<span id="cb12-2"><a href="" aria-hidden="true" tabindex="-1"></a>       p<span class="op">[</span><span class="dv">0</span><span class="op">],</span> p<span class="op">[</span>count <span class="op">-</span> <span class="dv">1</span><span class="op">]);</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"first=</span><span class="sc">%d</span><span class="st">, last=</span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span></span>
+<span id="cb11-2"><a href="" aria-hidden="true" tabindex="-1"></a>       p<span class="op">[</span><span class="dv">0</span><span class="op">],</span> p<span class="op">[</span>count <span class="op">-</span> <span class="dv">1</span><span class="op">]);</span></span></code></pre></div>
 </div><div class="column fragment" data-fragment-index="0" style="width:38%;">
 <div class="step-result red">
 <p><strong>Uninitialised value</strong></p>
@@ -792,11 +785,11 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p>Restore the loop <strong>before</strong> <code>printf</code>.</p>
 <div class="columns walkthrough">
 <div class="column" style="width:56%;">
-<div class="sourceCode" id="cb13"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb13-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> count<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
-<span id="cb13-2"><a href="" aria-hidden="true" tabindex="-1"></a>    p<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb13-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-4"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"first=</span><span class="sc">%d</span><span class="st">, last=</span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span></span>
-<span id="cb13-5"><a href="" aria-hidden="true" tabindex="-1"></a>       p<span class="op">[</span><span class="dv">0</span><span class="op">],</span> p<span class="op">[</span>count <span class="op">-</span> <span class="dv">1</span><span class="op">]);</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> count<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
+<span id="cb12-2"><a href="" aria-hidden="true" tabindex="-1"></a>    p<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb12-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"first=</span><span class="sc">%d</span><span class="st">, last=</span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span></span>
+<span id="cb12-5"><a href="" aria-hidden="true" tabindex="-1"></a>       p<span class="op">[</span><span class="dv">0</span><span class="op">],</span> p<span class="op">[</span>count <span class="op">-</span> <span class="dv">1</span><span class="op">]);</span></span></code></pre></div>
 </div><div class="column fragment" data-fragment-index="0" style="width:38%;">
 <p>Every element now has a value before it is read.</p>
 <div class="step-result green">
@@ -808,8 +801,8 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <aside class="notes">
 <p><strong>VIM &gt; TERMINAL &gt; SLIDES</strong></p>
 <p>Restore the loop in live-integers.c. Predict the end values, save and rerun Valgrind with 4.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb14-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> count<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
-<span id="cb14-2"><a href="" aria-hidden="true" tabindex="-1"></a>    p<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb13-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> count<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
+<span id="cb13-2"><a href="" aria-hidden="true" tabindex="-1"></a>    p<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span></code></pre></div>
 <p><strong>Expect:</strong> first=0, last=0; zero errors.</p>
 <p><strong>Reveal:</strong> One Right: explanation and clean result. Next test the loop boundary.</p>
 <p><strong>Context:</strong> Writing only p[0] leaves the last element uninitialised. The source course’s fixed-100 program remains in demos/reference/01-malloc/main.c.</p>
@@ -833,8 +826,8 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p><code>count = 4</code>. The allocation holds <code>p[0]</code> through <code>p[3]</code>.</p>
 <div class="columns walkthrough">
 <div class="column" style="width:56%;">
-<div class="sourceCode" id="cb15"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb15-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;=</span> count<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
-<span id="cb15-2"><a href="" aria-hidden="true" tabindex="-1"></a>    p<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb14-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;=</span> count<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
+<span id="cb14-2"><a href="" aria-hidden="true" tabindex="-1"></a>    p<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span></code></pre></div>
 </div><div class="column fragment" data-fragment-index="0" style="width:38%;">
 <div class="step-result red">
 <p><strong>Invalid write</strong></p>
@@ -871,10 +864,10 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p><code>p</code> points to four integers initialised to zero.</p>
 <div class="columns walkthrough">
 <div class="column" style="width:56%;">
-<div class="sourceCode" id="cb16"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb16-1"><a href="" aria-hidden="true" tabindex="-1"></a>free<span class="op">(</span>p<span class="op">);</span></span>
-<span id="cb16-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-3"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"first=</span><span class="sc">%d</span><span class="st">, last=</span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span></span>
-<span id="cb16-4"><a href="" aria-hidden="true" tabindex="-1"></a>       p<span class="op">[</span><span class="dv">0</span><span class="op">],</span> p<span class="op">[</span>count <span class="op">-</span> <span class="dv">1</span><span class="op">]);</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb15-1"><a href="" aria-hidden="true" tabindex="-1"></a>free<span class="op">(</span>p<span class="op">);</span></span>
+<span id="cb15-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"first=</span><span class="sc">%d</span><span class="st">, last=</span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span></span>
+<span id="cb15-4"><a href="" aria-hidden="true" tabindex="-1"></a>       p<span class="op">[</span><span class="dv">0</span><span class="op">],</span> p<span class="op">[</span>count <span class="op">-</span> <span class="dv">1</span><span class="op">]);</span></span></code></pre></div>
 </div><div class="column fragment" data-fragment-index="0" style="width:38%;">
 <div class="step-result red">
 <p><strong>Invalid read</strong></p>
@@ -915,8 +908,8 @@ PhD: <strong>BSC / UPC</strong>.</p>
 </div>
 <div class="fragment" data-fragment-index="0">
 <p><strong>Repair: finish reading before releasing the block.</strong></p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb17-1"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"first=</span><span class="sc">%d</span><span class="st">, last=</span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span> p<span class="op">[</span><span class="dv">0</span><span class="op">],</span> p<span class="op">[</span>count <span class="op">-</span> <span class="dv">1</span><span class="op">]);</span></span>
-<span id="cb17-2"><a href="" aria-hidden="true" tabindex="-1"></a>free<span class="op">(</span>p<span class="op">);</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb16-1"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"first=</span><span class="sc">%d</span><span class="st">, last=</span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span> p<span class="op">[</span><span class="dv">0</span><span class="op">],</span> p<span class="op">[</span>count <span class="op">-</span> <span class="dv">1</span><span class="op">]);</span></span>
+<span id="cb16-2"><a href="" aria-hidden="true" tabindex="-1"></a>free<span class="op">(</span>p<span class="op">);</span></span></code></pre></div>
 </div>
 </div>
 <aside class="notes">
@@ -945,13 +938,13 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p>Move array creation into a function. Can its caller use the array?</p>
 <div class="columns walkthrough">
 <div class="column" style="width:56%;">
-<div class="sourceCode" id="cb18"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb18-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>make_values<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb18-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> values<span class="op">[</span><span class="dv">4</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span><span class="dv">0</span><span class="op">};</span></span>
-<span id="cb18-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> values<span class="op">;</span></span>
-<span id="cb18-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb18-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">// In the caller:</span></span>
-<span id="cb18-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>p <span class="op">=</span> make_values<span class="op">();</span></span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb17-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>make_values<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb17-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> values<span class="op">[</span><span class="dv">4</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span><span class="dv">0</span><span class="op">};</span></span>
+<span id="cb17-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> values<span class="op">;</span></span>
+<span id="cb17-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb17-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">// In the caller:</span></span>
+<span id="cb17-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>p <span class="op">=</span> make_values<span class="op">();</span></span></code></pre></div>
 </div><div class="column" style="width:38%;">
 <div class="fragment" data-fragment-index="0">
 <p><strong>During the call</strong></p>
@@ -1046,8 +1039,8 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p>The block is still allocated. What if we erase its <strong>only address</strong>?</p>
 <div class="columns walkthrough">
 <div class="column" style="width:56%;">
-<div class="sourceCode" id="cb19"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb19-1"><a href="" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> NULL<span class="op">;</span></span>
-<span id="cb19-2"><a href="" aria-hidden="true" tabindex="-1"></a>free<span class="op">(</span>p<span class="op">);</span></span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb18-1"><a href="" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> NULL<span class="op">;</span></span>
+<span id="cb18-2"><a href="" aria-hidden="true" tabindex="-1"></a>free<span class="op">(</span>p<span class="op">);</span></span></code></pre></div>
 </div><div class="column fragment" data-fragment-index="0" style="width:38%;">
 <p><code>free(NULL)</code> does nothing.</p>
 <p>We lost the address: a <strong>memory leak</strong>.</p>
@@ -1165,7 +1158,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <section id="free-contract" class="slide level2">
 <h2>The <code>free</code> contract</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb20"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb20-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> free<span class="op">(</span><span class="dt">void</span> <span class="op">*</span>pointer<span class="op">);</span>   <span class="co">// Declared in &lt;stdlib.h&gt;</span></span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb19-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> free<span class="op">(</span><span class="dt">void</span> <span class="op">*</span>pointer<span class="op">);</span>   <span class="co">// Declared in &lt;stdlib.h&gt;</span></span></code></pre></div>
 <div class="fragment" data-fragment-index="0">
 <ul>
 <li>Pass the allocation’s <strong>start address</strong>, once.</li>
@@ -1240,7 +1233,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <h2>A one-dimensional integer array</h2>
 <div class="slide-body">
 <p>What changes between neighbouring element addresses?</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb21-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>a <span class="op">=</span> malloc<span class="op">(</span><span class="dv">4</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">));</span></span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb20-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>a <span class="op">=</span> malloc<span class="op">(</span><span class="dv">4</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">));</span></span></code></pre></div>
 <div class="fragment" data-fragment-index="0">
 <div class="diagram">
 <p><img data-src="assets/diagrams/array.svg" alt="Four contiguous integer elements; each address advances by sizeof(int)."></p>
@@ -1272,7 +1265,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <div class="lesson-flow">
 <p>How many bytes does a writable copy of <strong><code>"cat"</code></strong> need?</p>
 <div class="fragment" data-fragment-index="0">
-<div class="sourceCode" id="cb22"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb22-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> <span class="op">*</span>s <span class="op">=</span> malloc<span class="op">(</span><span class="dv">4</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">char</span><span class="op">));</span></span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb21-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> <span class="op">*</span>s <span class="op">=</span> malloc<span class="op">(</span><span class="dv">4</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">char</span><span class="op">));</span></span></code></pre></div>
 <div class="diagram">
 <p><img data-src="assets/diagrams/string.svg" alt="Four character bytes contain c, a, t and the null terminator."></p>
 </div>
@@ -1302,11 +1295,11 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <h2>Where do <code>p</code> and <code>s</code> point?</h2>
 <div class="slide-body">
 <p>Predict the values of <code>p</code> and <code>s</code>, and the fate of the allocation.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb23-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> <span class="op">*</span>s <span class="op">=</span> malloc<span class="op">(</span><span class="dv">100</span><span class="op">);</span></span>
-<span id="cb23-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(!</span>s<span class="op">)</span> <span class="cf">return</span> EXIT_FAILURE<span class="op">;</span></span>
-<span id="cb23-3"><a href="" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> <span class="st">"hello"</span><span class="op">;</span></span>
-<span id="cb23-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> <span class="op">*</span>p <span class="op">=</span> s<span class="op">;</span></span>
-<span id="cb23-5"><a href="" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> <span class="st">"bye"</span><span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb22-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> <span class="op">*</span>s <span class="op">=</span> malloc<span class="op">(</span><span class="dv">100</span><span class="op">);</span></span>
+<span id="cb22-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(!</span>s<span class="op">)</span> <span class="cf">return</span> EXIT_FAILURE<span class="op">;</span></span>
+<span id="cb22-3"><a href="" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> <span class="st">"hello"</span><span class="op">;</span></span>
+<span id="cb22-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> <span class="op">*</span>p <span class="op">=</span> s<span class="op">;</span></span>
+<span id="cb22-5"><a href="" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> <span class="st">"bye"</span><span class="op">;</span></span></code></pre></div>
 <aside class="notes">
 <p><strong>SLIDES &gt; TERMINAL &gt; SLIDES</strong></p>
 <p>Read all three assignments. Predict p, s and the allocation before running make valgrind FILE=12-string-assignment.c.</p>
@@ -1357,11 +1350,11 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <div class="slide-body">
 <p>How can we keep the allocated address and put text in its block?</p>
 <div class="fragment" data-fragment-index="0">
-<div class="sourceCode" id="cb24"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb24-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> <span class="op">*</span>s <span class="op">=</span> malloc<span class="op">(</span><span class="dv">6</span><span class="op">);</span></span>
-<span id="cb24-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(!</span>s<span class="op">)</span> <span class="cf">return</span> EXIT_FAILURE<span class="op">;</span></span>
-<span id="cb24-3"><a href="" aria-hidden="true" tabindex="-1"></a>strcpy<span class="op">(</span>s<span class="op">,</span> <span class="st">"hello"</span><span class="op">);</span>  <span class="co">// Include &lt;string.h&gt;.</span></span>
-<span id="cb24-4"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"</span><span class="sc">%s\n</span><span class="st">"</span><span class="op">,</span> s<span class="op">);</span></span>
-<span id="cb24-5"><a href="" aria-hidden="true" tabindex="-1"></a>free<span class="op">(</span>s<span class="op">);</span></span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb23-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> <span class="op">*</span>s <span class="op">=</span> malloc<span class="op">(</span><span class="dv">6</span><span class="op">);</span></span>
+<span id="cb23-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(!</span>s<span class="op">)</span> <span class="cf">return</span> EXIT_FAILURE<span class="op">;</span></span>
+<span id="cb23-3"><a href="" aria-hidden="true" tabindex="-1"></a>strcpy<span class="op">(</span>s<span class="op">,</span> <span class="st">"hello"</span><span class="op">);</span>  <span class="co">// Include &lt;string.h&gt;.</span></span>
+<span id="cb23-4"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"</span><span class="sc">%s\n</span><span class="st">"</span><span class="op">,</span> s<span class="op">);</span></span>
+<span id="cb23-5"><a href="" aria-hidden="true" tabindex="-1"></a>free<span class="op">(</span>s<span class="op">);</span></span></code></pre></div>
 </div>
 <div class="fragment block example" data-fragment-index="1" title="Alternatively, just reference a literal">
 <div class="block-title">
@@ -1392,7 +1385,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <h2>A 2D array in one block</h2>
 <div class="slide-body">
 <p>Four rows, three columns. Which index stores row <strong>2</strong>, column <strong>1</strong>?</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb25-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>m <span class="op">=</span> malloc<span class="op">(</span><span class="dv">4</span> <span class="op">*</span> <span class="dv">3</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">));</span></span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb24-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>m <span class="op">=</span> malloc<span class="op">(</span><span class="dv">4</span> <span class="op">*</span> <span class="dv">3</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">));</span></span></code></pre></div>
 <div class="fragment" data-fragment-index="0">
 <div class="diagram">
 <p><img data-src="assets/diagrams/matrix-flat.svg" alt="Twelve contiguous elements, grouped into four rows of three; offset of row i column j is i times three plus j."></p>
@@ -1423,9 +1416,9 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <h2>An array of row pointers</h2>
 <div class="slide-body">
 <p>Which objects need <code>free</code>: the pointer table, the rows, or both?</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb26-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>m<span class="op">[</span><span class="dv">4</span><span class="op">];</span>  <span class="co">// Automatic table of four pointers.</span></span>
-<span id="cb26-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">4</span><span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
-<span id="cb26-3"><a href="" aria-hidden="true" tabindex="-1"></a>    m<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> malloc<span class="op">(</span><span class="dv">3</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">));</span></span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb25-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>m<span class="op">[</span><span class="dv">4</span><span class="op">];</span>  <span class="co">// Automatic table of four pointers.</span></span>
+<span id="cb25-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">4</span><span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
+<span id="cb25-3"><a href="" aria-hidden="true" tabindex="-1"></a>    m<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> malloc<span class="op">(</span><span class="dv">3</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">));</span></span></code></pre></div>
 <div class="fragment" data-fragment-index="0">
 <div class="diagram">
 <p><img data-src="assets/diagrams/matrix-rows.svg" alt="An automatic table contains four pointers, each to a separate allocated row of three integers."></p>
@@ -1455,9 +1448,9 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <h2>Allocate the pointer table too</h2>
 <div class="slide-body">
 <p>The pointer table is now allocated too. How many blocks must we release?</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb27-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">**</span>m <span class="op">=</span> malloc<span class="op">(</span><span class="dv">4</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span> <span class="op">*));</span></span>
-<span id="cb27-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">4</span><span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
-<span id="cb27-3"><a href="" aria-hidden="true" tabindex="-1"></a>    m<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> malloc<span class="op">(</span><span class="dv">3</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">));</span></span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb26-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">**</span>m <span class="op">=</span> malloc<span class="op">(</span><span class="dv">4</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span> <span class="op">*));</span></span>
+<span id="cb26-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">4</span><span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
+<span id="cb26-3"><a href="" aria-hidden="true" tabindex="-1"></a>    m<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> malloc<span class="op">(</span><span class="dv">3</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">));</span></span></code></pre></div>
 <div class="fragment" data-fragment-index="0">
 <div class="diagram">
 <p><img data-src="assets/diagrams/matrix-dynamic.svg" alt="An automatic pointer refers to an allocated pointer table, which refers to four separately allocated rows."></p>
@@ -1562,9 +1555,9 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <h2>Enumerations</h2>
 <div class="slide-body">
 <p>What integer value will <code>today</code> hold?</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb28-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> day <span class="op">{</span> mon<span class="op">,</span> tue<span class="op">,</span> wed<span class="op">,</span> thu<span class="op">,</span> fri<span class="op">,</span> sat<span class="op">,</span> sun <span class="op">};</span></span>
-<span id="cb28-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> day today<span class="op">;</span></span>
-<span id="cb28-3"><a href="" aria-hidden="true" tabindex="-1"></a>today <span class="op">=</span> wed<span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb27-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> day <span class="op">{</span> mon<span class="op">,</span> tue<span class="op">,</span> wed<span class="op">,</span> thu<span class="op">,</span> fri<span class="op">,</span> sat<span class="op">,</span> sun <span class="op">};</span></span>
+<span id="cb27-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> day today<span class="op">;</span></span>
+<span id="cb27-3"><a href="" aria-hidden="true" tabindex="-1"></a>today <span class="op">=</span> wed<span class="op">;</span></span></code></pre></div>
 <div class="fragment">
 <p>By default, values start at <strong>0</strong> and increase by <strong>1</strong>.</p>
 <div class="block example" title="Named integer constants">
@@ -1577,11 +1570,11 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <aside class="notes">
 <p><strong>VIM &gt; TERMINAL &gt; SLIDES</strong></p>
 <p>Add enum day before main. Add today, its assignment and printf inside main. Ask for today, then save and run make run FILE=live-types.c.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb29-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> day <span class="op">{</span> mon<span class="op">,</span> tue<span class="op">,</span> wed<span class="op">,</span> thu<span class="op">,</span> fri<span class="op">,</span> sat<span class="op">,</span> sun <span class="op">};</span></span>
-<span id="cb29-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">// Inside main, before return:</span></span>
-<span id="cb29-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> day today<span class="op">;</span></span>
-<span id="cb29-4"><a href="" aria-hidden="true" tabindex="-1"></a>today <span class="op">=</span> wed<span class="op">;</span></span>
-<span id="cb29-5"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"today=</span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span> today<span class="op">);</span></span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb28-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> day <span class="op">{</span> mon<span class="op">,</span> tue<span class="op">,</span> wed<span class="op">,</span> thu<span class="op">,</span> fri<span class="op">,</span> sat<span class="op">,</span> sun <span class="op">};</span></span>
+<span id="cb28-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">// Inside main, before return:</span></span>
+<span id="cb28-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> day today<span class="op">;</span></span>
+<span id="cb28-4"><a href="" aria-hidden="true" tabindex="-1"></a>today <span class="op">=</span> wed<span class="op">;</span></span>
+<span id="cb28-5"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"today=</span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span> today<span class="op">);</span></span></code></pre></div>
 <p><strong>Expect:</strong> today=2. Only the enum example runs; no structure output yet.</p>
 <p><strong>Reveal:</strong> One Right explains zero-based enum values. Next define the address type.</p>
 <p><strong>Context:</strong> Preserve type definition, variable definition and assignment separately. Enumerators may also have explicit integer values.</p>
@@ -1602,10 +1595,10 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <h2>A structure groups several members</h2>
 <div class="slide-body">
 <p>Does this create an address object?</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb30-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address <span class="op">{</span></span>
-<span id="cb30-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">char</span> street<span class="op">[</span><span class="dv">100</span><span class="op">];</span></span>
-<span id="cb30-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> number<span class="op">;</span></span>
-<span id="cb30-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb29-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address <span class="op">{</span></span>
+<span id="cb29-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">char</span> street<span class="op">[</span><span class="dv">100</span><span class="op">];</span></span>
+<span id="cb29-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> number<span class="op">;</span></span>
+<span id="cb29-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
 <div class="fragment block definition" title="A type definition">
 <div class="block-title">
 <p>A type definition</p>
@@ -1635,8 +1628,8 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <h2>Define a type, then create objects</h2>
 <div class="slide-body">
 <p>How many objects exist? Are their members ready to read?</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb31-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address home<span class="op">;</span></span>
-<span id="cb31-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address office<span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb30-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address home<span class="op">;</span></span>
+<span id="cb30-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address office<span class="op">;</span></span></code></pre></div>
 <div class="fragment" data-fragment-index="0">
 <p>These definitions allocate <strong>two distinct objects</strong> of the same type.</p>
 <div class="block alert" title="Local objects need initialisation">
@@ -1669,19 +1662,19 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <h2>Initialising a structure</h2>
 <div class="slide-body">
 <p>Which value goes into each member?</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb32-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address home <span class="op">=</span> <span class="op">{</span> <span class="st">"Paul Bert"</span><span class="op">,</span> <span class="dv">12</span> <span class="op">};</span></span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb31-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address home <span class="op">=</span> <span class="op">{</span> <span class="st">"Paul Bert"</span><span class="op">,</span> <span class="dv">12</span> <span class="op">};</span></span></code></pre></div>
 <div class="fragment" data-fragment-index="0">
 <p>Or combine the type and object definitions:</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb33-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address <span class="op">{</span></span>
-<span id="cb33-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">char</span> street<span class="op">[</span><span class="dv">100</span><span class="op">];</span></span>
-<span id="cb33-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> number<span class="op">;</span></span>
-<span id="cb33-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> home <span class="op">=</span> <span class="op">{</span> <span class="st">"Paul Bert"</span><span class="op">,</span> <span class="dv">12</span> <span class="op">};</span></span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb32-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address <span class="op">{</span></span>
+<span id="cb32-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">char</span> street<span class="op">[</span><span class="dv">100</span><span class="op">];</span></span>
+<span id="cb32-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> number<span class="op">;</span></span>
+<span id="cb32-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> home <span class="op">=</span> <span class="op">{</span> <span class="st">"Paul Bert"</span><span class="op">,</span> <span class="dv">12</span> <span class="op">};</span></span></code></pre></div>
 </div>
 <aside class="notes">
 <p><strong>VIM &gt; TERMINAL &gt; SLIDES</strong></p>
 <p>Add home and its printf inside main, before return. Predict the street and number. Save; run make run FILE=live-types.c.</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb34-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address home <span class="op">=</span> <span class="op">{</span> <span class="st">"Paul Bert"</span><span class="op">,</span> <span class="dv">12</span> <span class="op">};</span></span>
-<span id="cb34-2"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"</span><span class="sc">%d</span><span class="st"> </span><span class="sc">%s\n</span><span class="st">"</span><span class="op">,</span> home<span class="op">.</span>number<span class="op">,</span> home<span class="op">.</span>street<span class="op">);</span></span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb33-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address home <span class="op">=</span> <span class="op">{</span> <span class="st">"Paul Bert"</span><span class="op">,</span> <span class="dv">12</span> <span class="op">};</span></span>
+<span id="cb33-2"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"</span><span class="sc">%d</span><span class="st"> </span><span class="sc">%s\n</span><span class="st">"</span><span class="op">,</span> home<span class="op">.</span>number<span class="op">,</span> home<span class="op">.</span>street<span class="op">);</span></span></code></pre></div>
 <p><strong>Expect:</strong> today=2, then 12 Paul Bert.</p>
 <p><strong>Reveal:</strong> One Right shows the alternative declaration. Do not add both. Next change the existing members.</p>
 <p><strong>Context:</strong> The displayed declarations are alternative forms. Initialisers follow member order; omitted members are zero-initialised. Do not put both declarations in the same scope.</p>
@@ -1702,9 +1695,9 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <h2>Access members through an object</h2>
 <div class="slide-body">
 <p>What will printing <code>home</code> show after these assignments?</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb35-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address home <span class="op">=</span> <span class="op">{</span> <span class="st">"Paul Bert"</span><span class="op">,</span> <span class="dv">12</span> <span class="op">};</span></span>
-<span id="cb35-2"><a href="" aria-hidden="true" tabindex="-1"></a>strcpy<span class="op">(</span>home<span class="op">.</span>street<span class="op">,</span> <span class="st">"Rue de Paris"</span><span class="op">);</span></span>
-<span id="cb35-3"><a href="" aria-hidden="true" tabindex="-1"></a>home<span class="op">.</span>number <span class="op">=</span> <span class="dv">14</span><span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb34-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address home <span class="op">=</span> <span class="op">{</span> <span class="st">"Paul Bert"</span><span class="op">,</span> <span class="dv">12</span> <span class="op">};</span></span>
+<span id="cb34-2"><a href="" aria-hidden="true" tabindex="-1"></a>strcpy<span class="op">(</span>home<span class="op">.</span>street<span class="op">,</span> <span class="st">"Rue de Paris"</span><span class="op">);</span></span>
+<span id="cb34-3"><a href="" aria-hidden="true" tabindex="-1"></a>home<span class="op">.</span>number <span class="op">=</span> <span class="dv">14</span><span class="op">;</span></span></code></pre></div>
 <div class="fragment" data-fragment-index="0">
 <div class="block definition" title="The dot operator">
 <div class="block-title">
@@ -1717,8 +1710,8 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <aside class="notes">
 <p><strong>VIM &gt; TERMINAL &gt; SLIDES</strong></p>
 <p>Insert the two updates before the home printf. Predict its output, then save and run make run FILE=live-types.c.</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb36-1"><a href="" aria-hidden="true" tabindex="-1"></a>strcpy<span class="op">(</span>home<span class="op">.</span>street<span class="op">,</span> <span class="st">"Rue de Paris"</span><span class="op">);</span></span>
-<span id="cb36-2"><a href="" aria-hidden="true" tabindex="-1"></a>home<span class="op">.</span>number <span class="op">=</span> <span class="dv">14</span><span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb35-1"><a href="" aria-hidden="true" tabindex="-1"></a>strcpy<span class="op">(</span>home<span class="op">.</span>street<span class="op">,</span> <span class="st">"Rue de Paris"</span><span class="op">);</span></span>
+<span id="cb35-2"><a href="" aria-hidden="true" tabindex="-1"></a>home<span class="op">.</span>number <span class="op">=</span> <span class="dv">14</span><span class="op">;</span></span></code></pre></div>
 <p><strong>Expect:</strong> 14 Rue de Paris. No arrow update exists yet.</p>
 <p><strong>Reveal:</strong> One Right explains dot and string copying. Ask how to change the same object through a pointer.</p>
 <p><strong>Context:</strong> Preserve both string and integer updates. The array member cannot be assigned a string literal after definition; copy its characters with enough destination capacity.</p>
@@ -1739,9 +1732,9 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <h2>Access members through a pointer</h2>
 <div class="slide-body">
 <p>Does changing through <code>p</code> also change <code>home</code>?</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb37-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address <span class="op">*</span>p <span class="op">=</span> <span class="op">&amp;</span>home<span class="op">;</span></span>
-<span id="cb37-2"><a href="" aria-hidden="true" tabindex="-1"></a>strcpy<span class="op">(</span>p<span class="op">-&gt;</span>street<span class="op">,</span> <span class="st">"Rue de Paris"</span><span class="op">);</span></span>
-<span id="cb37-3"><a href="" aria-hidden="true" tabindex="-1"></a>p<span class="op">-&gt;</span>number <span class="op">=</span> <span class="dv">16</span><span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb36-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address <span class="op">*</span>p <span class="op">=</span> <span class="op">&amp;</span>home<span class="op">;</span></span>
+<span id="cb36-2"><a href="" aria-hidden="true" tabindex="-1"></a>strcpy<span class="op">(</span>p<span class="op">-&gt;</span>street<span class="op">,</span> <span class="st">"Rue de Paris"</span><span class="op">);</span></span>
+<span id="cb36-3"><a href="" aria-hidden="true" tabindex="-1"></a>p<span class="op">-&gt;</span>number <span class="op">=</span> <span class="dv">16</span><span class="op">;</span></span></code></pre></div>
 <div class="fragment" data-fragment-index="0">
 <div class="block definition" title="The arrow operator">
 <div class="block-title">
@@ -1754,9 +1747,9 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <aside class="notes">
 <p><strong>VIM &gt; TERMINAL &gt; SLIDES</strong></p>
 <p>Insert the pointer and updates after the dot assignments, before the same home printf. Predict home.number; save and run make run FILE=live-types.c.</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb38-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address <span class="op">*</span>p <span class="op">=</span> <span class="op">&amp;</span>home<span class="op">;</span></span>
-<span id="cb38-2"><a href="" aria-hidden="true" tabindex="-1"></a>strcpy<span class="op">(</span>p<span class="op">-&gt;</span>street<span class="op">,</span> <span class="st">"Rue de Paris"</span><span class="op">);</span></span>
-<span id="cb38-3"><a href="" aria-hidden="true" tabindex="-1"></a>p<span class="op">-&gt;</span>number <span class="op">=</span> <span class="dv">16</span><span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb37-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address <span class="op">*</span>p <span class="op">=</span> <span class="op">&amp;</span>home<span class="op">;</span></span>
+<span id="cb37-2"><a href="" aria-hidden="true" tabindex="-1"></a>strcpy<span class="op">(</span>p<span class="op">-&gt;</span>street<span class="op">,</span> <span class="st">"Rue de Paris"</span><span class="op">);</span></span>
+<span id="cb37-3"><a href="" aria-hidden="true" tabindex="-1"></a>p<span class="op">-&gt;</span>number <span class="op">=</span> <span class="dv">16</span><span class="op">;</span></span></code></pre></div>
 <p><strong>Expect:</strong> 16 Rue de Paris. The pointer reaches the existing home.</p>
 <p><strong>Reveal:</strong> One Right explains -&gt; and (*p). No second run is needed. Next measure the storage occupied by structures.</p>
 <p><strong>Context:</strong> Taking &amp;home neither copies nor allocates a structure. p-&gt;number and (*p).number name the same member. Preserve the explicit strcpy through the pointer.</p>
@@ -1777,16 +1770,16 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <h2>Same members, different order</h2>
 <div class="slide-body">
 <p>Same member types. Must these structures have the same size?</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb39-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> grouped <span class="op">{</span></span>
-<span id="cb39-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> id1<span class="op">,</span> id2<span class="op">;</span></span>
-<span id="cb39-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">char</span> c1<span class="op">,</span> c2<span class="op">;</span></span>
-<span id="cb39-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> ratio<span class="op">;</span></span>
-<span id="cb39-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
-<span id="cb39-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> interleaved <span class="op">{</span></span>
-<span id="cb39-7"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> id1<span class="op">;</span> <span class="dt">char</span> c1<span class="op">;</span></span>
-<span id="cb39-8"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> id2<span class="op">;</span> <span class="dt">char</span> c2<span class="op">;</span></span>
-<span id="cb39-9"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> ratio<span class="op">;</span></span>
-<span id="cb39-10"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb38-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> grouped <span class="op">{</span></span>
+<span id="cb38-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> id1<span class="op">,</span> id2<span class="op">;</span></span>
+<span id="cb38-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">char</span> c1<span class="op">,</span> c2<span class="op">;</span></span>
+<span id="cb38-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> ratio<span class="op">;</span></span>
+<span id="cb38-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb38-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> interleaved <span class="op">{</span></span>
+<span id="cb38-7"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> id1<span class="op">;</span> <span class="dt">char</span> c1<span class="op">;</span></span>
+<span id="cb38-8"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> id2<span class="op">;</span> <span class="dt">char</span> c2<span class="op">;</span></span>
+<span id="cb38-9"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> ratio<span class="op">;</span></span>
+<span id="cb38-10"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
 <aside class="notes">
 <p><strong>SLIDES &gt; TERMINAL</strong></p>
 <p>Compare both definitions; ask whether their sizes must match. Inspect 17-padding.c, then run make run FILE=17-padding.c while this slide remains the prediction slide.</p>
@@ -1869,9 +1862,9 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <h2><code>typedef</code>: a name for a type</h2>
 <div class="slide-body">
 <p>Does naming a type create an object?</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb40-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="dt">int</span> LENGTH<span class="op">;</span></span>
-<span id="cb40-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">enum</span> <span class="op">{</span> FALSE<span class="op">,</span> TRUE <span class="op">}</span> BOOLEAN<span class="op">;</span></span>
-<span id="cb40-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> date DATE<span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb39-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="dt">int</span> LENGTH<span class="op">;</span></span>
+<span id="cb39-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">enum</span> <span class="op">{</span> FALSE<span class="op">,</span> TRUE <span class="op">}</span> BOOLEAN<span class="op">;</span></span>
+<span id="cb39-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> date DATE<span class="op">;</span></span></code></pre></div>
 <div class="fragment block definition" title="Alias">
 <div class="block-title">
 <p>Alias</p>
@@ -1900,9 +1893,9 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <section id="nested-types" class="slide level2">
 <h2>Combine a date and a day of the week</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb41"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb41-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> date <span class="op">{</span> <span class="dt">short</span> day<span class="op">,</span> month<span class="op">;</span> <span class="dt">int</span> year<span class="op">;</span> <span class="op">};</span></span>
-<span id="cb41-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">enum</span> <span class="op">{</span> mon<span class="op">,</span> tue<span class="op">,</span> wed<span class="op">,</span> thu<span class="op">,</span> fri<span class="op">,</span> sat<span class="op">,</span> sun <span class="op">}</span> DAY<span class="op">;</span></span>
-<span id="cb41-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> <span class="op">{</span> DAY day<span class="op">;</span> <span class="kw">struct</span> date date<span class="op">;</span> <span class="op">}</span> A_DATE<span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb40-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> date <span class="op">{</span> <span class="dt">short</span> day<span class="op">,</span> month<span class="op">;</span> <span class="dt">int</span> year<span class="op">;</span> <span class="op">};</span></span>
+<span id="cb40-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">enum</span> <span class="op">{</span> mon<span class="op">,</span> tue<span class="op">,</span> wed<span class="op">,</span> thu<span class="op">,</span> fri<span class="op">,</span> sat<span class="op">,</span> sun <span class="op">}</span> DAY<span class="op">;</span></span>
+<span id="cb40-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> <span class="op">{</span> DAY day<span class="op">;</span> <span class="kw">struct</span> date date<span class="op">;</span> <span class="op">}</span> A_DATE<span class="op">;</span></span></code></pre></div>
 <div class="fragment block example" title="A nested structure">
 <div class="block-title">
 <p>A nested structure</p>
@@ -1932,12 +1925,12 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <h2>Access nested members</h2>
 <div class="slide-body">
 <p>What year will <code>today.date.year</code> contain after the update through <code>p</code>?</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb42-1"><a href="" aria-hidden="true" tabindex="-1"></a>A_DATE today <span class="op">=</span> <span class="op">{</span> wed<span class="op">,</span> <span class="op">{</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">9</span><span class="op">,</span> <span class="dv">2014</span> <span class="op">}</span> <span class="op">};</span></span>
-<span id="cb42-2"><a href="" aria-hidden="true" tabindex="-1"></a>today<span class="op">.</span>day <span class="op">=</span> wed<span class="op">;</span></span>
-<span id="cb42-3"><a href="" aria-hidden="true" tabindex="-1"></a>today<span class="op">.</span>date<span class="op">.</span>year <span class="op">=</span> <span class="dv">2014</span><span class="op">;</span></span>
-<span id="cb42-4"><a href="" aria-hidden="true" tabindex="-1"></a>A_DATE <span class="op">*</span>p <span class="op">=</span> <span class="op">&amp;</span>today<span class="op">;</span></span>
-<span id="cb42-5"><a href="" aria-hidden="true" tabindex="-1"></a>p<span class="op">-&gt;</span>day <span class="op">=</span> today<span class="op">.</span>day<span class="op">;</span></span>
-<span id="cb42-6"><a href="" aria-hidden="true" tabindex="-1"></a>p<span class="op">-&gt;</span>date<span class="op">.</span>year <span class="op">=</span> <span class="dv">2026</span><span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb41-1"><a href="" aria-hidden="true" tabindex="-1"></a>A_DATE today <span class="op">=</span> <span class="op">{</span> wed<span class="op">,</span> <span class="op">{</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">9</span><span class="op">,</span> <span class="dv">2014</span> <span class="op">}</span> <span class="op">};</span></span>
+<span id="cb41-2"><a href="" aria-hidden="true" tabindex="-1"></a>today<span class="op">.</span>day <span class="op">=</span> wed<span class="op">;</span></span>
+<span id="cb41-3"><a href="" aria-hidden="true" tabindex="-1"></a>today<span class="op">.</span>date<span class="op">.</span>year <span class="op">=</span> <span class="dv">2014</span><span class="op">;</span></span>
+<span id="cb41-4"><a href="" aria-hidden="true" tabindex="-1"></a>A_DATE <span class="op">*</span>p <span class="op">=</span> <span class="op">&amp;</span>today<span class="op">;</span></span>
+<span id="cb41-5"><a href="" aria-hidden="true" tabindex="-1"></a>p<span class="op">-&gt;</span>day <span class="op">=</span> today<span class="op">.</span>day<span class="op">;</span></span>
+<span id="cb41-6"><a href="" aria-hidden="true" tabindex="-1"></a>p<span class="op">-&gt;</span>date<span class="op">.</span>year <span class="op">=</span> <span class="dv">2026</span><span class="op">;</span></span></code></pre></div>
 <div class="fragment" data-fragment-index="0">
 <p><code>p-&gt;date.year</code> reaches the nested member of <strong>the same object</strong>.</p>
 </div>
