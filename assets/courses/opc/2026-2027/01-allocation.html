@@ -718,15 +718,15 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <div class="diagram">
 <p><img data-src="assets/diagrams/memory-layout.svg" alt="Illustrative address range 0x0000 to 0xffff: code and static data low, heap growing upwards, stack growing downwards, with space between them."></p>
 </div>
-<div class="small-note">
-<p>Illustrative 16-bit address space; real address widths and layouts vary.</p>
+<div class="fragment">
+<p><strong>What happens if we remove the loop that writes zeros?</strong></p>
 </div>
 <aside class="notes">
 <p><strong>SLIDES</strong></p>
 <p>Trace count and p on the stack and their allocated integers on the heap. Relate them to the working program. No run.</p>
 <p><strong>Expect:</strong> This is a typical layout, not a universal C guarantee.</p>
-<p><strong>Reveal:</strong> Ask: “Our loop wrote zeros. What happens if we remove it?”</p>
-<p><strong>Context:</strong> After running the integer example, locate count and the pointer p in the active stack frame, and the allocated integers on the heap. Connect this to the string copy: its separate copied characters also came from malloc. The pointer and its target are distinct objects. Calls grow the stack downward in this typical model; allocations occupy heap storage growing upward. Separate allocations need not be adjacent; real allocators may use other mappings. The layout is not a C guarantee.</p>
+<p><strong>Reveal:</strong> One Right reveals: “What happens if we remove the loop that writes zeros?” Collect predictions, then advance to the next slide for the edit and run.</p>
+<p><strong>Context:</strong> After running the integer example, locate count and the pointer p in the active stack frame, and the allocated integers on the heap. Connect this to the string copy: its separate copied characters also came from malloc. The pointer and its target are distinct objects. Calls grow the stack downward in this typical model; allocations occupy heap storage growing upward. Separate allocations need not be adjacent; real allocators may use other mappings. The layout is not a C guarantee. The drawn 16-bit address range is illustrative; real address widths and layouts vary.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
