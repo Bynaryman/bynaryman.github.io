@@ -654,71 +654,10 @@ PhD: <strong>BSC / UPC</strong>.</p>
 </div>
 <aside class="notes">
 <p><strong>SLIDES</strong></p>
-<p>Recap the diagram before free. Say: “strcpy copied the characters into separate storage. Could an assignment do the same?” No run; use the next prepared comparison.</p>
+<p>Recap the diagram before free. Say: “strcpy filled the new storage. Next we create numbers and fill them ourselves.” No run.</p>
 <p><strong>Context:</strong> The drawing represents the moment before free. A second automatic array could also make a copy; this lesson teaches malloc without claiming it is the only solution.</p>
 <p><strong>Recovery:</strong> Completed string copy: no errors or leak.</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb19-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 04-copy-free.c live-copy.c</span></code></pre></div>
-<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</div>
-</section>
-<section id="string-assignment" class="slide level2">
-<h2>Where do <code>p</code> and <code>s</code> point?</h2>
-<div class="slide-body">
-<p>Predict the values of <code>p</code> and <code>s</code>, and the fate of the allocation.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb20-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> <span class="op">*</span>s <span class="op">=</span> malloc<span class="op">(</span><span class="dv">100</span><span class="op">);</span></span>
-<span id="cb20-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(!</span>s<span class="op">)</span> <span class="cf">return</span> EXIT_FAILURE<span class="op">;</span></span>
-<span id="cb20-3"><a href="" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> <span class="st">"hello"</span><span class="op">;</span></span>
-<span id="cb20-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> <span class="op">*</span>p <span class="op">=</span> s<span class="op">;</span></span>
-<span id="cb20-5"><a href="" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> <span class="st">"bye"</span><span class="op">;</span></span></code></pre></div>
-<aside class="notes">
-<p><strong>SLIDES &gt; TERMINAL &gt; SLIDES</strong></p>
-<p>Compare assignment with the strcpy just used. Read the three assignments and predict p, s and the allocation before running make valgrind FILE=12-string-assignment.c. Keep live-copy.c unchanged; this is a prepared comparison.</p>
-<p><strong>Expect:</strong> p=hello; s=bye; 100 bytes lost. One run provides both printed output and the leak.</p>
-<p><strong>Reveal:</strong> No reveal here. Keep the report in mind for the next diagram.</p>
-<p><strong>Context:</strong> Retain all three assignments from source slide 296. Assignment changes a pointer, not the characters. The first assignment to the literal loses the malloc address.</p>
-<p><strong>Recovery:</strong> Pointer assignment: hello / bye, original allocation lost.</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb21-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 12-string-assignment.c live-copy.c</span>
-<span id="cb21-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> valgrind FILE=live-copy.c</span></code></pre></div>
-<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</div>
-</section>
-<section id="string-trace" class="slide level2">
-<h2>Follow the three assignments</h2>
-<div class="slide-body">
-<div class="diagram">
-<p><img data-src="assets/diagrams/string-aliases.svg" alt="After s=hello, s points to the hello literal; after p=s both point to hello; after s=bye p still points to hello and s points to bye. The original heap allocation remains unreachable."></p>
-</div>
-<p><strong><code>=</code> changes an address; <code>strcpy</code> copies characters.</strong></p>
-<aside class="notes">
-<p><strong>SLIDES</strong></p>
-<p>Trace each assignment after the run. Locate where the malloc address was lost. Contrast s = “hello” with strcpy(s, “hello”) in our completed copy: one changes an address, the other writes characters. No second run.</p>
-<p><strong>Expect:</strong> The literals are separate from the orphan allocation. Neither current pointer can free it.</p>
-<p><strong>Reveal:</strong> Conclude: “We can allocate and copy text. Now we will allocate a row of numbers and write the values ourselves.” Switch to live-integers.c at the next section.</p>
-<p><strong>Context:</strong> String literals have static storage duration and must not be modified. Each panel traces a pointer change, not a character copy. The orphaned allocation is the same block throughout. p first appears when initialised. For a read-only reference, const char *s = “hello” needs no malloc. The earlier independent-copy program is the working example of retaining and releasing allocated storage.</p>
-<p><strong>Recovery:</strong> Pointer assignment: hello / bye, original allocation lost.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb22-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 12-string-assignment.c live-copy.c</span></code></pre></div>
 <p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -744,7 +683,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p><strong>Expect:</strong> This section adds byte-count calculations, explicit initialisation, then bounds and lifetime errors. Pixels need not use int in a real image format.</p>
 <p><strong>Context:</strong> Say: “strcpy filled our allocation with existing characters. What if we need fresh storage for numbers, such as a row of pixel intensities? malloc gives us bytes, but we must calculate how many and write the values ourselves.” The next integer program uses zero values so the later memory faults are easy to isolate. This is a simple numeric model; image formats need not store pixels as C int values.</p>
 <p><strong>Recovery:</strong> Completed string copy: no errors or leak.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb23-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 04-copy-free.c live-copy.c</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb20-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 04-copy-free.c live-copy.c</span></code></pre></div>
 <p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -772,8 +711,8 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p><strong>Reveal:</strong> No reveal on this slide. Show the C file only after predictions. After the run, advance to Count elements, request bytes to explain the formula.</p>
 <p><strong>Context:</strong> The complete program bounds input to 1–1000, checks allocation, writes zeros, prints and frees. This retains the source course’s 100-integer demonstration. VLAs exist in some C implementations; -Werror=vla is a teaching restriction, not a C prohibition.</p>
 <p><strong>Recovery:</strong> Clean integer baseline: initialisation and free after printf.</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb24-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span>
-<span id="cb24-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'100\n'</span> <span class="kw">|</span> <span class="fu">make</span> valgrind FILE=live-integers.c</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb21-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span>
+<span id="cb21-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'100\n'</span> <span class="kw">|</span> <span class="fu">make</span> valgrind FILE=live-integers.c</span></code></pre></div>
 <p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -791,8 +730,8 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <section id="allocation-size" class="slide level2">
 <h2>Count elements, request bytes</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb25"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb25-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> <span class="op">*</span>malloc<span class="op">(</span><span class="dt">size_t</span> size<span class="op">);</span>   <span class="co">// From &lt;stdlib.h&gt;</span></span>
-<span id="cb25-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>p <span class="op">=</span> malloc<span class="op">(</span><span class="dv">100</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">));</span></span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb22-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> <span class="op">*</span>malloc<span class="op">(</span><span class="dt">size_t</span> size<span class="op">);</span>   <span class="co">// From &lt;stdlib.h&gt;</span></span>
+<span id="cb22-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>p <span class="op">=</span> malloc<span class="op">(</span><span class="dv">100</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">));</span></span></code></pre></div>
 <ul>
 <li><code>size_t</code> is unsigned, with at least <strong>16 value bits</strong>.</li>
 <li><code>sizeof</code> is an <strong>operator</strong> giving a size in bytes.</li>
@@ -808,7 +747,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p><strong>Reveal:</strong> Next locate the pointer and its allocation in memory.</p>
 <p><strong>Context:</strong> Make the new point explicit: malloc takes bytes, whatever the element type. The string needed one byte per char; the numeric array needs sizeof(int) bytes per int. strcpy performed the writes in the opening; here our loop performs them. Inspect count * sizeof(int) in the program just run. sizeof is an operator, not a function. size_t is unsigned and can represent at least 0 through 65535. No cast of malloc is required in C. For unrestricted external counts, check multiplication overflow before allocation.</p>
 <p><strong>Recovery:</strong> Clean integer baseline: initialisation and free after printf.</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb26-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb23-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span></code></pre></div>
 <p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -839,7 +778,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p><strong>Reveal:</strong> One Right reveals: “What happens if we remove the loop that writes zeros?” Collect predictions, then advance to the next slide for the edit and run.</p>
 <p><strong>Context:</strong> After running the integer example, locate count and the pointer p in the active stack frame, and the allocated integers on the heap. Connect this to the string copy: its separate copied characters also came from malloc. The pointer and its target are distinct objects. Calls grow the stack downward in this typical model; allocations occupy heap storage growing upward. Separate allocations need not be adjacent; real allocators may use other mappings. The layout is not a C guarantee. The drawn 16-bit address range is illustrative; real address widths and layouts vary.</p>
 <p><strong>Recovery:</strong> Clean integer baseline: initialisation and free after printf.</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb27-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb24-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span></code></pre></div>
 <p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -861,8 +800,8 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p><code>malloc</code> succeeded. We removed the loop that wrote zeros.</p>
 <div class="columns walkthrough">
 <div class="column" style="width:56%;">
-<div class="sourceCode" id="cb28"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb28-1"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"first=</span><span class="sc">%d</span><span class="st">, last=</span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span></span>
-<span id="cb28-2"><a href="" aria-hidden="true" tabindex="-1"></a>       p<span class="op">[</span><span class="dv">0</span><span class="op">],</span> p<span class="op">[</span>count <span class="op">-</span> <span class="dv">1</span><span class="op">]);</span></span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb25-1"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"first=</span><span class="sc">%d</span><span class="st">, last=</span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span></span>
+<span id="cb25-2"><a href="" aria-hidden="true" tabindex="-1"></a>       p<span class="op">[</span><span class="dv">0</span><span class="op">],</span> p<span class="op">[</span>count <span class="op">-</span> <span class="dv">1</span><span class="op">]);</span></span></code></pre></div>
 </div><div class="column fragment" data-fragment-index="0" style="width:38%;">
 <div class="step-result red">
 <p><strong>Uninitialised value</strong></p>
@@ -880,8 +819,8 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p><strong>Reveal:</strong> First Right: diagnostic. Second: rule. Ask how to repair before advancing.</p>
 <p><strong>Context:</strong> A displayed zero does not establish initialisation. Keep allocation, NULL check, printf and free unchanged for this investigation.</p>
 <p><strong>Recovery:</strong> Loop removed: observe an uninitialised-value diagnostic.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb29-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 06-uninitialised.c live-integers.c</span>
-<span id="cb29-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'4\n'</span> <span class="kw">|</span> <span class="fu">make</span> valgrind FILE=live-integers.c</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb26-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 06-uninitialised.c live-integers.c</span>
+<span id="cb26-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'4\n'</span> <span class="kw">|</span> <span class="fu">make</span> valgrind FILE=live-integers.c</span></code></pre></div>
 <p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -903,11 +842,11 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p>Restore the loop <strong>before</strong> <code>printf</code>.</p>
 <div class="columns walkthrough">
 <div class="column" style="width:56%;">
-<div class="sourceCode" id="cb30"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb30-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> count<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
-<span id="cb30-2"><a href="" aria-hidden="true" tabindex="-1"></a>    p<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb30-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-4"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"first=</span><span class="sc">%d</span><span class="st">, last=</span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span></span>
-<span id="cb30-5"><a href="" aria-hidden="true" tabindex="-1"></a>       p<span class="op">[</span><span class="dv">0</span><span class="op">],</span> p<span class="op">[</span>count <span class="op">-</span> <span class="dv">1</span><span class="op">]);</span></span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb27-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> count<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
+<span id="cb27-2"><a href="" aria-hidden="true" tabindex="-1"></a>    p<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb27-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"first=</span><span class="sc">%d</span><span class="st">, last=</span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span></span>
+<span id="cb27-5"><a href="" aria-hidden="true" tabindex="-1"></a>       p<span class="op">[</span><span class="dv">0</span><span class="op">],</span> p<span class="op">[</span>count <span class="op">-</span> <span class="dv">1</span><span class="op">]);</span></span></code></pre></div>
 </div><div class="column fragment" data-fragment-index="0" style="width:38%;">
 <p>Every element now has a value before it is read.</p>
 <div class="step-result green">
@@ -919,14 +858,14 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <aside class="notes">
 <p><strong>VIM &gt; TERMINAL &gt; SLIDES</strong></p>
 <p>Restore the loop in live-integers.c. Predict the end values, save and rerun Valgrind with 4.</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb31-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> count<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
-<span id="cb31-2"><a href="" aria-hidden="true" tabindex="-1"></a>    p<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb28-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> count<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
+<span id="cb28-2"><a href="" aria-hidden="true" tabindex="-1"></a>    p<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span></code></pre></div>
 <p><strong>Expect:</strong> first=0, last=0; zero errors.</p>
 <p><strong>Reveal:</strong> One Right: explanation and clean result. Next test the loop boundary.</p>
 <p><strong>Context:</strong> Writing only p[0] leaves the last element uninitialised. The source course’s fixed-100 program remains in demos/reference/01-malloc/main.c.</p>
 <p><strong>Recovery:</strong> Loop restored: zero errors.</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb32-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span>
-<span id="cb32-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'4\n'</span> <span class="kw">|</span> <span class="fu">make</span> valgrind FILE=live-integers.c</span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb29-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span>
+<span id="cb29-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'4\n'</span> <span class="kw">|</span> <span class="fu">make</span> valgrind FILE=live-integers.c</span></code></pre></div>
 <p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -948,8 +887,8 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p><code>count = 4</code>. The allocation holds <code>p[0]</code> through <code>p[3]</code>.</p>
 <div class="columns walkthrough">
 <div class="column" style="width:56%;">
-<div class="sourceCode" id="cb33"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb33-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;=</span> count<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
-<span id="cb33-2"><a href="" aria-hidden="true" tabindex="-1"></a>    p<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb30-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;=</span> count<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
+<span id="cb30-2"><a href="" aria-hidden="true" tabindex="-1"></a>    p<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span></code></pre></div>
 </div><div class="column fragment" data-fragment-index="0" style="width:38%;">
 <div class="step-result red">
 <p><strong>Invalid write</strong></p>
@@ -967,12 +906,12 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p><strong>Reveal:</strong> First Right: diagnostic. Ask for the fix; second: &lt;. Repair, save and rerun before testing lifetime.</p>
 <p><strong>Context:</strong> An expected printed result does not prove memory safety. With four elements, p[4] is just beyond the allocation.</p>
 <p><strong>Recovery:</strong> Deliberate &lt;= fault: invalid write at p[4].</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb34-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 07-overrun.c live-integers.c</span>
-<span id="cb34-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'4\n'</span> <span class="kw">|</span> <span class="fu">make</span> valgrind FILE=live-integers.c</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb31-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 07-overrun.c live-integers.c</span>
+<span id="cb31-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'4\n'</span> <span class="kw">|</span> <span class="fu">make</span> valgrind FILE=live-integers.c</span></code></pre></div>
 <p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <p><strong>Restore the repair:</strong></p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb35-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span>
-<span id="cb35-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'4\n'</span> <span class="kw">|</span> <span class="fu">make</span> valgrind FILE=live-integers.c</span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb32-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span>
+<span id="cb32-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'4\n'</span> <span class="kw">|</span> <span class="fu">make</span> valgrind FILE=live-integers.c</span></code></pre></div>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -993,10 +932,10 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p><code>p</code> points to four integers initialised to zero.</p>
 <div class="columns walkthrough">
 <div class="column" style="width:56%;">
-<div class="sourceCode" id="cb36"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb36-1"><a href="" aria-hidden="true" tabindex="-1"></a>free<span class="op">(</span>p<span class="op">);</span></span>
-<span id="cb36-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-3"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"first=</span><span class="sc">%d</span><span class="st">, last=</span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span></span>
-<span id="cb36-4"><a href="" aria-hidden="true" tabindex="-1"></a>       p<span class="op">[</span><span class="dv">0</span><span class="op">],</span> p<span class="op">[</span>count <span class="op">-</span> <span class="dv">1</span><span class="op">]);</span></span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb33-1"><a href="" aria-hidden="true" tabindex="-1"></a>free<span class="op">(</span>p<span class="op">);</span></span>
+<span id="cb33-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"first=</span><span class="sc">%d</span><span class="st">, last=</span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span></span>
+<span id="cb33-4"><a href="" aria-hidden="true" tabindex="-1"></a>       p<span class="op">[</span><span class="dv">0</span><span class="op">],</span> p<span class="op">[</span>count <span class="op">-</span> <span class="dv">1</span><span class="op">]);</span></span></code></pre></div>
 </div><div class="column fragment" data-fragment-index="0" style="width:38%;">
 <div class="step-result red">
 <p><strong>Invalid read</strong></p>
@@ -1014,8 +953,8 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p><strong>Reveal:</strong> First Right: diagnostic. Second: dangling pointer. Explain and repair on the next slide.</p>
 <p><strong>Context:</strong> GCC may also warn. Valgrind relates the invalid read to the earlier allocation and release. The program may still print zeros and have no leak; neither makes the access valid. In this checked execution, p[0] and p[3] produce two invalid reads, even when both print zero. Valgrind uses the wording free’d rather than literally already free.</p>
 <p><strong>Recovery:</strong> free before printf: invalid reads inside a block already freed.</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb37-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 08-dangling.c live-integers.c</span>
-<span id="cb37-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'4\n'</span> <span class="kw">|</span> <span class="fu">make</span> valgrind FILE=live-integers.c</span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb34-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 08-dangling.c live-integers.c</span>
+<span id="cb34-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'4\n'</span> <span class="kw">|</span> <span class="fu">make</span> valgrind FILE=live-integers.c</span></code></pre></div>
 <p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1041,8 +980,8 @@ PhD: <strong>BSC / UPC</strong>.</p>
 </div>
 <div class="fragment" data-fragment-index="0">
 <p><strong>Repair: finish reading before releasing the block.</strong></p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb38-1"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"first=</span><span class="sc">%d</span><span class="st">, last=</span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span> p<span class="op">[</span><span class="dv">0</span><span class="op">],</span> p<span class="op">[</span>count <span class="op">-</span> <span class="dv">1</span><span class="op">]);</span></span>
-<span id="cb38-2"><a href="" aria-hidden="true" tabindex="-1"></a>free<span class="op">(</span>p<span class="op">);</span></span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb35-1"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"first=</span><span class="sc">%d</span><span class="st">, last=</span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span> p<span class="op">[</span><span class="dv">0</span><span class="op">],</span> p<span class="op">[</span>count <span class="op">-</span> <span class="dv">1</span><span class="op">]);</span></span>
+<span id="cb35-2"><a href="" aria-hidden="true" tabindex="-1"></a>free<span class="op">(</span>p<span class="op">);</span></span></code></pre></div>
 </div>
 </div>
 <aside class="notes">
@@ -1052,8 +991,8 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p><strong>Reveal:</strong> One Right: repair. Ask: “Can returning an address keep a local array alive?”</p>
 <p><strong>Context:</strong> Distinguish the dangling state from dereferencing the pointer. free does not clear the variable or other aliases. The drawing models lifetime, not preserved bytes or a usable pointer value after free.</p>
 <p><strong>Recovery:</strong> Lifetime repair: printf before free; zero errors.</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb39-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span>
-<span id="cb39-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'4\n'</span> <span class="kw">|</span> <span class="fu">make</span> valgrind FILE=live-integers.c</span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb36-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span>
+<span id="cb36-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'4\n'</span> <span class="kw">|</span> <span class="fu">make</span> valgrind FILE=live-integers.c</span></code></pre></div>
 <p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1075,13 +1014,13 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p>Move array creation into a function. Can its caller use the array?</p>
 <div class="columns walkthrough">
 <div class="column" style="width:56%;">
-<div class="sourceCode" id="cb40"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb40-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>make_values<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb40-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> values<span class="op">[</span><span class="dv">4</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span><span class="dv">0</span><span class="op">};</span></span>
-<span id="cb40-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> values<span class="op">;</span></span>
-<span id="cb40-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb40-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">// In the caller:</span></span>
-<span id="cb40-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>p <span class="op">=</span> make_values<span class="op">();</span></span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb37-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>make_values<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb37-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> values<span class="op">[</span><span class="dv">4</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span><span class="dv">0</span><span class="op">};</span></span>
+<span id="cb37-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> values<span class="op">;</span></span>
+<span id="cb37-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb37-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">// In the caller:</span></span>
+<span id="cb37-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>p <span class="op">=</span> make_values<span class="op">();</span></span></code></pre></div>
 </div><div class="column" style="width:38%;">
 <div class="fragment" data-fragment-index="0">
 <p><strong>During the call</strong></p>
@@ -1103,8 +1042,8 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p><strong>Reveal:</strong> First Right: during the call. Second: after return. Third: an address does not keep the array alive. Next compare lifetimes.</p>
 <p><strong>Context:</strong> Returning an array expression supplies its first element’s address, not an array copy. Do not rely on a particular returned pointer value: GCC may warn and return NULL. Caller-owned storage or a heap allocation can outlive this call. The heap block survives even though the helper’s local pointer does not. Memcheck does not detect every automatic-storage lifetime error.</p>
 <p><strong>Recovery:</strong> Compile only: returning a local array address. Do not dereference it.</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb41-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> recovery/local-return.c live-integers.c</span>
-<span id="cb41-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> program FILE=live-integers.c</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb38-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> recovery/local-return.c live-integers.c</span>
+<span id="cb38-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> program FILE=live-integers.c</span></code></pre></div>
 <p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1161,7 +1100,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p><strong>Reveal:</strong> One Right: recursive calls have separate locals. Say: “Next, a common mistake: we call free, but we have already changed the pointer.”</p>
 <p><strong>Context:</strong> Static storage is reserved before execution. Ordinary locals last for their block execution; recursive calls have separate locals. A pointer’s scope does not prove that its target is alive. Allocated storage persists until release even if a pointer is overwritten.</p>
 <p><strong>Recovery:</strong> Return to the clean integer baseline before the next fault.</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb42-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb39-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span></code></pre></div>
 <p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1183,8 +1122,8 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p>We still call <code>free(p)</code>. <strong>What value does it receive?</strong></p>
 <div class="columns walkthrough">
 <div class="column" style="width:48%;">
-<div class="sourceCode" id="cb43"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb43-1"><a href="" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> NULL<span class="op">;</span></span>
-<span id="cb43-2"><a href="" aria-hidden="true" tabindex="-1"></a>free<span class="op">(</span>p<span class="op">);</span></span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb40-1"><a href="" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> NULL<span class="op">;</span></span>
+<span id="cb40-2"><a href="" aria-hidden="true" tabindex="-1"></a>free<span class="op">(</span>p<span class="op">);</span></span></code></pre></div>
 </div><div class="column" style="width:46%;">
 <div class="fragment" data-fragment-index="0">
 <p><code>free(NULL)</code> does nothing.</p>
@@ -1192,8 +1131,8 @@ PhD: <strong>BSC / UPC</strong>.</p>
 </div>
 <div class="fragment step-result" data-fragment-index="1">
 <p><strong>Free before resetting.</strong></p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb44-1"><a href="" aria-hidden="true" tabindex="-1"></a>free<span class="op">(</span>p<span class="op">);</span></span>
-<span id="cb44-2"><a href="" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> NULL<span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb41-1"><a href="" aria-hidden="true" tabindex="-1"></a>free<span class="op">(</span>p<span class="op">);</span></span>
+<span id="cb41-2"><a href="" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> NULL<span class="op">;</span></span></code></pre></div>
 </div>
 </div></div>
 <div class="diagram fragment" data-fragment-index="0">
@@ -1207,12 +1146,12 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p><strong>Reveal:</strong> First Right: explain free(NULL) and the lost address. Ask how to repair the order. Second Right: free(p), then p = NULL. Make that edit and rerun; expect no leak. Ask who reclaims a lost block in C.</p>
 <p><strong>Context:</strong> Keep the allocation address until release. Clearing a pointer is optional and does not clear aliases. A leak leaves allocated storage unreleased; a dangling pointer refers to storage whose lifetime ended.</p>
 <p><strong>Recovery:</strong> p = NULL before free: definitely lost.</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb45-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 09-leak.c live-integers.c</span>
-<span id="cb45-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'4\n'</span> <span class="kw">|</span> <span class="fu">make</span> valgrind FILE=live-integers.c</span></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb42-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 09-leak.c live-integers.c</span>
+<span id="cb42-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'4\n'</span> <span class="kw">|</span> <span class="fu">make</span> valgrind FILE=live-integers.c</span></code></pre></div>
 <p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <p><strong>Restore the repair:</strong></p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb46-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span>
-<span id="cb46-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'4\n'</span> <span class="kw">|</span> <span class="fu">make</span> valgrind FILE=live-integers.c</span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb43-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span>
+<span id="cb43-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'4\n'</span> <span class="kw">|</span> <span class="fu">make</span> valgrind FILE=live-integers.c</span></code></pre></div>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1248,7 +1187,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p><strong>Reveal:</strong> First Right: C. Second: Java. Next recap the library operations used so far.</p>
 <p><strong>Context:</strong> Source slide 287 contrasts C responsibility and Java garbage collection. Collection need not be immediate and does not reclaim reachable-but-unwanted objects.</p>
 <p><strong>Recovery:</strong> Clean integer example; these slides normally need no run.</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb47-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb44-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span></code></pre></div>
 <p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1304,7 +1243,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p><strong>Reveal:</strong> Next ask which addresses free accepts.</p>
 <p><strong>Context:</strong> This is the inherited API overview. For nonzero size, realloc failure leaves the old allocation valid; assign through a temporary pointer. calloc clears all bits; that is not a universal guarantee about floating-point or pointer representations.</p>
 <p><strong>Recovery:</strong> Clean integer example; these slides normally need no run.</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb48-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb45-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span></code></pre></div>
 <p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1322,7 +1261,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <section id="free-contract" class="slide level2">
 <h2>The <code>free</code> contract</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb49"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb49-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> free<span class="op">(</span><span class="dt">void</span> <span class="op">*</span>pointer<span class="op">);</span>   <span class="co">// Declared in &lt;stdlib.h&gt;</span></span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb46-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> free<span class="op">(</span><span class="dt">void</span> <span class="op">*</span>pointer<span class="op">);</span>   <span class="co">// Declared in &lt;stdlib.h&gt;</span></span></code></pre></div>
 <div class="fragment" data-fragment-index="0">
 <ul>
 <li>Pass the allocation’s <strong>start address</strong>, once.</li>
@@ -1337,7 +1276,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p><strong>Reveal:</strong> One Right reveals the rules. Then take the quiz.</p>
 <p><strong>Context:</strong> An interior address, an ordinary local array address or an already-freed address is invalid. free has no return value; free(NULL) is permitted.</p>
 <p><strong>Recovery:</strong> Clean integer example; these slides normally need no run.</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb50-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb47-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span></code></pre></div>
 <p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1365,7 +1304,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p><strong>Expect:</strong> Resolve misunderstandings before changing representations. Next section returns to array elements and addresses.</p>
 <p><strong>Context:</strong> Retain the inherited question set and order. Its file/title use older CM numbering; the chosen PowerPoint calls this CM10. Do not silently renumber the original quiz asset.</p>
 <p><strong>Recovery:</strong> Clean integer example; these slides normally need no run.</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb51-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb48-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span></code></pre></div>
 <p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1388,7 +1327,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p><strong>SLIDES</strong></p>
 <p>Say: “We know how to allocate a row. An image has rows and columns: how do we store a whole grid?” Recall contiguous elements, then compare the three matrix representations. Stay with integers; no return to strings.</p>
 <p><strong>Recovery:</strong> Clean integer example; these slides normally need no run.</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb52-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb49-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span></code></pre></div>
 <p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1406,7 +1345,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <h2>One row in contiguous memory</h2>
 <div class="slide-body">
 <p>What changes between neighbouring element addresses?</p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb53-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>a <span class="op">=</span> malloc<span class="op">(</span><span class="dv">4</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">));</span></span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb50-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>a <span class="op">=</span> malloc<span class="op">(</span><span class="dv">4</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">));</span></span></code></pre></div>
 <div class="fragment" data-fragment-index="0">
 <div class="diagram">
 <p><img data-src="assets/diagrams/array.svg" alt="Four contiguous integer elements; each address advances by sizeof(int)."></p>
@@ -1420,8 +1359,8 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p><strong>Reveal:</strong> One Right reveals contiguous elements and a[i] = *(a + i). Say: “Now put several rows in that same continuous block.”</p>
 <p><strong>Context:</strong> Generic allocation: type <em>a = malloc(count </em> sizeof(type)). The 0x1000 addresses and sizeof(int)=4 are assumptions of this drawing, not universal sizes or addresses.</p>
 <p><strong>Recovery:</strong> Four integers and their addresses.</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb54-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 10-array.c live-integers.c</span>
-<span id="cb54-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> run FILE=live-integers.c</span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb51-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 10-array.c live-integers.c</span>
+<span id="cb51-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> run FILE=live-integers.c</span></code></pre></div>
 <p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1440,7 +1379,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <h2>A 2D array in one block</h2>
 <div class="slide-body">
 <p>We need <strong>4 rows of 3 integers</strong>. Which index stores row <strong>2</strong>, column <strong>1</strong>?</p>
-<div class="sourceCode" id="cb55"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb55-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>m <span class="op">=</span> malloc<span class="op">(</span><span class="dv">4</span> <span class="op">*</span> <span class="dv">3</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">));</span></span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb52-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>m <span class="op">=</span> malloc<span class="op">(</span><span class="dv">4</span> <span class="op">*</span> <span class="dv">3</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">));</span></span></code></pre></div>
 <div class="fragment" data-fragment-index="0">
 <div class="diagram">
 <p><img data-src="assets/diagrams/matrix-flat.svg" alt="Twelve contiguous elements, grouped into four rows of three; offset of row i column j is i times three plus j."></p>
@@ -1455,8 +1394,8 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p><strong>Reveal:</strong> One Right: diagram and indexing. Ask how rows could have separate allocations.</p>
 <p><strong>Context:</strong> This 4-by-3 int grid illustrates storage, not an image-file format. General index: i * columns + j. This flat pointer is not int **. The complete file checks malloc.</p>
 <p><strong>Recovery:</strong> Prepared matrix example; quizzes and section slides need no new run.</p>
-<div class="sourceCode" id="cb56"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb56-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 13-matrix-flat.c live-integers.c</span>
-<span id="cb56-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> run FILE=live-integers.c</span></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb53-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 13-matrix-flat.c live-integers.c</span>
+<span id="cb53-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> run FILE=live-integers.c</span></code></pre></div>
 <p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1475,9 +1414,9 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <h2>An array of row pointers</h2>
 <div class="slide-body">
 <p>Which objects need <code>free</code>: the pointer table, the rows, or both?</p>
-<div class="sourceCode" id="cb57"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb57-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>m<span class="op">[</span><span class="dv">4</span><span class="op">];</span>  <span class="co">// Automatic table of four pointers.</span></span>
-<span id="cb57-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">4</span><span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
-<span id="cb57-3"><a href="" aria-hidden="true" tabindex="-1"></a>    m<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> malloc<span class="op">(</span><span class="dv">3</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">));</span></span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb54-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>m<span class="op">[</span><span class="dv">4</span><span class="op">];</span>  <span class="co">// Automatic table of four pointers.</span></span>
+<span id="cb54-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">4</span><span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
+<span id="cb54-3"><a href="" aria-hidden="true" tabindex="-1"></a>    m<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> malloc<span class="op">(</span><span class="dv">3</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">));</span></span></code></pre></div>
 <div class="fragment" data-fragment-index="0">
 <div class="diagram">
 <p><img data-src="assets/diagrams/matrix-rows.svg" alt="An automatic table contains four pointers, each to a separate allocated row of three integers."></p>
@@ -1491,8 +1430,8 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p><strong>Reveal:</strong> One Right: diagram and releases. Ask what changes if we allocate the table too.</p>
 <p><strong>Context:</strong> The row-pointer table is automatic; rows are separate allocations and need not be adjacent. The complete program frees earlier rows if a later allocation fails.</p>
 <p><strong>Recovery:</strong> Prepared matrix example; quizzes and section slides need no new run.</p>
-<div class="sourceCode" id="cb58"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb58-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 14-matrix-rows.c live-integers.c</span>
-<span id="cb58-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> run FILE=live-integers.c</span></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb55-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 14-matrix-rows.c live-integers.c</span>
+<span id="cb55-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> run FILE=live-integers.c</span></code></pre></div>
 <p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1511,9 +1450,9 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <h2>Allocate the pointer table too</h2>
 <div class="slide-body">
 <p>The pointer table is now allocated too. How many blocks must we release?</p>
-<div class="sourceCode" id="cb59"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb59-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">**</span>m <span class="op">=</span> malloc<span class="op">(</span><span class="dv">4</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span> <span class="op">*));</span></span>
-<span id="cb59-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">4</span><span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
-<span id="cb59-3"><a href="" aria-hidden="true" tabindex="-1"></a>    m<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> malloc<span class="op">(</span><span class="dv">3</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">));</span></span></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb56-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">**</span>m <span class="op">=</span> malloc<span class="op">(</span><span class="dv">4</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span> <span class="op">*));</span></span>
+<span id="cb56-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">4</span><span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
+<span id="cb56-3"><a href="" aria-hidden="true" tabindex="-1"></a>    m<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> malloc<span class="op">(</span><span class="dv">3</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">));</span></span></code></pre></div>
 <div class="fragment" data-fragment-index="0">
 <div class="diagram">
 <p><img data-src="assets/diagrams/matrix-dynamic.svg" alt="An automatic pointer refers to an allocated pointer table, which refers to four separately allocated rows."></p>
@@ -1527,8 +1466,8 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p><strong>Reveal:</strong> One Right: diagram and cleanup. These are storage comparisons, not new full typing exercises.</p>
 <p><strong>Context:</strong> The displayed loop assumes the table was checked first; the runnable file checks every allocation and cleans up partial rows. sizeof(int *) measures a pointer, sizeof(int) an integer.</p>
 <p><strong>Recovery:</strong> Prepared matrix example; quizzes and section slides need no new run.</p>
-<div class="sourceCode" id="cb60"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb60-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 15-matrix-dynamic.c live-integers.c</span>
-<span id="cb60-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> run FILE=live-integers.c</span></code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb57-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 15-matrix-dynamic.c live-integers.c</span>
+<span id="cb57-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> run FILE=live-integers.c</span></code></pre></div>
 <p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1556,7 +1495,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p><strong>Expect:</strong> These were prepared-code comparisons, not three full typing exercises. Move on after clarifying the representation differences.</p>
 <p><strong>Context:</strong> Preserve source slide 300 questions. The matrices are prepared comparisons, not three full typing exercises.</p>
 <p><strong>Recovery:</strong> Prepared matrix example; quizzes and section slides need no new run.</p>
-<div class="sourceCode" id="cb61"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb61-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 15-matrix-dynamic.c live-integers.c</span></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb58-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 15-matrix-dynamic.c live-integers.c</span></code></pre></div>
 <p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1579,7 +1518,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p><strong>SLIDES</strong></p>
 <p>Say: “Arrays group values of one type. An address combines text and a number. How do we keep them together?” No run.</p>
 <p><strong>Recovery:</strong> Prepared matrix example; quizzes and section slides need no new run.</p>
-<div class="sourceCode" id="cb62"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb62-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 15-matrix-dynamic.c live-integers.c</span></code></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb59-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 15-matrix-dynamic.c live-integers.c</span></code></pre></div>
 <p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1612,7 +1551,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p><strong>Reveal:</strong> One Right: the three tools. Begin with named integer constants.</p>
 <p><strong>Context:</strong> User-defined types are required by the original dynamic-memory CM. Build a small working program instead of running the completed reference before explaining its parts.</p>
 <p><strong>Recovery:</strong> Empty main, ready to build the type example.</p>
-<div class="sourceCode" id="cb63"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb63-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> types-start.c live-types.c</span></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb60-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> types-start.c live-types.c</span></code></pre></div>
 <p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1631,9 +1570,9 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <h2>Enumerations</h2>
 <div class="slide-body">
 <p>What integer value will <code>today</code> hold?</p>
-<div class="sourceCode" id="cb64"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb64-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> day <span class="op">{</span> mon<span class="op">,</span> tue<span class="op">,</span> wed<span class="op">,</span> thu<span class="op">,</span> fri<span class="op">,</span> sat<span class="op">,</span> sun <span class="op">};</span></span>
-<span id="cb64-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> day today<span class="op">;</span></span>
-<span id="cb64-3"><a href="" aria-hidden="true" tabindex="-1"></a>today <span class="op">=</span> wed<span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb61"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb61-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> day <span class="op">{</span> mon<span class="op">,</span> tue<span class="op">,</span> wed<span class="op">,</span> thu<span class="op">,</span> fri<span class="op">,</span> sat<span class="op">,</span> sun <span class="op">};</span></span>
+<span id="cb61-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> day today<span class="op">;</span></span>
+<span id="cb61-3"><a href="" aria-hidden="true" tabindex="-1"></a>today <span class="op">=</span> wed<span class="op">;</span></span></code></pre></div>
 <div class="fragment">
 <p>By default, values start at <strong>0</strong> and increase by <strong>1</strong>.</p>
 <div class="block example" title="Named integer constants">
@@ -1646,17 +1585,17 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <aside class="notes">
 <p><strong>VIM &gt; TERMINAL &gt; SLIDES</strong></p>
 <p>Add enum day before main. Add today, its assignment and printf inside main. Ask for today, then save and run make run FILE=live-types.c.</p>
-<div class="sourceCode" id="cb65"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb65-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> day <span class="op">{</span> mon<span class="op">,</span> tue<span class="op">,</span> wed<span class="op">,</span> thu<span class="op">,</span> fri<span class="op">,</span> sat<span class="op">,</span> sun <span class="op">};</span></span>
-<span id="cb65-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">// Inside main, before return:</span></span>
-<span id="cb65-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> day today<span class="op">;</span></span>
-<span id="cb65-4"><a href="" aria-hidden="true" tabindex="-1"></a>today <span class="op">=</span> wed<span class="op">;</span></span>
-<span id="cb65-5"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"today=</span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span> today<span class="op">);</span></span></code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb62-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> day <span class="op">{</span> mon<span class="op">,</span> tue<span class="op">,</span> wed<span class="op">,</span> thu<span class="op">,</span> fri<span class="op">,</span> sat<span class="op">,</span> sun <span class="op">};</span></span>
+<span id="cb62-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">// Inside main, before return:</span></span>
+<span id="cb62-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> day today<span class="op">;</span></span>
+<span id="cb62-4"><a href="" aria-hidden="true" tabindex="-1"></a>today <span class="op">=</span> wed<span class="op">;</span></span>
+<span id="cb62-5"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"today=</span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span> today<span class="op">);</span></span></code></pre></div>
 <p><strong>Expect:</strong> today=2. Only the enum example runs; no structure output yet.</p>
 <p><strong>Reveal:</strong> One Right explains zero-based enum values. Next define the address type.</p>
 <p><strong>Context:</strong> Preserve type definition, variable definition and assignment separately. Enumerators may also have explicit integer values.</p>
 <p><strong>Recovery:</strong> Enum only: today=2.</p>
-<div class="sourceCode" id="cb66"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb66-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> recovery/types-enum.c live-types.c</span>
-<span id="cb66-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> run FILE=live-types.c</span></code></pre></div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb63-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> recovery/types-enum.c live-types.c</span>
+<span id="cb63-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> run FILE=live-types.c</span></code></pre></div>
 <p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1675,10 +1614,10 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <h2>A structure groups several members</h2>
 <div class="slide-body">
 <p>Does this create an address object?</p>
-<div class="sourceCode" id="cb67"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb67-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address <span class="op">{</span></span>
-<span id="cb67-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">char</span> street<span class="op">[</span><span class="dv">100</span><span class="op">];</span></span>
-<span id="cb67-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> number<span class="op">;</span></span>
-<span id="cb67-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb64-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address <span class="op">{</span></span>
+<span id="cb64-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">char</span> street<span class="op">[</span><span class="dv">100</span><span class="op">];</span></span>
+<span id="cb64-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> number<span class="op">;</span></span>
+<span id="cb64-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
 <div class="fragment block definition" title="A type definition">
 <div class="block-title">
 <p>A type definition</p>
@@ -1692,7 +1631,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p><strong>Reveal:</strong> One Right explains. Next create objects of that type.</p>
 <p><strong>Context:</strong> A type definition creates no instance. Members may be integers, floating-point types, arrays, pointers or structures. A C member declaration cannot contain an object initialiser.</p>
 <p><strong>Recovery:</strong> Enum and address type defined; no home object yet.</p>
-<div class="sourceCode" id="cb68"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb68-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> recovery/types-defined.c live-types.c</span></code></pre></div>
+<div class="sourceCode" id="cb65"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb65-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> recovery/types-defined.c live-types.c</span></code></pre></div>
 <p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1711,8 +1650,8 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <h2>Define a type, then create objects</h2>
 <div class="slide-body">
 <p>How many objects exist? Are their members ready to read?</p>
-<div class="sourceCode" id="cb69"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb69-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address home<span class="op">;</span></span>
-<span id="cb69-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address office<span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb66-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address home<span class="op">;</span></span>
+<span id="cb66-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address office<span class="op">;</span></span></code></pre></div>
 <div class="fragment" data-fragment-index="0">
 <p>These definitions allocate <strong>two distinct objects</strong> of the same type.</p>
 <div class="block alert" title="Local objects need initialisation">
@@ -1729,7 +1668,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p><strong>Reveal:</strong> One Right explains. Next add one initialised home to our program.</p>
 <p><strong>Context:</strong> Ordinary local members need initialisation or assignment; static objects instead receive zero initialisation.</p>
 <p><strong>Recovery:</strong> Enum and address type defined; no home object yet.</p>
-<div class="sourceCode" id="cb70"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb70-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> recovery/types-defined.c live-types.c</span></code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb67-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> recovery/types-defined.c live-types.c</span></code></pre></div>
 <p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1748,25 +1687,25 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <h2>Initialising a structure</h2>
 <div class="slide-body">
 <p>Which value goes into each member?</p>
-<div class="sourceCode" id="cb71"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb71-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address home <span class="op">=</span> <span class="op">{</span> <span class="st">"Paul Bert"</span><span class="op">,</span> <span class="dv">12</span> <span class="op">};</span></span></code></pre></div>
+<div class="sourceCode" id="cb68"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb68-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address home <span class="op">=</span> <span class="op">{</span> <span class="st">"Paul Bert"</span><span class="op">,</span> <span class="dv">12</span> <span class="op">};</span></span></code></pre></div>
 <div class="fragment" data-fragment-index="0">
 <p>Or combine the type and object definitions:</p>
-<div class="sourceCode" id="cb72"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb72-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address <span class="op">{</span></span>
-<span id="cb72-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">char</span> street<span class="op">[</span><span class="dv">100</span><span class="op">];</span></span>
-<span id="cb72-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> number<span class="op">;</span></span>
-<span id="cb72-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> home <span class="op">=</span> <span class="op">{</span> <span class="st">"Paul Bert"</span><span class="op">,</span> <span class="dv">12</span> <span class="op">};</span></span></code></pre></div>
+<div class="sourceCode" id="cb69"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb69-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address <span class="op">{</span></span>
+<span id="cb69-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">char</span> street<span class="op">[</span><span class="dv">100</span><span class="op">];</span></span>
+<span id="cb69-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> number<span class="op">;</span></span>
+<span id="cb69-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> home <span class="op">=</span> <span class="op">{</span> <span class="st">"Paul Bert"</span><span class="op">,</span> <span class="dv">12</span> <span class="op">};</span></span></code></pre></div>
 </div>
 <aside class="notes">
 <p><strong>VIM &gt; TERMINAL &gt; SLIDES</strong></p>
 <p>Add home and its printf inside main, before return. Predict the street and number. Save; run make run FILE=live-types.c.</p>
-<div class="sourceCode" id="cb73"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb73-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address home <span class="op">=</span> <span class="op">{</span> <span class="st">"Paul Bert"</span><span class="op">,</span> <span class="dv">12</span> <span class="op">};</span></span>
-<span id="cb73-2"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"</span><span class="sc">%d</span><span class="st"> </span><span class="sc">%s\n</span><span class="st">"</span><span class="op">,</span> home<span class="op">.</span>number<span class="op">,</span> home<span class="op">.</span>street<span class="op">);</span></span></code></pre></div>
+<div class="sourceCode" id="cb70"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb70-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address home <span class="op">=</span> <span class="op">{</span> <span class="st">"Paul Bert"</span><span class="op">,</span> <span class="dv">12</span> <span class="op">};</span></span>
+<span id="cb70-2"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"</span><span class="sc">%d</span><span class="st"> </span><span class="sc">%s\n</span><span class="st">"</span><span class="op">,</span> home<span class="op">.</span>number<span class="op">,</span> home<span class="op">.</span>street<span class="op">);</span></span></code></pre></div>
 <p><strong>Expect:</strong> today=2, then 12 Paul Bert.</p>
 <p><strong>Reveal:</strong> One Right shows the alternative declaration. Do not add both. Next change the existing members.</p>
 <p><strong>Context:</strong> The displayed declarations are alternative forms. Initialisers follow member order; omitted members are zero-initialised. Do not put both declarations in the same scope.</p>
 <p><strong>Recovery:</strong> Initialised home: 12 Paul Bert.</p>
-<div class="sourceCode" id="cb74"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb74-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> recovery/types-initialised.c live-types.c</span>
-<span id="cb74-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> run FILE=live-types.c</span></code></pre></div>
+<div class="sourceCode" id="cb71"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb71-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> recovery/types-initialised.c live-types.c</span>
+<span id="cb71-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> run FILE=live-types.c</span></code></pre></div>
 <p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1785,9 +1724,9 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <h2>Access members through an object</h2>
 <div class="slide-body">
 <p>What will printing <code>home</code> show after these assignments?</p>
-<div class="sourceCode" id="cb75"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb75-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address home <span class="op">=</span> <span class="op">{</span> <span class="st">"Paul Bert"</span><span class="op">,</span> <span class="dv">12</span> <span class="op">};</span></span>
-<span id="cb75-2"><a href="" aria-hidden="true" tabindex="-1"></a>strcpy<span class="op">(</span>home<span class="op">.</span>street<span class="op">,</span> <span class="st">"Rue de Paris"</span><span class="op">);</span></span>
-<span id="cb75-3"><a href="" aria-hidden="true" tabindex="-1"></a>home<span class="op">.</span>number <span class="op">=</span> <span class="dv">14</span><span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb72"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb72-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address home <span class="op">=</span> <span class="op">{</span> <span class="st">"Paul Bert"</span><span class="op">,</span> <span class="dv">12</span> <span class="op">};</span></span>
+<span id="cb72-2"><a href="" aria-hidden="true" tabindex="-1"></a>strcpy<span class="op">(</span>home<span class="op">.</span>street<span class="op">,</span> <span class="st">"Rue de Paris"</span><span class="op">);</span></span>
+<span id="cb72-3"><a href="" aria-hidden="true" tabindex="-1"></a>home<span class="op">.</span>number <span class="op">=</span> <span class="dv">14</span><span class="op">;</span></span></code></pre></div>
 <div class="fragment" data-fragment-index="0">
 <div class="block definition" title="The dot operator">
 <div class="block-title">
@@ -1800,14 +1739,14 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <aside class="notes">
 <p><strong>VIM &gt; TERMINAL &gt; SLIDES</strong></p>
 <p>Insert the two updates before the home printf. Predict its output, then save and run make run FILE=live-types.c.</p>
-<div class="sourceCode" id="cb76"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb76-1"><a href="" aria-hidden="true" tabindex="-1"></a>strcpy<span class="op">(</span>home<span class="op">.</span>street<span class="op">,</span> <span class="st">"Rue de Paris"</span><span class="op">);</span></span>
-<span id="cb76-2"><a href="" aria-hidden="true" tabindex="-1"></a>home<span class="op">.</span>number <span class="op">=</span> <span class="dv">14</span><span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb73"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb73-1"><a href="" aria-hidden="true" tabindex="-1"></a>strcpy<span class="op">(</span>home<span class="op">.</span>street<span class="op">,</span> <span class="st">"Rue de Paris"</span><span class="op">);</span></span>
+<span id="cb73-2"><a href="" aria-hidden="true" tabindex="-1"></a>home<span class="op">.</span>number <span class="op">=</span> <span class="dv">14</span><span class="op">;</span></span></code></pre></div>
 <p><strong>Expect:</strong> 14 Rue de Paris. No arrow update exists yet.</p>
 <p><strong>Reveal:</strong> One Right explains dot and string copying. Ask how to change the same object through a pointer.</p>
 <p><strong>Context:</strong> Preserve both string and integer updates. The array member cannot be assigned a string literal after definition; copy its characters with enough destination capacity.</p>
 <p><strong>Recovery:</strong> Dot updates: 14 Rue de Paris.</p>
-<div class="sourceCode" id="cb77"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb77-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> recovery/types-dot.c live-types.c</span>
-<span id="cb77-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> run FILE=live-types.c</span></code></pre></div>
+<div class="sourceCode" id="cb74"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb74-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> recovery/types-dot.c live-types.c</span>
+<span id="cb74-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> run FILE=live-types.c</span></code></pre></div>
 <p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1826,9 +1765,9 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <h2>Access members through a pointer</h2>
 <div class="slide-body">
 <p>Does changing through <code>p</code> also change <code>home</code>?</p>
-<div class="sourceCode" id="cb78"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb78-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address <span class="op">*</span>p <span class="op">=</span> <span class="op">&amp;</span>home<span class="op">;</span></span>
-<span id="cb78-2"><a href="" aria-hidden="true" tabindex="-1"></a>strcpy<span class="op">(</span>p<span class="op">-&gt;</span>street<span class="op">,</span> <span class="st">"Rue de Paris"</span><span class="op">);</span></span>
-<span id="cb78-3"><a href="" aria-hidden="true" tabindex="-1"></a>p<span class="op">-&gt;</span>number <span class="op">=</span> <span class="dv">16</span><span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb75"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb75-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address <span class="op">*</span>p <span class="op">=</span> <span class="op">&amp;</span>home<span class="op">;</span></span>
+<span id="cb75-2"><a href="" aria-hidden="true" tabindex="-1"></a>strcpy<span class="op">(</span>p<span class="op">-&gt;</span>street<span class="op">,</span> <span class="st">"Rue de Paris"</span><span class="op">);</span></span>
+<span id="cb75-3"><a href="" aria-hidden="true" tabindex="-1"></a>p<span class="op">-&gt;</span>number <span class="op">=</span> <span class="dv">16</span><span class="op">;</span></span></code></pre></div>
 <div class="fragment" data-fragment-index="0">
 <div class="block definition" title="The arrow operator">
 <div class="block-title">
@@ -1841,15 +1780,15 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <aside class="notes">
 <p><strong>VIM &gt; TERMINAL &gt; SLIDES</strong></p>
 <p>Insert the pointer and updates after the dot assignments, before the same home printf. Predict home.number; save and run make run FILE=live-types.c.</p>
-<div class="sourceCode" id="cb79"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb79-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address <span class="op">*</span>p <span class="op">=</span> <span class="op">&amp;</span>home<span class="op">;</span></span>
-<span id="cb79-2"><a href="" aria-hidden="true" tabindex="-1"></a>strcpy<span class="op">(</span>p<span class="op">-&gt;</span>street<span class="op">,</span> <span class="st">"Rue de Paris"</span><span class="op">);</span></span>
-<span id="cb79-3"><a href="" aria-hidden="true" tabindex="-1"></a>p<span class="op">-&gt;</span>number <span class="op">=</span> <span class="dv">16</span><span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb76"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb76-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address <span class="op">*</span>p <span class="op">=</span> <span class="op">&amp;</span>home<span class="op">;</span></span>
+<span id="cb76-2"><a href="" aria-hidden="true" tabindex="-1"></a>strcpy<span class="op">(</span>p<span class="op">-&gt;</span>street<span class="op">,</span> <span class="st">"Rue de Paris"</span><span class="op">);</span></span>
+<span id="cb76-3"><a href="" aria-hidden="true" tabindex="-1"></a>p<span class="op">-&gt;</span>number <span class="op">=</span> <span class="dv">16</span><span class="op">;</span></span></code></pre></div>
 <p><strong>Expect:</strong> 16 Rue de Paris. The pointer reaches the existing home.</p>
 <p><strong>Reveal:</strong> One Right explains -&gt; and (*p). No second run is needed. Next measure the storage occupied by structures.</p>
 <p><strong>Context:</strong> Taking &amp;home neither copies nor allocates a structure. p-&gt;number and (*p).number name the same member. Preserve the explicit strcpy through the pointer.</p>
 <p><strong>Recovery:</strong> Arrow updates: 16 Rue de Paris.</p>
-<div class="sourceCode" id="cb80"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb80-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> recovery/types-arrow.c live-types.c</span>
-<span id="cb80-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> run FILE=live-types.c</span></code></pre></div>
+<div class="sourceCode" id="cb77"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb77-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> recovery/types-arrow.c live-types.c</span>
+<span id="cb77-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> run FILE=live-types.c</span></code></pre></div>
 <p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1868,16 +1807,16 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <h2>Same members, different order</h2>
 <div class="slide-body">
 <p>Same member types. Must these structures have the same size?</p>
-<div class="sourceCode" id="cb81"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb81-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> grouped <span class="op">{</span></span>
-<span id="cb81-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> id1<span class="op">,</span> id2<span class="op">;</span></span>
-<span id="cb81-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">char</span> c1<span class="op">,</span> c2<span class="op">;</span></span>
-<span id="cb81-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> ratio<span class="op">;</span></span>
-<span id="cb81-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
-<span id="cb81-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> interleaved <span class="op">{</span></span>
-<span id="cb81-7"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> id1<span class="op">;</span> <span class="dt">char</span> c1<span class="op">;</span></span>
-<span id="cb81-8"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> id2<span class="op">;</span> <span class="dt">char</span> c2<span class="op">;</span></span>
-<span id="cb81-9"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> ratio<span class="op">;</span></span>
-<span id="cb81-10"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<div class="sourceCode" id="cb78"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb78-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> grouped <span class="op">{</span></span>
+<span id="cb78-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> id1<span class="op">,</span> id2<span class="op">;</span></span>
+<span id="cb78-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">char</span> c1<span class="op">,</span> c2<span class="op">;</span></span>
+<span id="cb78-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> ratio<span class="op">;</span></span>
+<span id="cb78-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb78-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> interleaved <span class="op">{</span></span>
+<span id="cb78-7"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> id1<span class="op">;</span> <span class="dt">char</span> c1<span class="op">;</span></span>
+<span id="cb78-8"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> id2<span class="op">;</span> <span class="dt">char</span> c2<span class="op">;</span></span>
+<span id="cb78-9"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> ratio<span class="op">;</span></span>
+<span id="cb78-10"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
 <aside class="notes">
 <p><strong>SLIDES &gt; TERMINAL</strong></p>
 <p>Compare both definitions; ask whether their sizes must match. Inspect 17-padding.c, then run make run FILE=17-padding.c while this slide remains the prediction slide.</p>
@@ -1885,8 +1824,8 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p><strong>Reveal:</strong> Do not advance to the explanation before running. Next explain the observed difference.</p>
 <p><strong>Context:</strong> Both member orders from source slide 307 are retained. Equal member types need not give equal structure sizes.</p>
 <p><strong>Recovery:</strong> Measure the two layouts. Explanation slides need no second run.</p>
-<div class="sourceCode" id="cb82"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb82-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 17-padding.c live-types.c</span>
-<span id="cb82-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> run FILE=live-types.c</span></code></pre></div>
+<div class="sourceCode" id="cb79"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb79-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 17-padding.c live-types.c</span>
+<span id="cb79-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> run FILE=live-types.c</span></code></pre></div>
 <p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1922,7 +1861,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p><strong>Reveal:</strong> Next locate the unused bytes in the diagram.</p>
 <p><strong>Context:</strong> Alignment may simplify or speed access or be required by hardware; do not claim every processor always reads one word. Members retain declaration order; sizeof includes interior and trailing padding. There is no padding before the first member.</p>
 <p><strong>Recovery:</strong> Measure the two layouts. Explanation slides need no second run.</p>
-<div class="sourceCode" id="cb83"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb83-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 17-padding.c live-types.c</span></code></pre></div>
+<div class="sourceCode" id="cb80"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb80-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 17-padding.c live-types.c</span></code></pre></div>
 <p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1951,7 +1890,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p><strong>Reveal:</strong> We can now define, use and measure a structure. Next give types shorter names.</p>
 <p><strong>Context:</strong> The illustration assumes four-byte int/float sizes and alignments. Offsets are measured from the object start; 16/20 bytes are not universal C guarantees.</p>
 <p><strong>Recovery:</strong> Measure the two layouts. Explanation slides need no second run.</p>
-<div class="sourceCode" id="cb84"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb84-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 17-padding.c live-types.c</span></code></pre></div>
+<div class="sourceCode" id="cb81"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb81-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 17-padding.c live-types.c</span></code></pre></div>
 <p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1970,9 +1909,9 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <h2><code>typedef</code>: a name for a type</h2>
 <div class="slide-body">
 <p>Does naming a type create an object?</p>
-<div class="sourceCode" id="cb85"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb85-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="dt">int</span> LENGTH<span class="op">;</span></span>
-<span id="cb85-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">enum</span> <span class="op">{</span> FALSE<span class="op">,</span> TRUE <span class="op">}</span> BOOLEAN<span class="op">;</span></span>
-<span id="cb85-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> date DATE<span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb82"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb82-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="dt">int</span> LENGTH<span class="op">;</span></span>
+<span id="cb82-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">enum</span> <span class="op">{</span> FALSE<span class="op">,</span> TRUE <span class="op">}</span> BOOLEAN<span class="op">;</span></span>
+<span id="cb82-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> date DATE<span class="op">;</span></span></code></pre></div>
 <div class="fragment block definition" title="Alias">
 <div class="block-title">
 <p>Alias</p>
@@ -2002,9 +1941,9 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <section id="nested-types" class="slide level2">
 <h2>Combine a date and a day of the week</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb86"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb86-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> date <span class="op">{</span> <span class="dt">short</span> day<span class="op">,</span> month<span class="op">;</span> <span class="dt">int</span> year<span class="op">;</span> <span class="op">};</span></span>
-<span id="cb86-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">enum</span> <span class="op">{</span> mon<span class="op">,</span> tue<span class="op">,</span> wed<span class="op">,</span> thu<span class="op">,</span> fri<span class="op">,</span> sat<span class="op">,</span> sun <span class="op">}</span> DAY<span class="op">;</span></span>
-<span id="cb86-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> <span class="op">{</span> DAY day<span class="op">;</span> <span class="kw">struct</span> date date<span class="op">;</span> <span class="op">}</span> A_DATE<span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb83"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb83-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> date <span class="op">{</span> <span class="dt">short</span> day<span class="op">,</span> month<span class="op">;</span> <span class="dt">int</span> year<span class="op">;</span> <span class="op">};</span></span>
+<span id="cb83-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">enum</span> <span class="op">{</span> mon<span class="op">,</span> tue<span class="op">,</span> wed<span class="op">,</span> thu<span class="op">,</span> fri<span class="op">,</span> sat<span class="op">,</span> sun <span class="op">}</span> DAY<span class="op">;</span></span>
+<span id="cb83-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> <span class="op">{</span> DAY day<span class="op">;</span> <span class="kw">struct</span> date date<span class="op">;</span> <span class="op">}</span> A_DATE<span class="op">;</span></span></code></pre></div>
 <div class="fragment block example" title="A nested structure">
 <div class="block-title">
 <p>A nested structure</p>
@@ -2018,7 +1957,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p><strong>Reveal:</strong> One Right explains nesting. Next inspect the updates to an instance.</p>
 <p><strong>Context:</strong> Retain short day/month, int year, the weekday enum and the nested structure typedef from both source images. English names preserve their types and layout.</p>
 <p><strong>Recovery:</strong> Nested type definitions only; do not run the completed example yet.</p>
-<div class="sourceCode" id="cb87"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb87-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> recovery/nested-types.c live-types.c</span></code></pre></div>
+<div class="sourceCode" id="cb84"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb84-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> recovery/nested-types.c live-types.c</span></code></pre></div>
 <p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -2037,12 +1976,12 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <h2>Access nested members</h2>
 <div class="slide-body">
 <p>What year will <code>today.date.year</code> contain after the update through <code>p</code>?</p>
-<div class="sourceCode" id="cb88"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb88-1"><a href="" aria-hidden="true" tabindex="-1"></a>A_DATE today <span class="op">=</span> <span class="op">{</span> wed<span class="op">,</span> <span class="op">{</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">9</span><span class="op">,</span> <span class="dv">2014</span> <span class="op">}</span> <span class="op">};</span></span>
-<span id="cb88-2"><a href="" aria-hidden="true" tabindex="-1"></a>today<span class="op">.</span>day <span class="op">=</span> wed<span class="op">;</span></span>
-<span id="cb88-3"><a href="" aria-hidden="true" tabindex="-1"></a>today<span class="op">.</span>date<span class="op">.</span>year <span class="op">=</span> <span class="dv">2014</span><span class="op">;</span></span>
-<span id="cb88-4"><a href="" aria-hidden="true" tabindex="-1"></a>A_DATE <span class="op">*</span>p <span class="op">=</span> <span class="op">&amp;</span>today<span class="op">;</span></span>
-<span id="cb88-5"><a href="" aria-hidden="true" tabindex="-1"></a>p<span class="op">-&gt;</span>day <span class="op">=</span> today<span class="op">.</span>day<span class="op">;</span></span>
-<span id="cb88-6"><a href="" aria-hidden="true" tabindex="-1"></a>p<span class="op">-&gt;</span>date<span class="op">.</span>year <span class="op">=</span> <span class="dv">2026</span><span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb85"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb85-1"><a href="" aria-hidden="true" tabindex="-1"></a>A_DATE today <span class="op">=</span> <span class="op">{</span> wed<span class="op">,</span> <span class="op">{</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">9</span><span class="op">,</span> <span class="dv">2014</span> <span class="op">}</span> <span class="op">};</span></span>
+<span id="cb85-2"><a href="" aria-hidden="true" tabindex="-1"></a>today<span class="op">.</span>day <span class="op">=</span> wed<span class="op">;</span></span>
+<span id="cb85-3"><a href="" aria-hidden="true" tabindex="-1"></a>today<span class="op">.</span>date<span class="op">.</span>year <span class="op">=</span> <span class="dv">2014</span><span class="op">;</span></span>
+<span id="cb85-4"><a href="" aria-hidden="true" tabindex="-1"></a>A_DATE <span class="op">*</span>p <span class="op">=</span> <span class="op">&amp;</span>today<span class="op">;</span></span>
+<span id="cb85-5"><a href="" aria-hidden="true" tabindex="-1"></a>p<span class="op">-&gt;</span>day <span class="op">=</span> today<span class="op">.</span>day<span class="op">;</span></span>
+<span id="cb85-6"><a href="" aria-hidden="true" tabindex="-1"></a>p<span class="op">-&gt;</span>date<span class="op">.</span>year <span class="op">=</span> <span class="dv">2026</span><span class="op">;</span></span></code></pre></div>
 <div class="fragment" data-fragment-index="0">
 <p><code>p-&gt;date.year</code> reaches the nested member of <strong>the same object</strong>.</p>
 </div>
@@ -2053,8 +1992,8 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p><strong>Reveal:</strong> One Right explains that both access paths reach the same nested member. Finish with the quiz.</p>
 <p><strong>Context:</strong> Keep the original 3 September 2014 initialiser. The year changes to 2026 to make the pointer update observable; the original reassigns 2014.</p>
 <p><strong>Recovery:</strong> Completed nested example: day code=2; 3/9/2026.</p>
-<div class="sourceCode" id="cb89"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb89-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 18-nested.c live-types.c</span>
-<span id="cb89-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> run FILE=live-types.c</span></code></pre></div>
+<div class="sourceCode" id="cb86"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb86-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 18-nested.c live-types.c</span>
+<span id="cb86-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> run FILE=live-types.c</span></code></pre></div>
 <p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -2082,7 +2021,7 @@ PhD: <strong>BSC / UPC</strong>.</p>
 <p><strong>Expect:</strong> End with unresolved student questions. No linked-list or hash-table material follows in this session.</p>
 <p><strong>Context:</strong> Retain all three source quiz groups. See docs/allocation-runbook.md for pacing, terminal commands, expected diagnostic families and repairs. The original content remains one 90-minute class; adjust discussion and prepared-code comparisons to the audience.</p>
 <p><strong>Recovery:</strong> Completed nested example: day code=2; 3/9/2026.</p>
-<div class="sourceCode" id="cb90"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb90-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 18-nested.c live-types.c</span></code></pre></div>
+<div class="sourceCode" id="cb87"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb87-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 18-nested.c live-types.c</span></code></pre></div>
 <p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {

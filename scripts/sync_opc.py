@@ -74,7 +74,7 @@ Ask for predictions before each run; reveal explanations afterward.
 Open a numbered reference only for a prepared comparison or recovery.
 For example: make valgrind FILE=08-dangling.c (enter 4).
 Files 01–04 develop a string copy, fixing its size and then its leak.
-File 12 compares pointer assignment with copying, immediately after that opening.
+Files 11 and 12 are optional references, outside the slide sequence.
 File 05 introduces integers; 06–09 each introduce one fault into 05-integers.c.
 Repair and rerun each before continuing. See docs/allocation-runbook.md.
 
@@ -187,7 +187,7 @@ def main():
             '```sh', 'cd demos/allocation', 'vim 01-copy-alias.c',
             'make run FILE=01-copy-alias.c', '```', '',
             'Files 01–04 develop a string copy: shared storage, a missing byte, a leak, then the repair. '
-            'File 12 completes the string section with pointer assignment. '
+            'Files 11 and 12 are optional references, outside the slide sequence. '
             'File 05 introduces integers; each of 06–09 introduces one fault into 05-integers.c. Repair and rerun each.', '']
     stages = json.loads((source / 'demos/allocation/steps.json').read_text())
     page.extend(["[Structure starter]({{ '/assets/courses/opc/2026-2027/examples/allocation/types-start.c' | relative_url }}) · copy to `live-types.c` for incremental coding.", ''])

@@ -16,7 +16,7 @@ vim 01-copy-alias.c
 make run FILE=01-copy-alias.c
 ```
 
-Files 01–04 develop a string copy: shared storage, a missing byte, a leak, then the repair. File 12 completes the string section with pointer assignment. File 05 introduces integers; each of 06–09 introduces one fault into 05-integers.c. Repair and rerun each.
+Files 01–04 develop a string copy: shared storage, a missing byte, a leak, then the repair. Files 11 and 12 are optional references, outside the slide sequence. File 05 introduces integers; each of 06–09 introduces one fault into 05-integers.c. Repair and rerun each.
 
 [Structure starter]({{ '/assets/courses/opc/2026-2027/examples/allocation/types-start.c' | relative_url }}) · copy to `live-types.c` for incremental coding.
 
@@ -137,34 +137,6 @@ int main(void) {
     printf("original: %s\n", original);
     printf("copy:     %s\n", copy);
     free(copy);
-    return EXIT_SUCCESS;
-}
-```
-
-</details>
-
-<details id="12-string-assignment" markdown="1">
-<summary>12-string-assignment.c · Pointer assignment is not copying text</summary>
-
-```sh
-vim 12-string-assignment.c
-make valgrind FILE=12-string-assignment.c
-```
-
-[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/12-string-assignment.c' | relative_url }})
-
-```c
-#include <stdio.h>
-#include <stdlib.h>
-int main(void) {
-    char *s = malloc(100);
-    if (!s) return EXIT_FAILURE;
-    // Intentional error from the original string example.
-    s = "hello";  // The allocated block is now unreachable.
-    char *p = s;
-    s = "bye";
-    printf("p=%s; s=%s\n", p, s);
-    // Neither pointer now points into the allocated block.
     return EXIT_SUCCESS;
 }
 ```
@@ -618,6 +590,34 @@ int main(void) {
         printf("s[%d] = %u\n", i, (unsigned char)s[i]);
     puts(s);
     free(s);
+    return EXIT_SUCCESS;
+}
+```
+
+</details>
+
+<details id="12-string-assignment" markdown="1">
+<summary>12-string-assignment.c · Pointer assignment is not copying text</summary>
+
+```sh
+vim 12-string-assignment.c
+make valgrind FILE=12-string-assignment.c
+```
+
+[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/12-string-assignment.c' | relative_url }})
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+int main(void) {
+    char *s = malloc(100);
+    if (!s) return EXIT_FAILURE;
+    // Intentional error from the original string example.
+    s = "hello";  // The allocated block is now unreachable.
+    char *p = s;
+    s = "bye";
+    printf("p=%s; s=%s\n", p, s);
+    // Neither pointer now points into the allocated block.
     return EXIT_SUCCESS;
 }
 ```
