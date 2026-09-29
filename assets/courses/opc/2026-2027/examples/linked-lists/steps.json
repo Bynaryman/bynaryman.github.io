@@ -1,0 +1,105 @@
+[
+  {
+    "file": "intro/01-one-node.c",
+    "stdout": "A -> NULL\n",
+    "leak": false,
+    "allocations": 1
+  },
+  {
+    "file": "intro/02-two-nodes.c",
+    "stdout": "A -> B -> NULL\n",
+    "leak": false,
+    "allocations": 2
+  },
+  {
+    "file": "intro/03-walk.c",
+    "stdout": "A -> B -> NULL\n",
+    "leak": false,
+    "allocations": 2
+  },
+  {
+    "file": "00-empty.c",
+    "stdout": "empty: 1\n",
+    "leak": false
+  },
+  {
+    "file": "01-create.c",
+    "stdout": "head empty: 1, node value: A\n",
+    "leak": false
+  },
+  {
+    "file": "02-first-node.c",
+    "stdout": "head -> A -> NULL\n",
+    "leak": false
+  },
+  {
+    "file": "03-head-copy.c",
+    "stdout": "caller head empty: 1\n",
+    "leak": true
+  },
+  {
+    "file": "04-head-address.c",
+    "stdout": "head -> A -> NULL\n",
+    "leak": false
+  },
+  {
+    "file": "05-head-before.c",
+    "stdout": "before:\nA -> B -> C -> D -> NULL\nafter:\nA -> B -> C -> D -> NULL\n",
+    "leak": false
+  },
+  {
+    "file": "06-head-lost.c",
+    "stdout": "before:\nA -> B -> C -> D -> NULL\nafter:\nE -> NULL\n",
+    "leak": true
+  },
+  {
+    "file": "07-head-fixed.c",
+    "stdout": "before:\nA -> B -> C -> D -> NULL\nafter:\nE -> A -> B -> C -> D -> NULL\n",
+    "leak": false
+  },
+  {
+    "file": "08-middle-before.c",
+    "stdout": "before:\nA -> B -> C -> D -> NULL\nafter:\nA -> B -> C -> D -> NULL\n",
+    "leak": false
+  },
+  {
+    "file": "09-middle-lost.c",
+    "stdout": "before:\nA -> B -> C -> D -> NULL\nafter:\nA -> B -> E -> NULL\n",
+    "leak": true
+  },
+  {
+    "file": "10-middle-fixed.c",
+    "stdout": "before:\nA -> B -> C -> D -> NULL\nafter:\nA -> B -> E -> C -> D -> NULL\n",
+    "leak": false
+  },
+  {
+    "file": "11-tail-before.c",
+    "stdout": "before:\nA -> B -> C -> D -> NULL\nafter:\nA -> B -> C -> D -> NULL\n",
+    "leak": false
+  },
+  {
+    "file": "12-tail-fixed.c",
+    "stdout": "before:\nA -> B -> C -> D -> NULL\nafter:\nA -> B -> C -> D -> E -> NULL\n",
+    "leak": false
+  },
+  {
+    "file": "13-delete-before.c",
+    "stdout": "before:\nA -> B -> C -> D -> NULL\nafter:\nA -> B -> C -> D -> NULL\n",
+    "leak": false
+  },
+  {
+    "file": "14-delete-head.c",
+    "stdout": "before:\nA -> B -> C -> D -> NULL\nafter:\nB -> C -> D -> NULL\n",
+    "leak": false
+  },
+  {
+    "file": "15-delete-middle.c",
+    "stdout": "before:\nA -> B -> C -> D -> NULL\nafter:\nA -> C -> D -> NULL\n",
+    "leak": false
+  },
+  {
+    "file": "16-delete-tail.c",
+    "stdout": "before:\nA -> B -> C -> D -> NULL\nafter:\nA -> B -> C -> NULL\n",
+    "leak": false
+  }
+]
