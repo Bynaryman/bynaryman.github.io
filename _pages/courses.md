@@ -11,9 +11,9 @@ nav_order: 7
 
 ISTIC · University of Rennes · 2026–2027 · Louis Ledoux
 
-Dynamic memory allocation and user-defined types in C.
+{% include opc_lectures.liquid %}
 
-[Course material]({{ '/courses/opc/' | relative_url }}) · [Allocation slides]({{ '/assets/courses/opc/2026-2027/01-allocation.html' | relative_url }})
+[C examples]({{ '/courses/opc/examples/' | relative_url }}) · [Download course]({{ '/assets/courses/opc/2026-2027/opc-course.zip' | relative_url }})
 
 ## Digital Design with MLIR and CIRCT
 
