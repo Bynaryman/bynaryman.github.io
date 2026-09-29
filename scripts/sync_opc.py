@@ -226,13 +226,13 @@ def main():
                  'Files 03, 06 and 09 deliberately leak; compare them with the following repair.', '',
                  "[Shared helper]({{ '/assets/courses/opc/2026-2027/examples/linked-lists/list-support.h' | relative_url }}) · "
                  "[Makefile]({{ '/assets/courses/opc/2026-2027/examples/linked-lists/Makefile' | relative_url }})", '',
-                 '| Checkpoint | Expected output |', '|---|---|'])
+                 '<!-- prettier-ignore -->', '| Checkpoint | Expected output |', '|---|---|'])
     for stage in json.loads((source / 'demos/linked-lists/steps.json').read_text()):
         file = stage['file']
         result = stage['stdout'].strip().replace('\n', ' / ')
         link = "{{ '/assets/courses/opc/2026-2027/examples/linked-lists/" + file + "' | relative_url }}"
         page.append(f'| [{file}]({link}) | `{result}` |')
-    (SITE / '_pages/opc-examples.md').write_text('\n'.join(page))
+    (SITE / '_pages/opc-examples.md').write_text('\n'.join(page).rstrip() + '\n')
 
     with zipfile.ZipFile(DESTINATION / "opc-course.zip", "w", zipfile.ZIP_DEFLATED) as archive:
         for relative in sorted(sources):

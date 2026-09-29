@@ -639,6 +639,7 @@ Files 03, 06 and 09 deliberately leak; compare them with the following repair.
 
 [Shared helper]({{ '/assets/courses/opc/2026-2027/examples/linked-lists/list-support.h' | relative_url }}) · [Makefile]({{ '/assets/courses/opc/2026-2027/examples/linked-lists/Makefile' | relative_url }})
 
+<!-- prettier-ignore -->
 | Checkpoint | Expected output |
 |---|---|
 | [intro/01-one-node.c]({{ '/assets/courses/opc/2026-2027/examples/linked-lists/intro/01-one-node.c' | relative_url }}) | `A -> NULL` |
