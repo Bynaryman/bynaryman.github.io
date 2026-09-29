@@ -1,28 +1,32 @@
 ---
 layout: page
 title: MLModelMLIRGEN
-description: Batch export utility from PyTorch models to MLIR linalg-on-tensors artifacts
-img: assets/img/projects/mlmodelmlirgen.svg
-img_alt: Pipeline diagram from PyTorch models through torch-mlir to linalg-on-tensors.
+description: Export torchvision models and model suites to MLIR linalg-on-tensors.
+img: assets/img/projects/python.svg
+img_alt: Python logo, the implementation language of MLModelMLIRGEN.
 importance: 5
 category: work
 github: https://github.com/Bynaryman/MLModelMLIRGEN
 github_stars: Bynaryman/MLModelMLIRGEN
+img_style: tool-logo
 ---
 
-`MLModelMLIRGEN` is a utility project used to export curated PyTorch and `torchvision` models into reusable MLIR artifacts.
+MLModelMLIRGEN exports PyTorch and torchvision classification models to MLIR using torch-mlir. The output is `linalg-on-tensors`, suitable for compiler experiments that need a reproducible model input.
 
-## Scope
+## Export a model
 
-- Batch conversion through `torch-mlir`.
-- Export of model variants and pretrained weights for reproducible compilation studies.
-- Target level focused on `linalg-on-tensors` to keep the transformation pipeline analyzable.
+The default exporter produces ResNet-18. Options select the model, weights, number of classes, input dimensions, and exported function name.
 
-## Role In The Stack
+```sh
+python scripts/resnet18_to_mlir.py --output resnet18.mlir
+```
 
-This is the model-ingestion front-end for arithmetic-lowering experiments. It helps benchmark the exact same model family across compiler pipelines instead of re-authoring kernels by hand.
+A second script exports predefined suites. It can list the available suites or show the intended exports without compiling them:
 
-## Links
+```sh
+python scripts/export_model_suites.py --list
+python scripts/export_model_suites.py --suite toy --dry-run
+python scripts/export_model_suites.py --suite sota_imagenet --output-root mlir_outputs/sota
+```
 
-- Repository: <https://github.com/Bynaryman/MLModelMLIRGEN>
-- Related publication entry: [HAL 05385229](https://hal.science/hal-05385229)
+The repository includes examples from ResNet, MobileNet, SqueezeNet, EfficientNet, and ConvNeXt. Its README specifies the matching PyTorch, torchvision, and torch-mlir versions used for validation; those versions matter because the exporter depends on their APIs and lowering support.

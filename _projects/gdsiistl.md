@@ -1,7 +1,7 @@
 ---
 layout: page
 title: gdsiistl
-description: Convert GDS layouts into layered STL meshes for 3D visualization and mediation
+description: Extrude GDSII process layers into STL meshes for 3D rendering.
 img: assets/img/sky130hd-retro-raytrace-1.png
 img_alt: Artistic render of SKY130 full-adder layers extracted with gdsiistl.
 importance: 7
@@ -10,18 +10,17 @@ github: https://github.com/Bynaryman/gdsiistl
 github_stars: Bynaryman/gdsiistl
 ---
 
-`gdsiistl` converts GDSII layouts into STL meshes by extruding selected process layers.
+gdsiistl extrudes selected GDSII layers into separate STL meshes. I adapted the conversion for SKY130 and added external process-layer mappings, including an IHP SG13G2 example.
 
-## Practical Use
+{% include figure.liquid path="assets/img/sky130hd-retro-raytrace-1.png" alt="Ray-traced SKY130 full-adder geometry extracted from GDSII." caption="A rendered full-adder layout. The geometry comes from the chip layout; materials and lighting are presentation choices." %}
 
-I adapted it for SKY130-centric workflows and external PDK mappings so generated layouts can be turned into 3D visuals for analysis and outreach.
+## Convert a layout
 
-That made it useful both for:
+```sh
+python gdsiistl.py example/example.gds
+python gdsiistl.py --pdk-script example/ihp_bicmos_sg13g2.py inputs/tt_um_lledoux_s3fdp_seqcomb.gds
+```
 
-- inspecting geometric outcomes of open tapeouts,
-- and producing communication assets that keep chip geometry grounded in real layout data.
+The converter uses NumPy, gdspy, numpy-stl, and Triangle. A process mapping defines which layers to extrude and their vertical positions. The resulting meshes can be imported into a 3D renderer.
 
-## Links
-
-- Repository: <https://github.com/Bynaryman/gdsiistl>
-- SKY130 layer reference: <https://skywater-pdk.readthedocs.io/en/main/rules/layers.html#gds-layers-information>
+The output is intended for visualisation. The README records triangulation offsets and extra triangles around polygon holes; meshes are not guaranteed to be watertight or geometrically exact manufacturing models.

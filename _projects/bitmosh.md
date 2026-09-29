@@ -10,7 +10,7 @@ category: fun
 
 Bitmosh is my Android app for datamoshing. It uses motion information from compressed video to carry one image into another, repeat motion, and alter colour recovery.
 
-Clips come from the gallery or the camera. The editor provides trimming, transitions, motion repeats, previews, and MP4 export. Rendering runs on the device without an account or server.
+Clips come from the gallery or the camera. The editor separates Trim, Flow, Repeat, and Colour controls. Flow adjusts motion direction, drift, rotation, zoom, and recovery; Repeat extends a selected motion. Colour can follow the flow or hold the source colours. Preview and MP4 export run separately. Rendering runs on the device without an account or server.
 
 <div class="row">
   <div class="col-sm-6">

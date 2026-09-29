@@ -5,6 +5,12 @@ layout: default
   <header class="post-header">
     <h1 class="post-title">{{ page.title }}</h1>
     <p class="post-description">{{ page.description }}</p>
+    {% if page.collection == 'projects' and page.github %}
+      <nav class="project-docs" aria-label="Project documentation">
+        <a href="{{ page.github }}"><i class="fa-brands fa-github" aria-hidden="true"></i> Source code</a>
+        <a href="{{ page.github }}#readme">Repository README <span aria-hidden="true">↗</span></a>
+      </nav>
+    {% endif %}
   </header>
 
   <article class="page-content">

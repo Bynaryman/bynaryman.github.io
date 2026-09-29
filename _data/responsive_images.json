@@ -1483,5 +1483,28 @@
       }
     ],
     "src": "/assets/img/generated/workbench-b3291e30a0-698.webp"
+  },
+  "assets/img/projects/binarytracker.png": {
+    "width": 1280,
+    "height": 800,
+    "variants": [
+      {
+        "path": "/assets/img/generated/binarytracker-de91535798-320.webp",
+        "width": 320
+      },
+      {
+        "path": "/assets/img/generated/binarytracker-de91535798-640.webp",
+        "width": 640
+      },
+      {
+        "path": "/assets/img/generated/binarytracker-de91535798-960.webp",
+        "width": 960
+      },
+      {
+        "path": "/assets/img/generated/binarytracker-de91535798-1280.webp",
+        "width": 1280
+      }
+    ],
+    "src": "/assets/img/generated/binarytracker-de91535798-1280.webp"
   }
 }

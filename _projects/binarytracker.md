@@ -1,19 +1,32 @@
 ---
 layout: page
 title: BinaryTracker
-description: A terminal music tracker with Vim motions, operators, and musical text objects.
-img: assets/img/projects/binarytracker.svg
-img_alt: BinaryTracker terminal showing an arpeggio pattern and its modal editing status line.
+description: A Schism Tracker editor with Vim-style pattern editing and semantic MIDI conversion.
+img: assets/img/projects/binarytracker.png
+img_alt: The current Schism-based BinaryTracker pattern editor in BT NORMAL mode.
 importance: 2
 category: fun
 ---
 
-BinaryTracker is my terminal music tracker built around Vim grammar. Motions select musical regions; operators edit, transpose, or interpolate them.
+BinaryTracker combines a modified Schism Tracker interface with a MIDI-to-tracker converter. The pattern editor adds Vim-style Normal, Insert, and Visual modes. Schism's sample and instrument editors remain available on F3 and F4.
 
-{% include figure.liquid path="assets/img/projects/binarytracker.svg" alt="BinaryTracker running the arpeggio example, with four channels and a Normal-mode status line." %}
+{% include figure.liquid path="assets/img/projects/binarytracker.png" alt="The current BinaryTracker pattern editor showing five channels and BT NORMAL mode." caption="The running Schism-based editor with a generated demonstration pattern. This is the current interface; the earlier terminal editor is no longer the default." %}
 
-For example, `>ip` raises a phrase by one octave, `=ip` interpolates values, and `<C-v>5j3l y4p` copies a block four times. Registers, marks, macros, undo, and dot-repeat also work.
+## Modal editing
 
-The Rust interface uses Ratatui and modalkit over [rtrack](https://github.com/shakfu/rtrack)'s audio engine. It supports synthesis, samples, MIDI, and classic tracker-module import. Format conversion has limits; the editor reports unsupported data.
+On the F2 pattern page, `h j k l` move between rows and channels, `i` enters Insert mode, and `Esc` returns to Normal mode. `v` selects a block; `V` selects whole rows. Operators accept counts: `16yy` copies sixteen cells in the current channel, `8dd` clears eight, and `2>` transposes by two octaves.
 
-The current implementation is under development. The image shows the running terminal interface, captured with the arpeggio demo.
+Native tracker note entry is active in Insert mode. Samples, instrument envelopes, playback, and file handling use Schism's existing controls.
+
+## MIDI conversion
+
+The converter assigns musical roles to stable channels, divides a song into fixed 16-, 32-, or 64-row blocks, and reuses identical patterns. It writes an editable Impulse Tracker module (`.it`) and a companion `.bt` file containing mapping metadata.
+
+```sh
+make build-gui
+./bin/binarytracker song.mid --rows 32
+```
+
+MIDI contains no sample audio. To play the converted notes with embedded sounds, load samples on F3 and map them to instruments on F4. The launcher preserves existing `.it` files rather than overwriting added samples.
+
+The project is under development. Its converter and launcher use the MIT licence; the modified Schism Tracker remains GPL-licensed.

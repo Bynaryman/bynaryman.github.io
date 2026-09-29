@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Codez
-description: Typst/CeTZ package for geometry-aware code rendering and annotation in technical figures
+description: Annotated code figures in Typst and CeTZ, with line, region, and character anchors.
 img: assets/img/projects/codez.png
 img_alt: An annotated MLIR code excerpt rendered with Codez.
 importance: 9
@@ -10,23 +10,17 @@ github: https://github.com/Bynaryman/codez
 github_stars: Bynaryman/codez
 ---
 
-`codez` is a Typst/CeTZ package for rendering annotated code as figure-native geometry.
+Codez is a Typst package for placing annotated code inside CeTZ figures. Code remains addressable by line, marked region, and character, so arrows and labels can follow the code's geometry.
 
-## Why I Built It
+{% include figure.liquid path="assets/img/projects/codez.png" alt="An MLIR excerpt with annotations positioned using Codez." %}
 
-For posters and talks, code often needs more than syntax highlighting: precise overlays, callouts, bounding boxes, and alignment with diagram geometry.
+## Use in Typst
 
-`codez` provides those capabilities directly inside CeTZ canvases.
+```typst
+#import "@preview/codez:0.1.0": *
+#show: init.with()
+```
 
-## Highlights
+The API includes `parse` for the source, `mark` and `mark-char` for selections, `bbox-mark` for their bounds, and `cetz-block` for rendering. Named anchors let the surrounding diagram refer to those regions without manually estimating coordinates.
 
-- Mark-based line and region annotations.
-- Overlay geometry anchored to code regions.
-- Reusable building blocks for MLIR, Python, and SystemVerilog snippets.
-- Published package workflow with example gallery.
-
-## Links
-
-- Typst Universe package: <https://typst.app/universe/package/codez>
-- Repository: <https://github.com/Bynaryman/codez>
-- Package PR: <https://github.com/typst/packages/pull/4366>
+I use it for research figures, slides, and posters that combine code with structural annotations. The README contains complete CeTZ examples, including annotations of the linear projections and SwiGLU operation in a Llama implementation.
