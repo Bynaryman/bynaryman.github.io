@@ -8,16 +8,7 @@ nav: false
 
 ISTIC · University of Rennes · 2026–2027 · Louis Ledoux
 
-<ul class="latest-posts-list">
-  <li>
-    <span class="latest-posts-date">CM 1</span>
-    <span><strong>Dynamic memory allocation</strong> · <a href="{{ '/assets/courses/opc/2026-2027/01-allocation.html' | relative_url }}">HTML</a> · <a href="{{ '/assets/courses/opc/2026-2027/01-allocation.pdf' | relative_url }}">PDF</a></span>
-  </li>
-  <li>
-    <span class="latest-posts-date">CM 2</span>
-    <span><strong>Linked lists</strong> · <a href="{{ '/assets/courses/opc/2026-2027/02-linked-lists.html' | relative_url }}">HTML</a> · <a href="{{ '/assets/courses/opc/2026-2027/02-linked-lists.pdf' | relative_url }}">PDF</a></span>
-  </li>
-</ul>
+{% include opc_lectures.liquid %}
 
 [C examples]({{ '/courses/opc/examples/' | relative_url }}) · [Download course]({{ '/assets/courses/opc/2026-2027/opc-course.zip' | relative_url }}) · [Allocation quiz]({{ '/assets/courses/opc/2026-2027/assets/cm7-quiz.pdf' | relative_url }})
 

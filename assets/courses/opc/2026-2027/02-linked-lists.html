@@ -1430,7 +1430,9 @@ Louis Ledoux
 <div class="memory-stage fragment fade-out" data-fragment-index="0">
 <div class="memory-text">
 <ul>
-<li>First, create the node for A.</li>
+<li>Here, create A <span class="marker marker-green">on the heap</span>.</li>
+<li>A local node on the stack would work here too.</li>
+<li>In a real program: <span class="marker marker-plum">control its lifetime</span> across functions, and possibly store larger objects.</li>
 <li>What must <em><code>head</code></em> contain to reach it?</li>
 </ul>
 </div>
@@ -1445,7 +1447,7 @@ Louis Ledoux
 <span id="cb24-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>node <span class="op">==</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span id="cb24-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="cn">EXIT_FAILURE</span><span class="op">;</span></span></code></pre></div>
 <ul>
-<li><em><code>node</code></em> receives the new block’s address.</li>
+<li><em><code>node</code></em> receives the address of the <span class="marker marker-green">heap block</span>.</li>
 <li><em><code>head</code></em> is still <em><code>NULL</code></em>. <em><code>?</code></em> means uninitialised.</li>
 </ul>
 </div>
@@ -1491,10 +1493,10 @@ Louis Ledoux
 </div>
 </div>
 <aside class="notes">
-<p><strong>Purpose:</strong> Allocate and link one real node directly in main.</p>
-<p><strong>Do:</strong> Goal: create A and make it reachable through head. Start from 00-empty.c. Add malloc, its NULL check, value A, next NULL, and head = node. Add one free(head), save and run before revealing.</p>
-<p><strong>Expect:</strong> A -&gt; NULL; one allocation, no leak. The diagrams trace the successful allocation path before cleanup. 0x1000 is illustrative, and ? means uninitialised. No actual run is promised to use this address.</p>
-<p><strong>Reveal:</strong> Start with the question and empty heap while coding and running. Then four Rights show: successful malloc, value A, next NULL, head = node. Read the changed code on the left and matching memory on the right. head and node are separate stack variables holding the same address only after the final assignment.</p>
+<p><strong>Purpose:</strong> Choose heap storage so node lifetime can extend beyond the function that creates it.</p>
+<p><strong>Do:</strong> Explain: list_elem_t node and head = &amp;node would work locally. Here we allocate on the heap so other functions can create and remove nodes, choosing when to free them. Heap storage also suits potentially large objects; this node is small. From 00-empty.c, add malloc, its NULL check, value A, next NULL, head = node, then free(head). Save and run.</p>
+<p><strong>Expect:</strong> A -&gt; NULL; one allocation, no leak. A local structure lasts until its block ends; the allocated node lasts until free. Addresses are illustrative; ? means uninitialised.</p>
+<p><strong>Reveal:</strong> Explain the storage choice before coding. Four Rights then show malloc, value A, next NULL, and head = node. Match code to memory. head and node are separate local pointers to the same heap object after the final assignment.</p>
 <p><strong>Recovery:</strong></p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb28-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> intro/01-one-node.c live-list.c</span>
 <span id="cb28-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> valgrind FILE=live-list.c</span></code></pre></div>
@@ -3149,7 +3151,7 @@ Louis Ledoux
 <p><strong>Purpose:</strong> Terminate the shortened list and release its former tail.</p>
 <p><strong>Do:</strong> In the tail example, predict the result of previous-&gt;next = NULL; free(victim). Run Valgrind.</p>
 <p><strong>Expect:</strong> A -&gt; B -&gt; C -&gt; NULL; no errors or leaks.</p>
-<p><strong>Reveal:</strong> Initially show the question and current diagram: previous points to C; victim points to D. C still points to D. One Right replaces it with the completed state and reveals the code and explanation together. A sole-node list needs head = NULL; an empty list has nothing to delete.</p>
+<p><strong>Reveal:</strong> Initially show the question and current diagram: previous points to C; victim points to D. C still points to D. One Right replaces it with the completed state and reveals the code and explanation together. A sole-node list needs head = NULL; an empty list has nothing to delete. Before advancing, ask: we knew D was the node to remove, so why did we need to find C? We had to change C.next. This is the reason for the next section.</p>
 <p><strong>Recovery:</strong></p>
 <div class="sourceCode" id="cb106"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb106-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 16-delete-tail.c live-list.c</span>
 <span id="cb106-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> valgrind FILE=live-list.c</span></code></pre></div>
@@ -3171,13 +3173,16 @@ Louis Ledoux
 <section>
 <section id="section-doubly" class="title-slide slide level1 center">
 <h1>7. Doubly linked lists</h1>
-<p>Our player needs a <strong>Previous</strong> button.</p>
-<p>How can we go back from the current song?</p>
+<ul>
+<li>To delete D, we first had to <span class="marker marker-gold">find C</span>.</li>
+<li>D’s <em><code>next</code></em> link cannot take us back to C.</li>
+<li>What if each node <span class="marker marker-green">remembered its predecessor</span>?</li>
+</ul>
 <aside class="notes">
-<p><strong>Purpose:</strong> Motivate a backward link using the playlist and the predecessor search just demonstrated.</p>
-<p><strong>Do:</strong> Leave the terminal after deleting the tail. Recall that we searched for C before removing D. Now imagine C is playing and the listener presses Previous. With only the address of C, can we reach B directly?</p>
-<p><strong>Expect:</strong> The next member leads forward. To find B with the current representation, we must start from head and find the node whose next points to C.</p>
-<p><strong>Reveal:</strong> Section divider: ask the question before advancing. The next slide introduces the extra link; no terminal run here.</p>
+<p><strong>Purpose:</strong> Turn the predecessor search in the deletion examples into the motivation for a prev link.</p>
+<p><strong>Do:</strong> Say: deleting a middle or tail node required its predecessor. For D, we first found C so we could change C.next. Knowing D alone did not give us C. Ask what we could store in each node to avoid repeating that search.</p>
+<p><strong>Expect:</strong> Students suggest storing the predecessor address. With only next and no saved predecessor, we must search from head. If the predecessor is already known, singly linked deletion is already constant time.</p>
+<p><strong>Reveal:</strong> All bullets appear together. Pause for suggestions before advancing to the diagram. Introduce prev there, then mention backward playback as another benefit. No terminal run.</p>
 <p><strong>Recovery:</strong> No C change or run on this slide.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -3205,14 +3210,14 @@ Louis Ledoux
 </div>
 <div class="fragment" data-fragment-index="0">
 <ul>
-<li>Add <em><code>prev</code></em> beside <em><code>next</code></em>: traverse in <span class="marker marker-green">both directions</span>.</li>
-<li>Unlink a known node without searching for its predecessor.</li>
+<li>Add <em><code>prev</code></em>: <span class="marker marker-green">reach the predecessor directly</span> to unlink a known node.</li>
+<li>Also traverse in both directions: our player can offer a <strong>Previous</strong> button.</li>
 <li><span class="marker marker-gold">One extra pointer per node</span>; maintain <strong>both links</strong>.</li>
 </ul>
 </div>
 <aside class="notes">
 <p><strong>Purpose:</strong> Explain what a previous link buys and what it costs.</p>
-<p><strong>Do:</strong> Ask which extra address the current song needs. Reveal prev and trace a Previous action, then a Next action. Connect this to deleting the tail: a known node now gives its predecessor directly. Explain the extra pointer and the need to maintain both directions.</p>
+<p><strong>Do:</strong> Keep the deletion problem in view: to unlink B, we need A so we can change A.next. Ask which address B should store. Reveal prev and trace B.prev back to A. Then explain the Previous button, the extra pointer, and updates to both directions.</p>
 <p><strong>Expect:</strong> A known node carries its predecessor address; this costs another pointer and requires updates to both directions.</p>
 <p><strong>Reveal:</strong> Initially show the question and current diagram: A B C have next links only. A node has no direct link to its predecessor. One Right replaces it with the completed state and reveals the explanation. A node must still be located before deletion, and head or tail may need updating at the ends. This is the conceptual comparison from CM slide 355; no new program. Continue with the time and storage comparison.</p>
 <p><strong>Recovery:</strong> No C change or run on this slide.</p>
