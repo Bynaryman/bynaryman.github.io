@@ -1,11 +1,14 @@
 {% if site.posts.size > 0 %}
   {% assign latest_limit = site.latest_posts.limit | default: site.posts.size %}
-  <ul class="post-cards post-cards--latest">
+  <ul class="latest-posts-list">
     {% for post in site.posts limit: latest_limit %}
-      <li>{% include post_card.liquid post=post compact=true heading='h3' %}</li>
+      {% assign latest_url = post.redirect | default: post.url %}
+      {% unless latest_url contains '://' %}{% assign latest_url = latest_url | relative_url %}{% endunless %}
+      <li>
+        <span class="latest-posts-date">{% include post_date.liquid post=post %}</span>
+        <a href="{{ latest_url }}">{{ post.title }}</a>
+      </li>
     {% endfor %}
   </ul>
   <p class="all-posts-link"><a href="{{ '/blog/' | relative_url }}">All posts <span aria-hidden="true">→</span></a></p>
-{% else %}
-  <p>No posts so far.</p>
 {% endif %}
