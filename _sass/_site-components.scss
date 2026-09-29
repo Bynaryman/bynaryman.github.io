@@ -17,8 +17,8 @@
 .about-intro {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(180px, 28%);
-  gap: 2rem;
-  align-items: start;
+  gap: 0.9rem 2rem;
+  align-items: center;
   margin-bottom: 2rem;
 }
 .about-intro .profile {
@@ -28,6 +28,14 @@
 .about-copy {
   max-width: 72ch;
 }
+.about-intro .profile figure { margin: 0; }
+.about-intro .profile-caption {
+  grid-column: 2;
+  font-family: var(--retro-ui-stack);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+.about-intro .profile-caption p { margin: 0; }
 .post article > p,
 .post article > ul,
 .post article > ol {
@@ -68,11 +76,16 @@ video {
 @media (max-width: 767px) {
   .about-intro {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 1.5rem;
   }
   .about-intro .profile {
     max-width: 260px;
     justify-self: center;
+  }
+  .about-intro .profile-caption {
+    grid-column: 1;
+    justify-self: center;
+    margin-top: -0.6rem;
   }
   .shell-stage {
     padding-top: 1rem;

@@ -116,6 +116,17 @@ html[data-theme-variant] .metrics-grid .metric-card > a {
 html[data-theme-variant] .metrics-grid .metric-card h3 { margin: 0 0 0.8rem; }
 html[data-theme-variant] .metrics-grid .metric-img { border: 0; filter: none; box-shadow: none; }
 html[data-theme-variant] .post-header .post-title { border-bottom: 0; }
+.about-intro { --intro-edge: #000; }
+html[data-theme="dark"] .about-intro { --intro-edge: #fff; }
+.about-intro .about-copy,
+.about-intro .profile img {
+  border: 1px solid var(--intro-edge);
+  box-shadow: var(--print-shadow);
+  background: var(--global-bg-color);
+}
+.about-intro .about-copy { padding: clamp(1rem, 2vw, 1.5rem); }
+.about-intro .about-copy > :last-child { margin-bottom: 0; }
+.about-intro .profile img { display: block; width: 100%; }
 html[data-theme-variant] .about-copy :is(strong, b) {
   color: var(--retro-accent-strong);
   background: linear-gradient(transparent 54%, var(--print-mark) 54%, var(--print-mark) 94%, transparent 94%);
