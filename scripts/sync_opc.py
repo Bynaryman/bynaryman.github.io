@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Import the OPC allocation lecture and make a portable local-presenter bundle.
+"""Import the OPC lectures and make a portable local-presenter bundle.
 
 Run `make all` in the OPC repository first, then pass that repository as the
 positional argument. Only selected teaching sources and outputs are published;
@@ -16,7 +16,7 @@ import zipfile
 
 SITE = Path(__file__).resolve().parents[1]
 DESTINATION = SITE / "assets/courses/opc/2026-2027"
-DECKS = ("01-allocation",)
+DECKS = ("01-allocation", "02-linked-lists")
 TERMINAL = re.compile(
     r'<div class="terminal-example" data-example="([a-z0-9-]+)" data-file="([a-z0-9/.-]+)">(.*?)</div>', re.DOTALL
 )
@@ -45,9 +45,11 @@ serve:
 present: slides serve
 slides:
 	$(PYTHON) scripts/teacher_cues.py
+	$(PYTHON) scripts/linked_list_guide.py --notes-only
 	quarto render cours --to revealjs
 pdf:
 	$(PYTHON) scripts/teacher_cues.py
+	$(PYTHON) scripts/linked_list_guide.py --notes-only
 	quarto render cours --to beamer
 figures:
 	$(PYTHON) scripts/diagrams.py
@@ -59,6 +61,7 @@ Louis Ledoux · ISTIC, University of Rennes · 2026–2027
 ## Slides and C examples
 
 Open cours/_output/01-allocation.html in Firefox. No server is needed.
+The continuation is cours/_output/02-linked-lists.html.
 Follow docs/allocation-runbook.md for the teaching sequence.
 Files 01 through 18 are numbered references, not a command to run on every slide.
 Install GCC, Make and Valgrind on Linux or WSL, then run:
@@ -78,6 +81,10 @@ Files 11 and 12 are optional references, outside the slide sequence.
 File 05 introduces integers; 06–09 each introduce one fault into 05-integers.c.
 Repair and rerun each before continuing. See docs/allocation-runbook.md.
 
+For linked lists, follow docs/linked-lists-runbook.md. Work in demos/linked-lists,
+copy 00-empty.c to live-list.c, then use make run or make valgrind.
+The runbook names the checkpoints to copy for each operation.
+
 ## Rebuild or print
 
 Rendered HTML and PDF are included. Rebuild with Quarto: make slides.
@@ -87,7 +94,7 @@ The PDF has one slide per page; choose four pages per sheet when printing.
 
 ## Sources
 
-Required content: A. Kritikakou's CM/CM-all-2025.pptx, slides 281–312.
+Required content: A. Kritikakou's CM/CM-all-2025.pptx, slides 281–355.
 See cours/SOURCE-MAP.md and cours/assets/ATTRIBUTIONS.md. Original authorship
 is retained; this bundle does not grant a new blanket licence.
 Original PowerPoints are not included.
@@ -114,8 +121,9 @@ def main():
     sources = [Path(name) for name in tracked if name and not name.startswith(("cours/notebooks/", "cours/examples/"))
                and name not in {"cours/PLAN.md", "cours/.gitignore", "demos/README.md"}
                and (not name.endswith(".qmd") or Path(name).stem in DECKS)]
-    sources += [Path("scripts") / name for name in ("present.py", "c_runner.py", "valgrind.sh", "diagrams.py", "teacher_cues.py")]
+    sources += [Path("scripts") / name for name in ("present.py", "c_runner.py", "valgrind.sh", "diagrams.py", "teacher_cues.py", "linked_list_guide.py")]
     sources.extend([Path("docs/allocation-runbook.md"), Path("docs/allocation-teacher-cues.json")])
+    sources.extend([Path("docs/linked-lists-runbook.md"), Path("docs/linked-lists-teacher-cues.json")])
     for path in sources:
         if not (source / path).is_file():
             parser.error(f"Missing source file: {path}")
@@ -128,8 +136,10 @@ def main():
         html = (output / f"{deck}.html").read_text()
         diagrams.update(re.findall(r'assets/diagrams/([a-z0-9-]+)\.svg', html))
         cues = list(TERMINAL.finditer(html))
-        if "RevealLiveC," in html or 'id="start-code"' not in html:
-            parser.error(f"Unrecognized allocation deck in {deck}; update this exporter.")
+        required_id = "start-code" if deck == "01-allocation" else "section-build"
+        if "RevealLiveC," in html or f'id="{required_id}"' not in html:
+            parser.error(f"Unrecognized deck in {deck}; update this exporter.")
+        examples.add("allocation" if deck == "01-allocation" else "linked-lists")
         for match in cues:
             name, file = match[1], match[2]
             example_dir = (source / "demos" / name).resolve()
@@ -173,7 +183,9 @@ def main():
         target = DESTINATION / "examples" / name
         target.mkdir(parents=True, exist_ok=True)
         for relative in sources:
-            if relative.parts[:2] != ("demos", name) or relative.suffix != ".c":
+            if relative.parts[:2] != ("demos", name) or not (
+                relative.suffix in {".c", ".h", ".json", ".md"} or relative.name == "Makefile"
+            ):
                 continue
             file = source / relative
             copy = target / file.relative_to(source / "demos" / name)
@@ -207,6 +219,19 @@ def main():
             page.extend(['Enter **' + stage['stdin'].strip() + '**.', ''])
         page.extend(["[Download C]({{ '/assets/courses/opc/2026-2027/examples/allocation/" + file + "' | relative_url }})", '',
                      '```c', text.rstrip(), '```', '', '</details>', ''])
+    page.extend(['## Linked lists {#linked-lists}', '',
+                 'Use the checkpoints named in the lecture. Work in `demos/linked-lists/`:', '',
+                 '```sh', 'cp -n 00-empty.c live-list.c', 'vim live-list.c',
+                 'make run', 'make valgrind', '```', '',
+                 'Files 03, 06 and 09 deliberately leak; compare them with the following repair.', '',
+                 "[Shared helper]({{ '/assets/courses/opc/2026-2027/examples/linked-lists/list-support.h' | relative_url }}) · "
+                 "[Makefile]({{ '/assets/courses/opc/2026-2027/examples/linked-lists/Makefile' | relative_url }})", '',
+                 '| Checkpoint | Expected output |', '|---|---|'])
+    for stage in json.loads((source / 'demos/linked-lists/steps.json').read_text()):
+        file = stage['file']
+        result = stage['stdout'].strip().replace('\n', ' / ')
+        link = "{{ '/assets/courses/opc/2026-2027/examples/linked-lists/" + file + "' | relative_url }}"
+        page.append(f'| [{file}]({link}) | `{result}` |')
     (SITE / '_pages/opc-examples.md').write_text('\n'.join(page))
 
     with zipfile.ZipFile(DESTINATION / "opc-course.zip", "w", zipfile.ZIP_DEFLATED) as archive:
@@ -214,7 +239,7 @@ def main():
             name = relative.as_posix()
             if relative.parts[0] == "demos" and len(relative.parts) > 2 and relative.parts[1] not in examples | {"reference"}:
                 continue
-            if name.startswith(("cours/figures/", "cours/assets/diagrams/")) and relative.stem not in diagrams | {"style"}:
+            if name.startswith(("cours/figures/", "cours/assets/diagrams/")) and relative.stem not in diagrams | {"style"} and not relative.stem.startswith("_"):
                 continue
             if name == "cours/_quarto.yml":
                 config = (source / relative).read_text()

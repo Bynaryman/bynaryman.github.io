@@ -1,0 +1,146 @@
+[
+  {
+    "id": "01-copy-alias",
+    "label": "Change the copy; the original changes too",
+    "file": "01-copy-alias.c",
+    "mode": "native",
+    "stdin": "",
+    "section": "Copy a string"
+  },
+  {
+    "id": "02-copy-short",
+    "label": "Allocate and copy; inspect the invalid write",
+    "file": "02-copy-short.c",
+    "mode": "valgrind",
+    "stdin": "",
+    "section": "Copy a string"
+  },
+  {
+    "id": "03-copy-leak",
+    "label": "Add room for the terminator; inspect the leak",
+    "file": "03-copy-leak.c",
+    "mode": "valgrind",
+    "stdin": "",
+    "section": "Copy a string"
+  },
+  {
+    "id": "04-copy-free",
+    "label": "Release the copy after printing",
+    "file": "04-copy-free.c",
+    "mode": "valgrind",
+    "stdin": "",
+    "section": "Copy a string"
+  },
+  {
+    "id": "05-integers",
+    "label": "Allocate and initialise a requested number of integers",
+    "file": "05-integers.c",
+    "mode": "valgrind",
+    "stdin": "100\n",
+    "section": "Arrays and memory errors"
+  },
+  {
+    "id": "06-uninitialised",
+    "label": "Remove initialisation; inspect the read",
+    "file": "06-uninitialised.c",
+    "mode": "valgrind",
+    "stdin": "4\n",
+    "section": "Arrays and memory errors"
+  },
+  {
+    "id": "07-overrun",
+    "label": "Write one element too far",
+    "file": "07-overrun.c",
+    "mode": "valgrind",
+    "stdin": "4\n",
+    "section": "Arrays and memory errors"
+  },
+  {
+    "id": "08-dangling",
+    "label": "Read after free",
+    "file": "08-dangling.c",
+    "mode": "valgrind",
+    "stdin": "4\n",
+    "section": "Arrays and memory errors"
+  },
+  {
+    "id": "09-leak",
+    "label": "Lose the address before free",
+    "file": "09-leak.c",
+    "mode": "valgrind",
+    "stdin": "4\n",
+    "section": "Arrays and memory errors"
+  },
+  {
+    "id": "10-array",
+    "label": "Array elements and their addresses",
+    "file": "10-array.c",
+    "mode": "native",
+    "stdin": "",
+    "section": "One row, then a grid"
+  },
+  {
+    "id": "13-matrix-flat",
+    "label": "Matrix in one allocation",
+    "file": "13-matrix-flat.c",
+    "mode": "native",
+    "stdin": "",
+    "section": "One row, then a grid"
+  },
+  {
+    "id": "14-matrix-rows",
+    "label": "Fixed pointer table; allocated rows",
+    "file": "14-matrix-rows.c",
+    "mode": "native",
+    "stdin": "",
+    "section": "One row, then a grid"
+  },
+  {
+    "id": "15-matrix-dynamic",
+    "label": "Allocated pointer table and rows",
+    "file": "15-matrix-dynamic.c",
+    "mode": "native",
+    "stdin": "",
+    "section": "One row, then a grid"
+  },
+  {
+    "id": "16-types",
+    "label": "Enumerations and structure members",
+    "file": "16-types.c",
+    "mode": "native",
+    "stdin": "",
+    "section": "User-defined types"
+  },
+  {
+    "id": "17-padding",
+    "label": "Measure structure sizes and offsets",
+    "file": "17-padding.c",
+    "mode": "native",
+    "stdin": "",
+    "section": "User-defined types"
+  },
+  {
+    "id": "18-nested",
+    "label": "Nested structures",
+    "file": "18-nested.c",
+    "mode": "native",
+    "stdin": "",
+    "section": "User-defined types"
+  },
+  {
+    "id": "11-string",
+    "label": "Characters and the terminator",
+    "file": "11-string.c",
+    "mode": "native",
+    "stdin": "",
+    "section": "Optional reference"
+  },
+  {
+    "id": "12-string-assignment",
+    "label": "Pointer assignment is not copying text",
+    "file": "12-string-assignment.c",
+    "mode": "valgrind",
+    "stdin": "",
+    "section": "Optional reference"
+  }
+]

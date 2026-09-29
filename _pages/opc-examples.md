@@ -623,3 +623,41 @@ int main(void) {
 ```
 
 </details>
+
+## Linked lists {#linked-lists}
+
+Use the checkpoints named in the lecture. Work in `demos/linked-lists/`:
+
+```sh
+cp -n 00-empty.c live-list.c
+vim live-list.c
+make run
+make valgrind
+```
+
+Files 03, 06 and 09 deliberately leak; compare them with the following repair.
+
+[Shared helper]({{ '/assets/courses/opc/2026-2027/examples/linked-lists/list-support.h' | relative_url }}) · [Makefile]({{ '/assets/courses/opc/2026-2027/examples/linked-lists/Makefile' | relative_url }})
+
+| Checkpoint | Expected output |
+|---|---|
+| [intro/01-one-node.c]({{ '/assets/courses/opc/2026-2027/examples/linked-lists/intro/01-one-node.c' | relative_url }}) | `A -> NULL` |
+| [intro/02-two-nodes.c]({{ '/assets/courses/opc/2026-2027/examples/linked-lists/intro/02-two-nodes.c' | relative_url }}) | `A -> B -> NULL` |
+| [intro/03-walk.c]({{ '/assets/courses/opc/2026-2027/examples/linked-lists/intro/03-walk.c' | relative_url }}) | `A -> B -> NULL` |
+| [00-empty.c]({{ '/assets/courses/opc/2026-2027/examples/linked-lists/00-empty.c' | relative_url }}) | `empty: 1` |
+| [01-create.c]({{ '/assets/courses/opc/2026-2027/examples/linked-lists/01-create.c' | relative_url }}) | `head empty: 1, node value: A` |
+| [02-first-node.c]({{ '/assets/courses/opc/2026-2027/examples/linked-lists/02-first-node.c' | relative_url }}) | `head -> A -> NULL` |
+| [03-head-copy.c]({{ '/assets/courses/opc/2026-2027/examples/linked-lists/03-head-copy.c' | relative_url }}) | `caller head empty: 1` |
+| [04-head-address.c]({{ '/assets/courses/opc/2026-2027/examples/linked-lists/04-head-address.c' | relative_url }}) | `head -> A -> NULL` |
+| [05-head-before.c]({{ '/assets/courses/opc/2026-2027/examples/linked-lists/05-head-before.c' | relative_url }}) | `before: / A -> B -> C -> D -> NULL / after: / A -> B -> C -> D -> NULL` |
+| [06-head-lost.c]({{ '/assets/courses/opc/2026-2027/examples/linked-lists/06-head-lost.c' | relative_url }}) | `before: / A -> B -> C -> D -> NULL / after: / E -> NULL` |
+| [07-head-fixed.c]({{ '/assets/courses/opc/2026-2027/examples/linked-lists/07-head-fixed.c' | relative_url }}) | `before: / A -> B -> C -> D -> NULL / after: / E -> A -> B -> C -> D -> NULL` |
+| [08-middle-before.c]({{ '/assets/courses/opc/2026-2027/examples/linked-lists/08-middle-before.c' | relative_url }}) | `before: / A -> B -> C -> D -> NULL / after: / A -> B -> C -> D -> NULL` |
+| [09-middle-lost.c]({{ '/assets/courses/opc/2026-2027/examples/linked-lists/09-middle-lost.c' | relative_url }}) | `before: / A -> B -> C -> D -> NULL / after: / A -> B -> E -> NULL` |
+| [10-middle-fixed.c]({{ '/assets/courses/opc/2026-2027/examples/linked-lists/10-middle-fixed.c' | relative_url }}) | `before: / A -> B -> C -> D -> NULL / after: / A -> B -> E -> C -> D -> NULL` |
+| [11-tail-before.c]({{ '/assets/courses/opc/2026-2027/examples/linked-lists/11-tail-before.c' | relative_url }}) | `before: / A -> B -> C -> D -> NULL / after: / A -> B -> C -> D -> NULL` |
+| [12-tail-fixed.c]({{ '/assets/courses/opc/2026-2027/examples/linked-lists/12-tail-fixed.c' | relative_url }}) | `before: / A -> B -> C -> D -> NULL / after: / A -> B -> C -> D -> E -> NULL` |
+| [13-delete-before.c]({{ '/assets/courses/opc/2026-2027/examples/linked-lists/13-delete-before.c' | relative_url }}) | `before: / A -> B -> C -> D -> NULL / after: / A -> B -> C -> D -> NULL` |
+| [14-delete-head.c]({{ '/assets/courses/opc/2026-2027/examples/linked-lists/14-delete-head.c' | relative_url }}) | `before: / A -> B -> C -> D -> NULL / after: / B -> C -> D -> NULL` |
+| [15-delete-middle.c]({{ '/assets/courses/opc/2026-2027/examples/linked-lists/15-delete-middle.c' | relative_url }}) | `before: / A -> B -> C -> D -> NULL / after: / A -> C -> D -> NULL` |
+| [16-delete-tail.c]({{ '/assets/courses/opc/2026-2027/examples/linked-lists/16-delete-tail.c' | relative_url }}) | `before: / A -> B -> C -> D -> NULL / after: / A -> B -> C -> NULL` |
