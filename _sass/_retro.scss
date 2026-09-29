@@ -2059,32 +2059,32 @@ html[data-theme-variant="modus"] .post-header .desc {
   font-weight: 750;
 }
 
-html[data-theme-variant="modus"] .post article .clearfix p,
+html[data-theme-variant="modus"] .post article .about-copy p,
 html[data-theme-variant="modus"] .post-content #markdown-content p,
 html[data-theme-variant="modus"] .post article.page-content p {
   font-weight: 500;
 }
 
-html[data-theme-variant="modus"] .post article .clearfix :is(strong, b, em, mark),
+html[data-theme-variant="modus"] .post article .about-copy :is(strong, b, em, mark),
 html[data-theme-variant="modus"] .post-content #markdown-content :is(strong, b, em, mark),
 html[data-theme-variant="modus"] .post article.page-content :is(strong, b, em, mark) {
-  color: var(--global-highlight-color);
+  color: var(--retro-accent-strong);
   font-style: normal;
   font-weight: 850;
-  background: linear-gradient(transparent 44%, rgba(166, 0, 0, 0.24) 44%);
+  background: linear-gradient(transparent 54%, var(--print-mark) 54%, var(--print-mark) 94%, transparent 94%);
   padding: 0 0.08em;
 }
 
-html[data-theme="dark"][data-theme-variant="modus"] .post article .clearfix :is(strong, b, em, mark),
-html[data-theme-setting="dark"][data-theme-variant="modus"] .post article .clearfix :is(strong, b, em, mark),
+html[data-theme="dark"][data-theme-variant="modus"] .post article .about-copy :is(strong, b, em, mark),
+html[data-theme-setting="dark"][data-theme-variant="modus"] .post article .about-copy :is(strong, b, em, mark),
 html[data-theme="dark"][data-theme-variant="modus"] .post-content #markdown-content :is(strong, b, em, mark),
 html[data-theme-setting="dark"][data-theme-variant="modus"] .post-content #markdown-content :is(strong, b, em, mark),
 html[data-theme="dark"][data-theme-variant="modus"] .post article.page-content :is(strong, b, em, mark),
 html[data-theme-setting="dark"][data-theme-variant="modus"] .post article.page-content :is(strong, b, em, mark) {
-  background: linear-gradient(transparent 44%, rgba(255, 127, 159, 0.3) 44%);
+  background: linear-gradient(transparent 54%, var(--print-mark) 54%, var(--print-mark) 94%, transparent 94%);
 }
 
-html[data-theme-variant="modus"] .post article .clearfix a:not(.btn),
+html[data-theme-variant="modus"] .post article .about-copy a:not(.btn),
 html[data-theme-variant="modus"] .post-content #markdown-content a:not(.btn),
 html[data-theme-variant="modus"] .post article.page-content a:not(.btn) {
   color: var(--retro-accent);
@@ -2096,8 +2096,8 @@ html[data-theme-variant="modus"] .post article.page-content a:not(.btn) {
   text-underline-offset: 0.18em;
 }
 
-html[data-theme-variant="modus"] .post article .clearfix a:not(.btn):hover,
-html[data-theme-variant="modus"] .post article .clearfix a:not(.btn):focus,
+html[data-theme-variant="modus"] .post article .about-copy a:not(.btn):hover,
+html[data-theme-variant="modus"] .post article .about-copy a:not(.btn):focus,
 html[data-theme-variant="modus"] .post-content #markdown-content a:not(.btn):hover,
 html[data-theme-variant="modus"] .post-content #markdown-content a:not(.btn):focus,
 html[data-theme-variant="modus"] .post article.page-content a:not(.btn):hover,
@@ -2106,8 +2106,8 @@ html[data-theme-variant="modus"] .post article.page-content a:not(.btn):focus {
   text-decoration-color: currentColor;
 }
 
-html[data-theme="dark"][data-theme-variant="modus"] .post article .clearfix a:not(.btn),
-html[data-theme-setting="dark"][data-theme-variant="modus"] .post article .clearfix a:not(.btn),
+html[data-theme="dark"][data-theme-variant="modus"] .post article .about-copy a:not(.btn),
+html[data-theme-setting="dark"][data-theme-variant="modus"] .post article .about-copy a:not(.btn),
 html[data-theme="dark"][data-theme-variant="modus"] .post-content #markdown-content a:not(.btn),
 html[data-theme-setting="dark"][data-theme-variant="modus"] .post-content #markdown-content a:not(.btn),
 html[data-theme="dark"][data-theme-variant="modus"] .post article.page-content a:not(.btn),

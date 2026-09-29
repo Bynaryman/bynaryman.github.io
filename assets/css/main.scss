@@ -24,3 +24,5 @@ $max-content-width: {{ site.max_width }};
 
 @import "site-components";
 @import "blog";
+
+@import "printed";

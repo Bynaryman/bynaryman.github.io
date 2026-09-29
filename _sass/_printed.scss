@@ -1,0 +1,155 @@
+// Printed controls follow binaryman-apps/shared/android-ui/StudioUi.PrintedFace:
+// square outline, a small unblurred cast shadow, and no extra panel behind it.
+@font-face {
+  font-family: "Sora";
+  src: url("/assets/fonts/Sora-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Sora";
+  src: url("/assets/fonts/Sora-Semibold.woff2") format("woff2");
+  font-weight: 600 900;
+  font-display: swap;
+}
+:root {
+  --print-edge: rgba(var(--retro-ink), 0.65);
+  --print-shadow: 4px 4px 0 rgba(var(--retro-ink), 0.2);
+  --print-mark: rgba(114, 16, 69, 0.17);
+}
+html[data-theme="dark"] { --print-mark: rgba(182, 160, 255, 0.25); }
+html[data-theme-variant="modus"] {
+  --retro-type-stack: "Sora", sans-serif;
+  --retro-display-stack: "Sora", sans-serif;
+  --retro-type-base: 1.05rem;
+  --retro-type-md: 1.3rem;
+  --retro-type-lg: 1.45rem;
+  --retro-type-xl: 1.65rem;
+  --retro-type-2xl: 2.6rem;
+  --retro-leading-body: 1.7;
+  --retro-bg: #f8f7f2;
+  --retro-panel: #f8f7f2;
+}
+html[data-theme="dark"][data-theme-variant="modus"] {
+  --retro-bg: #151718;
+  --retro-panel: #151718;
+  --retro-text: #f5f5f5;
+  --retro-text-soft: #c6c9ce;
+}
+html[data-theme-variant] .post.post--panel {
+  background: none;
+  padding: 0;
+  border: 0;
+  box-shadow: none;
+}
+html[data-theme-variant] #main-content :is(.card, .repo, .metric-card, .dropdown-menu, .btn, .blog-pagination__link, pre, code, .highlight, .highlighter-rouge),
+html[data-theme-variant] #navbar :is(.dropdown-menu, .navbar-toggler),
+html[data-theme-variant] #main-content img,
+html[data-theme-variant] #main-content video,
+html[data-theme-variant] .djset-embed {
+  border-radius: 0 !important;
+}
+html[data-theme-variant] #main-content :is(.card, .repo) {
+  background: var(--global-bg-color);
+  border: 1px solid var(--print-edge);
+  box-shadow: var(--print-shadow);
+}
+html[data-theme-variant] #main-content :is(.btn, .blog-pagination__link) {
+  box-shadow: 3px 3px 0 rgba(var(--retro-ink), 0.2);
+  border: 1px solid var(--print-edge);
+  background: var(--global-bg-color);
+  color: var(--global-text-color);
+}
+html[data-theme-variant] #main-content :is(.btn:hover, .btn:focus-visible, .blog-pagination__link[aria-current="page"]) {
+  color: var(--global-theme-color);
+  border-color: currentColor;
+  background: var(--retro-code-bg);
+}
+html[data-theme-variant] #main-content a.blog-pagination__link:hover {
+  color: var(--global-theme-color);
+  border-color: currentColor;
+}
+html[data-theme-variant] #main-content .blog-pagination__link[aria-disabled="true"] {
+  box-shadow: none;
+  border-style: dashed;
+  color: var(--global-text-color-light);
+  background: none;
+}
+html[data-theme-variant] #main-content :is(a.btn, a.blog-pagination__link):active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 rgba(var(--retro-ink), 0.2);
+}
+html[data-theme-variant] .projects .card { padding: 0; }
+html[data-theme-variant] .projects .card-img-top { border: 0; box-shadow: none; filter: none; }
+.projects .card-title { overflow-wrap: anywhere; }
+.projects .card-title a { color: var(--global-text-color); }
+.projects .card-body { padding: 1.1rem; }
+.projects .card-text { font-size: 0.95em; }
+.post h2 { font-weight: 600; }
+.projects .project-tool-logo .card-img-top {
+  height: 190px;
+  object-fit: contain;
+  padding: 2.5rem 1.5rem;
+  background: #f8f7f2;
+}
+.page-content figure > img { max-width: 100%; height: auto; }
+html[data-theme-variant] .page-content figure > img {
+  filter: none;
+  border: 1px solid var(--print-edge);
+  box-shadow: var(--print-shadow);
+}
+html[data-theme-variant] .projects figure > img { box-shadow: none; border: 0; }
+html[data-theme-variant] .metrics-grid .metric-card {
+  padding: 0;
+  margin-bottom: 1rem;
+  background: none;
+  border: 0;
+  box-shadow: none;
+}
+html[data-theme-variant] .metrics-grid .metric-card > a {
+  padding: 0;
+  border: 1px solid var(--print-edge);
+  border-radius: 0;
+  box-shadow: var(--print-shadow);
+  background: #fff;
+}
+html[data-theme-variant] .metrics-grid .metric-card h3 { margin: 0 0 0.8rem; }
+html[data-theme-variant] .metrics-grid .metric-img { border: 0; filter: none; box-shadow: none; }
+html[data-theme-variant] .post-header .post-title { border-bottom: 0; }
+html[data-theme-variant] .about-copy :is(strong, b) {
+  color: var(--retro-accent-strong);
+  background: linear-gradient(transparent 54%, var(--print-mark) 54%, var(--print-mark) 94%, transparent 94%);
+  font-weight: 700;
+  padding: 0 0.08em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+html[data-theme-variant] :is(.home-section-heading a, .projects .category, .projects .card-title a) {
+  background: linear-gradient(transparent 58%, var(--print-mark) 58%, var(--print-mark) 94%, transparent 94%);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+html[data-theme-variant] .home-section-heading { margin-top: 2.3rem; }
+html[data-theme-variant] .projects .category { display: table; padding-right: 0.25em; }
+#navbar .navbar-brand.social { display: flex; align-items: center; gap: 0.65rem; }
+#navbar .navbar-brand.social a { font-size: 1.35rem; line-height: 1; border: 0; padding: 0.25rem 0; }
+html[data-theme-variant] #navbar {
+  background: var(--global-bg-color) !important;
+  border-bottom: 1px solid var(--global-divider-color) !important;
+  box-shadow: 0 3px 0 rgba(var(--retro-ink), 0.08) !important;
+}
+html[data-theme-variant] #navbar .dropdown-menu { border: 1px solid var(--print-edge); box-shadow: var(--print-shadow); }
+.project-docs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  margin: 1.5rem 0 2rem;
+  font-family: var(--retro-ui-stack);
+  font-size: 0.9rem;
+}
+.project-docs a { display: inline-flex; align-items: center; gap: 0.5rem; }
+@media (max-width: 575px) {
+  html[data-theme-variant="modus"] { --retro-type-2xl: 2rem; --retro-type-md: 1.2rem; }
+  #navbar .navbar-brand.social { gap: 0.55rem; }
+  #navbar .navbar-brand.social a { font-size: 1.2rem; }
+}

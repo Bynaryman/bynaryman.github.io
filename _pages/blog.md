@@ -31,8 +31,8 @@ pagination:
 
 {% if site.display_tags or site.display_categories %}
 
-  <details class="blog-topics">
-    <summary>Browse by topic</summary>
+  <nav class="blog-topics" aria-label="Browse by topic">
+    <h2>Browse by topic</h2>
     <div class="tag-category-list">
     <ul class="p-0 m-0">
       {% for tag in site.display_tags %}
@@ -56,7 +56,7 @@ pagination:
       {% endfor %}
     </ul>
     </div>
-  </details>
+  </nav>
   {% endif %}
 
 {% assign featured_posts = site.posts | where: "featured", true %}
