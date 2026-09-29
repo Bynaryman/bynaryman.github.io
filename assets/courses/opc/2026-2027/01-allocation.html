@@ -96,7 +96,7 @@
     code span.vs { color: #4070a0; } /* VerbatimString */
     code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="01-allocation_files/libs/revealjs/dist/theme/quarto-27b5ea06519638afffe78845c95680d1.css">
+  <link rel="stylesheet" href="01-allocation_files/libs/revealjs/dist/theme/quarto-adaf59e074a1bcf4b31debfe5ee391f2.css">
   <link href="01-allocation_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="01-allocation_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="01-allocation_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -211,18 +211,544 @@ Louis Ledoux
 
   <p class="date">2026–2027</p>
 </section>
-<section id="start-code" class="slide level2">
-<h2>Start with a small program</h2>
-<div class="slide-body">
-<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> total <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> visit<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> values<span class="op">[</span><span class="dv">4</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span><span class="dv">10</span><span class="op">,</span> <span class="dv">20</span><span class="op">,</span> <span class="dv">30</span><span class="op">,</span> <span class="dv">40</span><span class="op">};</span></span>
-<span id="cb1-4"><a href="" aria-hidden="true" tabindex="-1"></a>    total <span class="op">+=</span> values<span class="op">[</span><span class="dv">0</span><span class="op">];</span></span>
-<span id="cb1-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<p>Call <code>visit()</code> twice. What survives between the calls?</p>
-<a class="c-example-download" href="examples/14-memory-layout/main.c" download="14-memory-layout.c" aria-label="Download C example: 14-memory-layout">Download C example ↓</a>
+<section>
+<section id="section-whoami" class="title-slide slide level1 center">
+<h1><code>$ whoami</code></h1>
+<div class="fragment">
+<p><strong>Not a C expert</strong> … <code>:')</code></p>
+</div>
 <aside class="notes">
-<p>0–3 min. Run the complete program: total is 20. Draw attention to the global object and the automatic array before introducing any errors. The implementation may optimise storage; this unoptimised teaching model represents ordinary locals with stack frames.</p>
+<p><strong>SLIDES</strong></p>
+<p>Introduce yourself.</p>
+<p><strong>Reveal:</strong> One Right press reveals the C-expert aside; the next moves on.</p>
+<p><strong>Recovery:</strong> No C edit or run on this slide.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="whoami" class="slide level2">
+<h2>Louis Ledoux</h2>
+<div class="slide-body">
+<div class="columns bio-layout">
+<div class="column" style="width:54%;">
+<p><strong>Associate Professor</strong></p>
+<p>University of Rennes · ISTIC<br>
+IRISA / Inria · Taran</p>
+<ul>
+<li>Arithmetic circuits: <strong>MLIR (LLVM) / CIRCT</strong>.</li>
+<li><strong>Systolic arrays</strong> and small floating-point formats.</li>
+</ul>
+<p>Previously: Inria / INSA Lyon, Emeraude.<br>
+PhD: <strong>BSC / UPC</strong>.</p>
+</div><div class="column" style="width:40%;">
+<p><img data-src="assets/photos/marenostrum-4.jpg" style="width:100.0%" alt="MareNostrum 4 server racks inside the former Torre Girona chapel at the Barcelona Supercomputing Center."></p>
+<div class="photo-caption">
+<p><strong>MareNostrum 4</strong> · BSC, Barcelona</p>
+</div>
+</div></div>
+<div class="bio-link">
+<p><a href="https://bynaryman.github.io">bynaryman.github.io</a></p>
+</div>
+<aside class="notes">
+<p><strong>SLIDES</strong></p>
+<p>Give your professional background and the connection between C, compilers and hardware. Use the MareNostrum photo briefly.</p>
+<p><strong>Context:</strong> Professional introduction only. Joined Rennes in August 2026. Introduce the connection between C programs, memory, and the hardware that executes them. Photo: MareNostrum 4 at BSC, 27 June 2017. Wikimedia Commons lists Martidaniel as author; the embedded copyright credit names Lucia Meler (www.luciameler.com). Both are credited. CC BY-SA 4.0; image reproduced unchanged. Source: https://commons.wikimedia.org/wiki/File:2017_BSC_Superordenador_MareNostrum-4_Barcelona-Supercomputing-Center.jpg</p>
+<p><strong>Recovery:</strong> No C edit or run on this slide.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="roadmap" class="slide level2">
+<h2>Today</h2>
+<div class="slide-body">
+<div class="lesson-flow">
+<div>
+<p><strong>Dynamic memory allocation on the heap</strong></p>
+<p>We open an image and discover its dimensions. Where do we store its pixels?</p>
+</div>
+<ol type="1">
+<li>Make an independent copy.</li>
+<li>Store values and find memory errors.</li>
+<li>Store a grid of values.</li>
+<li>Group data with user-defined types.</li>
+</ol>
+</div>
+<aside class="notes">
+<p><strong>SLIDES</strong></p>
+<p>Say: “An image editor discovers the dimensions when it opens a file. It needs space for pixels, perhaps a separate copy to edit, then releases that space.” Introduce the heap as the storage we request with malloc.</p>
+<p><strong>Expect:</strong> Use small examples: copy characters, create numeric values, organise rows and columns, then group related data. We are not building an image decoder.</p>
+<p><strong>Context:</strong> Say: “An image editor opens a file, discovers its dimensions and needs storage for its pixels. It may also need a separate copy to edit while preserving the original. Today we learn how to request that storage on the heap, use it correctly and release it.” This motivates allocation without claiming that malloc is the only way to use a runtime size. We are not implementing an image decoder: use a tiny string to make copying visible, integers to learn byte counts and initialisation, then matrices to organise rows and columns. Structures group related data; retain the source course’s address example. Keep Vim and a terminal beside Firefox. Ask for a prediction, edit/run C, inspect the result, then explain with the slide. There are no per-section time targets.</p>
+<p><strong>Recovery:</strong> No C edit or run on this slide.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section></section>
+<section>
+<section id="section-allocation" class="title-slide slide level1 center">
+<h1>1. Copy a string</h1>
+<p>Can we change the copy and keep the original?</p>
+<aside class="notes">
+<p><strong>SLIDES</strong></p>
+<p>State the first task: make a copy that we can edit independently. Stay inside main for this investigation.</p>
+<p><strong>Recovery:</strong> No C edit or run on this slide.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="start-code" class="slide level2">
+<h2>A copy we can edit</h2>
+<div class="slide-body">
+<div class="lesson-flow">
+<p>Keep <strong><code>hello</code></strong> in the original.</p>
+<p>Change its copy to <strong><code>Hello</code></strong>.</p>
+</div>
+<aside class="notes">
+<p><strong>SLIDES</strong></p>
+<p>State the goal: “Keep hello in the original, change only the copy to Hello.” Do not open the terminal or run yet. Advance to slide 7 to read the code.</p>
+<p><strong>Context:</strong> original is a writable array. All opening examples stay in main and need no input. The teaching rhythm is inspired by CS50 Lecture 4: https://cs50.harvard.edu/college/2025/spring/notes/4/#copying-and-malloc . The examples use standard C, without the CS50 string alias or get_string.</p>
+<p><strong>Recovery:</strong> Shared array; both names print Hello. Run only after predictions on slide 7.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 01-copy-alias.c live-copy.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="copy-alias" class="slide level2">
+<h2>What will the two lines print?</h2>
+<div class="slide-body">
+<div class="lesson-flow">
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> original<span class="op">[]</span> <span class="op">=</span> <span class="st">"hello"</span><span class="op">;</span></span>
+<span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> <span class="op">*</span>copy <span class="op">=</span> original<span class="op">;</span></span>
+<span id="cb2-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="" aria-hidden="true" tabindex="-1"></a>copy<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">=</span> <span class="ch">'H'</span><span class="op">;</span></span>
+<span id="cb2-5"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"original: </span><span class="sc">%s\n</span><span class="st">"</span><span class="op">,</span> original<span class="op">);</span></span>
+<span id="cb2-6"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"copy:     </span><span class="sc">%s\n</span><span class="st">"</span><span class="op">,</span> copy<span class="op">);</span></span></code></pre></div>
+<div class="fragment step-result red">
+<p><code>original: Hello</code><br>
+<code>copy:     Hello</code></p>
+</div>
+</div>
+<aside class="notes">
+<p><strong>SLIDES &gt; TERMINAL &gt; SLIDES</strong></p>
+<p>Keep the output hidden. Read the code; ask for both printed lines and collect predictions. Then run make run FILE=live-copy.c, prepared from 01-copy-alias.c.</p>
+<p><strong>Expect:</strong> Both lines contain Hello. This is a wrong result for our task, but valid C and no Valgrind error.</p>
+<p><strong>Reveal:</strong> Return to slide 7. One Right reveals the output. This is the only run on slides 6-8.</p>
+<p><strong>Context:</strong> This is valid C and a logical mistake: two names reach the same array, contrary to the intended independent copy. Valgrind need not report any error.</p>
+<p><strong>Recovery:</strong> Shared array; both names print Hello. Run only after predictions on slide 7.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 01-copy-alias.c live-copy.c</span>
+<span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> run FILE=live-copy.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="copy-shared" class="slide level2">
+<h2>One array, two ways to reach it</h2>
+<div class="slide-body">
+<div class="lesson-flow">
+<div class="diagram">
+<p><img data-src="assets/diagrams/copy-shared.svg" alt="The original array holds H e l l o and the terminator. copy points to its first character; both names reach the same characters."></p>
+</div>
+<div class="fragment">
+<p><code>char *copy = original;</code> copies the <strong>address</strong>.</p>
+</div>
+</div>
+<aside class="notes">
+<p><strong>SLIDES</strong></p>
+<p>Ask why the original changed. Trace copy[0] to original[0] in the diagram. No new edit or run.</p>
+<p><strong>Expect:</strong> Both names reach the same writable array.</p>
+<p><strong>Reveal:</strong> One Right reveals that assignment copied an address. Ask how to obtain separate storage; continue to malloc.</p>
+<p><strong>Context:</strong> original is the array, while copy points to its first element. A second array could also make an independent copy; malloc is not the only possible solution.</p>
+<p><strong>Recovery:</strong> Shared array; both names print Hello. Run only after predictions on slide 7.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 01-copy-alias.c live-copy.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="malloc" class="slide level2">
+<h2>Separate storage</h2>
+<div class="slide-body">
+<div class="lesson-flow">
+<p>How many bytes does the copy need?</p>
+<div class="fragment" data-fragment-index="0">
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> <span class="op">*</span>copy <span class="op">=</span> malloc<span class="op">(</span>strlen<span class="op">(</span>original<span class="op">));</span></span>
+<span id="cb5-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>copy <span class="op">==</span> NULL<span class="op">)</span></span>
+<span id="cb5-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> EXIT_FAILURE<span class="op">;</span></span></code></pre></div>
+</div>
+<div class="fragment" data-fragment-index="1">
+<p><code>malloc</code> requests bytes. Check its result <strong>before using it</strong>.</p>
+</div>
+</div>
+<aside class="notes">
+<p><strong>SLIDES &gt; VIM</strong></p>
+<p>Ask how many bytes the copy needs. Collect proposals; reveal the allocation, then edit live-copy.c. Add #include &lt;string.h&gt;. Do not run until the next slide. Recovery: 02-copy-short.c.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> <span class="op">*</span>copy <span class="op">=</span> malloc<span class="op">(</span>strlen<span class="op">(</span>original<span class="op">));</span></span>
+<span id="cb6-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>copy <span class="op">==</span> NULL<span class="op">)</span></span>
+<span id="cb6-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> EXIT_FAILURE<span class="op">;</span></span></code></pre></div>
+<p><strong>Expect:</strong> The deliberately short allocation omits the terminator. Check NULL before access.</p>
+<p><strong>Reveal:</strong> First Right: allocation. Second: malloc explanation. If +1 is proposed, acknowledge it and test the short version.</p>
+<p><strong>Context:</strong> strlen counts characters before the terminator. malloc returns an address or NULL. The first allocation intentionally omits one byte and free. Acknowledge an early +1 suggestion and test it; do not present this version as correct.</p>
+<p><strong>Recovery:</strong> Allocation added; strcpy not added yet. Do not run until slide 10.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> recovery/copy-before-strcpy.c live-copy.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="copy-characters" class="slide level2">
+<h2>Copying the characters</h2>
+<div class="slide-body">
+<div class="lesson-flow">
+<p>What should the two lines print now?</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="" aria-hidden="true" tabindex="-1"></a>strcpy<span class="op">(</span>copy<span class="op">,</span> original<span class="op">);</span></span>
+<span id="cb8-2"><a href="" aria-hidden="true" tabindex="-1"></a>copy<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">=</span> <span class="ch">'H'</span><span class="op">;</span></span>
+<span id="cb8-3"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"original: </span><span class="sc">%s\n</span><span class="st">"</span><span class="op">,</span> original<span class="op">);</span></span>
+<span id="cb8-4"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"copy:     </span><span class="sc">%s\n</span><span class="st">"</span><span class="op">,</span> copy<span class="op">);</span></span></code></pre></div>
+<div class="fragment">
+<p><code>strcpy</code> copies the characters <strong>and the final <code>'\0'</code></strong>.</p>
+</div>
+</div>
+<aside class="notes">
+<p><strong>VIM &gt; TERMINAL &gt; SLIDES</strong></p>
+<p>Add strcpy before copy[0]. Ask for both outputs. Save :w; run make run FILE=live-copy.c. Return after observing it.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="" aria-hidden="true" tabindex="-1"></a>strcpy<span class="op">(</span>copy<span class="op">,</span> original<span class="op">);</span></span></code></pre></div>
+<p><strong>Expect:</strong> It may print hello / Hello despite undefined behaviour.</p>
+<p><strong>Reveal:</strong> One Right explains strcpy. Ask: “Does the right output prove the copy is valid?”</p>
+<p><strong>Context:</strong> strcpy copies the terminator as well as the characters; it neither allocates nor checks destination capacity. A short destination gives undefined behaviour. Desired-looking output is possible but not guaranteed.</p>
+<p><strong>Recovery:</strong> Short allocation: missing terminator byte; invalid write/read and leak.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb10-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 02-copy-short.c live-copy.c</span>
+<span id="cb10-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> run FILE=live-copy.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="copy-check" class="slide level2">
+<h2>It prints. Is the copy valid?</h2>
+<div class="slide-body">
+<div class="lesson-flow">
+<div class="sourceCode" id="cb11"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb11-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> valgrind FILE=live-copy.c</span></code></pre></div>
+<div class="fragment step-result red">
+<p><strong>Invalid write</strong> in <code>strcpy</code></p>
+<p>The destination block has <strong>5 bytes</strong>.</p>
+</div>
+</div>
+<aside class="notes">
+<p><strong>TERMINAL &gt; SLIDES</strong></p>
+<p>Run make valgrind FILE=live-copy.c. Find the first Invalid write, its strcpy line, and the five-byte allocation. Ask which character is outside.</p>
+<p><strong>Expect:</strong> There may also be an invalid read and a leak. Investigate the first bad write.</p>
+<p><strong>Reveal:</strong> One Right reveals the diagnostic. Next count the copied bytes.</p>
+<p><strong>Context:</strong> Valgrind may also show invalid reads and a leak. Acknowledge the report, then fix the first invalid access before the remaining issue. Read the real report instead of promising exact output.</p>
+<p><strong>Recovery:</strong> Short allocation: missing terminator byte; invalid write/read and leak.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb12-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 02-copy-short.c live-copy.c</span>
+<span id="cb12-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> valgrind FILE=live-copy.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="copy-terminator" class="slide level2">
+<h2>Five letters, six bytes</h2>
+<div class="slide-body">
+<div class="lesson-flow">
+<div class="diagram">
+<p><img data-src="assets/diagrams/copy-terminator.svg" alt="hello occupies five character bytes, followed by a sixth byte for the null terminator. strlen counts only the first five."></p>
+</div>
+<div class="fragment">
+<div class="sourceCode" id="cb13"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb13-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> <span class="op">*</span>copy <span class="op">=</span> malloc<span class="op">(</span>strlen<span class="op">(</span>original<span class="op">)</span> <span class="op">+</span> <span class="dv">1</span><span class="op">);</span></span></code></pre></div>
+</div>
+</div>
+<aside class="notes">
+<p><strong>SLIDES &gt; VIM &gt; TERMINAL</strong></p>
+<p>Count five letters and the terminator. Ask for the allocation repair. Reveal it, edit only + 1 in live-copy.c and rerun Valgrind. Recovery: 03-copy-leak.c.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb14-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> <span class="op">*</span>copy <span class="op">=</span> malloc<span class="op">(</span>strlen<span class="op">(</span>original<span class="op">)</span> <span class="op">+</span> <span class="dv">1</span><span class="op">);</span></span></code></pre></div>
+<p><strong>Expect:</strong> Invalid accesses disappear. Keep this report for the next slide.</p>
+<p><strong>Reveal:</strong> One Right reveals the corrected allocation.</p>
+<p><strong>Context:</strong> A char is one C byte, so sizeof(char) is 1. strcpy copies all six bytes of hello including its terminator.</p>
+<p><strong>Recovery:</strong> Size repaired with +1; six-byte leak remains.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb15-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 03-copy-leak.c live-copy.c</span>
+<span id="cb15-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> valgrind FILE=live-copy.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="valgrind-baseline" class="slide level2">
+<h2>The copy works. What remains?</h2>
+<div class="slide-body">
+<div class="lesson-flow">
+<p>Read the report from the corrected allocation.</p>
+<p><strong>Which issue remains?</strong></p>
+<div class="fragment step-result red">
+<p><strong>6 bytes definitely lost</strong></p>
+<p>We allocated the copy but never released it.</p>
+</div>
+</div>
+<aside class="notes">
+<p><strong>TERMINAL &gt; SLIDES</strong></p>
+<p>Continue reading the SAME report; do not rerun. Ask what remains. Find definitely lost and the malloc call site.</p>
+<p><strong>Expect:</strong> 6 bytes definitely lost. Printed strings are now correct.</p>
+<p><strong>Reveal:</strong> One Right reveals the leak. Ask where the release belongs.</p>
+<p><strong>Context:</strong> The report after +1 has no invalid accesses but still has a six-byte leak. Process-exit cleanup does not make leaks acceptable in a long-running program.</p>
+<p><strong>Recovery:</strong> Size repaired with +1; six-byte leak remains.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb16-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 03-copy-leak.c live-copy.c</span>
+<span id="cb16-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> valgrind FILE=live-copy.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="free" class="slide level2">
+<h2>Releasing the copy</h2>
+<div class="slide-body">
+<div class="lesson-flow">
+<p>Where should <code>free(copy)</code> go?</p>
+<div class="fragment" data-fragment-index="0">
+<div class="sourceCode" id="cb17"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb17-1"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"</span><span class="sc">%s\n</span><span class="st">"</span><span class="op">,</span> original<span class="op">);</span></span>
+<span id="cb17-2"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"</span><span class="sc">%s\n</span><span class="st">"</span><span class="op">,</span> copy<span class="op">);</span></span>
+<span id="cb17-3"><a href="" aria-hidden="true" tabindex="-1"></a>free<span class="op">(</span>copy<span class="op">);</span></span></code></pre></div>
+<p>Release the block <strong>after its last use</strong>.</p>
+</div>
+<div class="fragment step-result green" data-fragment-index="1">
+<p><strong>No leak:</strong> Valgrind reports zero errors.</p>
+</div>
+</div>
+<aside class="notes">
+<p><strong>SLIDES &gt; VIM &gt; TERMINAL &gt; SLIDES</strong></p>
+<p>Ask where free(copy) belongs. Reveal the placement, add it after the final printf in live-copy.c, save and rerun Valgrind. Recovery: 04-copy-free.c.</p>
+<p><strong>Expect:</strong> hello / Hello; all blocks freed; zero errors.</p>
+<p><strong>Reveal:</strong> First Right: placement. Run now. Second Right: clean result.</p>
+<p><strong>Context:</strong> malloc and free are declared in stdlib.h. original is an automatic array, so do not pass it to free. Do not use copy after releasing its target. Print labels are omitted on the slide only to focus on ordering.</p>
+<p><strong>Recovery:</strong> Completed string copy: no errors or leak.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb18-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 04-copy-free.c live-copy.c</span>
+<span id="cb18-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> valgrind FILE=live-copy.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="copy-independent" class="slide level2">
+<h2>Two independent strings</h2>
+<div class="slide-body">
+<div class="lesson-flow">
+<div class="diagram">
+<p><img data-src="assets/diagrams/copy-independent.svg" alt="Before free, original holds hello and its terminator. copy points to a separate allocation holding Hello and its terminator."></p>
+</div>
+<p><strong>Before <code>free</code>:</strong> changing <code>copy[0]</code> leaves <code>original[0]</code> unchanged.</p>
+</div>
+<aside class="notes">
+<p><strong>SLIDES</strong></p>
+<p>Recap the diagram before free. Say: “strcpy filled the new storage. Next we create numbers and fill them ourselves.” No run.</p>
+<p><strong>Context:</strong> The drawing represents the moment before free. A second automatic array could also make a copy; this lesson teaches malloc without claiming it is the only solution.</p>
+<p><strong>Recovery:</strong> Completed string copy: no errors or leak.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb19-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 04-copy-free.c live-copy.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section></section>
+<section>
+<section id="section-errors" class="title-slide slide level1 center">
+<h1>2. Arrays and memory errors</h1>
+<p>We copied existing characters. Now we create an array of values.</p>
+<p>How many <strong>bytes</strong>? What values are there <strong>before we write</strong>?</p>
+<aside class="notes">
+<p><strong>SLIDES</strong></p>
+<p>Say: “strcpy filled our copy with existing characters. Now imagine creating a row of numeric values. We need storage and must write their initial values.” Keep the integer file closed until after the next prediction.</p>
+<p><strong>Expect:</strong> This section adds byte-count calculations, explicit initialisation, then bounds and lifetime errors. Pixels need not use int in a real image format.</p>
+<p><strong>Context:</strong> Say: “strcpy filled our allocation with existing characters. What if we need fresh storage for numbers, such as a row of pixel intensities? malloc gives us bytes, but we must calculate how many and write the values ourselves.” The next integer program uses zero values so the later memory faults are easy to isolate. This is a simple numeric model; image formats need not store pixels as C int values.</p>
+<p><strong>Recovery:</strong> Completed string copy: no errors or leak.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb20-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 04-copy-free.c live-copy.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="runtime-size" class="slide level2">
+<h2>How much space for integers?</h2>
+<div class="slide-body">
+<div class="lesson-flow">
+<p>We need space for <strong>100 integers</strong>, initially set to zero.</p>
+<p>How many bytes should we request?</p>
+</div>
+<aside class="notes">
+<p><strong>SLIDES &gt; VIM &gt; TERMINAL</strong></p>
+<p>Keep Vim hidden. Ask: “How many bytes for 100 integers? Is 100 enough?” Collect answers first. Then open live-integers.c, inspect its allocation and zero-writing loop, predict the end values and run make valgrind FILE=live-integers.c; enter 100.</p>
+<p><strong>Expect:</strong> first=0, last=0; zero errors. Later faults use 4.</p>
+<p><strong>Reveal:</strong> No reveal on this slide. Show the C file only after predictions. After the run, advance to Count elements, request bytes to explain the formula.</p>
+<p><strong>Context:</strong> The complete program bounds input to 1–1000, checks allocation, writes zeros, prints and frees. This retains the source course’s 100-integer demonstration. VLAs exist in some C implementations; -Werror=vla is a teaching restriction, not a C prohibition.</p>
+<p><strong>Recovery:</strong> Clean integer baseline: initialisation and free after printf.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb21-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span>
+<span id="cb21-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'100\n'</span> <span class="kw">|</span> <span class="fu">make</span> valgrind FILE=live-integers.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="allocation-size" class="slide level2">
+<h2>Count elements, request bytes</h2>
+<div class="slide-body">
+<div class="sourceCode" id="cb22"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb22-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> <span class="op">*</span>malloc<span class="op">(</span><span class="dt">size_t</span> size<span class="op">);</span>   <span class="co">// From &lt;stdlib.h&gt;</span></span>
+<span id="cb22-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>p <span class="op">=</span> malloc<span class="op">(</span><span class="dv">100</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">));</span></span></code></pre></div>
+<ul>
+<li><code>size_t</code> is unsigned, with at least <strong>16 value bits</strong>.</li>
+<li><code>sizeof</code> is an <strong>operator</strong> giving a size in bytes.</li>
+<li><code>sizeof(int)</code> is the size of one <code>int</code>, not the pointer.</li>
+</ul>
+<div class="small-note">
+<p>Sizes depend on the platform. In C, the <code>void *</code> result needs no cast.</p>
+</div>
+<aside class="notes">
+<p><strong>SLIDES</strong></p>
+<p>Recap the calculation just run: malloc takes bytes; char takes one byte, int takes sizeof(int). Explain the prototype, size_t and C pointer conversion. No run.</p>
+<p><strong>Expect:</strong> size_t is unsigned with at least 16 value bits; sizeof is an operator.</p>
+<p><strong>Reveal:</strong> Next locate the pointer and its allocation in memory.</p>
+<p><strong>Context:</strong> Make the new point explicit: malloc takes bytes, whatever the element type. The string needed one byte per char; the numeric array needs sizeof(int) bytes per int. strcpy performed the writes in the opening; here our loop performs them. Inspect count * sizeof(int) in the program just run. sizeof is an operator, not a function. size_t is unsigned and can represent at least 0 through 65535. No cast of malloc is required in C. For unrestricted external counts, check multiplication overflow before allocation.</p>
+<p><strong>Recovery:</strong> Clean integer baseline: initialisation and free after printf.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb23-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -240,13 +766,20 @@ Louis Ledoux
 <h2>Where does the program keep its data?</h2>
 <div class="slide-body">
 <div class="diagram">
-<p><img data-src="assets/diagrams/memory-layout.svg" alt="Typical process memory: code and static data at lower addresses, heap growing upwards, stack growing downwards from higher addresses, with space between them."></p>
+<p><img data-src="assets/diagrams/memory-layout.svg" alt="Illustrative address range 0x0000 to 0xffff: code and static data low, heap growing upwards, stack growing downwards, with space between them."></p>
 </div>
-<div class="small-note">
-<p>A typical layout, not a C language guarantee. Not to scale.</p>
+<div class="fragment">
+<p><strong>What happens if we remove the loop that writes zeros?</strong></p>
 </div>
 <aside class="notes">
-<p>3–6 min. Point to total in static storage and values in the visit stack frame. New calls add frames, returns remove them. Draw opposing growth arrows explicitly. Heap allocations are introduced next; they need not be adjacent to each other. Modern allocators also use separate virtual-memory mappings. Do not infer a fixed numerical distance, size, or allocation order from this sketch.</p>
+<p><strong>SLIDES</strong></p>
+<p>Trace count and p on the stack and their allocated integers on the heap. Relate them to the working program. No run.</p>
+<p><strong>Expect:</strong> This is a typical layout, not a universal C guarantee.</p>
+<p><strong>Reveal:</strong> One Right reveals: “What happens if we remove the loop that writes zeros?” Collect predictions, then advance to the next slide for the edit and run.</p>
+<p><strong>Context:</strong> After running the integer example, locate count and the pointer p in the active stack frame, and the allocated integers on the heap. Connect this to the string copy: its separate copied characters also came from malloc. The pointer and its target are distinct objects. Calls grow the stack downward in this typical model; allocations occupy heap storage growing upward. Separate allocations need not be adjacent; real allocators may use other mappings. The layout is not a C guarantee. The drawn 16-bit address range is illustrative; real address widths and layouts vary.</p>
+<p><strong>Recovery:</strong> Clean integer baseline: initialisation and free after printf.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb24-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -260,102 +793,35 @@ Louis Ledoux
       }</style></aside>
 </div>
 </section>
-<section id="storage-duration" class="slide level2">
-<h2>Who controls an object’s lifetime?</h2>
+<section id="uninitialised" class="slide level2">
+<h2>What will the array contain?</h2>
 <div class="slide-body">
-<div class="block definition" title="Static storage">
-<div class="block-title">
-<p>Static storage</p>
+<div class="lesson-flow">
+<p><code>malloc</code> succeeded. We removed the loop that wrote zeros.</p>
+<div class="columns walkthrough">
+<div class="column" style="width:56%;">
+<div class="sourceCode" id="cb25"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb25-1"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"first=</span><span class="sc">%d</span><span class="st">, last=</span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span></span>
+<span id="cb25-2"><a href="" aria-hidden="true" tabindex="-1"></a>       p<span class="op">[</span><span class="dv">0</span><span class="op">],</span> p<span class="op">[</span>count <span class="op">-</span> <span class="dv">1</span><span class="op">]);</span></span></code></pre></div>
+</div><div class="column fragment" data-fragment-index="0" style="width:38%;">
+<div class="step-result red">
+<p><strong>Uninitialised value</strong></p>
 </div>
-<p>Globals and <code>static</code> objects exist for the <strong>whole program</strong>. Storage is reserved before execution.</p>
+<p>Valgrind reports that <code>printf</code> uses values we never wrote.</p>
+</div></div>
+<div class="fragment takeaway" data-fragment-index="1">
+<p><code>malloc</code> reserves storage; it <strong>does not initialise the integers</strong>.</p>
 </div>
-<div class="block example" title="Automatic storage">
-<div class="block-title">
-<p>Automatic storage</p>
-</div>
-<p>An ordinary local exists during its <strong>block execution</strong>. Each recursive call gets its own locals.</p>
-</div>
-<p>The implementation manages their storage. Deep recursion can <strong>exhaust the stack</strong>.</p>
-<aside class="notes">
-<p>6–8 min. The source’s static allocation at compile time describes preparation of storage; the object exists during execution, from program startup to termination. Ordinary fixed-size local arrays have fixed extent; C also has variable-length arrays in some environments. Their automatic lifetime is still tied to their scope. Stack storage is normally contiguous within frames, subject to layout/padding; heap blocks have no adjacency guarantee.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</div>
-</section>
-<section id="runtime-size" class="slide level2">
-<h2>What if the size comes from the user?</h2>
-<div class="slide-body">
-<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">size_t</span> count<span class="op">;</span></span>
-<span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>scanf<span class="op">(</span><span class="st">"</span><span class="sc">%zu</span><span class="st">"</span><span class="op">,</span> <span class="op">&amp;</span>count<span class="op">)</span> <span class="op">!=</span> <span class="dv">1</span><span class="op">)</span> <span class="cf">return</span> EXIT_FAILURE<span class="op">;</span></span>
-<span id="cb2-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>count <span class="op">==</span> <span class="dv">0</span> <span class="op">||</span> count <span class="op">&gt;</span> <span class="dv">1000</span><span class="op">)</span> <span class="cf">return</span> EXIT_FAILURE<span class="op">;</span></span>
-<span id="cb2-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>p <span class="op">=</span> malloc<span class="op">(</span>count <span class="op">*</span> <span class="kw">sizeof</span> <span class="op">*</span>p<span class="op">);</span></span>
-<span id="cb2-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>p <span class="op">==</span> NULL<span class="op">)</span> <span class="cf">return</span> EXIT_FAILURE<span class="op">;</span></span></code></pre></div>
-<p>The size is chosen <strong>during execution</strong>. The allocation can outlive the function that creates it.</p>
-<a class="c-example-download" href="examples/15-runtime-size/main.c" download="15-runtime-size.c" aria-label="Download C example: 15-runtime-size">Download C example ↓</a>
-<aside class="notes">
-<p>8–12 min. Enter 4, then 100 in standard input and rerun. Introduce stdlib.h and malloc as a request for storage. The upper bound keeps count * sizeof *p safe in this example; do not turn this into an input-parsing lecture. Motivation retained from slide 284: runtime size, control of lifetime, and finite stack capacity (deep recursion can exhaust it). Heap space is also finite; failure must be handled. Dynamic allocations need not be contiguous with one another; each successful malloc gives one contiguous block.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</div>
-</section>
-<section id="malloc" class="slide level2">
-<h2>Request storage for 100 integers</h2>
-<div class="slide-body">
-<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">size_t</span> count <span class="op">=</span> <span class="dv">100</span><span class="op">;</span></span>
-<span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>p <span class="op">=</span> malloc<span class="op">(</span>count <span class="op">*</span> <span class="kw">sizeof</span> <span class="op">*</span>p<span class="op">);</span></span>
-<span id="cb3-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>p <span class="op">==</span> NULL<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb3-4"><a href="" aria-hidden="true" tabindex="-1"></a>    fputs<span class="op">(</span><span class="st">"Allocation failed</span><span class="sc">\n</span><span class="st">"</span><span class="op">,</span> stderr<span class="op">);</span></span>
-<span id="cb3-5"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> EXIT_FAILURE<span class="op">;</span></span>
-<span id="cb3-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<p><code>malloc</code> returns the block’s address, or <strong><code>NULL</code></strong> on failure. The contents are <strong>uninitialised</strong>.</p>
-<aside class="notes">
-<p>12–15 min. Reconstruct the inherited 100-integer example from source slide 292, in two steps. Its allocation-failure branch is retained, with English names/messages. Include stdlib.h. Check the pointer before any access. No cast is required in C.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</div>
-</section>
-<section id="allocation-size" class="slide level2">
-<h2>Count elements, request bytes</h2>
-<div class="slide-body">
-<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> <span class="op">*</span>malloc<span class="op">(</span><span class="dt">size_t</span> size<span class="op">);</span>   <span class="co">// From &lt;stdlib.h&gt;</span></span>
-<span id="cb4-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>p <span class="op">=</span> malloc<span class="op">(</span><span class="dv">100</span> <span class="op">*</span> <span class="kw">sizeof</span> <span class="op">*</span>p<span class="op">);</span></span></code></pre></div>
-<ul>
-<li><code>size_t</code> is unsigned, with at least <strong>16 value bits</strong>.</li>
-<li><code>sizeof</code> is an <strong>operator</strong> giving a size in bytes.</li>
-<li><code>sizeof *p</code> is the size of one <code>int</code>, not the pointer.</li>
-</ul>
-<div class="small-note">
-<p>Sizes depend on the platform. In C, the <code>void *</code> result needs no cast.</p>
 </div>
 <aside class="notes">
-<p>15–17 min. Preserve the type-based form: malloc(count * sizeof(int)) is equivalent here; generically count * sizeof(type). size_t can represent at least 0 through 65535 (SIZE_MAX &gt;= 65535), as required by C17. For a fixed int type, sizeof *p does not evaluate/dereference p.&nbsp;For unrestricted external counts, check multiplication overflow before allocating. Explicit correction: sizeof is not a function, and the original mandatory-cast claim is wrong for C.</p>
+<p><strong>VIM &gt; TERMINAL &gt; SLIDES</strong></p>
+<p>Remove only the zero-writing loop in live-integers.c. Ask whether the printed values can be predicted. Save; run make valgrind FILE=live-integers.c with 4. Recovery: 06-uninitialised.c.</p>
+<p><strong>Expect:</strong> Uninitialised-value diagnostic. A printed zero proves nothing.</p>
+<p><strong>Reveal:</strong> First Right: diagnostic. Second: rule. Ask how to repair before advancing.</p>
+<p><strong>Context:</strong> A displayed zero does not establish initialisation. Keep allocation, NULL check, printf and free unchanged for this investigation.</p>
+<p><strong>Recovery:</strong> Loop removed: observe an uninitialised-value diagnostic.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb26-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 06-uninitialised.c live-integers.c</span>
+<span id="cb26-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'4\n'</span> <span class="kw">|</span> <span class="fu">make</span> valgrind FILE=live-integers.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -370,20 +836,37 @@ Louis Ledoux
 </div>
 </section>
 <section id="initialise" class="slide level2">
-<h2>Initialise, then use the block</h2>
+<h2>Write before reading</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> count<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
-<span id="cb5-2"><a href="" aria-hidden="true" tabindex="-1"></a>    p<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb5-3"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"first=</span><span class="sc">%d</span><span class="st">, last=</span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span> p<span class="op">[</span><span class="dv">0</span><span class="op">],</span> p<span class="op">[</span>count <span class="op">-</span> <span class="dv">1</span><span class="op">]);</span></span></code></pre></div>
-<div class="block example" title="One contiguous allocation">
-<div class="block-title">
-<p>One contiguous allocation</p>
+<div class="lesson-flow">
+<p>Restore the loop <strong>before</strong> <code>printf</code>.</p>
+<div class="columns walkthrough">
+<div class="column" style="width:56%;">
+<div class="sourceCode" id="cb27"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb27-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> count<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
+<span id="cb27-2"><a href="" aria-hidden="true" tabindex="-1"></a>    p<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb27-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"first=</span><span class="sc">%d</span><span class="st">, last=</span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span></span>
+<span id="cb27-5"><a href="" aria-hidden="true" tabindex="-1"></a>       p<span class="op">[</span><span class="dv">0</span><span class="op">],</span> p<span class="op">[</span>count <span class="op">-</span> <span class="dv">1</span><span class="op">]);</span></span></code></pre></div>
+</div><div class="column fragment" data-fragment-index="0" style="width:38%;">
+<p>Every element now has a value before it is read.</p>
+<div class="step-result green">
+<p><strong>Zero errors</strong></p>
+<p>Rerun Valgrind to check this execution.</p>
 </div>
-<p>Valid indices are <strong>0 ≤ i &lt; count</strong>. Write each value before reading it.</p>
+</div></div>
 </div>
-<a class="c-example-download" href="examples/01-malloc/main.c" download="01-malloc.c" aria-label="Download C example: 01-malloc">Download C example ↓</a>
 <aside class="notes">
-<p>17–19 min. Run the complete 100-integer program. Change the initial value from 0 to 7 and rerun. Ask for the byte count on this machine, then check sizeof(int). The complete file ends with free(p); reveal that operation next.</p>
+<p><strong>VIM &gt; TERMINAL &gt; SLIDES</strong></p>
+<p>Restore the loop in live-integers.c. Predict the end values, save and rerun Valgrind with 4.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb28-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> count<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
+<span id="cb28-2"><a href="" aria-hidden="true" tabindex="-1"></a>    p<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span></code></pre></div>
+<p><strong>Expect:</strong> first=0, last=0; zero errors.</p>
+<p><strong>Reveal:</strong> One Right: explanation and clean result. Next test the loop boundary.</p>
+<p><strong>Context:</strong> Writing only p[0] leaves the last element uninitialised. The source course’s fixed-100 program remains in demos/reference/01-malloc/main.c.</p>
+<p><strong>Recovery:</strong> Loop restored: zero errors.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb29-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span>
+<span id="cb29-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'4\n'</span> <span class="kw">|</span> <span class="fu">make</span> valgrind FILE=live-integers.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -397,22 +880,315 @@ Louis Ledoux
       }</style></aside>
 </div>
 </section>
-<section id="free" class="slide level2">
-<h2>Finish the job with <code>free</code></h2>
+<section id="overrun" class="slide level2">
+<h2>Four integers: which write is outside?</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> free<span class="op">(</span><span class="dt">void</span> <span class="op">*</span>pointer<span class="op">);</span>   <span class="co">// From &lt;stdlib.h&gt;</span></span>
-<span id="cb6-2"><a href="" aria-hidden="true" tabindex="-1"></a>free<span class="op">(</span>p<span class="op">);</span>                   <span class="co">// After the last use.</span></span>
-<span id="cb6-3"><a href="" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> NULL<span class="op">;</span></span></code></pre></div>
-<div class="block definition" title="End the allocation's lifetime">
-<div class="block-title">
-<p>End the allocation's lifetime</p>
+<div class="lesson-flow">
+<p><code>count = 4</code>. The allocation holds <code>p[0]</code> through <code>p[3]</code>.</p>
+<div class="columns walkthrough">
+<div class="column" style="width:56%;">
+<div class="sourceCode" id="cb30"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb30-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;=</span> count<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
+<span id="cb30-2"><a href="" aria-hidden="true" tabindex="-1"></a>    p<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span></code></pre></div>
+</div><div class="column fragment" data-fragment-index="0" style="width:38%;">
+<div class="step-result red">
+<p><strong>Invalid write</strong></p>
 </div>
-<p>Pass the start address of a live allocation from <code>malloc</code>, <code>calloc</code> or <code>realloc</code>. <code>free</code> returns no value.</p>
+<p><code>&lt;=</code> also allows <code>i = 4</code>. There is <strong>no element <code>p[4]</code></strong> in this allocation.</p>
+</div></div>
+<div class="fragment takeaway green" data-fragment-index="1">
+<p>Use <strong><code>i &lt; count</code></strong>: four writes, with indices <strong>0, 1, 2, 3</strong>.</p>
 </div>
-<p><code>free(NULL)</code> has no effect. Free each allocation <strong>once</strong>.</p>
-<p>Invalid or repeated <code>free</code> is <strong>undefined behaviour</strong>.</p>
+</div>
 <aside class="notes">
-<p>19–21 min. The useful sequence is request → check → initialise/use → release. free releases the block, not the pointer variable. Assigning NULL afterwards is a separate operation and does not update aliases. Explain invalid arguments (interior pointers, local objects, a previously freed allocation) as undefined behaviour; actual error investigations follow only after the working baseline.</p>
+<p><strong>VIM &gt; TERMINAL &gt; SLIDES</strong></p>
+<p>In the repaired file change &lt; to &lt;=. Predict the indices. Run Valgrind with 4. Recovery: 07-overrun.c.</p>
+<p><strong>Expect:</strong> Invalid write at p[4].</p>
+<p><strong>Reveal:</strong> First Right: diagnostic. Ask for the fix; second: &lt;. Repair, save and rerun before testing lifetime.</p>
+<p><strong>Context:</strong> An expected printed result does not prove memory safety. With four elements, p[4] is just beyond the allocation.</p>
+<p><strong>Recovery:</strong> Deliberate &lt;= fault: invalid write at p[4].</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb31-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 07-overrun.c live-integers.c</span>
+<span id="cb31-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'4\n'</span> <span class="kw">|</span> <span class="fu">make</span> valgrind FILE=live-integers.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
+<p><strong>Restore the repair:</strong></p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb32-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span>
+<span id="cb32-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'4\n'</span> <span class="kw">|</span> <span class="fu">make</span> valgrind FILE=live-integers.c</span></code></pre></div>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="dangling" class="slide level2">
+<h2>Can we read after <code>free</code>?</h2>
+<div class="slide-body">
+<div class="lesson-flow">
+<p><code>p</code> points to four integers initialised to zero.</p>
+<div class="columns walkthrough">
+<div class="column" style="width:56%;">
+<div class="sourceCode" id="cb33"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb33-1"><a href="" aria-hidden="true" tabindex="-1"></a>free<span class="op">(</span>p<span class="op">);</span></span>
+<span id="cb33-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"first=</span><span class="sc">%d</span><span class="st">, last=</span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span></span>
+<span id="cb33-4"><a href="" aria-hidden="true" tabindex="-1"></a>       p<span class="op">[</span><span class="dv">0</span><span class="op">],</span> p<span class="op">[</span>count <span class="op">-</span> <span class="dv">1</span><span class="op">]);</span></span></code></pre></div>
+</div><div class="column fragment" data-fragment-index="0" style="width:38%;">
+<div class="step-result red">
+<p><strong>Invalid read</strong></p>
+</div>
+<p>Valgrind points to <code>printf</code>: the block was <strong>already freed</strong>.</p>
+</div></div>
+<div class="fragment takeaway red" data-fragment-index="1">
+<p>After <code>free(p)</code>, <strong><code>p</code> is a dangling pointer</strong>.</p>
+</div>
+</div>
+<aside class="notes">
+<p><strong>VIM &gt; TERMINAL &gt; SLIDES</strong></p>
+<p>Move free before printf in repaired live-integers.c. Ask whether these reads remain valid. Run Valgrind with 4. Recovery: 08-dangling.c.</p>
+<p><strong>Expect:</strong> Invalid read of size 4, followed by “inside a block of size 16 free’d” and the free call site. GCC may warn too. “All heap blocks were freed” only says there is no leak.</p>
+<p><strong>Reveal:</strong> First Right: diagnostic. Second: dangling pointer. Explain and repair on the next slide.</p>
+<p><strong>Context:</strong> GCC may also warn. Valgrind relates the invalid read to the earlier allocation and release. The program may still print zeros and have no leak; neither makes the access valid. In this checked execution, p[0] and p[3] produce two invalid reads, even when both print zero. Valgrind uses the wording free’d rather than literally already free.</p>
+<p><strong>Recovery:</strong> free before printf: invalid reads inside a block already freed.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb34-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 08-dangling.c live-integers.c</span>
+<span id="cb34-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'4\n'</span> <span class="kw">|</span> <span class="fu">make</span> valgrind FILE=live-integers.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="dangling-explained" class="slide level2">
+<h2>Dangling pointer</h2>
+<div class="slide-body">
+<div class="lesson-flow concept-flow">
+<p>A pointer to an object <strong>whose lifetime has ended</strong>.</p>
+<p><code>free(p)</code> releases the block; it <strong>does not set <code>p</code> to <code>NULL</code></strong>.</p>
+<div class="diagram">
+<p><img data-src="assets/diagrams/dangling.svg" alt="p refers to a released allocation. The former elements cannot be accessed through p."></p>
+</div>
+<div class="fragment" data-fragment-index="0">
+<p><strong>Repair: finish reading before releasing the block.</strong></p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb35-1"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"first=</span><span class="sc">%d</span><span class="st">, last=</span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span> p<span class="op">[</span><span class="dv">0</span><span class="op">],</span> p<span class="op">[</span>count <span class="op">-</span> <span class="dv">1</span><span class="op">]);</span></span>
+<span id="cb35-2"><a href="" aria-hidden="true" tabindex="-1"></a>free<span class="op">(</span>p<span class="op">);</span></span></code></pre></div>
+</div>
+</div>
+<aside class="notes">
+<p><strong>SLIDES &gt; VIM &gt; TERMINAL</strong></p>
+<p>Define dangling: the target no longer exists. Ask where free belongs. Reveal, repair live-integers.c and rerun Valgrind with 4.</p>
+<p><strong>Expect:</strong> Zero errors; free does not clear p or its aliases.</p>
+<p><strong>Reveal:</strong> One Right: repair. Ask: “Can returning an address keep a local array alive?”</p>
+<p><strong>Context:</strong> Distinguish the dangling state from dereferencing the pointer. free does not clear the variable or other aliases. The drawing models lifetime, not preserved bytes or a usable pointer value after free.</p>
+<p><strong>Recovery:</strong> Lifetime repair: printf before free; zero errors.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb36-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span>
+<span id="cb36-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'4\n'</span> <span class="kw">|</span> <span class="fu">make</span> valgrind FILE=live-integers.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="local-lifetime" class="slide level2">
+<h2>Can we return this array?</h2>
+<div class="slide-body">
+<div class="lesson-flow">
+<p>Move array creation into a function. Can its caller use the array?</p>
+<div class="columns walkthrough">
+<div class="column" style="width:56%;">
+<div class="sourceCode" id="cb37"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb37-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>make_values<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb37-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> values<span class="op">[</span><span class="dv">4</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span><span class="dv">0</span><span class="op">};</span></span>
+<span id="cb37-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> values<span class="op">;</span></span>
+<span id="cb37-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb37-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">// In the caller:</span></span>
+<span id="cb37-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>p <span class="op">=</span> make_values<span class="op">();</span></span></code></pre></div>
+</div><div class="column" style="width:38%;">
+<div class="fragment" data-fragment-index="0">
+<p><strong>During the call</strong></p>
+<p><code>values</code> exists and contains four zeros.</p>
+</div>
+<div class="fragment" data-fragment-index="1">
+<p><strong>After the return</strong></p>
+<p><code>values</code> no longer exists. <strong><code>p</code> is dangling</strong>, without any <code>free</code>.</p>
+</div>
+</div></div>
+<div class="fragment takeaway red" data-fragment-index="2">
+<p>Returning an address <strong>does not keep a local object alive</strong>.</p>
+</div>
+</div>
+<aside class="notes">
+<p><strong>SLIDES</strong></p>
+<p>Trace make_values and its return. It returns an address, not a copy. Do not run an invalid dereference.</p>
+<p><strong>Expect:</strong> Returning ends the local array lifetime. A caller-owned array or a heap allocation can outlive this call.</p>
+<p><strong>Reveal:</strong> First Right: during the call. Second: after return. Third: an address does not keep the array alive. Next compare lifetimes.</p>
+<p><strong>Context:</strong> Returning an array expression supplies its first element’s address, not an array copy. Do not rely on a particular returned pointer value: GCC may warn and return NULL. Caller-owned storage or a heap allocation can outlive this call. The heap block survives even though the helper’s local pointer does not. Memcheck does not detect every automatic-storage lifetime error.</p>
+<p><strong>Recovery:</strong> Compile only: returning a local array address. Do not dereference it.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb38-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> recovery/local-return.c live-integers.c</span>
+<span id="cb38-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> program FILE=live-integers.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="storage-duration" class="slide level2">
+<h2>When does the storage end?</h2>
+<div class="slide-body">
+<div class="lesson-flow">
+<p>The pointer and the object it refers to have <strong>separate lifetimes</strong>.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 36%">
+<col style="width: 64%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Storage</th>
+<th style="text-align: left;">Lifetime ends</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Ordinary local array</td>
+<td style="text-align: left;">When its block ends</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Block from <code>malloc</code></td>
+<td style="text-align: left;">When it is released with <code>free</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Global or <code>static</code> object</td>
+<td style="text-align: left;">When the program ends</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment" data-fragment-index="0">
+<p>Each recursive call has its own locals. Too many calls can <strong>exhaust the stack</strong>.</p>
+</div>
+</div>
+<aside class="notes">
+<p><strong>SLIDES</strong></p>
+<p>Compare the local array that expired on return with the heap block released by free. Separate pointer lifetime from target lifetime. No run. If you used the local-return recovery, copy 05-integers.c back to live-integers.c before the next experiment.</p>
+<p><strong>Expect:</strong> Local: block ends. Heap: release. Global/static: program ends.</p>
+<p><strong>Reveal:</strong> One Right: recursive calls have separate locals. Say: “Next, a common mistake: we call free, but we have already changed the pointer.”</p>
+<p><strong>Context:</strong> Static storage is reserved before execution. Ordinary locals last for their block execution; recursive calls have separate locals. A pointer’s scope does not prove that its target is alive. Allocated storage persists until release even if a pointer is overwritten.</p>
+<p><strong>Recovery:</strong> Return to the clean integer baseline before the next fault.</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb39-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="leak" class="slide level2">
+<h2>Common mistake: lost address</h2>
+<div class="slide-body">
+<div class="lesson-flow">
+<p>We still call <code>free(p)</code>. <strong>What value does it receive?</strong></p>
+<div class="columns walkthrough">
+<div class="column" style="width:48%;">
+<div class="sourceCode" id="cb40"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb40-1"><a href="" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> NULL<span class="op">;</span></span>
+<span id="cb40-2"><a href="" aria-hidden="true" tabindex="-1"></a>free<span class="op">(</span>p<span class="op">);</span></span></code></pre></div>
+</div><div class="column" style="width:46%;">
+<div class="fragment" data-fragment-index="0">
+<p><code>free(NULL)</code> does nothing.</p>
+<p>Address lost: <strong>memory leak</strong>.</p>
+</div>
+<div class="fragment step-result" data-fragment-index="1">
+<p><strong>Free before resetting.</strong></p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb41-1"><a href="" aria-hidden="true" tabindex="-1"></a>free<span class="op">(</span>p<span class="op">);</span></span>
+<span id="cb41-2"><a href="" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> NULL<span class="op">;</span></span></code></pre></div>
+</div>
+</div></div>
+<div class="diagram fragment" data-fragment-index="0">
+<p><img data-src="assets/diagrams/leak.svg" alt="p is NULL. The original allocation remains, with no pointer to reach or release it."></p>
+</div>
+</div>
+<aside class="notes">
+<p><strong>SLIDES &gt; VIM &gt; TERMINAL &gt; SLIDES</strong></p>
+<p>Say: “We know we must free the block. Here is a common mistake: clearing the pointer too early.” Ask what value reaches free. Insert p = NULL before free in repaired live-integers.c, save and run Valgrind with 4. Recovery: 09-leak.c.</p>
+<p><strong>Expect:</strong> Definitely lost: free was called, but with NULL. The allocated block remains; its only address is gone.</p>
+<p><strong>Reveal:</strong> First Right: explain free(NULL) and the lost address. Ask how to repair the order. Second Right: free(p), then p = NULL. Make that edit and rerun; expect no leak. Ask who reclaims a lost block in C.</p>
+<p><strong>Context:</strong> Keep the allocation address until release. Clearing a pointer is optional and does not clear aliases. A leak leaves allocated storage unreleased; a dangling pointer refers to storage whose lifetime ended.</p>
+<p><strong>Recovery:</strong> p = NULL before free: definitely lost.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb42-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 09-leak.c live-integers.c</span>
+<span id="cb42-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'4\n'</span> <span class="kw">|</span> <span class="fu">make</span> valgrind FILE=live-integers.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
+<p><strong>Restore the repair:</strong></p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb43-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span>
+<span id="cb43-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'4\n'</span> <span class="kw">|</span> <span class="fu">make</span> valgrind FILE=live-integers.c</span></code></pre></div>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="ownership" class="slide level2">
+<h2>Who releases an unreachable block?</h2>
+<div class="slide-body">
+<div class="fragment block definition" title="C: explicit responsibility">
+<div class="block-title">
+<p>C: explicit responsibility</p>
+</div>
+<p>For every successful allocation, decide who will release it and when. Repeated leaks consume more memory.</p>
+</div>
+<div class="fragment block example" title="Java: garbage collection">
+<div class="block-title">
+<p>Java: garbage collection</p>
+</div>
+<p>The runtime can reclaim unreachable objects automatically.</p>
+</div>
+<aside class="notes">
+<p><strong>SLIDES</strong></p>
+<p>Ask whether C automatically reclaims the allocation just lost. Collect an answer before revealing.</p>
+<p><strong>Expect:</strong> C requires explicit release; repeated leaks accumulate. Java can reclaim unreachable objects.</p>
+<p><strong>Reveal:</strong> First Right: C. Second: Java. Next recap the library operations used so far.</p>
+<p><strong>Context:</strong> Source slide 287 contrasts C responsibility and Java garbage collection. Collection need not be immediate and does not reclaim reachable-but-unwanted objects.</p>
+<p><strong>Recovery:</strong> Clean integer example; these slides normally need no run.</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb44-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -429,6 +1205,7 @@ Louis Ledoux
 <section id="allocation-api" class="slide level2">
 <h2>Four functions in <code>&lt;stdlib.h&gt;</code></h2>
 <div class="slide-body">
+<p>We allocated, filled and released a block. We can also request zeros or resize it.</p>
 <table class="caption-top">
 <colgroup>
 <col style="width: 36%">
@@ -460,7 +1237,14 @@ Louis Ledoux
 </tbody>
 </table>
 <aside class="notes">
-<p>21–22 min. Original overview, not a new calloc/realloc lesson. For nonzero size, realloc failure leaves the old block valid: use a temporary pointer. calloc’s all-bits-zero guarantee is not a universal guarantee for pointer/floating representations. We focus on malloc/free today.</p>
+<p><strong>SLIDES</strong></p>
+<p>Relate malloc and free to our program. calloc provides zeroed storage; realloc changes its size. This is a brief overview, with no new run.</p>
+<p><strong>Expect:</strong> calloc clears bits. realloc may move; for nonzero size failure leaves the original block valid.</p>
+<p><strong>Reveal:</strong> Next ask which addresses free accepts.</p>
+<p><strong>Context:</strong> This is the inherited API overview. For nonzero size, realloc failure leaves the old allocation valid; assign through a temporary pointer. calloc clears all bits; that is not a universal guarantee about floating-point or pointer representations.</p>
+<p><strong>Recovery:</strong> Clean integer example; these slides normally need no run.</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb45-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -474,170 +1258,26 @@ Louis Ledoux
       }</style></aside>
 </div>
 </section>
-<section id="valgrind-baseline" class="slide level2">
-<h2>Compile, run, then inspect</h2>
+<section id="free-contract" class="slide level2">
+<h2>The <code>free</code> contract</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">gcc</span> <span class="at">-std</span><span class="op">=</span>c17 <span class="at">-Wall</span> <span class="at">-Wextra</span> <span class="at">-g</span> <span class="at">-O0</span> main.c <span class="at">-o</span> program</span>
-<span id="cb7-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ex">./program</span></span>
-<span id="cb7-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">valgrind</span> <span class="at">--leak-check</span><span class="op">=</span>full ./program</span></code></pre></div>
-<p>Read the <strong>error summary</strong>, then the <strong>heap summary</strong>. A program can print the expected result and still misuse memory.</p>
-<a class="c-example-download" href="examples/04-array/main.c" download="04-array.c" aria-label="Download C example: 04-array">Download C example ↓</a>
-<aside class="notes">
-<p>22–25 min. Open the four-integer example, first run normally, then choose Valgrind and run again. Explain -g (source locations) and -O0 (simple debug build). Memcheck is the default Valgrind tool; –tool=memcheck is also valid, as in inherited source slide 145. Look for zero reported errors and all blocks freed. Do not present that as proof over all inputs. All output is generated live; make valgrind is the equivalent terminal action.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</div>
-</section>
-<section id="overrun" class="slide level2">
-<h2>One character creates an overrun</h2>
-<div class="slide-body">
-<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>a <span class="op">=</span> malloc<span class="op">(</span><span class="dv">4</span> <span class="op">*</span> <span class="kw">sizeof</span> <span class="op">*</span>a<span class="op">);</span></span>
-<span id="cb8-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(!</span>a<span class="op">)</span> <span class="cf">return</span> EXIT_FAILURE<span class="op">;</span></span>
-<span id="cb8-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;=</span> <span class="dv">4</span><span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
-<span id="cb8-4"><a href="" aria-hidden="true" tabindex="-1"></a>    a<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> <span class="op">(</span><span class="dt">int</span><span class="op">)(</span><span class="dv">10</span> <span class="op">*</span> <span class="op">(</span>i <span class="op">+</span> <span class="dv">1</span><span class="op">));</span></span></code></pre></div>
-<div class="question">
-<p>Which iteration writes outside the allocation?</p>
-</div>
-<a class="c-example-download" href="examples/16-overrun/main.c" download="16-overrun.c" aria-label="Download C example: 16-overrun">Download C example ↓</a>
-<aside class="notes">
-<p>25–29 min. Predict, compile, run under Valgrind. Locate “Invalid write”, the source line, and the allocation location. Relate “0 bytes after a block” to index 4. Change &lt;= to &lt; in the live editor and rerun until the diagnostic disappears. Compiler success and ordinary execution do not establish memory safety. This investigation makes the source’s array bounds concrete without expanding the syllabus.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</div>
-</section>
-<section id="uninitialised" class="slide level2">
-<h2>Allocated does not mean initialised</h2>
-<div class="slide-body">
-<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>a <span class="op">=</span> malloc<span class="op">(</span><span class="dv">4</span> <span class="op">*</span> <span class="kw">sizeof</span> <span class="op">*</span>a<span class="op">);</span></span>
-<span id="cb9-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(!</span>a<span class="op">)</span> <span class="cf">return</span> EXIT_FAILURE<span class="op">;</span></span>
-<span id="cb9-3"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"a[0] = </span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span> a<span class="op">[</span><span class="dv">0</span><span class="op">]);</span></span></code></pre></div>
-<div class="sourceCode" id="cb10"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb10-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">valgrind</span> <span class="at">--track-origins</span><span class="op">=</span>yes ./program</span></code></pre></div>
-<a class="c-example-download" href="examples/17-uninitialised/main.c" download="17-uninitialised.c" aria-label="Download C example: 17-uninitialised">Download C example ↓</a>
-<aside class="notes">
-<p>29–31 min. Brief second mutation: remove the initialisation. A printed zero is not evidence of initialisation. Follow the uninitialised-value origin back to malloc; add a[0] = 10 before printf and rerun. The live runner combines –track-origins=yes with –leak-check=full. If time is tight, ask the prediction and show the repair without a second terminal transition.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</div>
-</section>
-<section id="leak" class="slide level2">
-<h2>Memory leak: lose the address</h2>
-<div class="slide-body">
-<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> NULL<span class="op">;</span>  <span class="co">// No free before the only address is lost.</span></span></code></pre></div>
-<div class="diagram">
-<p><img data-src="assets/diagrams/leak.svg" alt="The pointer is overwritten but the block containing 10, 20, 30, 40 remains allocated and unreachable."></p>
-</div>
-<a class="c-example-download" href="examples/18-lost-allocation/main.c" download="18-lost-allocation.c" aria-label="Download C example: 18-lost-allocation">Download C example ↓</a>
-<aside class="notes">
-<p>31–34 min. This is a memory leak: allocated memory is no longer useful/reachable and was not released. Under Valgrind, locate “definitely lost” and the allocation call site. The diagnostic identifies where the block was allocated, not necessarily where its last address was overwritten. Add free(p) before p = NULL, then rerun. Repeated leaks increase memory use over time. Releasing at process exit does not fix a long-running program’s lifetime management.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</div>
-</section>
-<section id="dangling" class="slide level2">
-<h2>Dangling pointer: the object is gone</h2>
-<div class="slide-body">
-<div class="diagram">
-<p><img data-src="assets/diagrams/dangling.svg" alt="The allocated object is released by free, while the pointer is left dangling."></p>
-</div>
-<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="" aria-hidden="true" tabindex="-1"></a>free<span class="op">(</span>p<span class="op">);</span></span>
-<span id="cb12-2"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"</span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span> <span class="op">*</span>p<span class="op">);</span>  <span class="co">// Use after free: undefined behaviour.</span></span></code></pre></div>
-<a class="c-example-download" href="examples/02-dangling/main.c" download="02-dangling.c" aria-label="Download C example: 02-dangling">Download C example ↓</a>
-<aside class="notes">
-<p>34–37 min. Predict then run under Valgrind. Trace invalid read → free → allocation, in that order. Move printf before free to repair it. GCC may also warn; that is useful but not a substitute for understanding lifetime. free does not set p to NULL; no remaining alias may dereference the object. A second free of the same allocation is also invalid. Contrast with the previous slide: a leak keeps the storage; a dangling pointer outlives the storage.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</div>
-</section>
-<section id="local-lifetime" class="slide level2">
-<h2>Local objects can expire too</h2>
-<div class="slide-body">
-<div class="sourceCode" id="cb13"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb13-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>bad_result<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb13-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> value <span class="op">=</span> <span class="dv">42</span><span class="op">;</span></span>
-<span id="cb13-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="op">&amp;</span>value<span class="op">;</span>  <span class="co">// The local dies when this call ends.</span></span>
-<span id="cb13-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<div class="block alert" title="A dangling pointer need not come from free">
-<div class="block-title">
-<p>A dangling pointer need not come from free</p>
-</div>
-<p>Returning an address does not extend an automatic object’s lifetime.</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb46-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> free<span class="op">(</span><span class="dt">void</span> <span class="op">*</span>pointer<span class="op">);</span>   <span class="co">// Declared in &lt;stdlib.h&gt;</span></span></code></pre></div>
+<div class="fragment" data-fragment-index="0">
+<ul>
+<li>Pass the allocation’s <strong>start address</strong>, once.</li>
+<li><code>free(NULL)</code> does nothing; <code>free</code> returns no value.</li>
+<li>An invalid or repeated release is <strong>undefined behaviour</strong>.</li>
+</ul>
 </div>
 <aside class="notes">
-<p>37–38 min. Tie this back to the stack frame in the opening diagram. Do not execute the invalid access. A function may instead return the value, fill caller-owned storage, or allocate a result with an agreed owner. Memcheck does not detect every stack lifetime error; the C lifetime rule is what matters here.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</div>
-</section>
-<section id="ownership" class="slide level2">
-<h2>Who is responsible for reclamation?</h2>
-<div class="slide-body">
-<div class="block definition" title="C: explicit responsibility">
-<div class="block-title">
-<p>C: explicit responsibility</p>
-</div>
-<p>For every successful allocation, decide who will release it and when. Repeated leaks consume more memory.</p>
-</div>
-<div class="block example" title="Java: garbage collection">
-<div class="block-title">
-<p>Java: garbage collection</p>
-</div>
-<p>The runtime can reclaim unreachable objects automatically.</p>
-</div>
-<aside class="notes">
-<p>38–39 min. Source slide 287 comparison. Garbage collection is not necessarily immediate and cannot reclaim reachable-but-unwanted objects. This is a short recap of responsibility, after students have observed a leak rather than before their first allocation.</p>
+<p><strong>SLIDES</strong></p>
+<p>Ask which arguments are valid: the malloc start address, p + 1, an ordinary local array, or NULL. Collect reasons before revealing.</p>
+<p><strong>Expect:</strong> Only the allocation start address, once, or NULL. free returns no value.</p>
+<p><strong>Reveal:</strong> One Right reveals the rules. Then take the quiz.</p>
+<p><strong>Context:</strong> An interior address, an ordinary local array address or an already-freed address is invalid. free has no return value; free(NULL) is permitted.</p>
+<p><strong>Recovery:</strong> Clean integer example; these slides normally need no run.</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb47-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -659,7 +1299,13 @@ Louis Ledoux
 </div>
 <p><a href="assets/cm7-quiz.pdf">Open the allocation quiz</a>.</p>
 <aside class="notes">
-<p>39–43 min. Retain the inherited question set and order. Its file/title use older CM numbering; the chosen PowerPoint calls this CM10. Do not silently renumber the original quiz asset.</p>
+<p><strong>SLIDES / QUIZ</strong></p>
+<p>Open the linked quiz and take questions 1-5. Ask students to explain their answers, especially the difference between a leak and a dangling pointer.</p>
+<p><strong>Expect:</strong> Resolve misunderstandings before changing representations. Next section returns to array elements and addresses.</p>
+<p><strong>Context:</strong> Retain the inherited question set and order. Its file/title use older CM numbering; the chosen PowerPoint calls this CM10. Do not silently renumber the original quiz asset.</p>
+<p><strong>Recovery:</strong> Clean integer example; these slides normally need no run.</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb48-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -672,117 +1318,50 @@ Louis Ledoux
           display:block!important;
       }</style></aside>
 </div>
+</section></section>
+<section>
+<section id="section-arrays" class="title-slide slide level1 center">
+<h1>3. Store a grid</h1>
+<p>We know how to allocate <strong>one row</strong>. How can we store a <strong>whole grid</strong>?</p>
+<aside class="notes">
+<p><strong>SLIDES</strong></p>
+<p>Say: “We know how to allocate a row. An image has rows and columns: how do we store a whole grid?” Recall contiguous elements, then compare the three matrix representations. Stay with integers; no return to strings.</p>
+<p><strong>Recovery:</strong> Clean integer example; these slides normally need no run.</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb49-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 05-integers.c live-integers.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="array" class="slide level2">
-<h2>A one-dimensional integer array</h2>
+<h2>One row in contiguous memory</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb14"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb14-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>a <span class="op">=</span> malloc<span class="op">(</span><span class="dv">4</span> <span class="op">*</span> <span class="kw">sizeof</span> <span class="op">*</span>a<span class="op">);</span></span></code></pre></div>
+<p>What changes between neighbouring element addresses?</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb50-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>a <span class="op">=</span> malloc<span class="op">(</span><span class="dv">4</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">));</span></span></code></pre></div>
+<div class="fragment" data-fragment-index="0">
 <div class="diagram">
 <p><img data-src="assets/diagrams/array.svg" alt="Four contiguous integer elements; each address advances by sizeof(int)."></p>
 </div>
 <p>Use <code>a[i]</code>, equivalently <code>*(a + i)</code>, for <strong>0 ≤ i &lt; 4</strong>.</p>
-<aside class="notes">
-<p>43–45 min. Return to the working four-element example after the quiz. Generic allocation: type <em>a = malloc(count </em> sizeof *a). The source’s 0x1000 addresses are illustrative, with sizeof(int)=4 for that drawing; real addresses and sizes may vary.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</div>
-</section>
-<section id="string" class="slide level2">
-<h2>A character array can hold a string</h2>
-<div class="slide-body">
-<div class="sourceCode" id="cb15"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb15-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> <span class="op">*</span>s <span class="op">=</span> malloc<span class="op">(</span><span class="dv">4</span> <span class="op">*</span> <span class="kw">sizeof</span> <span class="op">*</span>s<span class="op">);</span></span></code></pre></div>
-<div class="diagram">
-<p><img data-src="assets/diagrams/string.svg" alt="Four character bytes contain c, a, t and the null terminator."></p>
-</div>
-<p>Three letters need <strong>four bytes</strong>, including <strong><code>'\0'</code></strong>.</p>
-<a class="c-example-download" href="examples/05-string/main.c" download="05-string.c" aria-label="Download C example: 05-string">Download C example ↓</a>
-<aside class="notes">
-<p>45–47 min. A char is one C byte, so sizeof(char) is 1. The generic form is count * sizeof(char). Check allocation, copy or assign characters including the terminator, use the string, then free. Bounds and lifetime rules do not change with the element type.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</div>
-</section>
-<section id="string-assignment" class="slide level2">
-<h2>Assigning a pointer is not copying text</h2>
-<div class="slide-body">
-<div class="sourceCode" id="cb16"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb16-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> <span class="op">*</span>s <span class="op">=</span> malloc<span class="op">(</span><span class="dv">100</span><span class="op">);</span></span>
-<span id="cb16-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(!</span>s<span class="op">)</span> <span class="cf">return</span> EXIT_FAILURE<span class="op">;</span></span>
-<span id="cb16-3"><a href="" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> <span class="st">"hello"</span><span class="op">;</span></span>
-<span id="cb16-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> <span class="op">*</span>p <span class="op">=</span> s<span class="op">;</span></span>
-<span id="cb16-5"><a href="" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> <span class="st">"bye"</span><span class="op">;</span></span></code></pre></div>
-<p>Predict the values of <code>p</code> and <code>s</code>, and the fate of the allocation.</p>
-<a class="c-example-download" href="examples/03-leak/main.c" download="03-leak.c" aria-label="Download C example: 03-leak">Download C example ↓</a>
-<aside class="notes">
-<p>47–49 min. Keep all three assignments from source slide 296. Run once normally to observe hello/bye; optionally run Valgrind to connect this example to the earlier leak. There is no copy of the text when assigning a pointer. Trace all three states on the next slide.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</div>
-</section>
-<section id="string-trace" class="slide level2">
-<h2>Follow the three assignments</h2>
-<div class="slide-body">
-<div class="diagram">
-<p><img data-src="assets/diagrams/string-aliases.svg" alt="After s=hello, s points to the hello literal; after p=s both point to hello; after s=bye p still points to hello and s points to bye. The original heap allocation remains unreachable."></p>
-</div>
-<p>The literals are separate from the lost heap block. Neither pointer can now be passed to <code>free</code>.</p>
-<aside class="notes">
-<p>49–50 min. Literals have static storage duration and must not be modified. The three panels show pointer assignments, not character moves. The red orphan block is the same original allocation throughout. Uninitialised p is never read; it first appears when declared.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</div>
-</section>
-<section id="string-copy" class="slide level2">
-<h2>Copy characters into owned storage</h2>
-<div class="slide-body">
-<div class="sourceCode" id="cb17"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb17-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> <span class="op">*</span>s <span class="op">=</span> malloc<span class="op">(</span><span class="dv">6</span><span class="op">);</span></span>
-<span id="cb17-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(!</span>s<span class="op">)</span> <span class="cf">return</span> EXIT_FAILURE<span class="op">;</span></span>
-<span id="cb17-3"><a href="" aria-hidden="true" tabindex="-1"></a>strcpy<span class="op">(</span>s<span class="op">,</span> <span class="st">"hello"</span><span class="op">);</span>  <span class="co">// Include &lt;string.h&gt;.</span></span>
-<span id="cb17-4"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"</span><span class="sc">%s\n</span><span class="st">"</span><span class="op">,</span> s<span class="op">);</span></span>
-<span id="cb17-5"><a href="" aria-hidden="true" tabindex="-1"></a>free<span class="op">(</span>s<span class="op">);</span></span></code></pre></div>
-<div class="block example" title="Alternatively, just reference a literal">
-<div class="block-title">
-<p>Alternatively, just reference a literal</p>
-</div>
-<p>Use <code>const char *s = "hello";</code> when no writable copy is needed.</p>
 </div>
 <aside class="notes">
-<p>50–51 min. Repair the existing live string example by copying into the allocation and freeing its original address. strcpy needs enough room, including ‘\0’; it does not allocate storage. Keep this to one minute: it repairs the inherited pointer-assignment example, not a general string-library lesson.</p>
+<p><strong>SLIDES &gt; TERMINAL &gt; SLIDES</strong></p>
+<p>Recall the integer row already allocated. Ask how neighbouring addresses differ. Inspect 10-array.c, predict values and address spacing, then run make run FILE=10-array.c.</p>
+<p><strong>Expect:</strong> 10, 20, 30, 40. Address spacing is sizeof(int); actual addresses vary.</p>
+<p><strong>Reveal:</strong> One Right reveals contiguous elements and a[i] = *(a + i). Say: “Now put several rows in that same continuous block.”</p>
+<p><strong>Context:</strong> Generic allocation: type <em>a = malloc(count </em> sizeof(type)). The 0x1000 addresses and sizeof(int)=4 are assumptions of this drawing, not universal sizes or addresses.</p>
+<p><strong>Recovery:</strong> Four integers and their addresses.</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb51-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 10-array.c live-integers.c</span>
+<span id="cb51-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> run FILE=live-integers.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -799,15 +1378,25 @@ Louis Ledoux
 <section id="matrix-flat" class="slide level2">
 <h2>A 2D array in one block</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb18"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb18-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>m <span class="op">=</span> malloc<span class="op">(</span><span class="dv">4</span> <span class="op">*</span> <span class="dv">3</span> <span class="op">*</span> <span class="kw">sizeof</span> <span class="op">*</span>m<span class="op">);</span></span>
-<span id="cb18-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">/* After checking m: element (i, j) is m[i * 3 + j]. */</span></span></code></pre></div>
+<p>We need <strong>4 rows of 3 integers</strong>. Which index stores row <strong>2</strong>, column <strong>1</strong>?</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb52-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>m <span class="op">=</span> malloc<span class="op">(</span><span class="dv">4</span> <span class="op">*</span> <span class="dv">3</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">));</span></span></code></pre></div>
+<div class="fragment" data-fragment-index="0">
 <div class="diagram">
 <p><img data-src="assets/diagrams/matrix-flat.svg" alt="Twelve contiguous elements, grouped into four rows of three; offset of row i column j is i times three plus j."></p>
 </div>
+<p><code>m[i * 3 + j]</code>: row 2, column 1 is index <strong>7</strong>.</p>
 <p>One allocation, one <strong><code>free(m)</code></strong>.</p>
-<a class="c-example-download" href="examples/06-matrix-flat/main.c" download="06-matrix-flat.c" aria-label="Download C example: 06-matrix-flat">Download C example ↓</a>
+</div>
 <aside class="notes">
-<p>51–54 min. Generalise to rows * columns * sizeof(type). Index = i * columns + j. Count rows/columns and bytes; do not confuse the flat pointer with an int**. The complete example checks malloc.</p>
+<p><strong>SLIDES &gt; TERMINAL &gt; SLIDES</strong></p>
+<p>Say: “Four rows of three integers need twelve integers in one block.” Ask for the index of row 2, column 1 before revealing the formula. Inspect 13-matrix-flat.c, predict that cell after 10*i+j, then run and return to the diagram.</p>
+<p><strong>Expect:</strong> Index 7; value 21 in the printed grid.</p>
+<p><strong>Reveal:</strong> One Right: diagram and indexing. Ask how rows could have separate allocations.</p>
+<p><strong>Context:</strong> This 4-by-3 int grid illustrates storage, not an image-file format. General index: i * columns + j. This flat pointer is not int **. The complete file checks malloc.</p>
+<p><strong>Recovery:</strong> Prepared matrix example; quizzes and section slides need no new run.</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb53-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 13-matrix-flat.c live-integers.c</span>
+<span id="cb53-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> run FILE=live-integers.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -824,16 +1413,26 @@ Louis Ledoux
 <section id="matrix-rows" class="slide level2">
 <h2>An array of row pointers</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb19"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb19-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>m<span class="op">[</span><span class="dv">4</span><span class="op">];</span>  <span class="co">// Automatic table of four pointers.</span></span>
-<span id="cb19-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">4</span><span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
-<span id="cb19-3"><a href="" aria-hidden="true" tabindex="-1"></a>    m<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> malloc<span class="op">(</span><span class="dv">3</span> <span class="op">*</span> <span class="kw">sizeof</span> <span class="op">*</span>m<span class="op">[</span>i<span class="op">]);</span></span></code></pre></div>
+<p>Which objects need <code>free</code>: the pointer table, the rows, or both?</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb54-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>m<span class="op">[</span><span class="dv">4</span><span class="op">];</span>  <span class="co">// Automatic table of four pointers.</span></span>
+<span id="cb54-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">4</span><span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
+<span id="cb54-3"><a href="" aria-hidden="true" tabindex="-1"></a>    m<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> malloc<span class="op">(</span><span class="dv">3</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">));</span></span></code></pre></div>
+<div class="fragment" data-fragment-index="0">
 <div class="diagram">
 <p><img data-src="assets/diagrams/matrix-rows.svg" alt="An automatic table contains four pointers, each to a separate allocated row of three integers."></p>
 </div>
 <p>Check each row. Use <code>m[i][j]</code>; free each row, <strong>not <code>m</code></strong>.</p>
-<a class="c-example-download" href="examples/07-matrix-rows/main.c" download="07-matrix-rows.c" aria-label="Download C example: 07-matrix-rows">Download C example ↓</a>
+</div>
 <aside class="notes">
-<p>54–57 min. Generic type *m[ROWS], with each row allocated separately. Rows need not be adjacent; the pointer table is automatic. The full live file handles partial allocation failure by freeing the earlier rows. Ask which part disappears automatically and which part needs free.</p>
+<p><strong>SLIDES &gt; TERMINAL &gt; SLIDES</strong></p>
+<p>Inspect 14-matrix-rows.c. Predict the grid and identify which objects need free before running make run FILE=14-matrix-rows.c.</p>
+<p><strong>Expect:</strong> The same grid, four allocated rows, an automatic pointer table.</p>
+<p><strong>Reveal:</strong> One Right: diagram and releases. Ask what changes if we allocate the table too.</p>
+<p><strong>Context:</strong> The row-pointer table is automatic; rows are separate allocations and need not be adjacent. The complete program frees earlier rows if a later allocation fails.</p>
+<p><strong>Recovery:</strong> Prepared matrix example; quizzes and section slides need no new run.</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb55-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 14-matrix-rows.c live-integers.c</span>
+<span id="cb55-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> run FILE=live-integers.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -850,16 +1449,26 @@ Louis Ledoux
 <section id="matrix-dynamic" class="slide level2">
 <h2>Allocate the pointer table too</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb20"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb20-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">**</span>m <span class="op">=</span> malloc<span class="op">(</span><span class="dv">4</span> <span class="op">*</span> <span class="kw">sizeof</span> <span class="op">*</span>m<span class="op">);</span></span>
-<span id="cb20-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">4</span><span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
-<span id="cb20-3"><a href="" aria-hidden="true" tabindex="-1"></a>    m<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> malloc<span class="op">(</span><span class="dv">3</span> <span class="op">*</span> <span class="kw">sizeof</span> <span class="op">*</span>m<span class="op">[</span>i<span class="op">]);</span></span></code></pre></div>
+<p>The pointer table is now allocated too. How many blocks must we release?</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb56-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">**</span>m <span class="op">=</span> malloc<span class="op">(</span><span class="dv">4</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span> <span class="op">*));</span></span>
+<span id="cb56-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">4</span><span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
+<span id="cb56-3"><a href="" aria-hidden="true" tabindex="-1"></a>    m<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> malloc<span class="op">(</span><span class="dv">3</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">));</span></span></code></pre></div>
+<div class="fragment" data-fragment-index="0">
 <div class="diagram">
 <p><img data-src="assets/diagrams/matrix-dynamic.svg" alt="An automatic pointer refers to an allocated pointer table, which refers to four separately allocated rows."></p>
 </div>
 <p>Check <code>m</code> first, then each row. Free <strong>rows first</strong>, then <code>free(m)</code>.</p>
-<a class="c-example-download" href="examples/08-matrix-dynamic/main.c" download="08-matrix-dynamic.c" aria-label="Download C example: 08-matrix-dynamic">Download C example ↓</a>
+</div>
 <aside class="notes">
-<p>57–60 min. Five allocations and five releases. sizeof <em>m is a pointer size; sizeof </em>m[i] is an integer size. The displayed loop assumes the table allocation has already been checked; the runnable file includes all checks and partial-failure cleanup. Ask students to locate each allocation in the diagram.</p>
+<p><strong>SLIDES &gt; TERMINAL &gt; SLIDES</strong></p>
+<p>Inspect 15-matrix-dynamic.c. Count allocations and propose release order. Run make run FILE=15-matrix-dynamic.c.</p>
+<p><strong>Expect:</strong> Same grid; five allocations. Free rows before the table.</p>
+<p><strong>Reveal:</strong> One Right: diagram and cleanup. These are storage comparisons, not new full typing exercises.</p>
+<p><strong>Context:</strong> The displayed loop assumes the table was checked first; the runnable file checks every allocation and cleans up partial rows. sizeof(int *) measures a pointer, sizeof(int) an integer.</p>
+<p><strong>Recovery:</strong> Prepared matrix example; quizzes and section slides need no new run.</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb57-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 15-matrix-dynamic.c live-integers.c</span>
+<span id="cb57-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> run FILE=live-integers.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -881,7 +1490,13 @@ Louis Ledoux
 </div>
 <p><a href="assets/cm7-quiz.pdf">Open the allocation quiz</a>.</p>
 <aside class="notes">
-<p>60–63 min. Preserve source slide 300 checkpoint. Matrix examples are explanatory comparisons, not three additional full coding sessions.</p>
+<p><strong>SLIDES / QUIZ</strong></p>
+<p>Take questions 6-8 in the linked quiz. Ask students to justify indexing and which allocations require free.</p>
+<p><strong>Expect:</strong> These were prepared-code comparisons, not three full typing exercises. Move on after clarifying the representation differences.</p>
+<p><strong>Context:</strong> Preserve source slide 300 questions. The matrices are prepared comparisons, not three full typing exercises.</p>
+<p><strong>Recovery:</strong> Prepared matrix example; quizzes and section slides need no new run.</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb58-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 15-matrix-dynamic.c live-integers.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -894,19 +1509,50 @@ Louis Ledoux
           display:block!important;
       }</style></aside>
 </div>
+</section></section>
+<section>
+<section id="section-types" class="title-slide slide level1 center">
+<h1>4. User-defined types</h1>
+<p>An array groups values of one type. How can one object hold a street name <strong>and</strong> a house number?</p>
+<aside class="notes">
+<p><strong>SLIDES</strong></p>
+<p>Say: “Arrays group values of one type. An address combines text and a number. How do we keep them together?” No run.</p>
+<p><strong>Recovery:</strong> Prepared matrix example; quizzes and section slides need no new run.</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb59-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 15-matrix-dynamic.c live-integers.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="user-types" class="slide level2">
 <h2>User-defined types</h2>
 <div class="slide-body">
-<div class="block definition" title="Three tools">
-<div class="block-title">
-<p>Three tools</p>
+<div class="lesson-flow">
+<p>One address contains a street name and a house number.</p>
+<div class="fragment">
+<ul>
+<li><code>struct</code>: group the street and number.</li>
+<li><code>enum</code>: name integer constants.</li>
+<li><code>typedef</code>: give a type another name.</li>
+</ul>
 </div>
-<p><code>enum</code> names integer constants. <code>struct</code> groups members. <code>typedef</code> introduces a name for a type.</p>
 </div>
-<p>Use them to describe more complex data, including list nodes.</p>
 <aside class="notes">
-<p>63–64 min. The authoritative allocation CM also includes these types. Keep the complete section; do not drop it to make room for the demonstration sequence.</p>
+<p><strong>SLIDES &gt; VIM</strong></p>
+<p>Introduce the three tools, then open live-types.c, prepared from types-start.c. It has only headers and an empty main. Do not run 16-types.c: that is the completed reference.</p>
+<p><strong>Reveal:</strong> One Right: the three tools. Begin with named integer constants.</p>
+<p><strong>Context:</strong> User-defined types are required by the original dynamic-memory CM. Build a small working program instead of running the completed reference before explaining its parts.</p>
+<p><strong>Recovery:</strong> Empty main, ready to build the type example.</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb60-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> types-start.c live-types.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -923,9 +1569,11 @@ Louis Ledoux
 <section id="enum" class="slide level2">
 <h2>Enumerations</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb21"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb21-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> day <span class="op">{</span> mon<span class="op">,</span> tue<span class="op">,</span> wed<span class="op">,</span> thu<span class="op">,</span> fri<span class="op">,</span> sat<span class="op">,</span> sun <span class="op">};</span></span>
-<span id="cb21-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> day today<span class="op">;</span></span>
-<span id="cb21-3"><a href="" aria-hidden="true" tabindex="-1"></a>today <span class="op">=</span> wed<span class="op">;</span></span></code></pre></div>
+<p>What integer value will <code>today</code> hold?</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb61-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> day <span class="op">{</span> mon<span class="op">,</span> tue<span class="op">,</span> wed<span class="op">,</span> thu<span class="op">,</span> fri<span class="op">,</span> sat<span class="op">,</span> sun <span class="op">};</span></span>
+<span id="cb61-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> day today<span class="op">;</span></span>
+<span id="cb61-3"><a href="" aria-hidden="true" tabindex="-1"></a>today <span class="op">=</span> wed<span class="op">;</span></span></code></pre></div>
+<div class="fragment">
 <p>By default, values start at <strong>0</strong> and increase by <strong>1</strong>.</p>
 <div class="block example" title="Named integer constants">
 <div class="block-title">
@@ -933,8 +1581,22 @@ Louis Ledoux
 </div>
 <p><code>mon</code> is 0; <code>wed</code> is 2; <code>sun</code> is 6.</p>
 </div>
+</div>
 <aside class="notes">
-<p>64–66 min. Generic syntax: enum tag { enumerators }; then enum tag variable. Preserve separate type definition, variable definition and assignment from source slide 302. Names can also have explicitly assigned integer values, but no additional exercise is needed.</p>
+<p><strong>VIM &gt; TERMINAL &gt; SLIDES</strong></p>
+<p>Add enum day before main. Add today, its assignment and printf inside main. Ask for today, then save and run make run FILE=live-types.c.</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb62-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> day <span class="op">{</span> mon<span class="op">,</span> tue<span class="op">,</span> wed<span class="op">,</span> thu<span class="op">,</span> fri<span class="op">,</span> sat<span class="op">,</span> sun <span class="op">};</span></span>
+<span id="cb62-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">// Inside main, before return:</span></span>
+<span id="cb62-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> day today<span class="op">;</span></span>
+<span id="cb62-4"><a href="" aria-hidden="true" tabindex="-1"></a>today <span class="op">=</span> wed<span class="op">;</span></span>
+<span id="cb62-5"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"today=</span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span> today<span class="op">);</span></span></code></pre></div>
+<p><strong>Expect:</strong> today=2. Only the enum example runs; no structure output yet.</p>
+<p><strong>Reveal:</strong> One Right explains zero-based enum values. Next define the address type.</p>
+<p><strong>Context:</strong> Preserve type definition, variable definition and assignment separately. Enumerators may also have explicit integer values.</p>
+<p><strong>Recovery:</strong> Enum only: today=2.</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb63-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> recovery/types-enum.c live-types.c</span>
+<span id="cb63-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> run FILE=live-types.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -951,18 +1613,26 @@ Louis Ledoux
 <section id="struct-type" class="slide level2">
 <h2>A structure groups several members</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb22"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb22-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address <span class="op">{</span></span>
-<span id="cb22-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">char</span> street<span class="op">[</span><span class="dv">100</span><span class="op">];</span></span>
-<span id="cb22-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> number<span class="op">;</span></span>
-<span id="cb22-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
-<div class="block definition" title="A type definition">
+<p>Does this create an address object?</p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb64-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address <span class="op">{</span></span>
+<span id="cb64-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">char</span> street<span class="op">[</span><span class="dv">100</span><span class="op">];</span></span>
+<span id="cb64-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> number<span class="op">;</span></span>
+<span id="cb64-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<div class="fragment block definition" title="A type definition">
 <div class="block-title">
 <p>A type definition</p>
 </div>
 <p>Members may be integers, floating-point values, arrays, pointers or other structures. No address object exists yet.</p>
 </div>
 <aside class="notes">
-<p>66–68 min. Retain the source’s generic structure syntax and member-type list. Defining a type does not allocate an instance. A member declaration inside a C struct cannot have an object initializer; initialise a variable of that type instead.</p>
+<p><strong>SLIDES &gt; VIM</strong></p>
+<p>Ask whether this creates an address object. Add the shown struct definition before main in live-types.c. Do not run yet.</p>
+<p><strong>Expect:</strong> It defines a type, not an instance.</p>
+<p><strong>Reveal:</strong> One Right explains. Next create objects of that type.</p>
+<p><strong>Context:</strong> A type definition creates no instance. Members may be integers, floating-point types, arrays, pointers or structures. A C member declaration cannot contain an object initialiser.</p>
+<p><strong>Recovery:</strong> Enum and address type defined; no home object yet.</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb65-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> recovery/types-defined.c live-types.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -979,8 +1649,10 @@ Louis Ledoux
 <section id="struct-objects" class="slide level2">
 <h2>Define a type, then create objects</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb23"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb23-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address home<span class="op">;</span></span>
-<span id="cb23-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address office<span class="op">;</span></span></code></pre></div>
+<p>How many objects exist? Are their members ready to read?</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb66-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address home<span class="op">;</span></span>
+<span id="cb66-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address office<span class="op">;</span></span></code></pre></div>
+<div class="fragment" data-fragment-index="0">
 <p>These definitions allocate <strong>two distinct objects</strong> of the same type.</p>
 <div class="block alert" title="Local objects need initialisation">
 <div class="block-title">
@@ -988,8 +1660,16 @@ Louis Ledoux
 </div>
 <p>Ordinary local members have indeterminate values until initialised or assigned. The type definition alone sets no values.</p>
 </div>
+</div>
 <aside class="notes">
-<p>68–69 min. Source slide 304 distinguishes type definition from variable definition and initialisation. Static objects would instead receive zero initialisation. Keep the automatic-local context explicit.</p>
+<p><strong>SLIDES</strong></p>
+<p>Read home and office declarations; ask how many objects exist and whether local fields are initialised. This is a comparison, not code to add.</p>
+<p><strong>Expect:</strong> Two objects; ordinary uninitialised local members are not ready to read.</p>
+<p><strong>Reveal:</strong> One Right explains. Next add one initialised home to our program.</p>
+<p><strong>Context:</strong> Ordinary local members need initialisation or assignment; static objects instead receive zero initialisation.</p>
+<p><strong>Recovery:</strong> Enum and address type defined; no home object yet.</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb67-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> recovery/types-defined.c live-types.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1006,14 +1686,147 @@ Louis Ledoux
 <section id="struct-init" class="slide level2">
 <h2>Initialising a structure</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb24"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb24-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address home <span class="op">=</span> <span class="op">{</span> <span class="st">"Paul Bert"</span><span class="op">,</span> <span class="dv">12</span> <span class="op">};</span></span></code></pre></div>
+<p>Which value goes into each member?</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb68-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address home <span class="op">=</span> <span class="op">{</span> <span class="st">"Paul Bert"</span><span class="op">,</span> <span class="dv">12</span> <span class="op">};</span></span></code></pre></div>
+<div class="fragment" data-fragment-index="0">
 <p>Or combine the type and object definitions:</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb25-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address <span class="op">{</span></span>
-<span id="cb25-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">char</span> street<span class="op">[</span><span class="dv">100</span><span class="op">];</span></span>
-<span id="cb25-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> number<span class="op">;</span></span>
-<span id="cb25-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> home <span class="op">=</span> <span class="op">{</span> <span class="st">"Paul Bert"</span><span class="op">,</span> <span class="dv">12</span> <span class="op">};</span></span></code></pre></div>
+<div class="sourceCode" id="cb69"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb69-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address <span class="op">{</span></span>
+<span id="cb69-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">char</span> street<span class="op">[</span><span class="dv">100</span><span class="op">];</span></span>
+<span id="cb69-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> number<span class="op">;</span></span>
+<span id="cb69-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> home <span class="op">=</span> <span class="op">{</span> <span class="st">"Paul Bert"</span><span class="op">,</span> <span class="dv">12</span> <span class="op">};</span></span></code></pre></div>
+</div>
 <aside class="notes">
-<p>69–71 min. These are alternative forms, not declarations to place together in one scope. Initialisers follow member order; omitted members are zero-initialised. Allocation size includes any implementation-required padding, introduced next.</p>
+<p><strong>VIM &gt; TERMINAL &gt; SLIDES</strong></p>
+<p>Add home and its printf inside main, before return. Predict the street and number. Save; run make run FILE=live-types.c.</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb70-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address home <span class="op">=</span> <span class="op">{</span> <span class="st">"Paul Bert"</span><span class="op">,</span> <span class="dv">12</span> <span class="op">};</span></span>
+<span id="cb70-2"><a href="" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"</span><span class="sc">%d</span><span class="st"> </span><span class="sc">%s\n</span><span class="st">"</span><span class="op">,</span> home<span class="op">.</span>number<span class="op">,</span> home<span class="op">.</span>street<span class="op">);</span></span></code></pre></div>
+<p><strong>Expect:</strong> today=2, then 12 Paul Bert.</p>
+<p><strong>Reveal:</strong> One Right shows the alternative declaration. Do not add both. Next change the existing members.</p>
+<p><strong>Context:</strong> The displayed declarations are alternative forms. Initialisers follow member order; omitted members are zero-initialised. Do not put both declarations in the same scope.</p>
+<p><strong>Recovery:</strong> Initialised home: 12 Paul Bert.</p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb71-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> recovery/types-initialised.c live-types.c</span>
+<span id="cb71-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> run FILE=live-types.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="member-dot" class="slide level2">
+<h2>Access members through an object</h2>
+<div class="slide-body">
+<p>What will printing <code>home</code> show after these assignments?</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb72-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address home <span class="op">=</span> <span class="op">{</span> <span class="st">"Paul Bert"</span><span class="op">,</span> <span class="dv">12</span> <span class="op">};</span></span>
+<span id="cb72-2"><a href="" aria-hidden="true" tabindex="-1"></a>strcpy<span class="op">(</span>home<span class="op">.</span>street<span class="op">,</span> <span class="st">"Rue de Paris"</span><span class="op">);</span></span>
+<span id="cb72-3"><a href="" aria-hidden="true" tabindex="-1"></a>home<span class="op">.</span>number <span class="op">=</span> <span class="dv">14</span><span class="op">;</span></span></code></pre></div>
+<div class="fragment" data-fragment-index="0">
+<div class="block definition" title="The dot operator">
+<div class="block-title">
+<p>The dot operator</p>
+</div>
+<p>Use <strong><code>.</code></strong> with a structure object.</p>
+</div>
+<p><code>strcpy</code> needs <code>&lt;string.h&gt;</code> and enough space for the terminator.</p>
+</div>
+<aside class="notes">
+<p><strong>VIM &gt; TERMINAL &gt; SLIDES</strong></p>
+<p>Insert the two updates before the home printf. Predict its output, then save and run make run FILE=live-types.c.</p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb73-1"><a href="" aria-hidden="true" tabindex="-1"></a>strcpy<span class="op">(</span>home<span class="op">.</span>street<span class="op">,</span> <span class="st">"Rue de Paris"</span><span class="op">);</span></span>
+<span id="cb73-2"><a href="" aria-hidden="true" tabindex="-1"></a>home<span class="op">.</span>number <span class="op">=</span> <span class="dv">14</span><span class="op">;</span></span></code></pre></div>
+<p><strong>Expect:</strong> 14 Rue de Paris. No arrow update exists yet.</p>
+<p><strong>Reveal:</strong> One Right explains dot and string copying. Ask how to change the same object through a pointer.</p>
+<p><strong>Context:</strong> Preserve both string and integer updates. The array member cannot be assigned a string literal after definition; copy its characters with enough destination capacity.</p>
+<p><strong>Recovery:</strong> Dot updates: 14 Rue de Paris.</p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb74-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> recovery/types-dot.c live-types.c</span>
+<span id="cb74-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> run FILE=live-types.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="member-arrow" class="slide level2">
+<h2>Access members through a pointer</h2>
+<div class="slide-body">
+<p>Does changing through <code>p</code> also change <code>home</code>?</p>
+<div class="sourceCode" id="cb75"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb75-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address <span class="op">*</span>p <span class="op">=</span> <span class="op">&amp;</span>home<span class="op">;</span></span>
+<span id="cb75-2"><a href="" aria-hidden="true" tabindex="-1"></a>strcpy<span class="op">(</span>p<span class="op">-&gt;</span>street<span class="op">,</span> <span class="st">"Rue de Paris"</span><span class="op">);</span></span>
+<span id="cb75-3"><a href="" aria-hidden="true" tabindex="-1"></a>p<span class="op">-&gt;</span>number <span class="op">=</span> <span class="dv">16</span><span class="op">;</span></span></code></pre></div>
+<div class="fragment" data-fragment-index="0">
+<div class="block definition" title="The arrow operator">
+<div class="block-title">
+<p>The arrow operator</p>
+</div>
+<p>Use <strong><code>-&gt;</code></strong> with a pointer. <code>p-&gt;number</code> is the same member as <code>(*p).number</code>.</p>
+</div>
+<p>Both forms above modify <strong><code>home</code></strong>.</p>
+</div>
+<aside class="notes">
+<p><strong>VIM &gt; TERMINAL &gt; SLIDES</strong></p>
+<p>Insert the pointer and updates after the dot assignments, before the same home printf. Predict home.number; save and run make run FILE=live-types.c.</p>
+<div class="sourceCode" id="cb76"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb76-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address <span class="op">*</span>p <span class="op">=</span> <span class="op">&amp;</span>home<span class="op">;</span></span>
+<span id="cb76-2"><a href="" aria-hidden="true" tabindex="-1"></a>strcpy<span class="op">(</span>p<span class="op">-&gt;</span>street<span class="op">,</span> <span class="st">"Rue de Paris"</span><span class="op">);</span></span>
+<span id="cb76-3"><a href="" aria-hidden="true" tabindex="-1"></a>p<span class="op">-&gt;</span>number <span class="op">=</span> <span class="dv">16</span><span class="op">;</span></span></code></pre></div>
+<p><strong>Expect:</strong> 16 Rue de Paris. The pointer reaches the existing home.</p>
+<p><strong>Reveal:</strong> One Right explains -&gt; and (*p). No second run is needed. Next measure the storage occupied by structures.</p>
+<p><strong>Context:</strong> Taking &amp;home neither copies nor allocates a structure. p-&gt;number and (*p).number name the same member. Preserve the explicit strcpy through the pointer.</p>
+<p><strong>Recovery:</strong> Arrow updates: 16 Rue de Paris.</p>
+<div class="sourceCode" id="cb77"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb77-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> recovery/types-arrow.c live-types.c</span>
+<span id="cb77-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> run FILE=live-types.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="padding-code" class="slide level2">
+<h2>Same members, different order</h2>
+<div class="slide-body">
+<p>Same member types. Must these structures have the same size?</p>
+<div class="sourceCode" id="cb78"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb78-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> grouped <span class="op">{</span></span>
+<span id="cb78-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> id1<span class="op">,</span> id2<span class="op">;</span></span>
+<span id="cb78-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">char</span> c1<span class="op">,</span> c2<span class="op">;</span></span>
+<span id="cb78-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> ratio<span class="op">;</span></span>
+<span id="cb78-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb78-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> interleaved <span class="op">{</span></span>
+<span id="cb78-7"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> id1<span class="op">;</span> <span class="dt">char</span> c1<span class="op">;</span></span>
+<span id="cb78-8"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> id2<span class="op">;</span> <span class="dt">char</span> c2<span class="op">;</span></span>
+<span id="cb78-9"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> ratio<span class="op">;</span></span>
+<span id="cb78-10"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<aside class="notes">
+<p><strong>SLIDES &gt; TERMINAL</strong></p>
+<p>Compare both definitions; ask whether their sizes must match. Inspect 17-padding.c, then run make run FILE=17-padding.c while this slide remains the prediction slide.</p>
+<p><strong>Expect:</strong> On this machine: grouped 16, ratio offset 12; mixed 20, ratio offset 16.</p>
+<p><strong>Reveal:</strong> Do not advance to the explanation before running. Next explain the observed difference.</p>
+<p><strong>Context:</strong> Both member orders from source slide 307 are retained. Equal member types need not give equal structure sizes.</p>
+<p><strong>Recovery:</strong> Measure the two layouts. Explanation slides need no second run.</p>
+<div class="sourceCode" id="cb79"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb79-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 17-padding.c live-types.c</span>
+<span id="cb79-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> run FILE=live-types.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1042,35 +1855,14 @@ Louis Ledoux
 <li>Layout and alignment depend on the implementation.</li>
 </ul>
 <aside class="notes">
-<p>71–73 min. Preserve the source’s hardware motivation: alignment can simplify or speed memory access and may be required by the architecture. Correct its blanket claim that every processor always reads one word. No padding appears before the first member. Member alignment is type/platform dependent, not a universal single word size.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</div>
-</section>
-<section id="padding-code" class="slide level2">
-<h2>Same members, different order</h2>
-<div class="slide-body">
-<div class="sourceCode" id="cb26"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb26-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> grouped <span class="op">{</span></span>
-<span id="cb26-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> id1<span class="op">,</span> id2<span class="op">;</span></span>
-<span id="cb26-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">char</span> c1<span class="op">,</span> c2<span class="op">;</span></span>
-<span id="cb26-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> ratio<span class="op">;</span></span>
-<span id="cb26-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
-<span id="cb26-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> interleaved <span class="op">{</span></span>
-<span id="cb26-7"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> id1<span class="op">;</span> <span class="dt">char</span> c1<span class="op">;</span></span>
-<span id="cb26-8"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> id2<span class="op">;</span> <span class="dt">char</span> c2<span class="op">;</span></span>
-<span id="cb26-9"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> ratio<span class="op">;</span></span>
-<span id="cb26-10"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
-<aside class="notes">
-<p>73–74 min. Restore both actual structure definitions from source slide 307, ahead of the byte diagram. Ask whether equal member types imply equal total size. The executable uses these same members/order, with descriptive type names.</p>
+<p><strong>SLIDES</strong></p>
+<p>Use the measurements just obtained to explain padding and alignment. Do not rerun.</p>
+<p><strong>Expect:</strong> sizeof includes padding; layout depends on the implementation.</p>
+<p><strong>Reveal:</strong> Next locate the unused bytes in the diagram.</p>
+<p><strong>Context:</strong> Alignment may simplify or speed access or be required by hardware; do not claim every processor always reads one word. Members retain declaration order; sizeof includes interior and trailing padding. There is no padding before the first member.</p>
+<p><strong>Recovery:</strong> Measure the two layouts. Explanation slides need no second run.</p>
+<div class="sourceCode" id="cb80"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb80-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 17-padding.c live-types.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1091,65 +1883,15 @@ Louis Ledoux
 <p><img data-src="assets/diagrams/padding.svg" alt="Assuming four-byte int and float alignment, grouped members use 16 bytes; interleaved characters require more padding and 20 bytes."></p>
 </div>
 <p><strong>16 vs 20 bytes</strong> in this layout. Measure with <code>sizeof</code> and <code>offsetof</code>.</p>
-<a class="c-example-download" href="examples/09-struct-padding/main.c" download="09-struct-padding.c" aria-label="Download C example: 09-struct-padding">Download C example ↓</a>
 <aside class="notes">
-<p>74–76 min. Run and connect output to the exact two definitions. Four-byte int/float and their alignment are assumptions of the illustration, not C guarantees. Offsets are measured in bytes from the object start. The original 0x1000-based addresses are equivalent to these more portable relative offsets.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</div>
-</section>
-<section id="member-dot" class="slide level2">
-<h2>Access members through an object</h2>
-<div class="slide-body">
-<div class="sourceCode" id="cb27"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb27-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address home <span class="op">=</span> <span class="op">{</span> <span class="st">"Paul Bert"</span><span class="op">,</span> <span class="dv">12</span> <span class="op">};</span></span>
-<span id="cb27-2"><a href="" aria-hidden="true" tabindex="-1"></a>strcpy<span class="op">(</span>home<span class="op">.</span>street<span class="op">,</span> <span class="st">"Rue de Paris"</span><span class="op">);</span></span>
-<span id="cb27-3"><a href="" aria-hidden="true" tabindex="-1"></a>home<span class="op">.</span>number <span class="op">=</span> <span class="dv">14</span><span class="op">;</span></span></code></pre></div>
-<div class="block definition" title="The dot operator">
-<div class="block-title">
-<p>The dot operator</p>
-</div>
-<p>Use <strong><code>.</code></strong> with a structure object.</p>
-</div>
-<p><code>strcpy</code> needs <code>&lt;string.h&gt;</code> and enough space for the terminator.</p>
-<aside class="notes">
-<p>76–78 min. Preserve both the string-member update and integer-member update. An array member cannot be assigned a string literal after definition; copying its characters is a different operation.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</div>
-</section>
-<section id="member-arrow" class="slide level2">
-<h2>Access members through a pointer</h2>
-<div class="slide-body">
-<div class="sourceCode" id="cb28"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb28-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> address <span class="op">*</span>p <span class="op">=</span> <span class="op">&amp;</span>home<span class="op">;</span></span>
-<span id="cb28-2"><a href="" aria-hidden="true" tabindex="-1"></a>strcpy<span class="op">(</span>p<span class="op">-&gt;</span>street<span class="op">,</span> <span class="st">"Rue de Paris"</span><span class="op">);</span></span>
-<span id="cb28-3"><a href="" aria-hidden="true" tabindex="-1"></a>p<span class="op">-&gt;</span>number <span class="op">=</span> <span class="dv">16</span><span class="op">;</span></span></code></pre></div>
-<div class="block definition" title="The arrow operator">
-<div class="block-title">
-<p>The arrow operator</p>
-</div>
-<p>Use <strong><code>-&gt;</code></strong> with a pointer. <code>p-&gt;number</code> is the same member as <code>(*p).number</code>.</p>
-</div>
-<p>Both forms above modify <strong><code>home</code></strong>.</p>
-<aside class="notes">
-<p>78–79 min. Restores the source’s explicit strcpy via -&gt;, not just an integer assignment. No new structure is copied or allocated by taking &amp;home.</p>
+<p><strong>SLIDES</strong></p>
+<p>Trace the measured offsets through both layouts. Count the gaps and locate the final member. Do not rerun.</p>
+<p><strong>Expect:</strong> 16/20 bytes under the diagram’s size/alignment assumptions.</p>
+<p><strong>Reveal:</strong> We can now define, use and measure a structure. Next give types shorter names.</p>
+<p><strong>Context:</strong> The illustration assumes four-byte int/float sizes and alignments. Offsets are measured from the object start; 16/20 bytes are not universal C guarantees.</p>
+<p><strong>Recovery:</strong> Measure the two layouts. Explanation slides need no second run.</p>
+<div class="sourceCode" id="cb81"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb81-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 17-padding.c live-types.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1166,17 +1908,23 @@ Louis Ledoux
 <section id="typedef" class="slide level2">
 <h2><code>typedef</code>: a name for a type</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb29"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb29-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="dt">int</span> LENGTH<span class="op">;</span></span>
-<span id="cb29-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">enum</span> <span class="op">{</span> FALSE<span class="op">,</span> TRUE <span class="op">}</span> BOOLEAN<span class="op">;</span></span>
-<span id="cb29-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> date DATE<span class="op">;</span></span></code></pre></div>
-<div class="block definition" title="Alias">
+<p>Does naming a type create an object?</p>
+<div class="sourceCode" id="cb82"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb82-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="dt">int</span> LENGTH<span class="op">;</span></span>
+<span id="cb82-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">enum</span> <span class="op">{</span> FALSE<span class="op">,</span> TRUE <span class="op">}</span> BOOLEAN<span class="op">;</span></span>
+<span id="cb82-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> date DATE<span class="op">;</span></span></code></pre></div>
+<div class="fragment block definition" title="Alias">
 <div class="block-title">
 <p>Alias</p>
 </div>
 <p>A <code>typedef</code> introduces a type name, not an object or a distinct underlying type. Then write <code>LENGTH width;</code>.</p>
 </div>
 <aside class="notes">
-<p>79–81 min. Generic syntax in the original is typedef type IDENTIFIER; correct its LENGHT typo. BOOLEAN uses an anonymous enum: no enum tag is needed. DATE avoids repeatedly writing struct date (its definition appears next). This is C17; FALSE/TRUE are the original teaching example, not a replacement for the standard bool interface.</p>
+<p><strong>SLIDES</strong></p>
+<p>Ask whether the typedef declarations create objects. Reveal the distinction, then ask what LENGTH width; creates.</p>
+<p><strong>Expect:</strong> The declarations name types; LENGTH width; creates an object.</p>
+<p><strong>Reveal:</strong> One Right explains. Next use a typedef for a structure containing a date.</p>
+<p><strong>Context:</strong> Generic syntax is typedef type IDENTIFIER; LENGHT from the original is corrected to LENGTH. BOOLEAN is an anonymous enum example, not a replacement for standard bool. DATE abbreviates struct date, defined next.</p>
+<p><strong>Recovery:</strong> No C edit or run on this slide.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1193,17 +1941,24 @@ Louis Ledoux
 <section id="nested-types" class="slide level2">
 <h2>Combine a date and a day of the week</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb30"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb30-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> date <span class="op">{</span> <span class="dt">short</span> day<span class="op">,</span> month<span class="op">;</span> <span class="dt">int</span> year<span class="op">;</span> <span class="op">};</span></span>
-<span id="cb30-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">enum</span> <span class="op">{</span> mon<span class="op">,</span> tue<span class="op">,</span> wed<span class="op">,</span> thu<span class="op">,</span> fri<span class="op">,</span> sat<span class="op">,</span> sun <span class="op">}</span> DAY<span class="op">;</span></span>
-<span id="cb30-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> <span class="op">{</span> DAY day<span class="op">;</span> <span class="kw">struct</span> date date<span class="op">;</span> <span class="op">}</span> A_DATE<span class="op">;</span></span></code></pre></div>
-<div class="block example" title="A nested structure">
+<div class="sourceCode" id="cb83"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb83-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> date <span class="op">{</span> <span class="dt">short</span> day<span class="op">,</span> month<span class="op">;</span> <span class="dt">int</span> year<span class="op">;</span> <span class="op">};</span></span>
+<span id="cb83-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">enum</span> <span class="op">{</span> mon<span class="op">,</span> tue<span class="op">,</span> wed<span class="op">,</span> thu<span class="op">,</span> fri<span class="op">,</span> sat<span class="op">,</span> sun <span class="op">}</span> DAY<span class="op">;</span></span>
+<span id="cb83-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> <span class="op">{</span> DAY day<span class="op">;</span> <span class="kw">struct</span> date date<span class="op">;</span> <span class="op">}</span> A_DATE<span class="op">;</span></span></code></pre></div>
+<div class="fragment block example" title="A nested structure">
 <div class="block-title">
 <p>A nested structure</p>
 </div>
 <p><code>A_DATE</code> contains a <code>DAY</code> and a complete <code>struct date</code>.</p>
 </div>
 <aside class="notes">
-<p>81–83 min. Transcribe both source images: short day/month, int year; enum of seven weekdays; anonymous structure typedef combining the enum and date. English names replace JOUR/UNE_DATE, without changing layout or nesting.</p>
+<p><strong>SLIDES</strong></p>
+<p>Read the date, weekday enum and A_DATE definition. Ask which members A_DATE contains. No run and no final-year prediction yet.</p>
+<p><strong>Expect:</strong> A weekday value and a complete date object.</p>
+<p><strong>Reveal:</strong> One Right explains nesting. Next inspect the updates to an instance.</p>
+<p><strong>Context:</strong> Retain short day/month, int year, the weekday enum and the nested structure typedef from both source images. English names preserve their types and layout.</p>
+<p><strong>Recovery:</strong> Nested type definitions only; do not run the completed example yet.</p>
+<div class="sourceCode" id="cb84"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb84-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> recovery/nested-types.c live-types.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1220,16 +1975,26 @@ Louis Ledoux
 <section id="nested-access" class="slide level2">
 <h2>Access nested members</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb31"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb31-1"><a href="" aria-hidden="true" tabindex="-1"></a>A_DATE today <span class="op">=</span> <span class="op">{</span> wed<span class="op">,</span> <span class="op">{</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">9</span><span class="op">,</span> <span class="dv">2014</span> <span class="op">}</span> <span class="op">};</span></span>
-<span id="cb31-2"><a href="" aria-hidden="true" tabindex="-1"></a>today<span class="op">.</span>day <span class="op">=</span> wed<span class="op">;</span></span>
-<span id="cb31-3"><a href="" aria-hidden="true" tabindex="-1"></a>today<span class="op">.</span>date<span class="op">.</span>year <span class="op">=</span> <span class="dv">2014</span><span class="op">;</span></span>
-<span id="cb31-4"><a href="" aria-hidden="true" tabindex="-1"></a>A_DATE <span class="op">*</span>p <span class="op">=</span> <span class="op">&amp;</span>today<span class="op">;</span></span>
-<span id="cb31-5"><a href="" aria-hidden="true" tabindex="-1"></a>p<span class="op">-&gt;</span>day <span class="op">=</span> today<span class="op">.</span>day<span class="op">;</span></span>
-<span id="cb31-6"><a href="" aria-hidden="true" tabindex="-1"></a>p<span class="op">-&gt;</span>date<span class="op">.</span>year <span class="op">=</span> <span class="dv">2026</span><span class="op">;</span></span></code></pre></div>
+<p>What year will <code>today.date.year</code> contain after the update through <code>p</code>?</p>
+<div class="sourceCode" id="cb85"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb85-1"><a href="" aria-hidden="true" tabindex="-1"></a>A_DATE today <span class="op">=</span> <span class="op">{</span> wed<span class="op">,</span> <span class="op">{</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">9</span><span class="op">,</span> <span class="dv">2014</span> <span class="op">}</span> <span class="op">};</span></span>
+<span id="cb85-2"><a href="" aria-hidden="true" tabindex="-1"></a>today<span class="op">.</span>day <span class="op">=</span> wed<span class="op">;</span></span>
+<span id="cb85-3"><a href="" aria-hidden="true" tabindex="-1"></a>today<span class="op">.</span>date<span class="op">.</span>year <span class="op">=</span> <span class="dv">2014</span><span class="op">;</span></span>
+<span id="cb85-4"><a href="" aria-hidden="true" tabindex="-1"></a>A_DATE <span class="op">*</span>p <span class="op">=</span> <span class="op">&amp;</span>today<span class="op">;</span></span>
+<span id="cb85-5"><a href="" aria-hidden="true" tabindex="-1"></a>p<span class="op">-&gt;</span>day <span class="op">=</span> today<span class="op">.</span>day<span class="op">;</span></span>
+<span id="cb85-6"><a href="" aria-hidden="true" tabindex="-1"></a>p<span class="op">-&gt;</span>date<span class="op">.</span>year <span class="op">=</span> <span class="dv">2026</span><span class="op">;</span></span></code></pre></div>
+<div class="fragment" data-fragment-index="0">
 <p><code>p-&gt;date.year</code> reaches the nested member of <strong>the same object</strong>.</p>
-<a class="c-example-download" href="examples/10-nested-struct/main.c" download="10-nested-struct.c" aria-label="Download C example: 10-nested-struct">Download C example ↓</a>
+</div>
 <aside class="notes">
-<p>83–85 min. Keep the original 3 September 2014 initializer and object/pointer access chain. The final year changes to 2026 in the executable to make aliasing observable; the original repeats 2014. Run once, or predict together if needed to preserve the final quiz time.</p>
+<p><strong>SLIDES &gt; TERMINAL &gt; SLIDES</strong></p>
+<p>Read the shown updates; predict the final year before running make run FILE=18-nested.c. This is the only run of this file.</p>
+<p><strong>Expect:</strong> day code=2; 3/9/2026.</p>
+<p><strong>Reveal:</strong> One Right explains that both access paths reach the same nested member. Finish with the quiz.</p>
+<p><strong>Context:</strong> Keep the original 3 September 2014 initialiser. The year changes to 2026 to make the pointer update observable; the original reassigns 2014.</p>
+<p><strong>Recovery:</strong> Completed nested example: day code=2; 3/9/2026.</p>
+<div class="sourceCode" id="cb86"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb86-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 18-nested.c live-types.c</span>
+<span id="cb86-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> run FILE=live-types.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1251,7 +2016,13 @@ Louis Ledoux
 </div>
 <p><a href="assets/cm7-quiz.pdf">Open the allocation quiz</a>.</p>
 <aside class="notes">
-<p>85–90 min. Retain all three source quiz groups. See docs/allocation-runbook.md for pacing, terminal commands, expected diagnostic families and repairs. The 41 slides are visual steps within one 90-minute class, not 40 independent activities.</p>
+<p><strong>SLIDES / QUIZ</strong></p>
+<p>Take questions 9-12. Ask students to explain allocation size, object versus pointer member access, and nested members.</p>
+<p><strong>Expect:</strong> End with unresolved student questions. No linked-list or hash-table material follows in this session.</p>
+<p><strong>Context:</strong> Retain all three source quiz groups. See docs/allocation-runbook.md for pacing, terminal commands, expected diagnostic families and repairs. The original content remains one 90-minute class; adjust discussion and prepared-code comparisons to the audience.</p>
+<p><strong>Recovery:</strong> Completed nested example: day code=2; 3/9/2026.</p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb87-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> 18-nested.c live-types.c</span></code></pre></div>
+<p>In Vim, reload the copied file with :e! before running. Recovery replaces the working file; do not save the old buffer over it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1268,7 +2039,7 @@ Louis Ledoux
 
 </div>
 </div>
-</section>
+</section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
@@ -1487,7 +2258,7 @@ Louis Ledoux
         },
 
         // reveal.js plugins
-        plugins: [QuartoLineHighlight, PdfExport, RevealMenu,  QuartoSupport,
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
 
           RevealMath,
           RevealNotes,
