@@ -1,0 +1,36 @@
+.opc-lectures > li {
+  grid-template-columns: 3.5rem minmax(16rem, 1fr) 3.5rem 3rem repeat(3, 4.5rem);
+  column-gap: 0.85rem;
+  row-gap: 0.4rem;
+}
+
+.opc-lectures .opc-lecture-title {
+  justify-self: start;
+}
+
+.opc-lectures > li > a {
+  white-space: nowrap;
+  justify-self: start;
+}
+
+@media (max-width: 760px) {
+  .opc-lectures > li {
+    grid-template-columns: repeat(5, max-content);
+    column-gap: clamp(0.25rem, 1.8vw, 0.65rem);
+  }
+
+  .opc-lectures .latest-posts-date,
+  .opc-lectures .opc-lecture-title {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 380px) {
+  .opc-lectures > li {
+    grid-template-columns: repeat(4, max-content);
+  }
+
+  .opc-lectures > li > a:first-of-type {
+    grid-column: 1 / -1;
+  }
+}
