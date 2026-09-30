@@ -17,6 +17,7 @@ import zipfile
 SITE = Path(__file__).resolve().parents[1]
 DESTINATION = SITE / "assets/courses/opc/2026-2027"
 DECKS = ("01-allocation", "02-linked-lists")
+PRINT_LAYOUTS = ("2x1", "2x2", "3x2")
 TERMINAL = re.compile(
     r'<div class="terminal-example" data-example="([a-z0-9-]+)" data-file="([a-z0-9/.-]+)">(.*?)</div>', re.DOTALL
 )
@@ -37,9 +38,9 @@ DOWNLOAD_CSS = """.reveal .terminal-example a { color: #00502e; text-decoration:
 .reveal .terminal-example a:focus-visible { outline: 3px solid #003b80; outline-offset: 3px; }
 """
 BUNDLE_MAKEFILE = """PYTHON ?= python3
-.PHONY: help serve present slides pdf figures
+.PHONY: help serve present slides pdf handouts figures
 help:
-	@echo 'make serve | present | slides | pdf | figures'
+	@echo 'make serve | present | slides | pdf | handouts | figures'
 serve:
 	$(PYTHON) scripts/present.py
 present: slides serve
@@ -51,6 +52,8 @@ pdf:
 	$(PYTHON) scripts/teacher_cues.py
 	$(PYTHON) scripts/linked_list_guide.py --notes-only
 	quarto render cours --to beamer
+handouts:
+	$(PYTHON) scripts/print_handouts.py
 figures:
 	$(PYTHON) scripts/diagrams.py
 """
@@ -90,7 +93,10 @@ The runbook names the checkpoints to copy for each operation.
 Rendered HTML and PDF are included. Rebuild with Quarto: make slides.
 PDF rendering also needs LuaLaTeX, Beamer and DejaVu fonts: make pdf.
 Edit TikZ diagrams in cours/figures and run make figures (Poppler required).
-The PDF has one slide per page; choose four pages per sheet when printing.
+The regular PDF has one slide per page. Files ending in -2x1.pdf, -2x2.pdf and
+-3x2.pdf arrange slides in columns x rows on A4 landscape sheets. Print these
+with one PDF page per sheet. Rebuild them with make handouts after make pdf;
+install pypdf and reportlab in your Python environment first.
 
 ## Sources
 
@@ -109,6 +115,7 @@ def main():
     rendered = [output / "assets"]
     for deck in DECKS:
         rendered.extend(output / name for name in (f"{deck}.html", f"{deck}.pdf", f"{deck}_files"))
+        rendered.extend(output / f"{deck}-{layout}.pdf" for layout in PRINT_LAYOUTS)
     for path in rendered:
         if not path.exists():
             parser.error(f"Missing {path}; render both formats with make all first.")
@@ -121,7 +128,7 @@ def main():
     sources = [Path(name) for name in tracked if name and not name.startswith(("cours/notebooks/", "cours/examples/"))
                and name not in {"cours/PLAN.md", "cours/.gitignore", "demos/README.md"}
                and (not name.endswith(".qmd") or Path(name).stem in DECKS)]
-    sources += [Path("scripts") / name for name in ("present.py", "c_runner.py", "valgrind.sh", "diagrams.py", "teacher_cues.py", "linked_list_guide.py")]
+    sources += [Path("scripts") / name for name in ("present.py", "c_runner.py", "valgrind.sh", "diagrams.py", "teacher_cues.py", "linked_list_guide.py", "print_handouts.py")]
     sources.extend([Path("docs/allocation-runbook.md"), Path("docs/allocation-teacher-cues.json")])
     sources.extend([Path("docs/linked-lists-runbook.md"), Path("docs/linked-lists-teacher-cues.json")])
     for path in sources:

@@ -12,7 +12,7 @@ ISTIC · University of Rennes · 2026–2027 · Louis Ledoux
 
 [C examples]({{ '/courses/opc/examples/' | relative_url }}) · [Download course]({{ '/assets/courses/opc/2026-2027/opc-course.zip' | relative_url }}) · [Allocation quiz]({{ '/assets/courses/opc/2026-2027/assets/cm7-quiz.pdf' | relative_url }})
 
-For printing, select **four pages per sheet** in your PDF viewer.
+Print layouts use **A4 landscape**, with **columns × rows**. Print one PDF page per sheet.
 
 ## Run the examples {#run-examples}
 
