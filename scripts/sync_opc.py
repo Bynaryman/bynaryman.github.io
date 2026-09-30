@@ -141,6 +141,9 @@ def main():
     diagrams = set()
     for deck in DECKS:
         html = (output / f"{deck}.html").read_text()
+        themes = re.findall(r'href="([^"?]*dist/theme/[^"?]+\.css)"', html)
+        if not themes or not any("--cast-shadow" in (output / theme).read_text() for theme in themes):
+            parser.error(f"Stale HTML theme in {deck}; run make slides before exporting.")
         diagrams.update(re.findall(r'assets/diagrams/([a-z0-9-]+)\.svg', html))
         cues = list(TERMINAL.finditer(html))
         required_id = "start-code" if deck == "01-allocation" else "section-build"
