@@ -93,9 +93,10 @@ The runbook names the checkpoints to copy for each operation.
 Rendered HTML and PDF are included. Rebuild with Quarto: make slides.
 PDF rendering also needs LuaLaTeX, Beamer and DejaVu fonts: make pdf.
 Edit TikZ diagrams in cours/figures and run make figures (Poppler required).
-The regular PDF has one slide per page. Files ending in -2x1.pdf, -2x2.pdf and
--3x2.pdf arrange slides in columns x rows on A4 landscape sheets. Print these
-with one PDF page per sheet. Rebuild them with make handouts after make pdf;
+The included regular PDF has one slide per page. Print layouts are separate
+downloads at https://bynaryman.github.io/courses/opc/: 2x1, 2x2 and 3x2 mean
+columns x rows on A4 landscape sheets. Print one PDF page per sheet.
+Generate the same layouts locally with make handouts after make pdf;
 install pypdf and reportlab in your Python environment first.
 
 ## Sources
@@ -262,6 +263,9 @@ def main():
             else:
                 archive.write(source / relative, "opc-course/" + name)
         for path in rendered:
+            # Keep the source bundle compact; print PDFs have their own course links.
+            if any(path.name == f"{deck}-{layout}.pdf" for deck in DECKS for layout in PRINT_LAYOUTS):
+                continue
             files = sorted(path.rglob("*")) if path.is_dir() else [path]
             for file in files:
                 if file.is_file():
