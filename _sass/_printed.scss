@@ -162,6 +162,60 @@ html[data-theme-variant] #navbar .dropdown-menu { border: 1px solid var(--print-
   font-size: 0.9rem;
 }
 .project-docs a { display: inline-flex; align-items: center; gap: 0.5rem; }
+
+.site-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65em;
+  min-height: 44px;
+  padding: 0.65rem 0.9rem;
+  border: 1px solid var(--print-edge);
+  border-radius: 0;
+  background: var(--global-bg-color);
+  color: var(--global-text-color);
+  box-shadow: var(--print-shadow);
+  font-family: var(--retro-ui-stack);
+  font-size: 0.85rem;
+  line-height: 1.4;
+  text-decoration: none;
+  cursor: pointer;
+}
+.site-action:hover,
+.site-action:focus-visible {
+  color: var(--global-theme-color);
+  border-color: currentColor;
+  background: var(--retro-code-bg);
+  text-decoration: none;
+}
+.site-action:focus-visible {
+  outline: 2px solid var(--global-theme-color);
+  outline-offset: 5px;
+}
+.site-action:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 rgba(var(--retro-ink), 0.2);
+}
+html[data-theme-variant][data-theme] footer:is(.fixed-bottom, .sticky-bottom) {
+  background: var(--global-bg-color) !important;
+  color: var(--global-text-color) !important;
+  border-top: 1px solid var(--global-divider-color) !important;
+  box-shadow: none !important;
+  backdrop-filter: none;
+}
+footer .footer-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  padding-block: 1rem;
+}
+html[data-theme-variant] footer a.site-action { color: var(--global-text-color) !important; }
+html[data-theme-variant] footer a.site-action:hover,
+html[data-theme-variant] footer a.site-action:focus-visible { color: var(--global-theme-color) !important; }
+.destroy-website { margin: 0 4px 4px 0; }
+.destroy-website .fa-arrow-up-right-from-square { font-size: 0.8em; }
 @media (max-width: 575px) {
   html[data-theme-variant="modus"] { --retro-type-2xl: 2rem; --retro-type-md: 1.2rem; }
   #navbar .navbar-brand.social { gap: 0.55rem; }

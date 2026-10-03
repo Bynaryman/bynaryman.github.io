@@ -1,21 +1,6 @@
-{% if site.footer_fixed %}
-  <footer class="fixed-bottom" role="contentinfo">
-    <div class="container mt-0">
-      &copy; Copyright {{ site.time | date: '%Y' }}
-      {{ site.first_name }}
-      {{ site.middle_name }}
-      {{ site.last_name }}.{% if site.footer_text %} {{ site.footer_text }}{% endif %}
-      {% if site.impressum_path %}
-        <a href="{{ site.url }}{{ site.baseurl }}{{ site.impressum_path }}">Impressum</a>.
-      {% endif %}
-      {% if site.last_updated %}
-        Site built: {{ 'now' | date: '%B %d, %Y' }}.
-      {% endif %}
-    </div>
-  </footer>
-{% else %}
-  <footer class="sticky-bottom mt-5" role="contentinfo">
-    <div class="container">
+<footer class="{% if site.footer_fixed %}fixed-bottom{% else %}sticky-bottom mt-5{% endif %}" role="contentinfo">
+  <div class="container footer-content">
+    <div class="footer-copyright">
       &copy; Copyright {{ site.time | date: '%Y' }}
       {{ site.first_name }}
       {{ site.middle_name }}
@@ -27,5 +12,6 @@
         Site built: {{ 'now' | date: '%B %d, %Y' }}.
       {% endif %}
     </div>
-  </footer>
-{% endif %}
+    {% include destroy_website.liquid %}
+  </div>
+</footer>
