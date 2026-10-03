@@ -42,7 +42,7 @@ html[data-theme-variant] .post.post--panel {
   border: 0;
   box-shadow: none;
 }
-html[data-theme-variant] #main-content :is(.card, .repo, .metric-card, .dropdown-menu, .btn, .blog-pagination__link, pre, code, .highlight, .highlighter-rouge),
+html[data-theme-variant] #main-content :is(.card, .repo, .metric-card, .dropdown-menu, .btn, .badge, .blog-pagination__link, pre, code, .highlight, .highlighter-rouge),
 html[data-theme-variant] #navbar :is(.dropdown-menu, .navbar-toggler),
 html[data-theme-variant] #main-content img,
 html[data-theme-variant] #main-content video,
@@ -216,6 +216,52 @@ html[data-theme-variant] footer a.site-action:hover,
 html[data-theme-variant] footer a.site-action:focus-visible { color: var(--global-theme-color) !important; }
 .destroy-website { margin: 0 4px 4px 0; }
 .destroy-website .fa-arrow-up-right-from-square { font-size: 0.8em; }
+
+html[data-theme-variant] #back-to-top {
+  position: fixed;
+  right: 20px;
+  bottom: var(--back-to-top-offset, 20px);
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  background: var(--global-bg-color);
+  color: var(--global-text-color);
+  z-index: 10;
+}
+html[data-theme-variant] #back-to-top:hover,
+html[data-theme-variant] #back-to-top:focus-visible {
+  background: var(--retro-code-bg);
+  color: var(--global-theme-color);
+}
+#back-to-top[hidden] { display: none; }
+#back-to-top svg { display: block; flex-shrink: 0; }
+
+html[data-theme-variant] #main-content .code-display-wrapper .copy {
+  min-width: 44px;
+  min-height: 44px;
+  right: 0.65rem;
+  top: 0.65rem;
+  border: 1px solid var(--print-edge);
+  border-radius: 0;
+  background: var(--global-bg-color);
+  color: var(--global-text-color);
+  box-shadow: var(--print-shadow);
+  cursor: pointer;
+}
+.code-display-wrapper:focus-within .copy { opacity: 1; }
+@media (hover: none) {
+  .code-display-wrapper .copy { opacity: 1; }
+}
+html[data-theme-variant] #main-content .code-display-wrapper .copy:hover,
+html[data-theme-variant] #main-content .code-display-wrapper .copy:focus-visible {
+  color: var(--global-theme-color);
+  border-color: currentColor;
+}
+html[data-theme-variant] #navbar .dropdown-item { border-radius: 0; }
+html[data-theme-variant] #navbar :is(#theme-toggle, #search-toggle, .navbar-toggler):focus-visible {
+  outline: 2px solid var(--global-theme-color);
+  outline-offset: 4px;
+}
 @media (max-width: 575px) {
   html[data-theme-variant="modus"] { --retro-type-2xl: 2rem; --retro-type-md: 1.2rem; }
   #navbar .navbar-brand.social { gap: 0.55rem; }
