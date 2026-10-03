@@ -59,8 +59,8 @@ layout: default
       {% include selected_papers.liquid %}
     {% endif %}
 
-    <!-- Social -->
-    {% if page.social %}
+    <!-- Show contact links here only when they are not already in the header. -->
+    {% if page.social and site.enable_navbar_social != true %}
       <div class="social">
         <div class="contact-icons">{% include social.liquid %}</div>
 

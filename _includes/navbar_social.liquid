@@ -1,16 +1,2 @@
-{% comment %}Keep the primary links in the header; the full set remains below the homepage.{% endcomment %}
-{% if site.email %}
-  <a href="mailto:{{ site.email | encode_email }}" title="Email" aria-label="Email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a>
-{% endif %}
-{% if site.github_username %}
-  <a href="https://github.com/{{ site.github_username }}" title="GitHub" aria-label="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a>
-{% endif %}
-{% if site.orcid_id %}
-  <a href="https://orcid.org/{{ site.orcid_id }}" title="ORCID" aria-label="ORCID"><i class="ai ai-orcid" aria-hidden="true"></i></a>
-{% endif %}
-{% if site.scholar_userid %}
-  <a href="https://scholar.google.com/citations?user={{ site.scholar_userid }}" title="Google Scholar" aria-label="Google Scholar"><i class="ai ai-google-scholar" aria-hidden="true"></i></a>
-{% endif %}
-{% if site.linkedin_username %}
-  <a href="https://www.linkedin.com/in/{{ site.linkedin_username }}" title="LinkedIn" aria-label="LinkedIn"><i class="fa-brands fa-linkedin" aria-hidden="true"></i></a>
-{% endif %}
+{% comment %}Use the complete configured set so header and contact links cannot drift apart.{% endcomment %}
+{% include social.liquid %}
