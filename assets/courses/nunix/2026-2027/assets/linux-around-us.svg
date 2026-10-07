@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="530" viewBox="0 0 1600 530" role="img" aria-labelledby="title desc">
+  <title id="title">Linux around us</title>
+  <desc id="desc">A word cloud: Android phones, internet boxes, coffee machines, Steam Deck, Raspberry Pi, cloud servers and supercomputers surround Linux. These are examples, not market shares.</desc>
+  <defs>
+    <filter id="shadow" x="-10%" y="-20%" width="125%" height="150%">
+      <feDropShadow dx="10" dy="10" stdDeviation="0" flood-color="#111111" flood-opacity=".28"/>
+    </filter>
+  </defs>
+  <g font-family="DejaVu Sans, Arial, sans-serif" font-weight="700" text-anchor="middle">
+    <g transform="translate(1050 62) rotate(2)" filter="url(#shadow)">
+      <rect x="-400" y="-51" width="800" height="101" fill="#79d99e" stroke="#111111" stroke-width="2"/>
+      <text y="24" font-size="77" fill="#00502e">Android phones</text>
+    </g>
+    <g transform="translate(336 139) rotate(-3)" filter="url(#shadow)">
+      <rect x="-307" y="-45" width="614" height="89" fill="#ffd34e" stroke="#111111" stroke-width="2"/>
+      <text y="20" font-size="57" fill="#5a2e00">Coffee machines</text>
+    </g>
+    <g transform="translate(806 285) rotate(-2)" filter="url(#shadow)">
+      <rect x="-338" y="-139" width="676" height="220" fill="#111111"/>
+      <text y="39" font-size="202" letter-spacing="-9" fill="#ffffff">LINUX</text>
+    </g>
+    <g transform="translate(234 264) rotate(-3)" filter="url(#shadow)">
+      <rect x="-214" y="-43" width="428" height="88" fill="#ed90c5" stroke="#111111" stroke-width="2"/>
+      <text y="19" font-size="48" fill="#651046">Internet boxes</text>
+    </g>
+    <g transform="translate(1370 246) rotate(3)" fill="#00502e">
+      <text y="0" font-size="55">Cloud</text>
+      <text y="64" font-size="55">servers</text>
+    </g>
+    <text transform="translate(230 413) rotate(2)" font-size="47" fill="#00502e">Raspberry Pi</text>
+    <text transform="translate(1365 419) rotate(-3)" font-size="51" fill="#651046">Steam Deck</text>
+    <g transform="translate(799 468) rotate(1)" filter="url(#shadow)">
+      <rect x="-348" y="-49" width="696" height="91" fill="#fff5e2" stroke="#111111" stroke-width="2"/>
+      <text y="21" font-size="66" fill="#5a2e00">Supercomputers</text>
+    </g>
+  </g>
+</svg>
