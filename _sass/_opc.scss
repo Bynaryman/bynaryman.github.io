@@ -8,13 +8,18 @@
   justify-self: start;
 }
 
+.nunix-lectures > li {
+  grid-template-columns: 3.5rem minmax(12rem, 1fr) 3.5rem 3rem repeat(4, 4.5rem);
+}
+
 .opc-lectures > li > a {
   white-space: nowrap;
   justify-self: start;
 }
 
 @media (max-width: 760px) {
-  .opc-lectures > li {
+  .opc-lectures > li,
+  .nunix-lectures > li {
     grid-template-columns: repeat(5, max-content);
     column-gap: clamp(0.25rem, 1.8vw, 0.65rem);
   }
@@ -26,7 +31,8 @@
 }
 
 @media (max-width: 380px) {
-  .opc-lectures > li {
+  .opc-lectures > li,
+  .nunix-lectures > li {
     grid-template-columns: repeat(4, max-content);
   }
 

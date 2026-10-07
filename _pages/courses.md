@@ -15,6 +15,16 @@ ISTIC · University of Rennes · 2026–2027 · Louis Ledoux
 
 [C examples]({{ '/courses/opc/examples/' | relative_url }}) · [Download course]({{ '/assets/courses/opc/2026-2027/opc-course.zip' | relative_url }})
 
+## NUnix · Unix and Bash
+
+L3 MIAGE · ISTIC · University of Rennes · 2026–2027
+
+CM: Louis Ledoux · TD/TP: Elisabeth Bouriah and Louis Ledoux
+
+{% include nunix_lectures.liquid %}
+
+[Course information]({{ '/courses/nunix/' | relative_url }}) · [Download course]({{ '/assets/courses/nunix/2026-2027/nunix-course.zip' | relative_url }})
+
 ## Digital Design with MLIR and CIRCT
 
 ACM Europe School on MLIR, A Coruña · 13 August 2026 · 1 h 45 min

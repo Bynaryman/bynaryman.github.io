@@ -42,6 +42,17 @@ Its file list excludes inherited PowerPoints, assessments, student records,
 compiler binaries, local tool installations and Git history.
 The earlier CM3 test assets remain excluded from the site.
 
+## NUnix course material
+
+After `make all` in NUnix, refresh the HTML, Beamer PDFs and print handouts:
+
+```sh
+python3 scripts/sync_nunix.py /path/to/NUnix
+npm run check
+```
+
+The course page is `_pages/nunix.md`; downloads are in `assets/courses/nunix/2026-2027/`.
+
 ## Publications and CV
 
 `_bibliography/papers.bib` is the source for publication metadata. Use `article` for journals, `inproceedings` for conference papers, `misc` for posters, and `techreport` for deposited talks/seminars. Supply the publication month explicitly when known. HAL `/document` links follow the latest deposited version.
