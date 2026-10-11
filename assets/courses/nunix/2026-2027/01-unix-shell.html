@@ -356,26 +356,27 @@ Louis Ledoux
 <section id="roadmap" class="slide level2 pipeline-preview">
 <h2>One line, a useful result</h2>
 <div class="slide-body">
-<p>An application writes one error message per line in <code>errors.log</code>.<br>
-Which errors occur most often?</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span> <span class="op">&lt;</span> errors.log <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-nr</span> <span class="op">&gt;</span> counts.txt</span></code></pre></div>
-<p>Read the file → group identical lines → count → rank → save.</p>
+<p>Which errors occur most often in <strong>1,000 log entries</strong>?</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span> <span class="op">&lt;</span> errors.log <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-nr</span> <span class="kw">|</span> <span class="fu">tee</span> output.txt <span class="kw">|</span></span>
+<span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="ex">a2ps</span> <span class="at">-1</span> <span class="at">-o</span> <span class="at">-</span> <span class="kw">|</span> <span class="fu">ps2pdf</span> <span class="at">-</span> rapport.pdf</span></code></pre></div>
+<p>Save the counts in <code>output.txt</code> and the report in <code>rapport.pdf</code>.</p>
 <div class="columns">
 <div class="column">
-<p><strong><code>errors.log</code></strong></p>
-<pre class="text"><code>Timeout
-Disk full
-Timeout
-Timeout
-Disk full</code></pre>
+<p><strong><a href="assets/demo/errors.log">errors.log</a></strong> · first three lines</p>
+<pre class="text"><code>Database timeout
+Login rejected
+Connection refused</code></pre>
 </div><div class="column output">
-<p><strong><code>counts.txt</code></strong></p>
-<pre class="text"><code>      3 Timeout
-      2 Disk full</code></pre>
+<p><strong><code>output.txt</code></strong> · first three counts</p>
+<pre class="text"><code>    320 Database timeout
+    210 Login rejected
+    140 Connection refused</code></pre>
+<p><code>a2ps</code>: text → PostScript<br>
+<code>ps2pdf</code>: PostScript → PDF</p>
 </div></div>
-<p>By the end of the course, you will be able to build and explain this line.</p>
+<p>By the end of this course, you will understand this command.</p>
 <aside class="notes">
-<p>This combines existing programs without opening a spreadsheet or writing a counting loop. The first sort places equal lines next to one another; uniq -c counts each group; sort -nr sorts the numeric counts in descending order. The shell handles &lt;, | and &gt;. The final redirection creates counts.txt, or replaces its previous contents.</p>
+<p>This combines existing programs without opening a spreadsheet or writing a counting loop. The first sort places equal lines next to one another; uniq -c counts each group; sort -nr sorts the numeric counts in descending order. The shell handles &lt; and |. The sample log contains 1,000 fictitious errors of 12 types, without timestamps. Run from cours/assets/demo, or download errors.log into the current directory. The newline after | continues the same pipeline. tee writes the counts to output.txt and also sends them to a2ps. a2ps -1 uses one page per sheet; -o - writes PostScript to standard output instead of sending it to a printer. ps2pdf - rapport.pdf reads it and creates rapport.pdf. The command replaces existing output.txt and rapport.pdf files. Install a2ps and Ghostscript (which provides ps2pdf) before the demonstration. <a href="https://www.gnu.org/software/a2ps/manual/html_node/Output-Options.html">GNU a2ps output options</a>.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
