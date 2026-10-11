@@ -822,39 +822,40 @@ Alice's <strong>home directory</strong> is <code>/home/alice</code>; the univers
 </div>
 </section>
 <section id="directory-map" class="slide level2 compact">
-<h2>Where Linux stores files</h2>
+<h2>Personal files and system data</h2>
 <div class="slide-body">
+<p>Linux separates personal files, configuration and application data.</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>Need</th>
-<th>Typical location</th>
+<th>Directory</th>
+<th>Typical contents</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Alice’s personal files</td>
 <td><code>/home/alice</code></td>
+<td>Alice’s personal files</td>
 </tr>
 <tr class="even">
-<td>System configuration</td>
 <td><code>/etc</code></td>
+<td>System configuration</td>
 </tr>
 <tr class="odd">
-<td>Installed add-on applications</td>
-<td><code>/opt</code></td>
+<td><code>/var</code></td>
+<td>Changing data: logs, caches, application state</td>
 </tr>
 <tr class="even">
-<td>Changing application data</td>
 <td><code>/var/lib</code></td>
+<td>Persistent application state</td>
 </tr>
 <tr class="odd">
-<td>Log files</td>
 <td><code>/var/log</code></td>
+<td>Log files</td>
 </tr>
 </tbody>
 </table>
-<p><span class="marker">Configuration: /etc · Logs: /var/log</span></p>
+<p><code>/var/lib</code> and <code>/var/log</code> are subdirectories of <code>/var</code>.</p>
 <aside class="notes">
 <p>These paths follow common Linux conventions. /var/lib stores persistent application state. <a href="https://refspecs.linuxfoundation.org/FHS_3.0/fhs-3.0.html">Filesystem Hierarchy Standard</a>.</p>
 <style type="text/css">
