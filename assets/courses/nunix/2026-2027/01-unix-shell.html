@@ -393,32 +393,19 @@ Connection refused</code></pre>
 <section id="why-automation" class="slide level2">
 <h2>Why use a script?</h2>
 <div class="slide-body">
+<p>A <strong>script</strong> stores shell commands in a text file.</p>
 <div class="block example">
-<p>Today: find the main error in <strong>one log</strong>.<br>
-Next week: check <strong>200 logs every morning</strong>, including when you are away.</p>
+<p>Save the report command in a file.<br>
+Run that file when you need the report again.</p>
 </div>
 <div class="fragment">
-<p>A saved script lets the team:</p>
+<p>With Bash, we can also:</p>
 <ul>
-<li>Apply the same rule to every input.</li>
-<li>Review and change the procedure as text.</li>
-<li>Run it remotely or through a scheduler.</li>
-<li>Check output and failure status.</li>
+<li>Pass a filename as an <strong>argument</strong>.</li>
+<li>Store values in <strong>variables</strong>.</li>
+<li>Choose and repeat commands with <strong>conditions and loops</strong>.</li>
 </ul>
 </div>
-<aside class="notes">
-<p>The 200-log workload is a hypothetical example. A scheduler can run a saved script each morning; SSH can run commands on a remote machine. A script repeats its mistakes too, so results and exit statuses need checking.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </div>
 </section>
 <section id="gui-or-shell" class="slide level2 compact">
@@ -445,8 +432,8 @@ Next week: check <strong>200 logs every morning</strong>, including when you are
 <td>Remote shell and system commands</td>
 </tr>
 <tr class="odd">
-<td>Repeat a file-processing procedure every morning</td>
-<td>A tested script and a scheduler</td>
+<td>Apply the same sequence of commands to several files</td>
+<td>A shell script with arguments and a loop</td>
 </tr>
 <tr class="even">
 <td>Query related business tables</td>
