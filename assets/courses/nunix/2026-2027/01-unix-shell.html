@@ -471,11 +471,11 @@ Run that file when you need the report again.</p>
 <section id="operating-system" class="slide level2">
 <h2>Programs, kernel and hardware</h2>
 <div class="slide-body">
-<p>Music, downloads and commands run at the same time.</p>
-<p><img data-src="assets/os-layers.svg" class="os-diagram" alt="Browser, music player and Bash are running programs. They request services through system calls. The Linux kernel shares processor time and memory, manages files and controls device access. Drivers connect it to the processor, RAM, storage, network and input/output devices."></p>
+<p>We use hardware to interact with programs.</p>
+<p><img data-src="assets/os-layers.svg" class="os-diagram" alt="From bottom to top: the user interacts with a keyboard, mouse and screen. These hardware devices communicate with the Linux kernel through drivers. The kernel provides services to applications including the browser, music player and Bash. Arrows in both directions show input reaching programs and results returning to the user. The kernel also manages CPU time, memory, storage and network access."></p>
 <p>The kernel <span class="marker">shares resources and controls access</span>.</p>
 <aside class="notes">
-<p>Layered presentation inspired by Guillaume Salagnac's IF-3-SYS introduction at INSA Lyon. The operating system also includes libraries, services and tools around the kernel. A process is a running instance of a program. The hardware is shared; ordinary programs request protected operations from the kernel through system calls, often via libraries.</p>
+<p>Layered presentation inspired by Guillaume Salagnac's IF-3-SYS introduction at INSA Lyon. Like his user-last diagram, the user is below the hardware: the physical interaction starts with a keyboard, mouse or touchscreen, even though the intended interaction is with an application. Read input from bottom to top, and output from top to bottom. This is a simplified view. In a graphical desktop, input also passes through the display server or compositor. Bash receives typed input through the terminal emulator. The operating system also includes libraries, services and tools around the kernel. A process is a running instance of a program. The hardware is shared; ordinary programs request protected operations from the kernel through system calls, often via libraries.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
