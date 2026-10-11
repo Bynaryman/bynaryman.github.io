@@ -1234,9 +1234,79 @@ The new pager’s name joked about a <strong>backward more</strong>.</p>
       }</style></aside>
 </div>
 </section>
-<section id="globs" class="slide level2">
-<h2>Filename patterns</h2>
+<section id="quoting" class="slide level2 worked-examples">
+<h2>A space can change the arguments</h2>
 <div class="slide-body">
+<p>We want to read <strong>one file</strong> named <code>meeting notes.txt</code>.</p>
+<div class="columns">
+<div class="column">
+<p><strong>Without quotes</strong></p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> meeting notes.txt</span></code></pre></div>
+<p><code>cat</code> receives <strong>two filenames</strong>:</p>
+<ul>
+<li><code>meeting</code></li>
+<li><code>notes.txt</code></li>
+</ul>
+</div><div class="column">
+<p><strong>With quotes</strong></p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="st">"meeting notes.txt"</span></span></code></pre></div>
+<p><code>cat</code> receives <strong>one filename</strong>:</p>
+<ul>
+<li><code>meeting notes.txt</code></li>
+</ul>
+</div></div>
+<p>Quotes keep the filename together. The surrounding <code>"</code> characters are <strong>not passed to <code>cat</code></strong>.</p>
+</div>
+</section>
+<section id="quote-forms" class="slide level2">
+<h2>Three ways to protect a space</h2>
+<div class="slide-body">
+<p>Each command passes the same filename: <strong><code>meeting notes.txt</code></strong>.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Form</th>
+<th>What you type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Single quotes</td>
+<td><code>cat 'meeting notes.txt'</code></td>
+</tr>
+<tr class="even">
+<td>Double quotes</td>
+<td><code>cat "meeting notes.txt"</code></td>
+</tr>
+<tr class="odd">
+<td>Backslash</td>
+<td><code>cat meeting\ notes.txt</code></td>
+</tr>
+</tbody>
+</table>
+<p>The surrounding quotes and the backslash protect the space. They are <strong>not part of the filename</strong>.</p>
+<aside class="notes">
+<p>An unquoted backslash protects the next character. A backslash followed by a newline continues the line instead. <a href="https://www.gnu.org/software/bash/manual/html_node/Quoting.html">Bash: quoting</a>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="globs" class="slide level2">
+<h2>Patterns select matching filenames</h2>
+<div class="slide-body">
+<p>The directory contains only <strong><code>a.txt</code></strong> and <strong><code>meeting notes.txt</code></strong>.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="pp">*</span>.txt</span></code></pre></div>
+<p>The shell finds the matches, then passes <strong>two filenames</strong> to <code>cat</code>:<br>
+<code>a.txt</code> and <code>meeting notes.txt</code>.</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -1246,12 +1316,12 @@ The new pager’s name joked about a <strong>backward more</strong>.</p>
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>?</code></td>
-<td>Exactly one character</td>
-</tr>
-<tr class="even">
 <td><code>*</code></td>
 <td>Zero or more characters</td>
+</tr>
+<tr class="even">
+<td><code>?</code></td>
+<td>Exactly one character</td>
 </tr>
 <tr class="odd">
 <td><code>[abc]</code></td>
@@ -1259,111 +1329,9 @@ The new pager’s name joked about a <strong>backward more</strong>.</p>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> /etc/rc<span class="pp">*</span></span>
-<span id="cb13-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> /etc/rc<span class="pp">????</span></span>
-<span id="cb13-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="pp">[</span><span class="ss">abc</span><span class="pp">]</span>oo.c</span></code></pre></div>
-<p>The <strong>shell</strong> expands these patterns before running <code>ls</code>.</p>
+<p>The space <strong>inside a matched filename</strong> stays intact.</p>
 <aside class="notes">
-<p>Examples depend on existing names. With Bash defaults, an unmatched pattern remains literal. A wildcard usually does not match an initial dot, and a slash is a path separator. [abc]oo.c may match aoo.c, boo.c and coo.c. These are filename patterns, also called globs; grep's regular expressions use different rules.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</div>
-</section>
-<section id="quoting" class="slide level2 worked-examples">
-<h2>Spaces separate arguments</h2>
-<div class="slide-body">
-<p>Our file is named <strong><code>meeting notes.txt</code></strong>, including the space.</p>
-<div class="columns">
-<div class="column">
-<p><strong>Without quotes</strong></p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> meeting notes.txt</span></code></pre></div>
-<p>Two filename arguments:<br>
-<code>meeting</code> and <code>notes.txt</code>.</p>
-<p><code>cat</code> tries to open two files.</p>
-</div><div class="column">
-<p><strong>With quotes</strong></p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="st">"meeting notes.txt"</span></span></code></pre></div>
-<p>One filename argument:<br>
-<code>meeting notes.txt</code>.</p>
-<p><code>cat</code> opens the intended file.</p>
-</div></div>
-<p>The shell removes the quotes. They are <span class="marker">instructions for the shell</span>.</p>
-</div>
-</section>
-<section id="quote-forms" class="slide level2">
-<h2>Three ways to protect a space</h2>
-<div class="slide-body">
-<p>These commands all pass <strong>the same filename</strong> to <code>cat</code>:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="st">'meeting notes.txt'</span></span>
-<span id="cb16-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="st">"meeting notes.txt"</span></span>
-<span id="cb16-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> meeting<span class="dt">\ </span>notes.txt</span></code></pre></div>
-<ul>
-<li><strong>Single quotes</strong> preserve everything inside them literally.</li>
-<li><strong>Double quotes</strong> preserve spaces, but still allow <code>$HOME</code> to expand.</li>
-<li>An unquoted <strong>backslash</strong> protects the next character, such as a space or <code>*</code>.</li>
-</ul>
-<aside class="notes">
-<p>An unquoted backslash followed by a newline continues the line instead. <a href="https://www.gnu.org/software/bash/manual/html_node/Quoting.html">Bash: quoting</a>.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</div>
-</section>
-<section id="quote-variables" class="slide level2 compact">
-<h2>What expands inside quotes?</h2>
-<div class="slide-body">
-<p>Suppose <code>$HOME</code> contains <code>/home/alice</code>.</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Command</th>
-<th>Output</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>echo '$HOME'</code></td>
-<td><code>$HOME</code></td>
-</tr>
-<tr class="even">
-<td><code>echo "$HOME"</code></td>
-<td><code>/home/alice</code></td>
-</tr>
-<tr class="odd">
-<td><code>echo "$HOME/*.txt"</code></td>
-<td><code>/home/alice/*.txt</code></td>
-</tr>
-<tr class="even">
-<td><code>echo "It's OK"</code></td>
-<td><code>It's OK</code></td>
-</tr>
-<tr class="odd">
-<td><code>echo 'Say "hi"'</code></td>
-<td><code>Say "hi"</code></td>
-</tr>
-</tbody>
-</table>
-<p>Double quotes expand the variable, but keep spaces and <code>*</code> literal.<br>
-The other kind of quote can appear as ordinary text inside quotes.</p>
-<aside class="notes">
-<p>Double quotes also allow command and arithmetic substitution. Bash's interactive history expansion has additional rules for !, outside the scope of these examples. <a href="https://www.gnu.org/software/bash/manual/html_node/Single-Quotes.html">Bash: single quotes</a>; <a href="https://www.gnu.org/software/bash/manual/html_node/Double-Quotes.html">double quotes</a>.</p>
+<p>The shell performs filename expansion before invoking the command. With Bash defaults, an unmatched pattern remains literal. A wildcard usually does not match an initial dot, and a slash is a path separator. [abc]oo.c may match aoo.c, boo.c and coo.c. Other examples: ls /etc/rc*, ls /etc/rc????. These are filename patterns (globs); grep's regular expressions use different rules. <a href="https://www.gnu.org/software/bash/manual/html_node/Filename-Expansion.html">Bash: filename expansion</a>.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1378,49 +1346,58 @@ The other kind of quote can appear as ordinary text inside quotes.</p>
 </div>
 </section>
 <section id="echo-patterns" class="slide level2 worked-examples">
-<h2>Filename patterns: expanded or literal?</h2>
+<h2>Quotes keep a pattern literal</h2>
 <div class="slide-body">
-<p>The directory contains only <strong><code>a.txt</code></strong> and <strong><code>meeting notes.txt</code></strong>.</p>
+<p>Same directory: <strong><code>a.txt</code></strong> and <strong><code>meeting notes.txt</code></strong>.</p>
 <div class="columns">
 <div class="column">
-<p><strong>Expand the pattern</strong></p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="pp">*</span>.txt</span></code></pre></div>
-<div class="output worked-output">
-<pre class="text"><code>a.txt meeting notes.txt</code></pre>
-</div>
-<p>The shell finds matching filenames.</p>
+<p><strong>Let the shell find matches</strong></p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="pp">*</span>.txt</span></code></pre></div>
+<p><code>cat</code> receives <strong>two filenames</strong>:</p>
+<ul>
+<li><code>a.txt</code></li>
+<li><code>meeting notes.txt</code></li>
+</ul>
+<p>It reads both files.</p>
 </div><div class="column">
-<p><strong>Keep the pattern literal</strong></p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">'*.txt'</span></span></code></pre></div>
-<div class="output worked-output">
-<pre class="text"><code>*.txt</code></pre>
-</div>
-<p><code>echo "*.txt"</code> and <code>echo \*.txt</code> also print <code>*.txt</code>.</p>
+<p><strong>Protect the star with quotes</strong></p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="st">'*.txt'</span></span></code></pre></div>
+<p><code>cat</code> receives <strong>one filename</strong>:</p>
+<ul>
+<li><code>*.txt</code></li>
+</ul>
+<p>No file has that literal name here: <code>cat</code> reports an error.</p>
 </div></div>
-<p><code>echo</code> separates its arguments with spaces. Its output hides their boundaries.</p>
+<p><code>cat "*.txt"</code> and <code>cat \*.txt</code> also pass a literal <code>*</code>.</p>
 </div>
 </section>
-<section id="argument-boundaries" class="slide level2 worked-examples">
-<h2>Seeing each argument with printf</h2>
+<section id="quote-variables" class="slide level2 compact">
+<h2>Single quotes or double quotes?</h2>
 <div class="slide-body">
-<p><code>printf '&lt;%s&gt;\n'</code> prints each following argument between <code>&lt;</code> and <code>&gt;</code>, on its own line.</p>
-<div class="columns">
-<div class="column">
-<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'&lt;%s&gt;\n'</span> <span class="pp">*</span>.txt</span></code></pre></div>
-<div class="output worked-output">
-<pre class="text"><code>&lt;a.txt&gt;
-&lt;meeting notes.txt&gt;</code></pre>
-</div>
-<p><strong>Two arguments.</strong> The space inside the matched filename stays intact.</p>
-</div><div class="column">
-<div class="sourceCode" id="cb23"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb23-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'&lt;%s&gt;\n'</span> <span class="st">'*.txt'</span></span></code></pre></div>
-<div class="output worked-output">
-<pre class="text"><code>&lt;*.txt&gt;</code></pre>
-</div>
-<p><strong>One argument.</strong> The quoted pattern stays literal.</p>
-</div></div>
+<p><code>HOME</code> stores your home directory, here <code>/home/alice</code>. <code>$HOME</code> asks for its value; <code>echo</code> prints its arguments.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>What you type</th>
+<th>What you see</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>echo '$HOME'</code></td>
+<td><code>$HOME</code></td>
+</tr>
+<tr class="even">
+<td><code>echo "$HOME"</code></td>
+<td><code>/home/alice</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Single quotes</strong> keep <code>$HOME</code> literal. <strong>Double quotes</strong> allow it to expand. Both protect spaces and filename pattern characters such as <code>*</code>.</p>
+<p>With double quotes, we can use the variable and protect the space:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="st">"</span><span class="va">$HOME</span><span class="st">/meeting notes.txt"</span></span></code></pre></div>
 <aside class="notes">
-<p>Same two files as on the previous slide. printf's first argument is the format; the counts here refer to the remaining arguments, formatted with %s. The format repeats for every value, and prints a newline. LC_ALL=C gives the ordering shown here.</p>
+<p>The surrounding quotes are shell syntax; they are not part of the argument passed to cat. Double quotes also allow command and arithmetic substitution. Bash's interactive history expansion has additional rules for !, outside the scope of these examples. A different kind of quote can be literal text: echo "It's OK" prints It's OK; echo 'Say "hi"' prints Say "hi". <a href="https://www.gnu.org/software/bash/manual/html_node/Single-Quotes.html">Bash: single quotes</a>; <a href="https://www.gnu.org/software/bash/manual/html_node/Double-Quotes.html">double quotes</a>.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1443,14 +1420,14 @@ The other kind of quote can appear as ordinary text inside quotes.</p>
 <li>What does <code>cd ..</code> do?</li>
 <li>Which <code>ls</code> option includes hidden entries?</li>
 <li>What does <code>cat a.txt b.txt</code> print first?</li>
-<li>Does <code>echo '*.txt'</code> expand the pattern?</li>
+<li>Which filename does <code>cat '*.txt'</code> try to open?</li>
 </ol>
 </div><div class="column fragment answer-panel">
 <ol type="1">
 <li>Move to the parent directory.</li>
 <li><code>-a</code></li>
 <li>The contents of <code>a.txt</code>.</li>
-<li>No. Single quotes preserve the literal <code>*</code>.</li>
+<li>The literal filename <code>*.txt</code>. The shell does not expand the star.</li>
 </ol>
 </div></div>
 </div>
@@ -1463,10 +1440,10 @@ The other kind of quote can appear as ordinary text inside quotes.</p>
 <section id="identity" class="slide level2">
 <h2>Users, groups and ownership</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb25"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb25-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">whoami</span></span>
-<span id="cb25-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">id</span></span>
-<span id="cb25-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-ld</span> .</span>
-<span id="cb25-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span></span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">whoami</span></span>
+<span id="cb19-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">id</span></span>
+<span id="cb19-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-ld</span> .</span>
+<span id="cb19-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span></span></code></pre></div>
 <ul>
 <li><code>id</code> shows your user identity and groups.</li>
 <li><code>ls -l</code> shows the file’s owner, group and permission bits.</li>
@@ -1583,9 +1560,9 @@ The other kind of quote can appear as ordinary text inside quotes.</p>
 <section id="chmod-symbolic" class="slide level2">
 <h2>Changing permission bits</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb27"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb27-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> u+x script.sh</span>
-<span id="cb27-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> go-w notes.txt</span>
-<span id="cb27-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> u=rw,g=r,o= notes.txt</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> u+x script.sh</span>
+<span id="cb21-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> go-w notes.txt</span>
+<span id="cb21-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> u=rw,g=r,o= notes.txt</span></code></pre></div>
 <ul>
 <li><code>+</code> adds the selected permission bits.</li>
 <li><code>-</code> removes them.</li>
@@ -1626,7 +1603,7 @@ The other kind of quote can appear as ordinary text inside quotes.</p>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb28"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb28-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> 764 notes.txt</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb22-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> 764 notes.txt</span></code></pre></div>
 <div class="fragment">
 <p>The three digits describe <span class="marker">owner, group, others</span>, in that order.</p>
 </div>
@@ -1794,9 +1771,9 @@ If team access is intended, the owner can add <code>g+x</code>.</p>
 <section id="path-tools" class="slide level2">
 <h2>Path components and word counts</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb30"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb30-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">dirname</span> /home/alice/notes.txt</span>
-<span id="cb30-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">basename</span> /home/alice/notes.txt</span>
-<span id="cb30-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-w</span> notes.txt</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb24-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">dirname</span> /home/alice/notes.txt</span>
+<span id="cb24-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">basename</span> /home/alice/notes.txt</span>
+<span id="cb24-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-w</span> notes.txt</span></code></pre></div>
 <div class="fragment">
 <ul>
 <li><code>dirname</code> prints <code>/home/alice</code>.</li>
@@ -1812,7 +1789,7 @@ If team access is intended, the owner can add <code>g+x</code>.</p>
 <div class="columns">
 <div class="column">
 <h3 id="hard-link">Hard link</h3>
-<div class="sourceCode" id="cb31"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb31-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> notes.txt other.txt</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb25-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> notes.txt other.txt</span></code></pre></div>
 <ul>
 <li>Another name for the <strong>same file</strong>.</li>
 <li>Removing one name leaves the other usable.</li>
@@ -1820,7 +1797,7 @@ If team access is intended, the owner can add <code>g+x</code>.</p>
 </ul>
 </div><div class="column">
 <h3 id="symbolic-link">Symbolic link</h3>
-<div class="sourceCode" id="cb32"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb32-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> notes.txt shortcut</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb26-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> notes.txt shortcut</span></code></pre></div>
 <ul>
 <li>Stores a <strong>path</strong> to a target.</li>
 <li>May cross filesystems or target a directory.</li>
@@ -1849,12 +1826,12 @@ If team access is intended, the owner can add <code>g+x</code>.</p>
 <div class="column">
 <h3 id="builtin">Builtin</h3>
 <p>Implemented inside the shell.</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb33-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ..</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb27-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ..</span></code></pre></div>
 <p>Can change the current shell's state.</p>
 </div><div class="column">
 <h3 id="external-program">External program</h3>
 <p>Loaded from an executable file.</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb34-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span></span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb28-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span></span></code></pre></div>
 <p>The shell searches directories in <code>PATH</code>.</p>
 </div></div>
 <aside class="notes">
@@ -1875,14 +1852,49 @@ If team access is intended, the owner can add <code>g+x</code>.</p>
 <section id="type" class="slide level2">
 <h2>Recognising a command</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb35"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb35-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span> cd</span>
-<span id="cb35-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span> ls</span>
-<span id="cb35-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span> <span class="at">-a</span> echo</span>
-<span id="cb35-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">help</span> cd</span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb29-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span> cd</span>
+<span id="cb29-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span> ls</span>
+<span id="cb29-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span> <span class="at">-a</span> echo</span>
+<span id="cb29-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">help</span> cd</span></code></pre></div>
 <p><code>type</code> reports how Bash resolves a name.<br>
 <code>help</code> documents its builtins.</p>
 <aside class="notes">
 <p>Aliases and functions can change which command runs. type -a lists all available interpretations of a name.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="argument-boundaries" class="slide level2 worked-examples">
+<h2>Seeing each argument with printf</h2>
+<div class="slide-body">
+<p>Only two files: <strong><code>a.txt</code></strong> and <strong><code>meeting notes.txt</code></strong>.</p>
+<p><code>printf '&lt;%s&gt;\n'</code> displays each following argument on its own line.</p>
+<div class="columns">
+<div class="column">
+<div class="sourceCode" id="cb30"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb30-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'&lt;%s&gt;\n'</span> <span class="pp">*</span>.txt</span></code></pre></div>
+<div class="output worked-output">
+<pre class="text"><code>&lt;a.txt&gt;
+&lt;meeting notes.txt&gt;</code></pre>
+</div>
+<p><strong>Two filename arguments.</strong></p>
+</div><div class="column">
+<div class="sourceCode" id="cb32"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb32-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'&lt;%s&gt;\n'</span> <span class="st">'*.txt'</span></span></code></pre></div>
+<div class="output worked-output">
+<pre class="text"><code>&lt;*.txt&gt;</code></pre>
+</div>
+<p><strong>One literal argument.</strong></p>
+</div></div>
+<aside class="notes">
+<p>printf's first argument is the format; the counts here refer to the remaining arguments, formatted with %s. The format repeats for every value, and prints a newline. LC_ALL=C gives the ordering shown here.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
