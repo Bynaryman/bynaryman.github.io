@@ -1212,12 +1212,15 @@ The new pager’s name joked about a <strong>backward more</strong>.</p>
 <h2>Concatenating files</h2>
 <div class="slide-body">
 <div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> first.txt second.txt</span>
-<span id="cb12-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span></span></code></pre></div>
+<span id="cb12-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span></span>
+<span id="cb12-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> first.txt <span class="at">-</span> second.txt</span></code></pre></div>
 <ul>
 <li>With filenames, <code>cat</code> prints their contents <strong>in argument order</strong>.</li>
 <li>Without filenames, <code>cat</code> reads <strong>standard input</strong>.</li>
+<li>A standalone <code>-</code> means <strong>read standard input here</strong>.</li>
 <li>At an empty terminal input line, <strong>Ctrl+D</strong> indicates end of input.</li>
 </ul>
+<p>The third command reads <code>first.txt</code>, then your keyboard input, then <code>second.txt</code>.</p>
 <aside class="notes">
 <p>cat first.txt - second.txt reads first.txt, then stdin, then second.txt. Ctrl+D is the terminal's end-of-file input action, not a signal. If characters are pending on a line, the first Ctrl+D submits them instead of producing an empty read. The distinction returns in the process lecture.</p>
 <style type="text/css">
