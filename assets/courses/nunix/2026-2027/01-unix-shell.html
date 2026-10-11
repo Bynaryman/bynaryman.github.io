@@ -97,7 +97,7 @@
     code span.vs { color: #111111; } /* VerbatimString */
     code span.wa { color: #9b3c00; } /* Warning */
   </style>
-  <link rel="stylesheet" href="01-unix-shell_files/libs/revealjs/dist/theme/quarto-799b530b050495da1a271acd58609560.css">
+  <link rel="stylesheet" href="01-unix-shell_files/libs/revealjs/dist/theme/quarto-c732d0ec298e3ed90b9b4f2abb5336b1.css">
   <link href="01-unix-shell_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="01-unix-shell_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="01-unix-shell_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -353,14 +353,40 @@ Louis Ledoux
 <p>The exercises practise commands first, then scripts.</p>
 </div>
 </section>
-<section id="roadmap" class="slide level2">
-<h2>Working with files in Unix</h2>
+<section id="roadmap" class="slide level2 pipeline-preview">
+<h2>One line, a useful result</h2>
 <div class="slide-body">
-<ol type="1">
-<li>Navigate directories and understand file paths.</li>
-<li>Read files and quote names containing spaces.</li>
-<li>Check file and directory permissions.</li>
-</ol>
+<p>An application writes one error message per line in <code>errors.log</code>.<br>
+Which errors occur most often?</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span> <span class="op">&lt;</span> errors.log <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-nr</span> <span class="op">&gt;</span> counts.txt</span></code></pre></div>
+<p>Read the file → group identical lines → count → rank → save.</p>
+<div class="columns">
+<div class="column">
+<p><strong><code>errors.log</code></strong></p>
+<pre class="text"><code>Timeout
+Disk full
+Timeout
+Timeout
+Disk full</code></pre>
+</div><div class="column output">
+<p><strong><code>counts.txt</code></strong></p>
+<pre class="text"><code>      3 Timeout
+      2 Disk full</code></pre>
+</div></div>
+<p>By the end of the course, you will be able to build and explain this line.</p>
+<aside class="notes">
+<p>This combines existing programs without opening a spreadsheet or writing a counting loop. The first sort places equal lines next to one another; uniq -c counts each group; sort -nr sorts the numeric counts in descending order. The shell handles &lt;, | and &gt;. The final redirection creates counts.txt, or replaces its previous contents.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </div>
 </section>
 <section id="why-automation" class="slide level2">
@@ -452,40 +478,27 @@ Next week: check <strong>200 logs every morning</strong>, including when you are
 <section>
 <section id="section-system" class="title-slide slide level1 center">
 <h1>1. Linux and the shell</h1>
-<p>The operating system, the terminal and the command interpreter</p>
+<p>What happens between typing a command and the machine doing the work?</p>
 </section>
 <section id="operating-system" class="slide level2">
-<h2>What the operating system manages</h2>
+<h2>Programs, kernel and hardware</h2>
 <div class="slide-body">
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Resource</th>
-<th>Operating system responsibilities</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Processes</strong></td>
-<td>Start, schedule and stop programs</td>
-</tr>
-<tr class="even">
-<td><strong>Memory</strong></td>
-<td>Allocate memory and isolate processes</td>
-</tr>
-<tr class="odd">
-<td><strong>Files</strong></td>
-<td>Store data and control access</td>
-</tr>
-<tr class="even">
-<td><strong>Devices</strong></td>
-<td>Provide interfaces to hardware</td>
-</tr>
-</tbody>
-</table>
-<div class="fragment">
-<p>Programs request services through <span class="marker">system calls</span>.</p>
-</div>
+<p>Music, downloads and commands run at the same time.</p>
+<p><img data-src="assets/os-layers.svg" class="os-diagram" alt="Browser, music player and Bash are running programs. They request services through system calls. The Linux kernel shares processor time and memory, manages files and controls device access. Drivers connect it to the processor, RAM, storage, network and input/output devices."></p>
+<p>The kernel <span class="marker">shares resources and controls access</span>.</p>
+<aside class="notes">
+<p>Layered presentation inspired by Guillaume Salagnac's IF-3-SYS introduction at INSA Lyon. The operating system also includes libraries, services and tools around the kernel. A process is a running instance of a program. The hardware is shared; ordinary programs request protected operations from the kernel through system calls, often via libraries.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </div>
 </section>
 <section id="linux" class="slide level2">
@@ -558,8 +571,78 @@ The name contains itself: a recursive acronym.</p>
       }</style></aside>
 </div>
 </section>
+<section id="user-interfaces" class="slide level2">
+<h2>Touch, click or type</h2>
+<div class="slide-body">
+<p>You already use interfaces to start programs.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Your action</th>
+<th>Interface</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Touch</strong> a phone screen</td>
+<td>Graphical interface</td>
+<td>Open an app from its launcher</td>
+</tr>
+<tr class="even">
+<td><strong>Click</strong> with a mouse</td>
+<td>Graphical interface</td>
+<td>Open a folder in a file manager</td>
+</tr>
+<tr class="odd">
+<td><strong>Type</strong> a command</td>
+<td>Text interface</td>
+<td>Ask Bash to list a directory</td>
+</tr>
+</tbody>
+</table>
+<p>A smartphone can be a <strong>terminal</strong>: an endpoint for using a service.<br>
+Its touchscreen, like a mouse or keyboard, provides <strong>input</strong>.</p>
+</div>
+</section>
+<section id="physical-terminal" class="slide level2 terminal-photo-slide">
+<h2>Our terminal for this course?</h2>
+<div class="slide-body">
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><img data-src="assets/vt100.jpg" class="terminal-photo" style="width:100.0%" alt="A person using a DEC VT100 physical text terminal, with its screen and keyboard."></p>
+<div class="small-note">
+<p>DEC VT100 · IF-3-SYS, G. Salagnac, INSA Lyon</p>
+</div>
+</div><div class="column" style="width:41%;">
+<p>A <strong>physical terminal</strong> sends keystrokes to a computer and displays its replies.</p>
+<p>The programs run on the connected computer.</p>
+<div class="fragment block example">
+<p>Good news: yours fits in a window.</p>
+</div>
+</div></div>
+<aside class="notes">
+<p>Photo reused from the supplied INSA Lyon introduction, img/VT100-198X.jpg. The terminal is a separate device, not the computer that runs the user's applications.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
 <section id="shell" class="slide level2">
-<h2>Terminal, shell, command</h2>
+<h2>Terminal, shell and command</h2>
 <div class="slide-body">
 <table class="caption-top">
 <thead>
@@ -571,23 +654,25 @@ The name contains itself: a recursive acronym.</p>
 <tbody>
 <tr class="odd">
 <td><strong>Terminal emulator</strong></td>
-<td>Displays text and receives keyboard input</td>
+<td>A window for keyboard input and text output</td>
 </tr>
 <tr class="even">
-<td><strong>Shell</strong></td>
-<td>Interprets command lines and runs commands</td>
+<td><strong>Bash, the shell</strong></td>
+<td>Interprets the line and runs commands</td>
 </tr>
 <tr class="odd">
-<td><strong>Command</strong></td>
-<td>Performs an operation, such as listing files</td>
+<td><strong><code>ls</code>, a command</strong></td>
+<td>Lists directory entries</td>
 </tr>
 </tbody>
 </table>
-<div class="fragment">
-<p>A <strong>script</strong> saves a sequence of shell commands in a file.</p>
+<p>Type <code>ls</code> → Bash runs <code>ls</code> → the terminal displays its output.</p>
+<div class="block example">
+<p><strong>TTY</strong> = <em>teletypewriter</em>: early terminals printed on paper.<br>
+Unix keeps the name, even for emulated terminals.</p>
 </div>
 <aside class="notes">
-<p>Konsole, GNOME Terminal and xterm are terminal emulators. Bash, zsh, ksh and csh are shells. The account database records the login shell, often in /etc/passwd. The examples use Bash.</p>
+<p>Konsole, GNOME Terminal and xterm are terminal emulators. Bash, zsh, ksh and csh are shells. The account database records the login shell, often in /etc/passwd. A script saves shell commands in a file. The tty command often prints /dev/pts/0 (or another number) inside a terminal emulator. The TTY subsystem and pseudoterminals still exist; terminal emulators do not replace this kernel layer. <a href="https://www.kernel.org/doc/html/latest/driver-api/tty/index.html">Linux kernel TTY documentation</a>.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -604,8 +689,14 @@ The name contains itself: a recursive acronym.</p>
 <section id="command-arguments" class="slide level2">
 <h2>A command and its arguments</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> /home/alice</span></code></pre></div>
+<div class="annotated-command">
+<p><span class="command-name"><code>ls</code></span> <span class="command-option"><code>-l</code></span> <span class="command-operand"><code>/home/alice</code></span></p>
+</div>
 <table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
 <thead>
 <tr class="header">
 <th>Part</th>
@@ -614,29 +705,81 @@ The name contains itself: a recursive acronym.</p>
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>ls</code></td>
-<td>Command name</td>
+<td><span class="command-name"><code>ls</code></span></td>
+<td><strong>Command</strong>: list directory entries</td>
 </tr>
 <tr class="even">
-<td><code>-l</code></td>
-<td>Option: request the long listing format</td>
+<td><span class="command-option"><code>-l</code></span></td>
+<td><strong>Option</strong>: change how <code>ls</code> lists them</td>
 </tr>
 <tr class="odd">
-<td><code>/home/alice</code></td>
-<td>Argument: directory to list</td>
+<td><span class="command-operand"><code>/home/alice</code></span></td>
+<td><strong>Operand</strong>: the directory to list</td>
 </tr>
 </tbody>
 </table>
-<p>Arguments provide information to a command when it starts.</p>
+<p>Both <code>-l</code> and <code>/home/alice</code> are <strong>arguments</strong> passed to <code>ls</code>.</p>
+</div>
+</section>
+<section id="command-options" class="slide level2">
+<h2>Short and long options</h2>
+<div class="slide-body">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Form</th>
+<th>Example</th>
+<th>Meaning for GNU <code>ls</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Short: <strong>one dash</strong></td>
+<td><code>ls -a</code></td>
+<td>Include hidden entries</td>
+</tr>
+<tr class="even">
+<td>Long: <strong>two dashes</strong></td>
+<td><code>ls --all</code></td>
+<td>Same as <code>-a</code></td>
+</tr>
+<tr class="odd">
+<td>Combined</td>
+<td><code>ls -la</code></td>
+<td><code>-l</code> and <code>-a</code> together</td>
+</tr>
+</tbody>
+</table>
+<p>Some options take a value: <code>head -n 5 notes.txt</code> prints five lines.</p>
+<div class="block">
+<p>A <strong>bare <code>--</code> ends options</strong>.<br>
+<code>ls -- -notes.txt</code> treats <code>-notes.txt</code> as a filename.</p>
+</div>
+<div class="small-note">
+<p>Each command defines its options. Check <code>--help</code> or <code>man</code>.</p>
+</div>
+<aside class="notes">
+<p><a href="https://www.gnu.org/software/coreutils/manual/html_node/Common-options.html">GNU Coreutils: common options</a>. In head -n 5 notes.txt, 5 is the option's value and notes.txt is the file operand. Not every short option has a long equivalent; -l has no --long equivalent in GNU ls.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </div>
 </section>
 <section id="help" class="slide level2">
 <h2>Getting help</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">man</span> ls</span>
-<span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ex">info</span> coreutils</span>
-<span id="cb2-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">apropos</span> directory</span>
-<span id="cb2-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">help</span> cd</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">man</span> ls</span>
+<span id="cb4-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ex">info</span> coreutils</span>
+<span id="cb4-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">apropos</span> directory</span>
+<span id="cb4-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">help</span> cd</span></code></pre></div>
 <ul>
 <li><strong>Tab</strong> completes a name or displays possible completions.</li>
 <li><strong>Up</strong> recalls a previous command. <code>history</code> lists history.</li>
@@ -656,19 +799,24 @@ The name contains itself: a recursive acronym.</p>
           display:block!important;
       }</style></aside>
 </div>
+</section></section>
+<section>
+<section id="section-files" class="title-slide slide level1 center">
+<h1>2. Files and directories</h1>
+<p>Where is my file, and what can I do with it?</p>
 </section>
 <section id="one-root" class="slide level2">
 <h2>One directory tree</h2>
 <div class="slide-body">
-<ul>
-<li>The filesystem has a common root: <span class="marker"><code>/</code></span>.</li>
-<li>Other filesystems appear at <strong>mount points</strong> in that tree.</li>
-<li>Each account has a <strong>home directory</strong> and belongs to groups.</li>
-<li>Permissions control access to files and directories.</li>
-</ul>
+<p>A <strong>directory</strong> is a folder: it contains names of files and other directories.</p>
+<pre class="text"><code>/
+├── home/
+│   └── alice/
+│       └── notes.txt
+└── etc/</code></pre>
 <div class="block example">
-<p>Example home directory: <code>/home/alice</code><br>
-The university may use a different path.</p>
+<p>The common root is <span class="marker"><code>/</code></span>. The path <code>/home/alice/notes.txt</code> follows the tree.<br>
+Alice's <strong>home directory</strong> is <code>/home/alice</code>; the university may use a different path.</p>
 </div>
 <aside class="notes">
 <p>A USB filesystem can be mounted under /media or /mnt. Its device node is under /dev. The mount point gives access to the files stored on the device.</p>
@@ -944,19 +1092,14 @@ The device node might be <code>/dev/sdb1</code>; its files appear at the mount p
 <p>A path tells us <span class="marker">where to look</span>. Permissions determine whether access is allowed.</p>
 </div>
 </div>
-</section></section>
-<section>
-<section id="section-files" class="title-slide slide level1 center">
-<h1>2. Files and directories</h1>
-<p>Navigate, inspect and change the directory tree</p>
 </section>
 <section id="navigation" class="slide level2">
 <h2>Moving around</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">pwd</span></span>
-<span id="cb4-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /home/alice</span>
-<span id="cb4-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ..</span>
-<span id="cb4-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">pwd</span></span>
+<span id="cb7-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /home/alice</span>
+<span id="cb7-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ..</span>
+<span id="cb7-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span></span></code></pre></div>
 <ul>
 <li><code>pwd</code> prints the current working directory.</li>
 <li><code>cd path</code> changes the current directory.</li>
@@ -967,10 +1110,10 @@ The device node might be <code>/dev/sdb1</code>; its files appear at the mount p
 <section id="listing" class="slide level2">
 <h2>Listing directory entries</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span>
-<span id="cb5-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span></span>
-<span id="cb5-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-a</span></span>
-<span id="cb5-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-la</span> /home/alice</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span>
+<span id="cb8-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span></span>
+<span id="cb8-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-a</span></span>
+<span id="cb8-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-la</span> /home/alice</span></code></pre></div>
 <ul>
 <li><code>-l</code> adds details, including ownership and permissions.</li>
 <li><code>-a</code> includes names beginning with <code>.</code>, such as <code>.bashrc</code>.</li>
@@ -981,8 +1124,8 @@ The device node might be <code>/dev/sdb1</code>; its files appear at the mount p
 <section id="directory-changes" class="slide level2">
 <h2>Creating and removing directories</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> practice</span>
-<span id="cb6-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">rmdir</span> practice</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> practice</span>
+<span id="cb9-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">rmdir</span> practice</span></code></pre></div>
 <p><code>rmdir</code> removes an <strong>empty</strong> directory.</p>
 <div class="block alert">
 <p><code>rm -r practice</code> also removes the directory's contents.<br>
@@ -993,10 +1136,10 @@ Shell deletion does <strong>not</strong> send files to a recycle bin.</p>
 <section id="file-changes" class="slide level2">
 <h2>Creating, copying and moving files</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> notes.txt</span>
-<span id="cb7-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> notes.txt notes-copy.txt</span>
-<span id="cb7-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> notes-copy.txt archive.txt</span>
-<span id="cb7-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> archive.txt</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> notes.txt</span>
+<span id="cb10-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> notes.txt notes-copy.txt</span>
+<span id="cb10-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> notes-copy.txt archive.txt</span>
+<span id="cb10-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> archive.txt</span></code></pre></div>
 <p><code>touch</code> creates a missing file, or updates timestamps of an existing file.</p>
 <aside class="notes">
 <p>cp and mv can overwrite an existing destination. cp file directory copies into the directory. cp -r source destination copies a directory tree; mv can also move directories.</p>
@@ -1061,7 +1204,7 @@ He wanted to read the lines <strong>before</strong> an error.</p>
 </div>
 <p>His version of <code>more</code> could not move backward.<br>
 The new pager’s name joked about a <strong>backward more</strong>.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">less</span> app.log</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">less</span> app.log</span></code></pre></div>
 <aside class="notes">
 <p>In less, /ERROR searches for ERROR, n finds the next match, and q quits. Source: <a href="https://www.greenwoodsoftware.com/less/faq.html">Mark Nudelman's FAQ</a>.</p>
 <style type="text/css">
@@ -1080,8 +1223,8 @@ The new pager’s name joked about a <strong>backward more</strong>.</p>
 <section id="cat" class="slide level2">
 <h2>Concatenating files</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> first.txt second.txt</span>
-<span id="cb9-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> first.txt second.txt</span>
+<span id="cb12-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span></span></code></pre></div>
 <ul>
 <li>With filenames, <code>cat</code> prints their contents <strong>in argument order</strong>.</li>
 <li>Without filenames, <code>cat</code> reads <strong>standard input</strong>.</li>
@@ -1127,9 +1270,9 @@ The new pager’s name joked about a <strong>backward more</strong>.</p>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> /etc/rc<span class="pp">*</span></span>
-<span id="cb10-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> /etc/rc<span class="pp">????</span></span>
-<span id="cb10-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="pp">[</span><span class="ss">abc</span><span class="pp">]</span>oo.c</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> /etc/rc<span class="pp">*</span></span>
+<span id="cb13-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> /etc/rc<span class="pp">????</span></span>
+<span id="cb13-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="pp">[</span><span class="ss">abc</span><span class="pp">]</span>oo.c</span></code></pre></div>
 <p>The <strong>shell</strong> expands these patterns before running <code>ls</code>.</p>
 <aside class="notes">
 <p>Examples depend on existing names. With Bash defaults, an unmatched pattern remains literal. A wildcard usually does not match an initial dot, and a slash is a path separator. [abc]oo.c may match aoo.c, boo.c and coo.c. These are filename patterns, also called globs; grep's regular expressions use different rules.</p>
@@ -1146,39 +1289,41 @@ The new pager’s name joked about a <strong>backward more</strong>.</p>
       }</style></aside>
 </div>
 </section>
-<section id="quoting" class="slide level2 compact">
-<h2>Quoting special characters</h2>
+<section id="quoting" class="slide level2 worked-examples">
+<h2>Spaces separate arguments</h2>
 <div class="slide-body">
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Form</th>
-<th>Effect</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>\*</code></td>
-<td>Treat the next <code>*</code> literally</td>
-</tr>
-<tr class="even">
-<td><code>'*.txt'</code></td>
-<td>Preserve every character inside the quotes</td>
-</tr>
-<tr class="odd">
-<td><code>"$HOME"</code></td>
-<td>Expand the variable, keep the result as one word</td>
-</tr>
-</tbody>
-</table>
-<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="pp">*</span>.txt</span>
-<span id="cb11-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">'*.txt'</span></span>
-<span id="cb11-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="st">"meeting notes.txt"</span></span></code></pre></div>
-<div class="fragment">
-<p>Quotes help preserve <span class="marker">one argument</span> even when its value contains spaces.</p>
+<p>Our file is named <strong><code>meeting notes.txt</code></strong>, including the space.</p>
+<div class="columns">
+<div class="column">
+<p><strong>Without quotes</strong></p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> meeting notes.txt</span></code></pre></div>
+<p>Two filename arguments:<br>
+<code>meeting</code> and <code>notes.txt</code>.</p>
+<p><code>cat</code> tries to open two files.</p>
+</div><div class="column">
+<p><strong>With quotes</strong></p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="st">"meeting notes.txt"</span></span></code></pre></div>
+<p>One filename argument:<br>
+<code>meeting notes.txt</code>.</p>
+<p><code>cat</code> opens the intended file.</p>
+</div></div>
+<p>The shell removes the quotes. They are <span class="marker">instructions for the shell</span>.</p>
 </div>
+</section>
+<section id="quote-forms" class="slide level2">
+<h2>Three ways to protect a space</h2>
+<div class="slide-body">
+<p>These commands all pass <strong>the same filename</strong> to <code>cat</code>:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="st">'meeting notes.txt'</span></span>
+<span id="cb16-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="st">"meeting notes.txt"</span></span>
+<span id="cb16-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> meeting<span class="dt">\ </span>notes.txt</span></code></pre></div>
+<ul>
+<li><strong>Single quotes</strong> preserve everything inside them literally.</li>
+<li><strong>Double quotes</strong> preserve spaces, but still allow <code>$HOME</code> to expand.</li>
+<li>An unquoted <strong>backslash</strong> protects the next character, such as a space or <code>*</code>.</li>
+</ul>
 <aside class="notes">
-<p>Double quotes allow variable, command and arithmetic expansion. Backslash can escape selected characters. The shell removes its quote characters before passing arguments to the command.</p>
+<p>An unquoted backslash followed by a newline continues the line instead. <a href="https://www.gnu.org/software/bash/manual/html_node/Quoting.html">Bash: quoting</a>.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1192,19 +1337,101 @@ The new pager’s name joked about a <strong>backward more</strong>.</p>
       }</style></aside>
 </div>
 </section>
-<section id="argument-boundaries" class="slide level2 compact">
-<h2>What does the command receive?</h2>
+<section id="quote-variables" class="slide level2 compact">
+<h2>What expands inside quotes?</h2>
 <div class="slide-body">
-<p>In a directory containing only <code>a.txt</code> and <code>meeting notes.txt</code>:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'&lt;%s&gt;\n'</span> <span class="pp">*</span>.txt</span>
-<span id="cb12-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'&lt;%s&gt;\n'</span> <span class="st">'*.txt'</span></span></code></pre></div>
-<div class="fragment output">
-<pre class="text"><code>&lt;a.txt&gt;
-&lt;meeting notes.txt&gt;
-&lt;*.txt&gt;</code></pre>
-</div>
+<p>Suppose <code>$HOME</code> contains <code>/home/alice</code>.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Command</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>echo '$HOME'</code></td>
+<td><code>$HOME</code></td>
+</tr>
+<tr class="even">
+<td><code>echo "$HOME"</code></td>
+<td><code>/home/alice</code></td>
+</tr>
+<tr class="odd">
+<td><code>echo "$HOME/*.txt"</code></td>
+<td><code>/home/alice/*.txt</code></td>
+</tr>
+<tr class="even">
+<td><code>echo "It's OK"</code></td>
+<td><code>It's OK</code></td>
+</tr>
+<tr class="odd">
+<td><code>echo 'Say "hi"'</code></td>
+<td><code>Say "hi"</code></td>
+</tr>
+</tbody>
+</table>
+<p>Double quotes expand the variable, but keep spaces and <code>*</code> literal.<br>
+The other kind of quote can appear as ordinary text inside quotes.</p>
 <aside class="notes">
-<p>The first glob expands into two arguments. A matched filename containing spaces stays one argument. The quoted pattern stays literal. printf repeats its format for each argument. LC_ALL=C gives the ordering shown here.</p>
+<p>Double quotes also allow command and arithmetic substitution. Bash's interactive history expansion has additional rules for !, outside the scope of these examples. <a href="https://www.gnu.org/software/bash/manual/html_node/Single-Quotes.html">Bash: single quotes</a>; <a href="https://www.gnu.org/software/bash/manual/html_node/Double-Quotes.html">double quotes</a>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="echo-patterns" class="slide level2 worked-examples">
+<h2>Filename patterns: expanded or literal?</h2>
+<div class="slide-body">
+<p>The directory contains only <strong><code>a.txt</code></strong> and <strong><code>meeting notes.txt</code></strong>.</p>
+<div class="columns">
+<div class="column">
+<p><strong>Expand the pattern</strong></p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="pp">*</span>.txt</span></code></pre></div>
+<div class="output worked-output">
+<pre class="text"><code>a.txt meeting notes.txt</code></pre>
+</div>
+<p>The shell finds matching filenames.</p>
+</div><div class="column">
+<p><strong>Keep the pattern literal</strong></p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">'*.txt'</span></span></code></pre></div>
+<div class="output worked-output">
+<pre class="text"><code>*.txt</code></pre>
+</div>
+<p><code>echo "*.txt"</code> and <code>echo \*.txt</code> also print <code>*.txt</code>.</p>
+</div></div>
+<p><code>echo</code> separates its arguments with spaces. Its output hides their boundaries.</p>
+</div>
+</section>
+<section id="argument-boundaries" class="slide level2 worked-examples">
+<h2>Seeing each argument with printf</h2>
+<div class="slide-body">
+<p><code>printf '&lt;%s&gt;\n'</code> prints each following argument between <code>&lt;</code> and <code>&gt;</code>, on its own line.</p>
+<div class="columns">
+<div class="column">
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'&lt;%s&gt;\n'</span> <span class="pp">*</span>.txt</span></code></pre></div>
+<div class="output worked-output">
+<pre class="text"><code>&lt;a.txt&gt;
+&lt;meeting notes.txt&gt;</code></pre>
+</div>
+<p><strong>Two arguments.</strong> The space inside the matched filename stays intact.</p>
+</div><div class="column">
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb23-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'&lt;%s&gt;\n'</span> <span class="st">'*.txt'</span></span></code></pre></div>
+<div class="output worked-output">
+<pre class="text"><code>&lt;*.txt&gt;</code></pre>
+</div>
+<p><strong>One argument.</strong> The quoted pattern stays literal.</p>
+</div></div>
+<aside class="notes">
+<p>Same two files as on the previous slide. printf's first argument is the format; the counts here refer to the remaining arguments, formatted with %s. The format repeats for every value, and prints a newline. LC_ALL=C gives the ordering shown here.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1242,15 +1469,15 @@ The new pager’s name joked about a <strong>backward more</strong>.</p>
 <section>
 <section id="section-access" class="title-slide slide level1 center">
 <h1>3. Who may access this file?</h1>
-<p>Identify the account, inspect the path, explain the permission check</p>
+<p>Why can I read this file, but cannot change or delete it?</p>
 </section>
 <section id="identity" class="slide level2">
 <h2>Users, groups and ownership</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">whoami</span></span>
-<span id="cb14-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">id</span></span>
-<span id="cb14-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-ld</span> .</span>
-<span id="cb14-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span></span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb25-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">whoami</span></span>
+<span id="cb25-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">id</span></span>
+<span id="cb25-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-ld</span> .</span>
+<span id="cb25-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span></span></code></pre></div>
 <ul>
 <li><code>id</code> shows your user identity and groups.</li>
 <li><code>ls -l</code> shows the file’s owner, group and permission bits.</li>
@@ -1367,9 +1594,9 @@ The new pager’s name joked about a <strong>backward more</strong>.</p>
 <section id="chmod-symbolic" class="slide level2">
 <h2>Changing permission bits</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> u+x script.sh</span>
-<span id="cb16-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> go-w notes.txt</span>
-<span id="cb16-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> u=rw,g=r,o= notes.txt</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb27-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> u+x script.sh</span>
+<span id="cb27-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> go-w notes.txt</span>
+<span id="cb27-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> u=rw,g=r,o= notes.txt</span></code></pre></div>
 <ul>
 <li><code>+</code> adds the selected permission bits.</li>
 <li><code>-</code> removes them.</li>
@@ -1410,7 +1637,7 @@ The new pager’s name joked about a <strong>backward more</strong>.</p>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> 764 notes.txt</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb28-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> 764 notes.txt</span></code></pre></div>
 <div class="fragment">
 <p>The three digits describe <span class="marker">owner, group, others</span>, in that order.</p>
 </div>
@@ -1578,9 +1805,9 @@ If team access is intended, the owner can add <code>g+x</code>.</p>
 <section id="path-tools" class="slide level2">
 <h2>Path components and word counts</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">dirname</span> /home/alice/notes.txt</span>
-<span id="cb19-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">basename</span> /home/alice/notes.txt</span>
-<span id="cb19-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-w</span> notes.txt</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb30-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">dirname</span> /home/alice/notes.txt</span>
+<span id="cb30-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">basename</span> /home/alice/notes.txt</span>
+<span id="cb30-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-w</span> notes.txt</span></code></pre></div>
 <div class="fragment">
 <ul>
 <li><code>dirname</code> prints <code>/home/alice</code>.</li>
@@ -1596,7 +1823,7 @@ If team access is intended, the owner can add <code>g+x</code>.</p>
 <div class="columns">
 <div class="column">
 <h3 id="hard-link">Hard link</h3>
-<div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> notes.txt other.txt</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb31-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> notes.txt other.txt</span></code></pre></div>
 <ul>
 <li>Another name for the <strong>same file</strong>.</li>
 <li>Removing one name leaves the other usable.</li>
@@ -1604,7 +1831,7 @@ If team access is intended, the owner can add <code>g+x</code>.</p>
 </ul>
 </div><div class="column">
 <h3 id="symbolic-link">Symbolic link</h3>
-<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> notes.txt shortcut</span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb32-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> notes.txt shortcut</span></code></pre></div>
 <ul>
 <li>Stores a <strong>path</strong> to a target.</li>
 <li>May cross filesystems or target a directory.</li>
@@ -1633,12 +1860,12 @@ If team access is intended, the owner can add <code>g+x</code>.</p>
 <div class="column">
 <h3 id="builtin">Builtin</h3>
 <p>Implemented inside the shell.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb22-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ..</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb33-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ..</span></code></pre></div>
 <p>Can change the current shell's state.</p>
 </div><div class="column">
 <h3 id="external-program">External program</h3>
 <p>Loaded from an executable file.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb23-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span></span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb34-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span></span></code></pre></div>
 <p>The shell searches directories in <code>PATH</code>.</p>
 </div></div>
 <aside class="notes">
@@ -1659,10 +1886,10 @@ If team access is intended, the owner can add <code>g+x</code>.</p>
 <section id="type" class="slide level2">
 <h2>Recognising a command</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb24"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb24-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span> cd</span>
-<span id="cb24-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span> ls</span>
-<span id="cb24-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span> <span class="at">-a</span> echo</span>
-<span id="cb24-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">help</span> cd</span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb35-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span> cd</span>
+<span id="cb35-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span> ls</span>
+<span id="cb35-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span> <span class="at">-a</span> echo</span>
+<span id="cb35-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">help</span> cd</span></code></pre></div>
 <p><code>type</code> reports how Bash resolves a name.<br>
 <code>help</code> documents its builtins.</p>
 <aside class="notes">
