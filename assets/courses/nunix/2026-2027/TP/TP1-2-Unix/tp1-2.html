@@ -2340,9 +2340,33 @@ touch, echo, history, history -c, who, passwd, cat</code></pre>
 <li>List the running processes that do not belong to <code>root</code>, sorted by process name.</li>
 <li>List process names in order of total CPU time. If the same name occurs more than once, display it only once.</li>
 <li>Display the names of regular files in your home directory that have been modified today.</li>
-<li>Create <code>read-only.txt</code> containing the paths of regular files on the system whose permission bits grant read access to owner, group and others. Suppress error messages. Despite the output filename, these files may also have write or execute permissions.</li>
-<li>Create <code>mine.txt</code> containing the paths of regular files on the system owned by the user running the command.</li>
+<li>Create <code>read-only.txt</code> containing the paths of regular files on the system owned by the user running the command.</li>
 </ol>
+<div style="page-break-after: always;"></div>
+</section>
+<section id="text-editing-program" class="level2">
+<h2 class="anchored" data-anchor-id="text-editing-program">7. Text-editing program</h2>
+<p>Write a Bash program that searches the files in a given directory for a string <code>str</code> and replaces its occurrences with another string, <code>new_str</code>.</p>
+<ol type="1">
+<li>Accept command-line options with values, such as <code>./main.sh -a value</code>.</li>
+<li>Use functions in your program.</li>
+<li>Provide a help option explaining the arguments and their purpose.</li>
+<li>Validate the arguments and return an error status when they are invalid.</li>
+<li>Then add a choice between replacing the first occurrence and replacing all occurrences.</li>
+</ol>
+<p>For example, <code>-h</code> could display help and <code>-p</code> could specify the directory. Choose and document the remaining options.</p>
+<p>Use a directory tree such as this to exercise your program on files at several depths:</p>
+<pre class="text"><code>.
+├── file.txt
+├── folder1/
+│   ├── file.txt
+│   └── sub1/
+│       ├── file.txt
+│       └── subsub1/
+│           └── file.txt
+├── folder8/
+│   └── file.txt
+└── main.sh</code></pre>
 </section>
 
 </main>

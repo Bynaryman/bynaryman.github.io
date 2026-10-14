@@ -21,8 +21,10 @@ sources = [source / name for name in ("README.md", "Makefile", "cours/_quarto.ym
 sources.extend(source / "cours" / f"{deck}.qmd" for deck in decks)
 for name in ("assets", "styles", "filters"):
     sources.extend(p for p in (source / "cours" / name).rglob("*") if p.is_file())
-materials = [source / "TD" / f"td1.{ext}" for ext in ("qmd", "html", "pdf")]
-materials.extend(source / "TP/TP1-2-Unix" / f"tp1-2.{ext}" for ext in ("qmd", "html", "pdf"))
+materials = [source / folder / f"{stem}{suffix}.{ext}"
+             for folder, stem in (("TD", "td1"), ("TP/TP1-2-Unix", "tp1-2"))
+             for suffix in ("", "-fr")
+             for ext in ("qmd", "html", "pdf")]
 materials.append(source / "TP/TP1-2-Unix/tp-files.zip")
 materials.extend(source / "TP/TP1-2-Unix/files" / name
                  for name in ("Makefile", "prog1.c", "prog2.c", "d1", "d2"))
