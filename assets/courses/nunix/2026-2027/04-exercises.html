@@ -310,12 +310,12 @@ Read commands and predict their effects before executing them.</p>
 <p>Using <code>cat</code> and redirections:</p>
 <ol type="1">
 <li>Create <code>f5</code> containing the line <code>5 2 3 -1</code>.</li>
-<li>Create <code>f6</code> from <code>f4</code>, followed by <code>f5</code>.</li>
+<li>Create <code>f6</code> from <code>f5</code>, followed by <code>f4</code>.</li>
 <li>Append <code>user1</code>'s <code>f1</code> to <code>f6</code>.</li>
 <li>Copy <code>user1</code>'s <code>f2</code> into a new file <code>f7</code> in <code>user2</code>.</li>
 </ol>
 <aside class="notes">
-<p>From practice/user2: cat &gt; f5, enter 5 2 3 -1, press Enter, then Ctrl+D. Next: cat f4 f5 &gt; f6; cat ../user1/f1 &gt;&gt; f6; cat ../user1/f2 &gt; f7.</p>
+<p>From practice/user2: cat &gt; f5, enter 5 2 3 -1, press Enter, then Ctrl+D. Next: cat f5 f4 &gt; f6; cat ../user1/f1 &gt;&gt; f6; cat ../user1/f2 &gt; f7.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -393,19 +393,19 @@ Concatenate the two intermediate files in the stated order.</p>
 <tbody>
 <tr class="odd">
 <td><code>practice/user1/</code></td>
-<td><code>file1</code>, <code>file2</code>, <code>p1</code>, <code>p2</code>, <code>execution</code></td>
+<td><code>f1</code>, <code>f2</code>, <code>f3</code>, <code>p1</code>, <code>p2</code>, <code>execution</code></td>
 </tr>
 <tr class="even">
 <td><code>practice/user2/</code></td>
-<td>Another file named <code>file2</code></td>
+<td><code>f4</code></td>
 </tr>
 </tbody>
 </table>
 <p>From <code>practice/user1/</code>, run:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ex">./execution</span> file1 ../user2/file2 fileN</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ex">./execution</span> f1 ../user2/f4 f5</span></code></pre></div>
 <p>Which files are read? Where do the three output files appear?</p>
 <aside class="notes">
-<p>Inputs: user1/file1 and user2/file2. Intermediate files: user1/file1.r1 and user2/file2.r1. Final output: user1/fileN. user1/file2 is unused. Creating the second intermediate requires write permission in user2.</p>
+<p>Inputs: user1/f1 and user2/f4. Intermediate files: user1/f1.r1 and user2/f4.r1. Final output: user1/f5. Creating the second intermediate requires write permission in user2.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -451,9 +451,9 @@ Concatenate the two intermediate files in the stated order.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ex">./argument</span> one two three</span></code></pre></div>
 <p>Expected output:</p>
 <pre class="text"><code>3 arguments:
-  argument 1 - one
-  argument 2 - two
-  argument 3 - three</code></pre>
+ 1 - one
+ 2 - two
+ 3 - three</code></pre>
 <aside class="notes">
 <p>Loop over "$@". Start a counter at 1 and update it with counter=$(expr "$counter" + 1). ./argument "one two" three should report two arguments. The script name is excluded from $#.</p>
 <style type="text/css">
@@ -524,7 +524,7 @@ Concatenate the two intermediate files in the stated order.</p>
 <h2>Exercise 6: reading find commands</h2>
 <div class="slide-body">
 <p>Explain each command. Identify unnecessary directory visits or ambiguous patterns.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> /var/log <span class="at">-exec</span> grep <span class="st">'www.athabasca.com'</span> {} <span class="dt">\;</span></span>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> /var/log <span class="at">-exec</span> grep <span class="st">'www.univ-rennes1.fr'</span> {} <span class="dt">\;</span></span>
 <span id="cb5-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-name</span> <span class="st">'rc.conf'</span> <span class="at">-exec</span> chmod o+r {} <span class="dt">\;</span></span>
 <span id="cb5-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> /usr/local <span class="at">-type</span> f <span class="at">-name</span> <span class="st">'*.html'</span></span></code></pre></div>
 <aside class="notes">

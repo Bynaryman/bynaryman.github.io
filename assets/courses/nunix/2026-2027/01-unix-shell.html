@@ -1212,12 +1212,15 @@ The new pager’s name joked about a <strong>backward more</strong>.</p>
 <h2>Concatenating files</h2>
 <div class="slide-body">
 <div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> first.txt second.txt</span>
-<span id="cb12-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span></span></code></pre></div>
+<span id="cb12-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span></span>
+<span id="cb12-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> first.txt <span class="at">-</span> second.txt</span></code></pre></div>
 <ul>
 <li>With filenames, <code>cat</code> prints their contents <strong>in argument order</strong>.</li>
 <li>Without filenames, <code>cat</code> reads <strong>standard input</strong>.</li>
+<li>A standalone <code>-</code> means <strong>read standard input here</strong>.</li>
 <li>At an empty terminal input line, <strong>Ctrl+D</strong> indicates end of input.</li>
 </ul>
+<p>The third command reads <code>first.txt</code>, then your keyboard input, then <code>second.txt</code>.</p>
 <aside class="notes">
 <p>cat first.txt - second.txt reads first.txt, then stdin, then second.txt. Ctrl+D is the terminal's end-of-file input action, not a signal. If characters are pending on a line, the first Ctrl+D submits them instead of producing an empty read. The distinction returns in the process lecture.</p>
 <style type="text/css">
@@ -1708,52 +1711,6 @@ If team access is intended, the owner can add <code>g+x</code>.</p>
 </div>
 <aside class="notes">
 <p>Linux distributions can provide graphical desktops. Windows provides shells such as PowerShell, and <a href="https://learn.microsoft.com/en-us/windows/wsl/about">WSL</a> runs a Linux environment. The operating system and the user interface are separate choices.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</div>
-</section>
-<section id="excel-and-logs" class="slide level2 compact">
-<h2>Summarise a log before opening it in Excel</h2>
-<div class="slide-body">
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Quantity</th>
-<th>Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>2,000,000 log lines</strong></td>
-<td>Example input size</td>
-</tr>
-<tr class="even">
-<td><strong>1,048,576 rows</strong></td>
-<td>The maximum in one Excel worksheet</td>
-</tr>
-<tr class="odd">
-<td><strong>One row per error code</strong></td>
-<td>The summary the team wants to discuss</td>
-</tr>
-</tbody>
-</table>
-<div class="block example">
-<p>Process the raw log where it lives, save the counts, then use Excel to analyse or present the summary.</p>
-</div>
-<div class="small-note">
-<p><a href="https://support.microsoft.com/en-us/excel/excel-specifications-and-limits">Microsoft: worksheet limits</a>. Power Query and the Data Model offer other ways to handle larger datasets.</p>
-</div>
-<aside class="notes">
-<p>Two million log lines is a hypothetical input. The worksheet limit does not cover every Excel workflow: Power Query can transform data before loading, and the Data Model provides another destination. Text tools also consume resources; sorting may use temporary disk space.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
