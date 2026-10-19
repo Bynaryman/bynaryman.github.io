@@ -218,11 +218,21 @@ Louis Ledoux
 <p>A computer is slow. Would adding RAM help?<br>
 Check which resource is under pressure first.</p>
 </div>
+<p>We will use commands to inspect the system, find useful information, and turn it into a summary we can save.</p>
+</div>
+</section>
+<section id="outline" class="slide level2">
+<h2>CM2 outline</h2>
+<div class="slide-body">
 <ol type="1">
-<li>Check CPU, memory and disk usage.</li>
-<li>Find large files and inspect application logs.</li>
-<li>Count error codes with a pipeline.</li>
+<li><a href="#/section-processes">Processes and resources</a></li>
+<li><a href="#/section-logs">Finding files and text</a></li>
+<li><a href="#/section-redirections">Inputs, outputs and redirections</a></li>
+<li><a href="#/section-pipelines">Combining commands with pipes</a></li>
 </ol>
+<div class="block">
+<p>Observe the system → find information → redirect streams → combine commands.</p>
+</div>
 </div>
 </section>
 <section>
@@ -430,6 +440,25 @@ Check which resource is under pressure first.</p>
       }</style></aside>
 </div>
 </section>
+<section id="outline-part-2" class="slide level2">
+<h2>From resources to files</h2>
+<div class="slide-body">
+<ol type="1">
+<li><a href="#/section-processes">Processes and resources</a></li>
+<li><span class="marker">Finding files and text</span></li>
+<li><a href="#/section-redirections">Inputs, outputs and redirections</a></li>
+<li><a href="#/section-pipelines">Combining commands with pipes</a></li>
+</ol>
+<div class="block example">
+<p>We can inspect CPU, memory and disk usage. Now we need to locate files and find the relevant lines in their contents.</p>
+</div>
+</div>
+</section></section>
+<section>
+<section id="section-logs" class="title-slide slide level1 center">
+<h1>2. Finding files and text</h1>
+<p>Where is the file, and which lines contain the information we need?</p>
+</section>
 <section id="find" class="slide level2">
 <h2>Finding files</h2>
 <div class="slide-body">
@@ -510,16 +539,11 @@ Check which resource is under pressure first.</p>
 </ol>
 </div></div>
 </div>
-</section></section>
-<section>
-<section id="section-logs" class="title-slide slide level1 center">
-<h1>2. Searching text</h1>
-<p>How can I find the relevant lines in a large log?</p>
 </section>
 <section id="log-format" class="slide level2 compact">
 <h2>A small log file</h2>
 <div class="slide-body">
-<p>Save these four lines as <code>app.log</code>:</p>
+<p>We have located a log file. Next, we will search its contents with <code>grep</code>. Save these four lines as <code>app.log</code>:</p>
 <pre class="text"><code>10:00 INFO STARTED
 10:01 ERROR DISK_FULL
 10:02 ERROR TIMEOUT
@@ -691,6 +715,25 @@ Check which resource is under pressure first.</p>
       }</style></aside>
 </div>
 </section>
+<section id="outline-part-3" class="slide level2">
+<h2>From matching lines to saved results</h2>
+<div class="slide-body">
+<ol type="1">
+<li><a href="#/section-processes">Processes and resources</a></li>
+<li><a href="#/section-logs">Finding files and text</a></li>
+<li><span class="marker">Inputs, outputs and redirections</span></li>
+<li><a href="#/section-pipelines">Combining commands with pipes</a></li>
+</ol>
+<div class="block example">
+<p>We can find files and select useful lines. How can a command read from a file and save its output or errors?</p>
+</div>
+</div>
+</section></section>
+<section>
+<section id="section-redirections" class="title-slide slide level1 center">
+<h1>3. Inputs, outputs and redirections</h1>
+<p>Where does a command read, where does it write, and did it succeed?</p>
+</section>
 <section id="streams" class="slide level2">
 <h2>Input, output and status</h2>
 <div class="slide-body">
@@ -763,11 +806,6 @@ Check which resource is under pressure first.</p>
           display:block!important;
       }</style></aside>
 </div>
-</section></section>
-<section>
-<section id="section-redirections" class="title-slide slide level1 center">
-<h1>3. Redirections and pipes</h1>
-<p>How can I connect commands and save their results?</p>
 </section>
 <section id="redirect-input" class="slide level2">
 <h2>Reading input from a file</h2>
@@ -909,6 +947,25 @@ It does not make stderr follow later changes to stdout.</p>
       }</style></aside>
 </div>
 </section>
+<section id="outline-part-4" class="slide level2">
+<h2>From one command to a pipeline</h2>
+<div class="slide-body">
+<ol type="1">
+<li><a href="#/section-processes">Processes and resources</a></li>
+<li><a href="#/section-logs">Finding files and text</a></li>
+<li><a href="#/section-redirections">Inputs, outputs and redirections</a></li>
+<li><span class="marker">Combining commands with pipes</span></li>
+</ol>
+<div class="block example">
+<p>We can choose the input and output of one command. Now we will connect commands to count and rank the errors in our log.</p>
+</div>
+</div>
+</section></section>
+<section>
+<section id="section-pipelines" class="title-slide slide level1 center">
+<h1>4. Combining commands with pipes</h1>
+<p>How can one command use another command’s output?</p>
+</section>
 <section id="pipe" class="slide level2">
 <h2>A pipe between two commands</h2>
 <div class="slide-body">
@@ -958,7 +1015,7 @@ The shared text stream lets us combine them.</p>
 </div>
 </section>
 <section id="pipeline-extract" class="slide level2 compact">
-<h2>1. Select errors and extract their codes</h2>
+<h2>Pipeline step 1: extract error codes</h2>
 <div class="slide-body">
 <div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">' ERROR '</span> app.log <span class="kw">|</span></span>
 <span id="cb20-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cut</span> <span class="at">-d</span> <span class="st">' '</span> <span class="at">-f</span> 3</span></code></pre></div>
@@ -983,7 +1040,7 @@ DISK_FULL</code></pre>
 </div>
 </section>
 <section id="pipeline-count" class="slide level2 compact">
-<h2>2. Count each error code</h2>
+<h2>Pipeline step 2: count each code</h2>
 <div class="slide-body">
 <div class="sourceCode" id="cb22"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb22-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">' ERROR '</span> app.log <span class="kw">|</span></span>
 <span id="cb22-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cut</span> <span class="at">-d</span> <span class="st">' '</span> <span class="at">-f</span> 3 <span class="kw">|</span></span>
@@ -1092,11 +1149,12 @@ Bash normally reports the last pipeline command’s status.</p>
 <section id="recap" class="slide level2">
 <h2>CM2 summary: commands and pipelines</h2>
 <div class="slide-body">
-<ul>
-<li>Check <strong>CPU</strong>, <strong>memory</strong> and <strong>disk</strong> usage.</li>
-<li>Find files and filter lines with <code>grep</code>.</li>
-<li>Combine commands with pipes and redirections.</li>
-</ul>
+<ol type="1">
+<li><strong>Processes and resources:</strong> inspect CPU, memory and disk usage.</li>
+<li><strong>Finding files and text:</strong> locate files with <code>find</code>, select lines with <code>grep</code>.</li>
+<li><strong>Inputs, outputs and redirections:</strong> read files, save results, separate errors.</li>
+<li><strong>Combining commands with pipes:</strong> extract, count and rank log entries.</li>
+</ol>
 </div>
 </section></section>
 <section>
