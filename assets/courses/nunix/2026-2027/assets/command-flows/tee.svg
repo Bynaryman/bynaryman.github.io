@@ -39,11 +39,12 @@
 <text x="1232.5" y="71" text-anchor="middle" font-size="28" fill="#00502e" font-weight="bold">Terminal</text>
 <path d="M1104 84 H1361" stroke="#00502e" stroke-width="2"/>
 <text x="1112" y="121" text-anchor="start" font-size="28" fill="#111111" font-family="DejaVu Sans Mono, monospace">sorted names</text>
-<rect x="1099" y="239" width="285" height="125" fill="#111" opacity=".3"/>
-<rect x="1090" y="230" width="285" height="125" fill="#fff" stroke="#651046" stroke-width="3"/>
-<text x="1232.5" y="266" text-anchor="middle" font-size="28" fill="#651046" font-weight="bold" font-family="DejaVu Sans Mono, monospace">sorted.txt</text>
-<path d="M1104 279 H1361" stroke="#651046" stroke-width="2"/>
-<text x="1112" y="316" text-anchor="start" font-size="28" fill="#111111" font-family="DejaVu Sans Mono, monospace">sorted names</text>
+<path d="M1099 239 H1356 L1384 267 V364 H1099 Z" fill="#111" opacity=".3"/>
+<path d="M1090 230 H1347 L1375 258 V355 H1090 Z" fill="#fff" stroke="#651046" stroke-width="3"/>
+<path d="M1347 230 V258 H1375 Z" fill="#f7d5ec" stroke="#651046" stroke-width="3" stroke-linejoin="round"/>
+<text x="1232.5" y="283" text-anchor="middle" font-size="28" fill="#651046" font-weight="bold" font-family="DejaVu Sans Mono, monospace">sorted.txt</text>
+<path d="M1104 296 H1361" stroke="#651046" stroke-width="2"/>
+<text x="1112" y="333" text-anchor="start" font-size="28" fill="#111111" font-family="DejaVu Sans Mono, monospace">sorted names</text>
 <path d="M820 222 H960 V105 H1085" fill="none" stroke="#00502e" stroke-width="4" marker-end="url(#green)"/>
 <text x="920" y="75" text-anchor="middle" font-size="26" fill="#00502e" font-weight="bold">stdout</text>
 <path d="M690 285 V335 H1085" fill="none" stroke="#651046" stroke-width="4" marker-end="url(#plum)"/>
