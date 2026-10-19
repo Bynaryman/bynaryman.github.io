@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="380" viewBox="0 0 1400 380" role="img" aria-labelledby="title desc"><title id="title">arguments</title><desc id="desc">names.txt supplies text to head. Its standard output goes to Terminal.</desc>
+<defs>
+<marker id="blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#003b80"/></marker>
+<marker id="green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#00502e"/></marker>
+<marker id="gold" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#8a3b00"/></marker>
+<marker id="red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#a0001c"/></marker>
+<marker id="plum" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#651046"/></marker>
+</defs><g font-family="DejaVu Sans, sans-serif" fill="#111">
+<rect x="29" y="124" width="280" height="190" fill="#111" opacity=".3"/>
+<rect x="20" y="115" width="280" height="190" fill="#fff" stroke="#003b80" stroke-width="3"/>
+<text x="160.0" y="151" text-anchor="middle" font-size="28" fill="#003b80" font-weight="bold" font-family="DejaVu Sans Mono, monospace">names.txt</text>
+<path d="M34 164 H286" stroke="#003b80" stroke-width="2"/>
+<text x="42" y="201" text-anchor="start" font-size="28" fill="#111111" font-family="DejaVu Sans Mono, monospace">Linus</text>
+<text x="42" y="235" text-anchor="start" font-size="28" fill="#111111" font-family="DejaVu Sans Mono, monospace">Ada</text>
+<text x="42" y="269" text-anchor="start" font-size="28" fill="#111111" font-family="DejaVu Sans Mono, monospace">Grace</text>
+<rect x="559" y="129" width="280" height="165" fill="#111" opacity=".3"/>
+<rect x="550" y="120" width="280" height="165" fill="#e3edfc" stroke="#003b80" stroke-width="3"/>
+<text x="690.0" y="178" text-anchor="middle" font-size="40" fill="#003b80" font-weight="bold" font-family="DejaVu Sans Mono, monospace">head</text>
+<rect x="550" y="200" width="110" height="45" fill="#c9e4ff" stroke="#003b80" stroke-width="3"/>
+<text x="605" y="230" text-anchor="middle" font-size="21" fill="#003b80" font-weight="bold">stdin 0</text>
+<rect x="720" y="200" width="110" height="45" fill="#d4f4df" stroke="#00502e" stroke-width="3"/>
+<text x="775" y="230" text-anchor="middle" font-size="21" fill="#00502e" font-weight="bold">stdout 1</text>
+<rect x="1099" y="124" width="280" height="190" fill="#111" opacity=".3"/>
+<rect x="1090" y="115" width="280" height="190" fill="#fff" stroke="#00502e" stroke-width="3"/>
+<text x="1230.0" y="151" text-anchor="middle" font-size="28" fill="#00502e" font-weight="bold">Terminal</text>
+<path d="M1104 164 H1356" stroke="#00502e" stroke-width="2"/>
+<text x="1112" y="201" text-anchor="start" font-size="28" fill="#111111" font-family="DejaVu Sans Mono, monospace">Linus</text>
+<text x="1112" y="235" text-anchor="start" font-size="28" fill="#111111" font-family="DejaVu Sans Mono, monospace">Ada</text>
+<path d="M300 222 H545" fill="none" stroke="#003b80" stroke-width="4" marker-end="url(#blue)"/>
+<path d="M830 222 H1085" fill="none" stroke="#00502e" stroke-width="4" marker-end="url(#green)"/>
+<text x="425" y="195" text-anchor="middle" font-size="28" fill="#003b80" font-weight="bold">stdin</text>
+<text x="960" y="195" text-anchor="middle" font-size="28" fill="#00502e" font-weight="bold">stdout</text>
+<text x="690.0" y="24" text-anchor="middle" font-size="27" fill="#8a3b00" font-weight="bold">Arguments</text>
+<rect x="559" y="48" width="280" height="48" fill="#111" opacity=".3"/>
+<rect x="550" y="39" width="280" height="48" fill="#fff0b5" stroke="#8a3b00" stroke-width="3"/>
+<text x="690.0" y="72" text-anchor="middle" font-size="28" fill="#8a3b00" font-family="DejaVu Sans Mono, monospace">-n 2</text>
+<path d="M690.0 88 V115" fill="none" stroke="#8a3b00" stroke-width="4" marker-end="url(#gold)"/>
+<text x="425" y="270" text-anchor="middle" font-size="25" fill="#003b80" font-family="DejaVu Sans Mono, monospace">&lt; names.txt</text>
+</g></svg>

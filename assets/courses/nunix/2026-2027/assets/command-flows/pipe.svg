@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="410" viewBox="0 0 1400 410" role="img" aria-labelledby="title desc"><title id="title">pipe</title><desc id="desc">app.log feeds grep; a pipe connects its output to wc; the result goes to Terminal. Arguments are above each command.</desc>
+<defs>
+<marker id="blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#003b80"/></marker>
+<marker id="green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#00502e"/></marker>
+<marker id="gold" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#8a3b00"/></marker>
+<marker id="red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#a0001c"/></marker>
+<marker id="plum" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#651046"/></marker>
+</defs><g font-family="DejaVu Sans, sans-serif" fill="#111">
+<rect x="24" y="124" width="245" height="190" fill="#111" opacity=".3"/>
+<rect x="15" y="115" width="245" height="190" fill="#fff" stroke="#003b80" stroke-width="3"/>
+<text x="137.5" y="151" text-anchor="middle" font-size="28" fill="#003b80" font-weight="bold" font-family="DejaVu Sans Mono, monospace">app.log</text>
+<path d="M29 164 H246" stroke="#003b80" stroke-width="2"/>
+<text x="37" y="201" text-anchor="start" font-size="28" fill="#111111" font-family="DejaVu Sans Mono, monospace">4 log lines</text>
+<rect x="399" y="129" width="240" height="165" fill="#111" opacity=".3"/>
+<rect x="390" y="120" width="240" height="165" fill="#e3edfc" stroke="#003b80" stroke-width="3"/>
+<text x="510.0" y="178" text-anchor="middle" font-size="40" fill="#003b80" font-weight="bold" font-family="DejaVu Sans Mono, monospace">grep</text>
+<rect x="390" y="200" width="110" height="45" fill="#c9e4ff" stroke="#003b80" stroke-width="3"/>
+<text x="445" y="230" text-anchor="middle" font-size="21" fill="#003b80" font-weight="bold">stdin 0</text>
+<rect x="520" y="200" width="110" height="45" fill="#d4f4df" stroke="#00502e" stroke-width="3"/>
+<text x="575" y="230" text-anchor="middle" font-size="21" fill="#00502e" font-weight="bold">stdout 1</text>
+<rect x="809" y="129" width="240" height="165" fill="#111" opacity=".3"/>
+<rect x="800" y="120" width="240" height="165" fill="#e3edfc" stroke="#003b80" stroke-width="3"/>
+<text x="920.0" y="178" text-anchor="middle" font-size="40" fill="#003b80" font-weight="bold" font-family="DejaVu Sans Mono, monospace">wc</text>
+<rect x="800" y="200" width="110" height="45" fill="#c9e4ff" stroke="#003b80" stroke-width="3"/>
+<text x="855" y="230" text-anchor="middle" font-size="21" fill="#003b80" font-weight="bold">stdin 0</text>
+<rect x="930" y="200" width="110" height="45" fill="#d4f4df" stroke="#00502e" stroke-width="3"/>
+<text x="985" y="230" text-anchor="middle" font-size="21" fill="#00502e" font-weight="bold">stdout 1</text>
+<rect x="1169" y="124" width="225" height="190" fill="#111" opacity=".3"/>
+<rect x="1160" y="115" width="225" height="190" fill="#fff" stroke="#00502e" stroke-width="3"/>
+<text x="1272.5" y="151" text-anchor="middle" font-size="28" fill="#00502e" font-weight="bold">Terminal</text>
+<path d="M1174 164 H1371" stroke="#00502e" stroke-width="2"/>
+<text x="1182" y="201" text-anchor="start" font-size="28" fill="#111111" font-family="DejaVu Sans Mono, monospace">3</text>
+<text x="510.0" y="24" text-anchor="middle" font-size="27" fill="#8a3b00" font-weight="bold">Arguments</text>
+<rect x="399" y="48" width="240" height="48" fill="#111" opacity=".3"/>
+<rect x="390" y="39" width="240" height="48" fill="#fff0b5" stroke="#8a3b00" stroke-width="3"/>
+<text x="510.0" y="72" text-anchor="middle" font-size="28" fill="#8a3b00" font-family="DejaVu Sans Mono, monospace">&#x27; ERROR &#x27;</text>
+<path d="M510.0 88 V115" fill="none" stroke="#8a3b00" stroke-width="4" marker-end="url(#gold)"/>
+<text x="920.0" y="24" text-anchor="middle" font-size="27" fill="#8a3b00" font-weight="bold">Arguments</text>
+<rect x="809" y="48" width="240" height="48" fill="#111" opacity=".3"/>
+<rect x="800" y="39" width="240" height="48" fill="#fff0b5" stroke="#8a3b00" stroke-width="3"/>
+<text x="920.0" y="72" text-anchor="middle" font-size="28" fill="#8a3b00" font-family="DejaVu Sans Mono, monospace">-l</text>
+<path d="M920.0 88 V115" fill="none" stroke="#8a3b00" stroke-width="4" marker-end="url(#gold)"/>
+<path d="M260 222 H385" fill="none" stroke="#003b80" stroke-width="4" marker-end="url(#blue)"/>
+<path d="M630 222 H795" fill="none" stroke="#00502e" stroke-width="4" marker-end="url(#green)"/>
+<path d="M1040 222 H1155" fill="none" stroke="#00502e" stroke-width="4" marker-end="url(#green)"/>
+<text x="325" y="190" text-anchor="middle" font-size="34" fill="#003b80" font-weight="bold">&lt;</text>
+<text x="715" y="190" text-anchor="middle" font-size="38" fill="#00502e" font-weight="bold">|</text>
+<text x="1100" y="190" text-anchor="middle" font-size="27" fill="#00502e" font-weight="bold">stdout</text>
+<text x="715" y="335" text-anchor="middle" font-size="28" fill="#00502e" font-weight="bold">3 matching lines</text>
+<text x="715" y="377" text-anchor="middle" font-size="28" fill="#111111">stdout of grep becomes stdin of wc</text>
+</g></svg>
