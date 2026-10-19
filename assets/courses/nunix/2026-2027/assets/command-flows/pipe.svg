@@ -6,11 +6,12 @@
 <marker id="red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#a0001c"/></marker>
 <marker id="plum" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#651046"/></marker>
 </defs><g font-family="DejaVu Sans, sans-serif" fill="#111">
-<rect x="24" y="124" width="245" height="190" fill="#111" opacity=".3"/>
-<rect x="15" y="115" width="245" height="190" fill="#fff" stroke="#003b80" stroke-width="3"/>
-<text x="137.5" y="151" text-anchor="middle" font-size="28" fill="#003b80" font-weight="bold" font-family="DejaVu Sans Mono, monospace">app.log</text>
-<path d="M29 164 H246" stroke="#003b80" stroke-width="2"/>
-<text x="37" y="201" text-anchor="start" font-size="28" fill="#111111" font-family="DejaVu Sans Mono, monospace">4 log lines</text>
+<path d="M24 124 H241 L269 152 V314 H24 Z" fill="#111" opacity=".3"/>
+<path d="M15 115 H232 L260 143 V305 H15 Z" fill="#fff" stroke="#003b80" stroke-width="3"/>
+<path d="M232 115 V143 H260 Z" fill="#c9e4ff" stroke="#003b80" stroke-width="3" stroke-linejoin="round"/>
+<text x="137.5" y="168" text-anchor="middle" font-size="28" fill="#003b80" font-weight="bold" font-family="DejaVu Sans Mono, monospace">app.log</text>
+<path d="M29 181 H246" stroke="#003b80" stroke-width="2"/>
+<text x="37" y="218" text-anchor="start" font-size="28" fill="#111111" font-family="DejaVu Sans Mono, monospace">4 log lines</text>
 <rect x="399" y="129" width="240" height="165" fill="#111" opacity=".3"/>
 <rect x="390" y="120" width="240" height="165" fill="#e3edfc" stroke="#003b80" stroke-width="3"/>
 <text x="510.0" y="178" text-anchor="middle" font-size="40" fill="#003b80" font-weight="bold" font-family="DejaVu Sans Mono, monospace">grep</text>

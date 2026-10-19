@@ -19,16 +19,18 @@
 <text x="315.0" y="72" text-anchor="middle" font-size="28" fill="#8a3b00" font-family="DejaVu Sans Mono, monospace">. -name &#x27;*.txt&#x27;</text>
 <path d="M315.0 88 V115" fill="none" stroke="#8a3b00" stroke-width="4" marker-end="url(#gold)"/>
 <text x="315" y="338" text-anchor="middle" font-size="27" fill="#111111">searches the filesystem</text>
-<rect x="1019" y="44" width="350" height="125" fill="#111" opacity=".3"/>
-<rect x="1010" y="35" width="350" height="125" fill="#fff" stroke="#00502e" stroke-width="3"/>
-<text x="1185.0" y="71" text-anchor="middle" font-size="28" fill="#00502e" font-weight="bold" font-family="DejaVu Sans Mono, monospace">matches.txt</text>
-<path d="M1024 84 H1346" stroke="#00502e" stroke-width="2"/>
-<text x="1032" y="121" text-anchor="start" font-size="28" fill="#111111" font-family="DejaVu Sans Mono, monospace">./notes.txt</text>
-<rect x="1019" y="234" width="350" height="125" fill="#111" opacity=".3"/>
-<rect x="1010" y="225" width="350" height="125" fill="#fff" stroke="#a0001c" stroke-width="3"/>
-<text x="1185.0" y="261" text-anchor="middle" font-size="28" fill="#a0001c" font-weight="bold" font-family="DejaVu Sans Mono, monospace">errors.txt</text>
-<path d="M1024 274 H1346" stroke="#a0001c" stroke-width="2"/>
-<text x="1032" y="311" text-anchor="start" font-size="28" fill="#111111" font-family="DejaVu Sans Mono, monospace">Permission denied</text>
+<path d="M1019 44 H1341 L1369 72 V169 H1019 Z" fill="#111" opacity=".3"/>
+<path d="M1010 35 H1332 L1360 63 V160 H1010 Z" fill="#fff" stroke="#00502e" stroke-width="3"/>
+<path d="M1332 35 V63 H1360 Z" fill="#d4f4df" stroke="#00502e" stroke-width="3" stroke-linejoin="round"/>
+<text x="1185.0" y="88" text-anchor="middle" font-size="28" fill="#00502e" font-weight="bold" font-family="DejaVu Sans Mono, monospace">matches.txt</text>
+<path d="M1024 101 H1346" stroke="#00502e" stroke-width="2"/>
+<text x="1032" y="138" text-anchor="start" font-size="28" fill="#111111" font-family="DejaVu Sans Mono, monospace">./notes.txt</text>
+<path d="M1019 234 H1341 L1369 262 V359 H1019 Z" fill="#111" opacity=".3"/>
+<path d="M1010 225 H1332 L1360 253 V350 H1010 Z" fill="#fff" stroke="#a0001c" stroke-width="3"/>
+<path d="M1332 225 V253 H1360 Z" fill="#ffe1e7" stroke="#a0001c" stroke-width="3" stroke-linejoin="round"/>
+<text x="1185.0" y="278" text-anchor="middle" font-size="28" fill="#a0001c" font-weight="bold" font-family="DejaVu Sans Mono, monospace">errors.txt</text>
+<path d="M1024 291 H1346" stroke="#a0001c" stroke-width="2"/>
+<text x="1032" y="328" text-anchor="start" font-size="28" fill="#111111" font-family="DejaVu Sans Mono, monospace">Permission denied</text>
 <path d="M510 222 H720 V105 H1005" fill="none" stroke="#00502e" stroke-width="4" marker-end="url(#green)"/>
 <text x="780" y="80" text-anchor="middle" font-size="29" fill="#00502e" font-weight="bold">&gt;  stdout 1</text>
 <path d="M510 267 H720 V295 H1005" fill="none" stroke="#a0001c" stroke-width="4" marker-end="url(#red)"/>

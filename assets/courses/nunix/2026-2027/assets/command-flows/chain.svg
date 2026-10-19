@@ -6,13 +6,14 @@
 <marker id="red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#a0001c"/></marker>
 <marker id="plum" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#651046"/></marker>
 </defs><g font-family="DejaVu Sans, sans-serif" fill="#111">
-<rect x="24" y="124" width="245" height="190" fill="#111" opacity=".3"/>
-<rect x="15" y="115" width="245" height="190" fill="#fff" stroke="#003b80" stroke-width="3"/>
-<text x="137.5" y="151" text-anchor="middle" font-size="28" fill="#003b80" font-weight="bold" font-family="DejaVu Sans Mono, monospace">names.txt</text>
-<path d="M29 164 H246" stroke="#003b80" stroke-width="2"/>
-<text x="37" y="201" text-anchor="start" font-size="28" fill="#111111" font-family="DejaVu Sans Mono, monospace">Linus</text>
-<text x="37" y="235" text-anchor="start" font-size="28" fill="#111111" font-family="DejaVu Sans Mono, monospace">Ada</text>
-<text x="37" y="269" text-anchor="start" font-size="28" fill="#111111" font-family="DejaVu Sans Mono, monospace">Grace</text>
+<path d="M24 124 H241 L269 152 V314 H24 Z" fill="#111" opacity=".3"/>
+<path d="M15 115 H232 L260 143 V305 H15 Z" fill="#fff" stroke="#003b80" stroke-width="3"/>
+<path d="M232 115 V143 H260 Z" fill="#c9e4ff" stroke="#003b80" stroke-width="3" stroke-linejoin="round"/>
+<text x="137.5" y="168" text-anchor="middle" font-size="28" fill="#003b80" font-weight="bold" font-family="DejaVu Sans Mono, monospace">names.txt</text>
+<path d="M29 181 H246" stroke="#003b80" stroke-width="2"/>
+<text x="37" y="218" text-anchor="start" font-size="28" fill="#111111" font-family="DejaVu Sans Mono, monospace">Linus</text>
+<text x="37" y="252" text-anchor="start" font-size="28" fill="#111111" font-family="DejaVu Sans Mono, monospace">Ada</text>
+<text x="37" y="286" text-anchor="start" font-size="28" fill="#111111" font-family="DejaVu Sans Mono, monospace">Grace</text>
 <rect x="399" y="129" width="240" height="165" fill="#111" opacity=".3"/>
 <rect x="390" y="120" width="240" height="165" fill="#e3edfc" stroke="#003b80" stroke-width="3"/>
 <text x="510.0" y="178" text-anchor="middle" font-size="40" fill="#003b80" font-weight="bold" font-family="DejaVu Sans Mono, monospace">sort</text>
@@ -27,12 +28,13 @@
 <text x="855" y="230" text-anchor="middle" font-size="21" fill="#003b80" font-weight="bold">stdin 0</text>
 <rect x="930" y="200" width="110" height="45" fill="#d4f4df" stroke="#00502e" stroke-width="3"/>
 <text x="985" y="230" text-anchor="middle" font-size="21" fill="#00502e" font-weight="bold">stdout 1</text>
-<rect x="1169" y="124" width="225" height="190" fill="#111" opacity=".3"/>
-<rect x="1160" y="115" width="225" height="190" fill="#fff" stroke="#00502e" stroke-width="3"/>
-<text x="1272.5" y="151" text-anchor="middle" font-size="28" fill="#00502e" font-weight="bold" font-family="DejaVu Sans Mono, monospace">first-two.txt</text>
-<path d="M1174 164 H1371" stroke="#00502e" stroke-width="2"/>
-<text x="1182" y="201" text-anchor="start" font-size="28" fill="#111111" font-family="DejaVu Sans Mono, monospace">Ada</text>
-<text x="1182" y="235" text-anchor="start" font-size="28" fill="#111111" font-family="DejaVu Sans Mono, monospace">Grace</text>
+<path d="M1169 124 H1366 L1394 152 V314 H1169 Z" fill="#111" opacity=".3"/>
+<path d="M1160 115 H1357 L1385 143 V305 H1160 Z" fill="#fff" stroke="#00502e" stroke-width="3"/>
+<path d="M1357 115 V143 H1385 Z" fill="#d4f4df" stroke="#00502e" stroke-width="3" stroke-linejoin="round"/>
+<text x="1272.5" y="168" text-anchor="middle" font-size="28" fill="#00502e" font-weight="bold" font-family="DejaVu Sans Mono, monospace">first-two.txt</text>
+<path d="M1174 181 H1371" stroke="#00502e" stroke-width="2"/>
+<text x="1182" y="218" text-anchor="start" font-size="28" fill="#111111" font-family="DejaVu Sans Mono, monospace">Ada</text>
+<text x="1182" y="252" text-anchor="start" font-size="28" fill="#111111" font-family="DejaVu Sans Mono, monospace">Grace</text>
 <text x="920.0" y="24" text-anchor="middle" font-size="27" fill="#8a3b00" font-weight="bold">Arguments</text>
 <rect x="809" y="48" width="240" height="48" fill="#111" opacity=".3"/>
 <rect x="800" y="39" width="240" height="48" fill="#fff0b5" stroke="#8a3b00" stroke-width="3"/>
