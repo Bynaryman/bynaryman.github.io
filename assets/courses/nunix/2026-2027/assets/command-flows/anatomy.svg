@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="480" viewBox="0 0 1400 480" role="img" aria-labelledby="title desc"><title id="title">Anatomy of a command</title><desc id="desc">Arguments enter from above. Standard input enters from the left. Standard output and standard error leave on the right. Exit status is reported to the shell when the command finishes.</desc>
+<defs>
+<marker id="blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#003b80"/></marker>
+<marker id="green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#00502e"/></marker>
+<marker id="gold" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#8a3b00"/></marker>
+<marker id="red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#a0001c"/></marker>
+<marker id="plum" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#651046"/></marker>
+</defs><g font-family="DejaVu Sans, sans-serif" fill="#111">
+<rect x="499" y="159" width="350" height="165" fill="#111" opacity=".3"/>
+<rect x="490" y="150" width="350" height="165" fill="#e3edfc" stroke="#003b80" stroke-width="3"/>
+<text x="665.0" y="208" text-anchor="middle" font-size="40" fill="#003b80" font-weight="bold" font-family="DejaVu Sans Mono, monospace">command</text>
+<rect x="490" y="230" width="110" height="45" fill="#c9e4ff" stroke="#003b80" stroke-width="3"/>
+<text x="545" y="260" text-anchor="middle" font-size="21" fill="#003b80" font-weight="bold">stdin 0</text>
+<rect x="730" y="230" width="110" height="45" fill="#d4f4df" stroke="#00502e" stroke-width="3"/>
+<text x="785" y="260" text-anchor="middle" font-size="21" fill="#00502e" font-weight="bold">stdout 1</text>
+<text x="665.0" y="24" text-anchor="middle" font-size="27" fill="#8a3b00" font-weight="bold">Arguments</text>
+<rect x="499" y="48" width="350" height="48" fill="#111" opacity=".3"/>
+<rect x="490" y="39" width="350" height="48" fill="#fff0b5" stroke="#8a3b00" stroke-width="3"/>
+<text x="665.0" y="72" text-anchor="middle" font-size="28" fill="#8a3b00" font-family="DejaVu Sans Mono, monospace">arg1  arg2  ...</text>
+<path d="M665.0 88 V145" fill="none" stroke="#8a3b00" stroke-width="4" marker-end="url(#gold)"/>
+<rect x="29" y="159" width="270" height="165" fill="#111" opacity=".3"/>
+<rect x="20" y="150" width="270" height="165" fill="#fff" stroke="#003b80" stroke-width="3"/>
+<text x="155.0" y="186" text-anchor="middle" font-size="28" fill="#003b80" font-weight="bold">Input text</text>
+<path d="M34 199 H276" stroke="#003b80" stroke-width="2"/>
+<text x="42" y="236" text-anchor="start" font-size="28" fill="#111111" font-family="DejaVu Sans Mono, monospace">keyboard</text>
+<text x="42" y="270" text-anchor="start" font-size="28" fill="#111111" font-family="DejaVu Sans Mono, monospace">file / pipe</text>
+<path d="M290 252 H485" fill="none" stroke="#003b80" stroke-width="4" marker-end="url(#blue)"/>
+<rect x="1094" y="159" width="280" height="100" fill="#111" opacity=".3"/>
+<rect x="1085" y="150" width="280" height="100" fill="#d4f4df" stroke="#00502e" stroke-width="3"/>
+<text x="1225" y="190" text-anchor="middle" font-size="29" fill="#00502e" font-weight="bold">Normal output</text>
+<text x="1225" y="228" text-anchor="middle" font-size="28" fill="#111111">text</text>
+<path d="M840 252 H950 V200 H1080" fill="none" stroke="#00502e" stroke-width="4" marker-end="url(#green)"/>
+<rect x="1094" y="304" width="280" height="100" fill="#111" opacity=".3"/>
+<rect x="1085" y="295" width="280" height="100" fill="#ffe1e7" stroke="#a0001c" stroke-width="3"/>
+<text x="1225" y="335" text-anchor="middle" font-size="29" fill="#a0001c" font-weight="bold">Error messages</text>
+<text x="1225" y="373" text-anchor="middle" font-size="28" fill="#111111">text</text>
+<path d="M840 290 H950 V345 H1080" fill="none" stroke="#a0001c" stroke-width="4" marker-end="url(#red)"/>
+<text x="955" y="405" text-anchor="middle" font-size="26" fill="#a0001c" font-weight="bold">stderr 2</text>
+<rect x="499" y="404" width="350" height="60" fill="#111" opacity=".3"/>
+<rect x="490" y="395" width="350" height="60" fill="#f7d5ec" stroke="#651046" stroke-width="3"/>
+<text x="665" y="435" text-anchor="middle" font-size="29" fill="#651046" font-weight="bold">Exit status → shell</text>
+<path d="M665 315 V390" fill="none" stroke="#651046" stroke-width="4" marker-end="url(#plum)" stroke-dasharray="8 6"/>
+<text x="770" y="366" text-anchor="middle" font-size="24" fill="#651046">on completion</text>
+</g></svg>

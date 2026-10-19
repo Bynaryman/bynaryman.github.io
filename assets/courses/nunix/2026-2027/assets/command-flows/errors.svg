@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="390" viewBox="0 0 1400 390" role="img" aria-labelledby="title desc"><title id="title">Separate output and errors</title><desc id="desc">find writes matching paths to matches.txt and diagnostics to errors.txt.</desc>
+<defs>
+<marker id="blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#003b80"/></marker>
+<marker id="green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#00502e"/></marker>
+<marker id="gold" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#8a3b00"/></marker>
+<marker id="red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#a0001c"/></marker>
+<marker id="plum" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#651046"/></marker>
+</defs><g font-family="DejaVu Sans, sans-serif" fill="#111">
+<rect x="129" y="129" width="390" height="165" fill="#111" opacity=".3"/>
+<rect x="120" y="120" width="390" height="165" fill="#e3edfc" stroke="#003b80" stroke-width="3"/>
+<text x="315.0" y="178" text-anchor="middle" font-size="40" fill="#003b80" font-weight="bold" font-family="DejaVu Sans Mono, monospace">find</text>
+<rect x="120" y="200" width="110" height="45" fill="#c9e4ff" stroke="#003b80" stroke-width="3"/>
+<text x="175" y="230" text-anchor="middle" font-size="21" fill="#003b80" font-weight="bold">stdin 0</text>
+<rect x="400" y="200" width="110" height="45" fill="#d4f4df" stroke="#00502e" stroke-width="3"/>
+<text x="455" y="230" text-anchor="middle" font-size="21" fill="#00502e" font-weight="bold">stdout 1</text>
+<text x="315.0" y="24" text-anchor="middle" font-size="27" fill="#8a3b00" font-weight="bold">Arguments</text>
+<rect x="129" y="48" width="390" height="48" fill="#111" opacity=".3"/>
+<rect x="120" y="39" width="390" height="48" fill="#fff0b5" stroke="#8a3b00" stroke-width="3"/>
+<text x="315.0" y="72" text-anchor="middle" font-size="28" fill="#8a3b00" font-family="DejaVu Sans Mono, monospace">. -name &#x27;*.txt&#x27;</text>
+<path d="M315.0 88 V115" fill="none" stroke="#8a3b00" stroke-width="4" marker-end="url(#gold)"/>
+<text x="315" y="338" text-anchor="middle" font-size="27" fill="#111111">searches the filesystem</text>
+<rect x="1019" y="44" width="350" height="125" fill="#111" opacity=".3"/>
+<rect x="1010" y="35" width="350" height="125" fill="#fff" stroke="#00502e" stroke-width="3"/>
+<text x="1185.0" y="71" text-anchor="middle" font-size="28" fill="#00502e" font-weight="bold" font-family="DejaVu Sans Mono, monospace">matches.txt</text>
+<path d="M1024 84 H1346" stroke="#00502e" stroke-width="2"/>
+<text x="1032" y="121" text-anchor="start" font-size="28" fill="#111111" font-family="DejaVu Sans Mono, monospace">./notes.txt</text>
+<rect x="1019" y="234" width="350" height="125" fill="#111" opacity=".3"/>
+<rect x="1010" y="225" width="350" height="125" fill="#fff" stroke="#a0001c" stroke-width="3"/>
+<text x="1185.0" y="261" text-anchor="middle" font-size="28" fill="#a0001c" font-weight="bold" font-family="DejaVu Sans Mono, monospace">errors.txt</text>
+<path d="M1024 274 H1346" stroke="#a0001c" stroke-width="2"/>
+<text x="1032" y="311" text-anchor="start" font-size="28" fill="#111111" font-family="DejaVu Sans Mono, monospace">Permission denied</text>
+<path d="M510 222 H720 V105 H1005" fill="none" stroke="#00502e" stroke-width="4" marker-end="url(#green)"/>
+<text x="780" y="80" text-anchor="middle" font-size="29" fill="#00502e" font-weight="bold">&gt;  stdout 1</text>
+<path d="M510 267 H720 V295 H1005" fill="none" stroke="#a0001c" stroke-width="4" marker-end="url(#red)"/>
+<text x="780" y="340" text-anchor="middle" font-size="29" fill="#a0001c" font-weight="bold">2&gt;  stderr 2</text>
+</g></svg>

@@ -97,7 +97,7 @@
     code span.vs { color: #111111; } /* VerbatimString */
     code span.wa { color: #9b3c00; } /* Warning */
   </style>
-  <link rel="stylesheet" href="02-investigation_files/libs/revealjs/dist/theme/quarto-0816fe79418b78413da7ed21e6fdb289.css">
+  <link rel="stylesheet" href="02-investigation_files/libs/revealjs/dist/theme/quarto-db90985ed34011c03e71405a7a4ba33f.css">
   <link href="02-investigation_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="02-investigation_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="02-investigation_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -735,39 +735,12 @@ Check which resource is under pressure first.</p>
 <p>Where does a command read, where does it write, and did it succeed?</p>
 </section>
 <section id="streams" class="slide level2">
-<h2>Input, output and status</h2>
+<h2>Anatomy of a command</h2>
 <div class="slide-body">
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Channel</th>
-<th style="text-align: right;">Number</th>
-<th>Usual terminal behaviour</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>stdin</code></td>
-<td style="text-align: right;"><strong>0</strong></td>
-<td>Read keyboard input</td>
-</tr>
-<tr class="even">
-<td><code>stdout</code></td>
-<td style="text-align: right;"><strong>1</strong></td>
-<td>Display normal output</td>
-</tr>
-<tr class="odd">
-<td><code>stderr</code></td>
-<td style="text-align: right;"><strong>2</strong></td>
-<td>Display diagnostic messages</td>
-</tr>
-</tbody>
-</table>
-<div class="block">
-<p>The <strong>exit status</strong> is a number reported when a command finishes. It is separate from the text it prints.</p>
-</div>
+<p><img data-src="assets/command-flows/anatomy.svg" class="flow-diagram" alt="A command receives arguments from above and stdin on the left. Stdout and stderr carry text out. A separate exit status returns to the shell when the command finishes."></p>
+<p><strong>Arguments</strong> configure the command. <strong>Streams</strong> carry text. The <strong>exit status</strong> reports success or failure when the command finishes.</p>
 <aside class="notes">
-<p>The channels are file descriptors. Their destination can be changed by redirection. A filename argument is not itself standard input. Some commands, including cat, recognise a single hyphen argument as a request to read standard input; this is a command convention, not a universal shell rule.</p>
+<p>The three standard streams are file descriptors 0, 1 and 2. Arguments are values supplied at invocation, separate from the bytes read on stdin. A filename argument may cause a program to open that file itself. Exit status is separate from stdout and stderr.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -807,16 +780,22 @@ Check which resource is under pressure first.</p>
       }</style></aside>
 </div>
 </section>
+<section id="terminal-streams" class="slide level2">
+<h2>Keyboard input and screen output</h2>
+<div class="slide-body">
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span></span></code></pre></div>
+<p><img data-src="assets/command-flows/terminal.svg" class="flow-diagram" alt="Keyboard text passes through cat unchanged and appears at the terminal. Type Linus, Ada and Grace on separate lines, then Ctrl+D on an empty line."></p>
+<p>With no file argument, <code>cat</code> copies <strong>stdin</strong> to <strong>stdout</strong>.</p>
+</div>
+</section>
 <section id="redirect-input" class="slide level2">
 <h2>Reading input from a file</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span> <span class="op">&lt;</span> names.txt</span></code></pre></div>
-<p>The shell opens <code>names.txt</code> as <span class="marker">standard input</span> for <code>sort</code>.</p>
-<div class="fragment">
-<p><code>sort</code> writes the sorted lines to standard output, which still points to the terminal.</p>
-</div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span> <span class="op">&lt;</span> names.txt</span></code></pre></div>
+<p><img data-src="assets/command-flows/input.svg" class="flow-diagram" alt="names.txt contains Linus, Ada and Grace. Input redirection sends these lines to sort, which displays Ada, Grace and Linus at the terminal."></p>
+<p><code>&lt; names.txt</code> makes the shell connect the file to <strong>stdin</strong>. The sorted lines still go to the terminal through <strong>stdout</strong>.</p>
 <aside class="notes">
-<p>sort can also accept a filename argument. With sort &lt; names.txt, the shell opens the file and sort reads its standard input.</p>
+<p>Save Linus, Ada and Grace on separate lines in names.txt before the demonstration. The filename belongs to the shell redirection. sort receives no filename argument here. sort names.txt also works, but in that form sort opens the file named by its argument.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -830,11 +809,26 @@ Check which resource is under pressure first.</p>
       }</style></aside>
 </div>
 </section>
+<section id="arguments-and-input" class="slide level2">
+<h2>Arguments and input</h2>
+<div class="slide-body">
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 2 <span class="op">&lt;</span> names.txt</span></code></pre></div>
+<p><img data-src="assets/command-flows/arguments.svg" class="flow-diagram" alt="head receives the arguments -n and 2 from above. It reads Linus, Ada and Grace from names.txt through stdin and prints the first two lines, Linus and Ada."></p>
+<p><code>-n 2</code> tells <code>head</code> <strong>how many lines</strong> to keep. <code>&lt; names.txt</code> supplies <strong>the text</strong> to read.</p>
+</div>
+</section>
 <section id="redirect-output" class="slide level2">
 <h2>Saving output</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span> names.txt <span class="op">&gt;</span> sorted.txt</span>
-<span id="cb14-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">'Zoé'</span> <span class="op">&gt;&gt;</span> sorted.txt</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span> <span class="op">&lt;</span> names.txt <span class="op">&gt;</span> sorted.txt</span></code></pre></div>
+<p><img data-src="assets/command-flows/output.svg" class="flow-diagram" alt="The shell connects names.txt to sort stdin and sort stdout to sorted.txt. The output file contains Ada, Grace and Linus."></p>
+<p><code>&gt; sorted.txt</code> connects <strong>stdout</strong> to a file. The shell creates the file or replaces its contents.</p>
+</div>
+</section>
+<section id="redirect-append" class="slide level2">
+<h2>Appending to a file</h2>
+<div class="slide-body">
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">'Zoé'</span> <span class="op">&gt;&gt;</span> sorted.txt</span></code></pre></div>
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -853,8 +847,9 @@ Check which resource is under pressure first.</p>
 </tr>
 </tbody>
 </table>
+<p><code>Zoé</code> is added after the existing lines in <code>sorted.txt</code>.</p>
 <aside class="notes">
-<p>The shell sets up redirections before running the command. sort names.txt &gt; names.txt would therefore erase the input first. Appending a name leaves it at the end of the file; it does not insert it in sorted order. Sorting depends on the locale.</p>
+<p>The shell opens the destination before running the command. Appending leaves the new line at the end; it does not sort the file again. Both operators create the file if it does not exist.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -871,19 +866,29 @@ Check which resource is under pressure first.</p>
 <section id="redirect-error" class="slide level2">
 <h2>Redirecting errors</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-name</span> <span class="st">'*.txt'</span> <span class="op">&gt;</span> matches.txt <span class="dv">2</span><span class="op">&gt;</span> errors.txt</span></code></pre></div>
-<ul>
-<li><code>&gt;</code> redirects <strong>stdout</strong>, descriptor 1.</li>
-<li><code>2&gt;</code> redirects <strong>stderr</strong>, descriptor 2.</li>
-<li>Normal results and diagnostics go to separate files.</li>
-</ul>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-name</span> <span class="st">'*.txt'</span> <span class="op">&gt;</span> matches.txt <span class="dv">2</span><span class="op">&gt;</span> errors.txt</span></code></pre></div>
+<p><img data-src="assets/command-flows/errors.svg" class="flow-diagram" alt="find receives its search arguments from above. Stdout writes matching paths to matches.txt. Stderr writes diagnostic messages to errors.txt."></p>
+<p><code>&gt;</code> sends normal output to <code>matches.txt</code>. <code>2&gt;</code> sends error messages to <code>errors.txt</code>.</p>
+<aside class="notes">
+<p>The boxes contain examples of output, not a prediction for every machine. find searches the filesystem and does not read filenames from stdin. An inaccessible directory may produce a diagnostic; if there are no errors, errors.txt is empty.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </div>
 </section>
 <section id="redirection-order" class="slide level2 compact">
 <h2>Redirections are applied from left to right</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> notes.txt missing <span class="op">&gt;</span> all.txt <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span></span>
-<span id="cb16-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> notes.txt missing <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="op">&gt;</span> out.txt</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> notes.txt missing <span class="op">&gt;</span> all.txt <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span></span>
+<span id="cb19-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> notes.txt missing <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="op">&gt;</span> out.txt</span></code></pre></div>
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -969,14 +974,11 @@ It does not make stderr follow later changes to stdout.</p>
 <section id="pipe" class="slide level2">
 <h2>A pipe between two commands</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">' ERROR '</span> app.log <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code></pre></div>
-<p><code>grep</code> writes matching lines to its standard output.<br>
-The pipe connects that output to <code>wc</code>'s standard input.</p>
-<div class="fragment">
-<p>The result is the <span class="marker">number of matching lines</span>.</p>
-</div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">' ERROR '</span> <span class="op">&lt;</span> app.log <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code></pre></div>
+<p><img data-src="assets/command-flows/pipe.svg" class="flow-diagram" alt="app.log supplies four log lines to grep. Its three matching lines flow through a pipe into wc -l, which prints 3 at the terminal. Each command has separate arguments above it."></p>
+<p><code>|</code> connects the first command’s <strong>stdout</strong> to the next command’s <strong>stdin</strong>. <code>wc -l</code> counts the matching lines: <strong>3</strong> for our sample log.</p>
 <aside class="notes">
-<p>Pipeline processes can run concurrently. They exchange bytes through the pipe. Ordinary | connects stdout only; stderr keeps its own destination. Bash normally runs pipeline elements in separate processes.</p>
+<p>The pipe carries the matching lines, not the exit status. stderr still goes to the terminal unless separately redirected. Commands in a pipeline can run concurrently.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -996,7 +998,7 @@ The pipe connects that output to <code>wc</code>'s standard input.</p>
 <div class="block example">
 <p>Doug McIlroy described connecting programs so that one program’s output could become another’s input.</p>
 </div>
-<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">' ERROR '</span> app.log <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb22-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">' ERROR '</span> app.log <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code></pre></div>
 <p>Each tool has a small job.<br>
 The shared text stream lets us combine them.</p>
 <aside class="notes">
@@ -1017,8 +1019,8 @@ The shared text stream lets us combine them.</p>
 <section id="pipeline-extract" class="slide level2 compact">
 <h2>Pipeline step 1: extract error codes</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">' ERROR '</span> app.log <span class="kw">|</span></span>
-<span id="cb20-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cut</span> <span class="at">-d</span> <span class="st">' '</span> <span class="at">-f</span> 3</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb23-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">' ERROR '</span> app.log <span class="kw">|</span></span>
+<span id="cb23-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cut</span> <span class="at">-d</span> <span class="st">' '</span> <span class="at">-f</span> 3</span></code></pre></div>
 <div class="fragment output">
 <pre class="text"><code>DISK_FULL
 TIMEOUT
@@ -1042,9 +1044,9 @@ DISK_FULL</code></pre>
 <section id="pipeline-count" class="slide level2 compact">
 <h2>Pipeline step 2: count each code</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb22"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb22-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">' ERROR '</span> app.log <span class="kw">|</span></span>
-<span id="cb22-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cut</span> <span class="at">-d</span> <span class="st">' '</span> <span class="at">-f</span> 3 <span class="kw">|</span></span>
-<span id="cb22-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-nr</span></span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb25-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">' ERROR '</span> app.log <span class="kw">|</span></span>
+<span id="cb25-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cut</span> <span class="at">-d</span> <span class="st">' '</span> <span class="at">-f</span> 3 <span class="kw">|</span></span>
+<span id="cb25-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-nr</span></span></code></pre></div>
 <div class="fragment output">
 <pre class="text"><code>      2 DISK_FULL
       1 TIMEOUT</code></pre>
@@ -1065,16 +1067,14 @@ DISK_FULL</code></pre>
       }</style></aside>
 </div>
 </section>
-<section id="pipeline-save" class="slide level2 compact">
+<section id="pipeline-save" class="slide level2">
 <h2>Save and display output with tee</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb24"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb24-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span> names.txt <span class="kw">|</span> <span class="fu">tee</span> sorted.txt</span></code></pre></div>
-<p><code>tee</code> copies its input to a file <strong>and</strong> standard output.</p>
-<div class="block example">
-<p>Think of a T-shaped pipe fitting: the stream has two outlets.</p>
-</div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb27-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span> names.txt <span class="kw">|</span> <span class="fu">tee</span> sorted.txt</span></code></pre></div>
+<p><img data-src="assets/command-flows/tee.svg" class="flow-diagram" alt="sort takes names.txt as a file argument and sends sorted lines through a pipe to tee. tee takes sorted.txt as its argument and copies the same text to that file and to stdout at the terminal."></p>
+<p>Like a <strong>T-shaped pipe fitting</strong>, <code>tee</code> copies the text to a file and to <strong>stdout</strong>.</p>
 <aside class="notes">
-<p>tee writes the same input to stdout and each named file. It overwrites files by default; -a appends.</p>
+<p>Here names.txt is an argument to sort, and sorted.txt is an argument to tee. Each program opens its named file. tee overwrites its output file by default; tee -a appends.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1089,15 +1089,11 @@ DISK_FULL</code></pre>
 </div>
 </section>
 <section id="redirect-combine" class="slide level2">
-<h2>Combining arguments and redirections</h2>
+<h2>Chaining commands with arguments</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb25"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb25-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span> <span class="op">&lt;</span> names.txt <span class="op">&gt;</span> sorted.txt</span>
-<span id="cb25-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span> <span class="op">&lt;</span> names.txt <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 3 <span class="op">&gt;</span> first-three.txt</span></code></pre></div>
-<ul>
-<li><code>&lt; names.txt</code> selects the input stream.</li>
-<li><code>-n 3</code> remains an <strong>argument</strong> to <code>head</code>.</li>
-<li><code>&gt; first-three.txt</code> selects the output file.</li>
-</ul>
+<div class="sourceCode" id="cb28"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb28-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span> <span class="op">&lt;</span> names.txt <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 2 <span class="op">&gt;</span> first-two.txt</span></code></pre></div>
+<p><img data-src="assets/command-flows/chain.svg" class="flow-diagram" alt="names.txt feeds sort. The pipe carries Ada, Grace and Linus to head, whose arguments -n and 2 enter from above. The shell saves Ada and Grace in first-two.txt."></p>
+<p><code>&lt;</code> chooses the input file. <code>|</code> joins the commands. <code>&gt;</code> chooses the output file. <code>-n 2</code> remains an argument to <code>head</code>.</p>
 </div>
 </section>
 <section id="quiz-redirections" class="slide level2 checkpoint">
@@ -1122,11 +1118,11 @@ DISK_FULL</code></pre>
 <section id="pipeline-status" class="slide level2 compact">
 <h2>The exit status of a pipeline</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb26"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb26-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">false</span> <span class="kw">|</span> <span class="fu">sort</span></span>
-<span id="cb26-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$?</span><span class="st">"</span></span>
-<span id="cb26-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-o</span> pipefail</span>
-<span id="cb26-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">false</span> <span class="kw">|</span> <span class="fu">sort</span></span>
-<span id="cb26-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$?</span><span class="st">"</span></span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb29-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">false</span> <span class="kw">|</span> <span class="fu">sort</span></span>
+<span id="cb29-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$?</span><span class="st">"</span></span>
+<span id="cb29-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-o</span> pipefail</span>
+<span id="cb29-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">false</span> <span class="kw">|</span> <span class="fu">sort</span></span>
+<span id="cb29-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$?</span><span class="st">"</span></span></code></pre></div>
 <div class="fragment">
 <p>Output: <strong>0</strong>, then <strong>1</strong>.<br>
 Bash normally reports the last pipeline command’s status.</p>
@@ -1165,9 +1161,9 @@ Bash normally reports the last pipeline command’s status.</p>
 <section id="find-combine" class="slide level2">
 <h2>Combining criteria</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb27"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb27-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> /usr <span class="at">-name</span> <span class="st">'*.c'</span></span>
-<span id="cb27-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-user</span> alice <span class="at">-name</span> <span class="st">'*.c'</span></span>
-<span id="cb27-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-not</span> <span class="dt">\(</span> <span class="at">-name</span> <span class="st">'*.obj'</span> <span class="at">-o</span> <span class="at">-name</span> <span class="st">'*.map'</span> <span class="dt">\)</span></span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb30-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> /usr <span class="at">-name</span> <span class="st">'*.c'</span></span>
+<span id="cb30-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-user</span> alice <span class="at">-name</span> <span class="st">'*.c'</span></span>
+<span id="cb30-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-not</span> <span class="dt">\(</span> <span class="at">-name</span> <span class="st">'*.obj'</span> <span class="at">-o</span> <span class="at">-name</span> <span class="st">'*.map'</span> <span class="dt">\)</span></span></code></pre></div>
 <ul>
 <li>Adjacent tests use <strong>AND</strong>. <code>-a</code> makes it explicit.</li>
 <li><code>-o</code> means <strong>OR</strong>. <code>-not</code> negates a test.</li>
@@ -1178,7 +1174,7 @@ Bash normally reports the last pipeline command’s status.</p>
 <section id="find-exec" class="slide level2">
 <h2>Running a command on matches</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb28"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb28-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-type</span> f <span class="at">-name</span> <span class="st">'*.txt'</span> <span class="at">-exec</span> wc <span class="at">-l</span> {} <span class="dt">\;</span></span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb31-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-type</span> f <span class="at">-name</span> <span class="st">'*.txt'</span> <span class="at">-exec</span> wc <span class="at">-l</span> {} <span class="dt">\;</span></span></code></pre></div>
 <ul>
 <li><code>-exec</code> starts the command to run.</li>
 <li><code>{}</code> stands for the current matching path.</li>
@@ -1202,9 +1198,9 @@ Bash normally reports the last pipeline command’s status.</p>
 <section id="background" class="slide level2">
 <h2>Running in the background</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb29"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb29-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">sleep</span> 60 <span class="kw">&amp;</span></span>
-<span id="cb29-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">jobs</span></span>
-<span id="cb29-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">fg</span> %1</span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb32-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">sleep</span> 60 <span class="kw">&amp;</span></span>
+<span id="cb32-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">jobs</span></span>
+<span id="cb32-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">fg</span> %1</span></code></pre></div>
 <ul>
 <li><code>&amp;</code> lets the shell return to the prompt immediately.</li>
 <li><code>jobs</code> lists jobs managed by this shell.</li>
@@ -1259,9 +1255,9 @@ A <span class="marker marker-plum">PID</span> identifies a process in the system
 <section id="command-lists" class="slide level2">
 <h2>Sequential and asynchronous execution</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb30"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb30-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">who</span> <span class="kw">|</span> <span class="fu">sort</span><span class="kw">;</span> <span class="fu">date</span></span>
-<span id="cb30-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">sleep</span> 10 <span class="kw">&amp;</span></span>
-<span id="cb30-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb33-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">who</span> <span class="kw">|</span> <span class="fu">sort</span><span class="kw">;</span> <span class="fu">date</span></span>
+<span id="cb33-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">sleep</span> 10 <span class="kw">&amp;</span></span>
+<span id="cb33-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span></code></pre></div>
 <ul>
 <li><code>;</code> runs the next command after the previous one finishes.</li>
 <li><code>&amp;</code> starts work asynchronously.</li>

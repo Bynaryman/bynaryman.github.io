@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="390" viewBox="0 0 1400 390" role="img" aria-labelledby="title desc"><title id="title">tee saves and displays the same text</title><desc id="desc">sort feeds tee through a pipe. tee copies the sorted names to sorted.txt and to the terminal.</desc>
+<defs>
+<marker id="blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#003b80"/></marker>
+<marker id="green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#00502e"/></marker>
+<marker id="gold" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#8a3b00"/></marker>
+<marker id="red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#a0001c"/></marker>
+<marker id="plum" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#651046"/></marker>
+</defs><g font-family="DejaVu Sans, sans-serif" fill="#111">
+<rect x="69" y="129" width="260" height="165" fill="#111" opacity=".3"/>
+<rect x="60" y="120" width="260" height="165" fill="#e3edfc" stroke="#003b80" stroke-width="3"/>
+<text x="190.0" y="178" text-anchor="middle" font-size="40" fill="#003b80" font-weight="bold" font-family="DejaVu Sans Mono, monospace">sort</text>
+<rect x="60" y="200" width="110" height="45" fill="#c9e4ff" stroke="#003b80" stroke-width="3"/>
+<text x="115" y="230" text-anchor="middle" font-size="21" fill="#003b80" font-weight="bold">stdin 0</text>
+<rect x="210" y="200" width="110" height="45" fill="#d4f4df" stroke="#00502e" stroke-width="3"/>
+<text x="265" y="230" text-anchor="middle" font-size="21" fill="#00502e" font-weight="bold">stdout 1</text>
+<text x="190.0" y="24" text-anchor="middle" font-size="27" fill="#8a3b00" font-weight="bold">Arguments</text>
+<rect x="69" y="48" width="260" height="48" fill="#111" opacity=".3"/>
+<rect x="60" y="39" width="260" height="48" fill="#fff0b5" stroke="#8a3b00" stroke-width="3"/>
+<text x="190.0" y="72" text-anchor="middle" font-size="28" fill="#8a3b00" font-family="DejaVu Sans Mono, monospace">names.txt</text>
+<path d="M190.0 88 V115" fill="none" stroke="#8a3b00" stroke-width="4" marker-end="url(#gold)"/>
+<rect x="569" y="129" width="260" height="165" fill="#111" opacity=".3"/>
+<rect x="560" y="120" width="260" height="165" fill="#e3edfc" stroke="#003b80" stroke-width="3"/>
+<text x="690.0" y="178" text-anchor="middle" font-size="40" fill="#003b80" font-weight="bold" font-family="DejaVu Sans Mono, monospace">tee</text>
+<rect x="560" y="200" width="110" height="45" fill="#c9e4ff" stroke="#003b80" stroke-width="3"/>
+<text x="615" y="230" text-anchor="middle" font-size="21" fill="#003b80" font-weight="bold">stdin 0</text>
+<rect x="710" y="200" width="110" height="45" fill="#d4f4df" stroke="#00502e" stroke-width="3"/>
+<text x="765" y="230" text-anchor="middle" font-size="21" fill="#00502e" font-weight="bold">stdout 1</text>
+<text x="690.0" y="24" text-anchor="middle" font-size="27" fill="#8a3b00" font-weight="bold">Arguments</text>
+<rect x="569" y="48" width="260" height="48" fill="#111" opacity=".3"/>
+<rect x="560" y="39" width="260" height="48" fill="#fff0b5" stroke="#8a3b00" stroke-width="3"/>
+<text x="690.0" y="72" text-anchor="middle" font-size="28" fill="#8a3b00" font-family="DejaVu Sans Mono, monospace">sorted.txt</text>
+<path d="M690.0 88 V115" fill="none" stroke="#8a3b00" stroke-width="4" marker-end="url(#gold)"/>
+<path d="M320 222 H555" fill="none" stroke="#00502e" stroke-width="4" marker-end="url(#green)"/>
+<text x="435" y="185" text-anchor="middle" font-size="38" fill="#00502e" font-weight="bold">|</text>
+<text x="190" y="335" text-anchor="middle" font-size="27" fill="#111111">reads names.txt</text>
+<text x="190" y="372" text-anchor="middle" font-size="25" fill="#111111">as a file argument</text>
+<rect x="1099" y="44" width="285" height="125" fill="#111" opacity=".3"/>
+<rect x="1090" y="35" width="285" height="125" fill="#fff" stroke="#00502e" stroke-width="3"/>
+<text x="1232.5" y="71" text-anchor="middle" font-size="28" fill="#00502e" font-weight="bold">Terminal</text>
+<path d="M1104 84 H1361" stroke="#00502e" stroke-width="2"/>
+<text x="1112" y="121" text-anchor="start" font-size="28" fill="#111111" font-family="DejaVu Sans Mono, monospace">sorted names</text>
+<rect x="1099" y="239" width="285" height="125" fill="#111" opacity=".3"/>
+<rect x="1090" y="230" width="285" height="125" fill="#fff" stroke="#651046" stroke-width="3"/>
+<text x="1232.5" y="266" text-anchor="middle" font-size="28" fill="#651046" font-weight="bold" font-family="DejaVu Sans Mono, monospace">sorted.txt</text>
+<path d="M1104 279 H1361" stroke="#651046" stroke-width="2"/>
+<text x="1112" y="316" text-anchor="start" font-size="28" fill="#111111" font-family="DejaVu Sans Mono, monospace">sorted names</text>
+<path d="M820 222 H960 V105 H1085" fill="none" stroke="#00502e" stroke-width="4" marker-end="url(#green)"/>
+<text x="920" y="75" text-anchor="middle" font-size="26" fill="#00502e" font-weight="bold">stdout</text>
+<path d="M690 285 V335 H1085" fill="none" stroke="#651046" stroke-width="4" marker-end="url(#plum)"/>
+<text x="930" y="370" text-anchor="middle" font-size="26" fill="#651046" font-weight="bold">file copy</text>
+</g></svg>
