@@ -6,7 +6,12 @@ description: Dynamic memory allocation, structures and linked lists in C.
 nav: false
 ---
 
-ISTIC · University of Rennes · 2026–2027 · Louis Ledoux
+L3 Informatique · Informatique and Défi tracks · ISTIC · University of Rennes · 2026–2027
+
+**Course coordinator: Louis Ledoux.** Lectures (CM), tutorials (TD), practical sessions (TP), course materials, exam design and marking, and coordination of disability-related study and exam accommodations (PAEH).
+
+**Outils et programmation en C (OPC)** covers Linux, shell scripting, C programming, pointers, dynamic memory, data structures, compilation and debugging.
+[Official L3 programme](https://istic.univ-rennes.fr/licence-informatique-parcours-informatique) · [OPC syllabus](https://istic.univ-rennes.fr/sites/istic.univ-rennes.fr/files/medias/files/UE%20-Outils%20et%20programmation%20en%20C.pdf).
 
 {% include opc_lectures.liquid %}
 

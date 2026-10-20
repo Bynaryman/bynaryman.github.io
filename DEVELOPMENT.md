@@ -63,6 +63,8 @@ The PDF source is maintained in the sibling `my_CV` repository, `my_cv.tex`. The
 
 Every CV change must update both the PDF source and the website CV data in the same task. Host internship/project briefs under `assets/pdf/internships/` and link the same public PDF URL from both CV versions.
 
+Leave personal teaching-hour totals out of the OPC and NUnix CV entries until Louis supplies his OSE service breakdown. Published syllabus volumes and lecture durations are not his total teaching load.
+
 ## Images and video
 
 Responsive WebP assets and their manifests are committed. To regenerate after adding or changing images, install Pillow 12.3.0 and ffmpeg, then run:

@@ -8,6 +8,11 @@ nav: false
 
 L3 MIAGE · ISTIC · University of Rennes · 2026–2027
 
+**Course coordinator: Louis Ledoux.** Responsible for lectures, tutorials and practical sessions, course materials, exam design and marking, and coordination of disability-related study and exam accommodations (PAEH).
+
+NUnix is the Unix component of the **Mise à niveau scientifique** refresher module in L3 MIAGE (Méthodes Informatiques Appliquées à la Gestion des Entreprises).
+[Official L3 MIAGE programme](https://istic.univ-rennes.fr/licence-informatique-parcours-methodes-informatiques-appliquees-la-gestion-des-entreprises-miage) · [Refresher-module syllabus](https://istic.univ-rennes.fr/sites/istic.univ-rennes.fr/files/medias/files/UE%20-%20Mise%20%C3%A0%20niveau%20scientifique.pdf).
+
 - **Lectures (CM):** Louis Ledoux
 - **Tutorials and practical sessions (TD/TP):** Elisabeth Bouriah and Louis Ledoux
 
@@ -30,10 +35,10 @@ The examples use Bash and standard GNU tools, available on the university's Linu
 The TD takes place after the three lectures. The TP covers two sessions:
 commands, redirections, scripts, system information and text replacement.
 
-| Worksheet | English | Français |
-|---|---|---|
-| TD1 · Shell commands | [PDF]({{ '/assets/courses/nunix/2026-2027/TD/td1.pdf' | relative_url }}) · [HTML]({{ '/assets/courses/nunix/2026-2027/TD/td1.html' | relative_url }}) | [PDF]({{ '/assets/courses/nunix/2026-2027/TD/td1-fr.pdf' | relative_url }}) · [HTML]({{ '/assets/courses/nunix/2026-2027/TD/td1-fr.html' | relative_url }}) |
-| TP1–2 · Commands and shell scripting | [PDF]({{ '/assets/courses/nunix/2026-2027/TP/TP1-2-Unix/tp1-2.pdf' | relative_url }}) · [HTML]({{ '/assets/courses/nunix/2026-2027/TP/TP1-2-Unix/tp1-2.html' | relative_url }}) | [PDF]({{ '/assets/courses/nunix/2026-2027/TP/TP1-2-Unix/tp1-2-fr.pdf' | relative_url }}) · [HTML]({{ '/assets/courses/nunix/2026-2027/TP/TP1-2-Unix/tp1-2-fr.html' | relative_url }}) |
+| Worksheet                            | English                                                                                                                           | Français                                                                                                                                |
+| ------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| TD1 · Shell commands                 | [PDF](/assets/courses/nunix/2026-2027/TD/td1.pdf) · [HTML](/assets/courses/nunix/2026-2027/TD/td1.html)                           | [PDF](/assets/courses/nunix/2026-2027/TD/td1-fr.pdf) · [HTML](/assets/courses/nunix/2026-2027/TD/td1-fr.html)                           |
+| TP1–2 · Commands and shell scripting | [PDF](/assets/courses/nunix/2026-2027/TP/TP1-2-Unix/tp1-2.pdf) · [HTML](/assets/courses/nunix/2026-2027/TP/TP1-2-Unix/tp1-2.html) | [PDF](/assets/courses/nunix/2026-2027/TP/TP1-2-Unix/tp1-2-fr.pdf) · [HTML](/assets/courses/nunix/2026-2027/TP/TP1-2-Unix/tp1-2-fr.html) |
 
 [Download TP files]({{ '/assets/courses/nunix/2026-2027/TP/TP1-2-Unix/tp-files.zip' | relative_url }}).
 Extract the ZIP and run `make` in its `files` directory to build the two supplied

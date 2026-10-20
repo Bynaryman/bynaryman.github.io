@@ -133,6 +133,35 @@
   ],
   "teaching": [
     {
+      "name": "Université de Rennes - ISTIC",
+      "position": "Course Coordinator - Outils et programmation en C (OPC)",
+      "url": "https://bynaryman.github.io/courses/opc/",
+      "startDate": "2026-09",
+      "endDate": "Present",
+      "location": "Rennes, France",
+      "summary": "Course coordinator: lectures (CM), tutorials (TD), practical sessions (TP), course materials, exam design and marking, and coordination of disability-related study and exam accommodations (PAEH). Linux and shell scripting; C programming, pointers, dynamic memory, data structures, compilation and debugging with GCC, Make, GDB and Valgrind.",
+      "highlights": [
+        "Level: L3 Computer Science, Informatique and Défi tracks (2026–2027).",
+        "<a href=\"https://istic.univ-rennes.fr/licence-informatique-parcours-informatique\">Official L3 programme</a> and <a href=\"https://istic.univ-rennes.fr/sites/istic.univ-rennes.fr/files/medias/files/UE%20-Outils%20et%20programmation%20en%20C.pdf\">OPC syllabus</a>.",
+        "<a href=\"/courses/opc/\">Course materials</a>; slides on <a href=\"/assets/courses/opc/2026-2027/01-allocation.html\">memory allocation</a> and <a href=\"/assets/courses/opc/2026-2027/02-linked-lists.html\">linked lists</a>; <a href=\"/courses/opc/examples/\">C examples</a>."
+      ]
+    },
+    {
+      "name": "Université de Rennes - ISTIC",
+      "position": "Course Coordinator - Unix and Bash refresher (NUnix)",
+      "url": "https://bynaryman.github.io/courses/nunix/",
+      "startDate": "2026-09",
+      "endDate": "Present",
+      "location": "Rennes, France",
+      "summary": "Course coordinator: lectures (CM), tutorials (TD), practical sessions (TP), course materials, exam design and marking, and coordination of disability-related study and exam accommodations (PAEH). Unix/Linux files, permissions, processes, pipes, redirections and Bash scripting.",
+      "highlights": [
+        "Level: L3 MIAGE (Computer Science Applied to Business Management), Unix component of the Mise à niveau scientifique refresher module (2026–2027).",
+        "Lectures in English; TD/TP materials in French and English.",
+        "<a href=\"https://istic.univ-rennes.fr/licence-informatique-parcours-methodes-informatiques-appliquees-la-gestion-des-entreprises-miage\">Official L3 MIAGE programme</a> and <a href=\"https://istic.univ-rennes.fr/sites/istic.univ-rennes.fr/files/medias/files/UE%20-%20Mise%20%C3%A0%20niveau%20scientifique.pdf\">refresher-module syllabus</a>.",
+        "<a href=\"/courses/nunix/\">Course materials</a>; slides on <a href=\"/assets/courses/nunix/2026-2027/01-unix-shell.html\">Unix</a>, <a href=\"/assets/courses/nunix/2026-2027/02-investigation.html\">command-line investigation</a> and <a href=\"/assets/courses/nunix/2026-2027/03-bash-scripting.html\">Bash scripting</a>; <a href=\"/courses/nunix/#td-and-tp\">TD/TP worksheets</a>."
+      ]
+    },
+    {
       "name": "ACM Europe School on MLIR 2026",
       "position": "Course Instructor - Digital Design with MLIR and CIRCT",
       "url": "https://mlir-school.github.io/summer-2026/",
