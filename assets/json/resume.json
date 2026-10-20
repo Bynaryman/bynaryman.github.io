@@ -644,6 +644,14 @@
   ],
   "internship_mentoring": [
     {
+      "name": "Thomas Brembilla and Edouard Pierre",
+      "publisher": "7th Thales RISC-V student competition, 2026–2027 (ongoing)",
+      "releaseDate": "2026–2027",
+      "url": "https://fr.linkedin.com/posts/jquevremont_contest-announcement-and-rules-activity-7503388709250232320-TbPV",
+      "summary": "Thomas Brembilla (ENS Rennes, M2) and Edouard Pierre (ISTIC, M1 Electronics). Ongoing co-supervision with Noë Mercier-Brosse and Olivier Sentieys on acceleration of the QOA audio encoder on the CVA6 RISC-V processor.",
+      "note": "<a href=\"https://fr.linkedin.com/posts/jquevremont_contest-announcement-and-rules-activity-7503388709250232320-TbPV\">2026–2027 competition announcement</a>."
+    },
+    {
       "name": "Vector Floating-Point Architectures for Softmax and Exponential Acceleration",
       "publisher": "ENS Rennes - M1 SIF research project, 2026–2027 (ongoing)",
       "releaseDate": "2026-10",
