@@ -153,10 +153,7 @@
       "endDate": "2026-12-31",
       "location": "Lyon, France",
       "summary": "Practical sessions in computer architecture for the Telecommunications curriculum, covering instruction execution, pipelining, cache memories, performance evaluation, and RISC-V assembly programming.",
-      "highlights": [
-        "Level: 1st year of engineering school (Telecommunications track, 3TC).",
-        "Teaching load: 24h."
-      ]
+      "highlights": ["Level: 1st year of engineering school (Telecommunications track, 3TC).", "Teaching load: 24h."]
     },
     {
       "name": "INSA Lyon",
@@ -166,10 +163,7 @@
       "endDate": "2026-12-31",
       "location": "Lyon, France",
       "summary": "Core operating system mechanisms, including kernel and system calls, process scheduling, virtual memory, concurrency, and file systems.",
-      "highlights": [
-        "Level: 1st year of engineering school / Bachelor equivalent (Computer Science, INSA 3IF).",
-        "Teaching load: 16h."
-      ]
+      "highlights": ["Level: 1st year of engineering school / Bachelor equivalent (Computer Science, INSA 3IF).", "Teaching load: 16h."]
     },
     {
       "name": "INSA Lyon",
@@ -179,10 +173,7 @@
       "endDate": "2026-12-31",
       "location": "Lyon, France",
       "summary": "Supervision of long-term group projects on compiler design and implementation, covering intermediate representations, program analysis, and backend code generation.",
-      "highlights": [
-        "Level: 2nd year of engineering school / Master 1 (Computer Science, INSA 4IF).",
-        "Teaching load: 36h."
-      ]
+      "highlights": ["Level: 2nd year of engineering school / Master 1 (Computer Science, INSA 4IF).", "Teaching load: 36h."]
     },
     {
       "name": "INSA Lyon",
@@ -192,10 +183,7 @@
       "endDate": "2026-06-30",
       "location": "Lyon, France",
       "summary": "Problem-solving and practical sessions on processor organization and instruction set architectures, based on the MSP430 microcontroller, including instruction execution, addressing modes, and memory hierarchy.",
-      "highlights": [
-        "Level: 1st year of engineering school / Bachelor equivalent (Computer Science, INSA 3IF).",
-        "Teaching load: 12h."
-      ]
+      "highlights": ["Level: 1st year of engineering school / Bachelor equivalent (Computer Science, INSA 3IF).", "Teaching load: 12h."]
     },
     {
       "name": "INSA Lyon",
@@ -205,10 +193,7 @@
       "endDate": "2026-06-30",
       "location": "Lyon, France",
       "summary": "Exercises and guided sessions on digital circuit design, including combinational and sequential logic, finite state machines, and introductory hardware description languages.",
-      "highlights": [
-        "Level: 1st year of engineering school / Bachelor equivalent (Computer Science, INSA 3IF).",
-        "Teaching load: 12h."
-      ]
+      "highlights": ["Level: 1st year of engineering school / Bachelor equivalent (Computer Science, INSA 3IF).", "Teaching load: 12h."]
     }
   ],
   "education": [
