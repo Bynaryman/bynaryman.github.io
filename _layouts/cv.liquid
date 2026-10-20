@@ -52,6 +52,8 @@ layout: default
                 Posters
               {% when 'invited_talks' -%}
                 Talks and seminars
+              {% when 'educational_videos' -%}
+                Educational videos and scientific outreach
               {% when 'academic_reviewing' -%}
                 Peer reviewing
               {% when 'conference_organization' -%}
@@ -59,7 +61,7 @@ layout: default
               {% when 'academic_summer_schools' -%}
                 Summer schools and workshops
               {% when 'internship_mentoring' -%}
-                Mentoring
+                Research project and internship mentoring
               {% when 'projects' -%}
                 Software and hardware
               {% when 'skills' -%}
@@ -97,6 +99,8 @@ layout: default
               {% when 'posters' %}
                 {% include resume/publications.liquid %}
               {% when 'invited_talks' %}
+                {% include resume/publications.liquid %}
+              {% when 'educational_videos' %}
                 {% include resume/publications.liquid %}
               {% when 'academic_reviewing' %}
                 {% include resume/publications.liquid %}

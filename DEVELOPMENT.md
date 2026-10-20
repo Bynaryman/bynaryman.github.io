@@ -61,6 +61,8 @@ CV entries in `assets/json/resume.json` refer to bibliography keys through `bibk
 
 The PDF source is maintained in the sibling `my_CV` repository, `my_cv.tex`. The September 2026 corrections are also recorded in `_audit/2026-09-24/cv-source.patch`. Regenerate with LuaLaTeX twice in that repository, inspect every PDF page, then copy the result to `assets/pdf/LEDOUX_LOUIS_CV.pdf`. A site build does not regenerate the PDF.
 
+Every CV change must update both the PDF source and the website CV data in the same task. Host internship/project briefs under `assets/pdf/internships/` and link the same public PDF URL from both CV versions.
+
 ## Images and video
 
 Responsive WebP assets and their manifests are committed. To regenerate after adding or changing images, install Pillow 12.3.0 and ffmpeg, then run:

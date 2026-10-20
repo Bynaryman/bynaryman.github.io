@@ -141,6 +141,7 @@
       "location": "A Coruña, Spain",
       "summary": "Designed and delivered a 1h45 interactive course for an international audience, using quizzes and guided exercises to teach digital-design fundamentals and practical MLIR/CIRCT flows: IR lowering, optimization, equivalence checking, logic synthesis, and SystemVerilog generation. Developed a capstone in which participants lowered E4M3 floating-point multiplication from arith.mulf to hw/comb circuitry; demonstrated the end-to-end path from MLIR input to a small Sky130 ASIC GDSII layout, alongside a taped-out TinyTapeout GF0P2 design.",
       "highlights": [
+        "<a href=\"https://mlir-school.github.io/summer-2026/program/\">Official programme</a>: instructor, August 13, 2026 (1h45).",
         "<a href=\"https://bynaryman.github.io/assets/courses/mlir-circt-summer-school-2026/mlir-circt-summer-school-2026.html\">Course slides</a> and <a href=\"https://github.com/Bynaryman/MLIR_ACM_Summer_School_2026_CIRCT\">source and exercises</a>."
       ]
     },
@@ -152,7 +153,10 @@
       "endDate": "2026-12-31",
       "location": "Lyon, France",
       "summary": "Practical sessions in computer architecture for the Telecommunications curriculum, covering instruction execution, pipelining, cache memories, performance evaluation, and RISC-V assembly programming.",
-      "highlights": ["Level: 1st year of engineering school (Telecommunications track, 3TC).", "Teaching load: 24h."]
+      "highlights": [
+        "Level: 1st year of engineering school (Telecommunications track, 3TC).",
+        "Teaching load: 24h."
+      ]
     },
     {
       "name": "INSA Lyon",
@@ -162,7 +166,10 @@
       "endDate": "2026-12-31",
       "location": "Lyon, France",
       "summary": "Core operating system mechanisms, including kernel and system calls, process scheduling, virtual memory, concurrency, and file systems.",
-      "highlights": ["Level: 1st year of engineering school / Bachelor equivalent (Computer Science, INSA 3IF).", "Teaching load: 16h."]
+      "highlights": [
+        "Level: 1st year of engineering school / Bachelor equivalent (Computer Science, INSA 3IF).",
+        "Teaching load: 16h."
+      ]
     },
     {
       "name": "INSA Lyon",
@@ -172,7 +179,10 @@
       "endDate": "2026-12-31",
       "location": "Lyon, France",
       "summary": "Supervision of long-term group projects on compiler design and implementation, covering intermediate representations, program analysis, and backend code generation.",
-      "highlights": ["Level: 2nd year of engineering school / Master 1 (Computer Science, INSA 4IF).", "Teaching load: 36h."]
+      "highlights": [
+        "Level: 2nd year of engineering school / Master 1 (Computer Science, INSA 4IF).",
+        "Teaching load: 36h."
+      ]
     },
     {
       "name": "INSA Lyon",
@@ -182,7 +192,10 @@
       "endDate": "2026-06-30",
       "location": "Lyon, France",
       "summary": "Problem-solving and practical sessions on processor organization and instruction set architectures, based on the MSP430 microcontroller, including instruction execution, addressing modes, and memory hierarchy.",
-      "highlights": ["Level: 1st year of engineering school / Bachelor equivalent (Computer Science, INSA 3IF).", "Teaching load: 12h."]
+      "highlights": [
+        "Level: 1st year of engineering school / Bachelor equivalent (Computer Science, INSA 3IF).",
+        "Teaching load: 12h."
+      ]
     },
     {
       "name": "INSA Lyon",
@@ -192,7 +205,10 @@
       "endDate": "2026-06-30",
       "location": "Lyon, France",
       "summary": "Exercises and guided sessions on digital circuit design, including combinational and sequential logic, finite state machines, and introductory hardware description languages.",
-      "highlights": ["Level: 1st year of engineering school / Bachelor equivalent (Computer Science, INSA 3IF).", "Teaching load: 12h."]
+      "highlights": [
+        "Level: 1st year of engineering school / Bachelor equivalent (Computer Science, INSA 3IF).",
+        "Teaching load: 12h."
+      ]
     }
   ],
   "education": [
@@ -454,6 +470,10 @@
   ],
   "conference_papers": [
     {
+      "bibkey": "barbe_rscm_net_2026",
+      "note": "Forthcoming. Honolulu, Hawaii, USA, December 7–10, 2026."
+    },
+    {
       "bibkey": "ledoux_dlp_2025"
     },
     {
@@ -531,6 +551,29 @@
       "bibkey": "ledoux_accelerating_2019"
     }
   ],
+  "educational_videos": [
+    {
+      "name": "Arbitrary-precision floating-point systolic arrays",
+      "publisher": "Zero to ASIC - Educational video",
+      "releaseDate": "",
+      "url": "https://www.youtube.com/watch?v=0tv-nae4YxM",
+      "summary": "Educational presentation of a systolic-array generator with configurable floating-point formats and accumulator precision, for mentoring and teaching in the Zero to ASIC and Tiny Tapeout communities."
+    },
+    {
+      "name": "Visualization-oriented global placement",
+      "publisher": "Zero to ASIC - Lecture recording (Google Drive)",
+      "releaseDate": "",
+      "url": "https://drive.google.com/file/d/1RnA3w8M1n7lZqJxRYxrNC37EBStPcUuD/view",
+      "summary": "Educational presentation for Matt Venn's Zero to ASIC course on shaping a chip during global placement while exposing the underlying physical-design process."
+    },
+    {
+      "name": "64×64 systolic-array placement",
+      "publisher": "SUF - Video demonstration",
+      "releaseDate": "",
+      "url": "https://www.youtube.com/watch?v=62_eVFaZp8M",
+      "summary": "Video demonstration of the SUF flow's placement visualization for a 4,096-PE array in ASAP7."
+    }
+  ],
   "academic_reviewing": [
     {
       "name": "2026",
@@ -572,6 +615,13 @@
   ],
   "academic_summer_schools": [
     {
+      "name": "ACM Europe School on MLIR 2026",
+      "publisher": "Academic Summer Schools and Workshops - Instructor",
+      "releaseDate": "2026-08-13",
+      "url": "https://mlir-school.github.io/summer-2026/program/",
+      "summary": "A Coruña, Spain, August 10–14. Delivered Digital Design with MLIR and CIRCT (1h45). See Teaching for course slides and exercises."
+    },
+    {
       "name": "ACM Europe Summer School on High Performance Computing",
       "publisher": "Academic Summer Schools and Workshops - Participant",
       "releaseDate": "2021",
@@ -602,11 +652,26 @@
   ],
   "internship_mentoring": [
     {
+      "name": "Vector Floating-Point Architectures for Softmax and Exponential Acceleration",
+      "publisher": "ENS Rennes - M1 SIF research project, 2026–2027 (ongoing)",
+      "releaseDate": "2026-10",
+      "url": "https://bynaryman.github.io/assets/pdf/internships/2026-2027-m1-sif-softmax-vector-fpu.pdf",
+      "summary": "Co-supervision with Sami Ben Ali and Olivier Sentieys in the TARAN team (Inria/IRISA). Year-long research project, one day per week, on vector FPUs and exponential approximations, balancing softmax throughput, hardware cost, and numerical accuracy within CAMELIA.",
+      "note": "<a href=\"/assets/pdf/internships/2026-2027-m1-sif-softmax-vector-fpu.pdf\">Project topic (PDF)</a> · <a href=\"https://people.irisa.fr/Martin.Quinson/Teaching/Projet-M1/\">ENS project listing</a>."
+    },
+    {
       "name": "Esteban Wybouw",
       "publisher": "Internship Mentoring",
       "releaseDate": "2026",
       "url": "",
-      "summary": "Porting FloPoCo to HAriCo: an IR-based core generation framework for multi-HDL hardware generation. Co-supervised with Florent de Dinechin and Pierre Cochard."
+      "summary": "Porting FloPoCo to HAriCo: an IR-based core generation framework for multi-HDL hardware generation. Co-supervised with Florent de Dinechin and Pierre Cochard. Internship completed in August 2026."
+    },
+    {
+      "name": "Azure Blondon, Hugo Berthet-Rambaud, Reda Id Hammouche, and Simon Cabias",
+      "publisher": "INSA Lyon - L3 / 3IF research internships",
+      "releaseDate": "2026",
+      "url": "",
+      "summary": "First year of the engineering cycle (INSA Lyon, 3IF): research internships in the FloPoCo/HAriCo framework. Personal supervision share: approximately 15%, alongside lead supervisors Pierre Cochard and Florent de Dinechin."
     }
   ]
 }

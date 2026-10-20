@@ -655,10 +655,11 @@ jsonresume:
   - contributions
   - posters
   - invited_talks
+  - educational_videos
   - academic_reviewing
   - conference_organization
-  - academic_summer_schools
   - internship_mentoring
+  - academic_summer_schools
   - projects
   - skills
   - languages
