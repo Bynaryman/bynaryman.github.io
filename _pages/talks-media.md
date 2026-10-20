@@ -32,4 +32,4 @@ See [courses](/courses/) for the ACM Europe School on MLIR and the ARITH 2026 CI
 ## Outreach
 
 - [Tiny Tapeout sticker competition](https://tinytapeout.com/competitions/sticker-design-competition/).
-- [Moduland festival, GRAME–cncm](https://www.instagram.com/p/DQEMOAxiGCz/).
+- [Moduland festival, GRAME–cncm](https://www.instagram.com/p/DQEMOAxiGCz/): staffed a booth for nine hours on behalf of the Emeraude team (INSA–Inria–GRAME), presenting an electronic instrument and discussing links between sound, numerical computing, and integrated-circuit design.
