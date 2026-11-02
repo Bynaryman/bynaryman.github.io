@@ -2245,7 +2245,7 @@ code, pre { font-family: "DejaVu Sans Mono", monospace; }
 </header>
 
 
-<p>Use a Linux machine with Bash. Before starting, download and extract the <a href="https://bynaryman.github.io/assets/courses/nunix/2026-2027/TP/TP1-2-Unix/tp-files.zip"><strong>TP files (tp-files.zip)</strong></a>. The extracted <code>files</code> directory contains the files used in the exercises.</p>
+<p>Use a Linux machine with Bash.</p>
 <section id="getting-started" class="level2">
 <h2 class="anchored" data-anchor-id="getting-started">1. Getting started</h2>
 <p>Log into your Linux account and open a terminal.</p>
@@ -2256,6 +2256,7 @@ code, pre { font-family: "DejaVu Sans Mono", monospace; }
 <li>Use the <strong>Up</strong> and <strong>Down</strong> arrows to browse previous commands. Display the absolute path of your current directory again.</li>
 <li>Try copying and pasting text in the terminal. On many Linux terminals, selecting text and clicking the middle mouse button pastes the selection. You can also use <strong>Ctrl+Shift+C</strong> and <strong>Ctrl+Shift+V</strong>.</li>
 <li>Create a directory named <code>tp1</code> inside <code>NUnix</code>. This will be your working directory for the lab.</li>
+<li>From <code>~/NUnix</code>, download <a href="https://bynaryman.github.io/assets/courses/nunix/2026-2027/TP/TP1-2-Unix/tp-files.zip">tp-files.zip</a> with <code>wget</code> (copy the link address), then run <code>unzip tp-files.zip</code>. Check that <code>files</code> and <code>tp1</code> are now two separate directories in <code>NUnix</code>.</li>
 </ol>
 </section>
 <section id="the-man-command" class="level2">
@@ -2269,11 +2270,11 @@ touch, echo, history, history -c, who, passwd, cat</code></pre>
 </section>
 <section id="environment-variables" class="level2">
 <h2 class="anchored" data-anchor-id="environment-variables">3. Environment variables</h2>
-<p>A variable can store the path of a directory:</p>
+<p>Store the path of the supplied files in a variable to access them from another directory:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">variable_name</span><span class="op">=</span>directory_path</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ol type="1">
-<li>Set an environment variable named <code>rcom</code> to the <strong>absolute path</strong> of the downloaded <code>files</code> directory.</li>
-<li>Use this variable to list the directory&#39;s contents.</li>
+<li>Enter <code>~/NUnix/files</code> and use <code>pwd</code> to find its <strong>absolute path</strong>. Store this path in an environment variable named <code>tpfiles</code>.</li>
+<li>Return to <code>~/NUnix</code>. Use <code>tpfiles</code> to list the contents of <code>files</code>.</li>
 <li>Use it to display the contents of <code>prog1.c</code>.</li>
 </ol>
 <div style="page-break-after: always;"></div>
@@ -2281,7 +2282,7 @@ touch, echo, history, history -c, who, passwd, cat</code></pre>
 <section id="redirections" class="level2">
 <h2 class="anchored" data-anchor-id="redirections">4. Redirections</h2>
 <ol type="1">
-<li><p>Copy the contents of the directory named by <code>rcom</code> into <code>~/NUnix/tp1</code> using <code>cp</code>. Work in <code>~/NUnix/tp1</code> for the remaining exercises.</p></li>
+<li><p>Copy the contents of the directory named by <code>tpfiles</code> into <code>~/NUnix/tp1</code> using <code>cp</code>. Work in <code>~/NUnix/tp1</code> for the remaining exercises.</p></li>
 <li><p>Open <code>prog1.c</code> in a text editor. What does the program do? When launching a graphical editor from the terminal, try adding <code>&amp;</code> to run it in the background and keep using the shell.</p></li>
 <li><p>Run <code>make</code> in <code>~/NUnix/tp1</code> to compile the supplied programs (a C compiler is required). Then run <code>./prog1</code> in each of these situations:</p>
 <table class="caption-top table">

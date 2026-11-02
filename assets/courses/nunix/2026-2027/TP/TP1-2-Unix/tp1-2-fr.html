@@ -2245,7 +2245,7 @@ code, pre { font-family: "DejaVu Sans Mono", monospace; }
 </header>
 
 
-<p>Utiliser une machine Linux avec Bash. Avant de commencer, télécharger et extraire les <a href="https://bynaryman.github.io/assets/courses/nunix/2026-2027/TP/TP1-2-Unix/tp-files.zip"><strong>fichiers du TP (tp-files.zip)</strong></a>. Le répertoire <code>files</code> extrait contient les fichiers utilisés dans les exercices.</p>
+<p>Utiliser une machine Linux avec Bash.</p>
 <section id="pour-commencer" class="level2">
 <h2 class="anchored" data-anchor-id="pour-commencer">1. Pour commencer</h2>
 <p>Se connecter à son compte Linux et ouvrir un terminal.</p>
@@ -2256,6 +2256,7 @@ code, pre { font-family: "DejaVu Sans Mono", monospace; }
 <li>Parcourir les commandes précédentes avec les flèches <strong>Haut</strong> et <strong>Bas</strong>. Afficher à nouveau le chemin absolu du répertoire courant.</li>
 <li>Essayer le copier-coller dans le terminal. Dans de nombreux terminaux Linux, sélectionner du texte puis cliquer sur le bouton central de la souris colle la sélection. Vous pouvez aussi utiliser <strong>Ctrl+Shift+C</strong> et <strong>Ctrl+Shift+V</strong>.</li>
 <li>Créer un répertoire <code>tp1</code> dans <code>NUnix</code>. Ce sera le répertoire de travail du TP.</li>
+<li>Depuis <code>~/NUnix</code>, télécharger <a href="https://bynaryman.github.io/assets/courses/nunix/2026-2027/TP/TP1-2-Unix/tp-files.zip">tp-files.zip</a> avec <code>wget</code> (copier l’adresse du lien), puis lancer <code>unzip tp-files.zip</code>. Vérifier que <code>files</code> et <code>tp1</code> sont deux répertoires distincts dans <code>NUnix</code>.</li>
 </ol>
 </section>
 <section id="la-commande-man" class="level2">
@@ -2269,11 +2270,11 @@ touch, echo, history, history -c, who, passwd, cat</code></pre>
 </section>
 <section id="variables-denvironnement" class="level2">
 <h2 class="anchored" data-anchor-id="variables-denvironnement">3. Variables d&#39;environnement</h2>
-<p>Une variable peut contenir le chemin d&#39;un répertoire :</p>
+<p>Stocker le chemin des fichiers fournis dans une variable pour y accéder depuis un autre répertoire :</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">nom_variable</span><span class="op">=</span>chemin_repertoire</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
 <ol type="1">
-<li>Définir une variable d&#39;environnement <code>rcom</code> contenant le <strong>chemin absolu</strong> du répertoire <code>files</code> téléchargé.</li>
-<li>Utiliser cette variable pour afficher le contenu du répertoire.</li>
+<li>Entrer dans <code>~/NUnix/files</code> et trouver son <strong>chemin absolu</strong> avec <code>pwd</code>. Stocker ce chemin dans une variable d&#39;environnement nommée <code>tpfiles</code>.</li>
+<li>Revenir dans <code>~/NUnix</code>. Utiliser <code>tpfiles</code> pour lister le contenu de <code>files</code>.</li>
 <li>L&#39;utiliser pour afficher le contenu de <code>prog1.c</code>.</li>
 </ol>
 <div style="page-break-after: always;"></div>
@@ -2281,7 +2282,7 @@ touch, echo, history, history -c, who, passwd, cat</code></pre>
 <section id="redirections" class="level2">
 <h2 class="anchored" data-anchor-id="redirections">4. Redirections</h2>
 <ol type="1">
-<li><p>Copier le contenu du répertoire désigné par <code>rcom</code> dans <code>~/NUnix/tp1</code> avec <code>cp</code>. Travailler dans <code>~/NUnix/tp1</code> pour la suite des exercices.</p></li>
+<li><p>Copier le contenu du répertoire désigné par <code>tpfiles</code> dans <code>~/NUnix/tp1</code> avec <code>cp</code>. Travailler dans <code>~/NUnix/tp1</code> pour la suite des exercices.</p></li>
 <li><p>Ouvrir <code>prog1.c</code> dans un éditeur de texte. Que fait ce programme ? Lors du lancement d&#39;un éditeur graphique depuis le terminal, essayer d&#39;ajouter <code>&amp;</code> pour l&#39;exécuter en arrière-plan et continuer à utiliser le shell.</p></li>
 <li><p>Lancer <code>make</code> dans <code>~/NUnix/tp1</code> pour compiler les programmes fournis (un compilateur C est nécessaire). Puis exécuter <code>./prog1</code> dans chacun des cas suivants :</p>
 <table class="caption-top table">
