@@ -223,7 +223,7 @@ Louis Ledoux
 <li><a href="#/section-report">Build a log report</a></li>
 </ol>
 <aside class="notes">
-<p>90-minute plan, with interaction included: 0–20 inputs and variables; 20–38 tests and decisions; 38–55 loops and counters; 55–60 functions and debugging; 60–83 guided script build; 83–85 recap; 85–90 buffer for questions. Reference slides after the recap are outside this plan. Pause for predictions at argument grouping, if/else, counter updates and the multiline while trace. Allow students to suggest the next command during the report build. If discussion runs long, keep the file checks and final run; show the supplied complete script rather than rush the last steps.</p>
+<p>90-minute plan, with interaction included: 0–20 inputs and variables; 20–40 tests and decisions; 40–57 loops and counters; 57–62 functions and debugging; 62–85 guided script build; 85–87 recap; 87–90 buffer for questions. Reference slides after the recap are outside this plan. Pause for predictions at argument grouping, if/else, counter updates and the multiline while trace. Allow students to suggest the next command during the report build. If discussion runs long, keep the file checks and final run; show the supplied complete script rather than rush the last steps.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -778,16 +778,53 @@ Here, the output is <code>Exactly ten</code>.</p>
       }</style></aside>
 </div>
 </section>
+<section id="multiple-conditions" class="slide level2 compact">
+<h2>Three conditions with &amp;&amp;</h2>
+<div class="slide-body">
+<p>Example call: <code>bash check.sh report.log ERROR 10</code></p>
+<div class="columns code-left">
+<div class="column" style="width:58%;">
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="st">"</span><span class="va">$#</span><span class="st">"</span> <span class="ot">-gt</span> 2 <span class="bu">]</span> <span class="kw">&amp;&amp;</span></span>
+<span id="cb19-2"><a href="" aria-hidden="true" tabindex="-1"></a>   <span class="bu">[</span> <span class="ot">-f</span> <span class="st">"</span><span class="va">$1</span><span class="st">"</span> <span class="bu">]</span> <span class="kw">&amp;&amp;</span></span>
+<span id="cb19-3"><a href="" aria-hidden="true" tabindex="-1"></a>   <span class="kw">[[</span> <span class="st">"</span><span class="va">$1</span><span class="st">"</span> <span class="ot">==</span> report<span class="pp">*</span> <span class="kw">]];</span> <span class="cf">then</span></span>
+<span id="cb19-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"Inputs accepted"</span></span>
+<span id="cb19-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+</div><div class="column" style="width:38%;">
+<ol type="1">
+<li><strong>At least three</strong> arguments.</li>
+<li><code>$1</code> names an <strong>existing regular file</strong>.</li>
+<li><code>$1</code> <strong>starts with <code>report</code></strong>.</li>
+</ol>
+</div></div>
+<div class="block">
+<p><code>[[ ... ]]</code> supports patterns in Bash. Keep <code>report*</code> unquoted.<br>
+<code>&amp;&amp;</code> means <strong>AND</strong>: stop checking as soon as one condition is false.</p>
+</div>
+<aside class="notes">
+<p>Allow 2 minutes including a prediction. Prepare report.log and notes.log in the current directory. Save the code in check.sh and run bash check.sh report.log ERROR 10: Inputs accepted. Try only two arguments, a missing report file, and an existing notes.log: nothing is printed. The first failed condition skips the remaining tests and the then branch. A newline after &amp;&amp; continues the command list without a backslash. report* is a shell pattern, not a regular expression: the star matches any suffix, including an empty one. Quoting "report<em>" would test that literal text. This tests the argument as written: ./report.log starts with ./, so it does not match report</em>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
 <section id="argument-check" class="slide level2">
 <h2>Checking the script's arguments</h2>
 <div class="slide-body">
 <p>Save as <code>count-lines.sh</code>:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb19-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="st">"</span><span class="va">$#</span><span class="st">"</span> <span class="ot">-ne</span> 1 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
-<span id="cb19-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"Usage: </span><span class="va">$0</span><span class="st"> FILE"</span> <span class="op">&gt;&amp;</span><span class="dv">2</span></span>
-<span id="cb19-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 2</span>
-<span id="cb19-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
-<span id="cb19-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> <span class="op">&lt;</span> <span class="st">"</span><span class="va">$1</span><span class="st">"</span></span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb20-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="st">"</span><span class="va">$#</span><span class="st">"</span> <span class="ot">-ne</span> 1 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb20-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"Usage: </span><span class="va">$0</span><span class="st"> FILE"</span> <span class="op">&gt;&amp;</span><span class="dv">2</span></span>
+<span id="cb20-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 2</span>
+<span id="cb20-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb20-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> <span class="op">&lt;</span> <span class="st">"</span><span class="va">$1</span><span class="st">"</span></span></code></pre></div>
 <ul>
 <li><code>$#</code> is the argument count; <code>-ne 1</code> means <strong>not equal to 1</strong>.</li>
 <li><code>&gt;&amp;2</code> sends the message to standard error.</li>
@@ -811,15 +848,15 @@ Here, the output is <code>Exactly ten</code>.</p>
 <section id="case" class="slide level2 compact">
 <h2>case selects a matching pattern</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">read</span> <span class="at">-r</span> <span class="at">-p</span> <span class="st">"Enter a command: "</span> <span class="va">choice</span></span>
-<span id="cb20-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> <span class="st">"</span><span class="va">$choice</span><span class="st">"</span> <span class="kw">in</span></span>
-<span id="cb20-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="ss">all</span><span class="kw">|</span><span class="ss">ALL</span><span class="kw">)</span></span>
-<span id="cb20-4"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="fu">ls</span> <span class="at">-la</span> <span class="cf">;;</span></span>
-<span id="cb20-5"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="ss">list</span><span class="kw">|</span><span class="ss">LIST</span><span class="kw">)</span></span>
-<span id="cb20-6"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="fu">ls</span> <span class="at">-l</span> <span class="cf">;;</span></span>
-<span id="cb20-7"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="pp">*</span><span class="kw">)</span></span>
-<span id="cb20-8"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="st">"Invalid choice"</span> <span class="cf">;;</span></span>
-<span id="cb20-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">esac</span></span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">read</span> <span class="at">-r</span> <span class="at">-p</span> <span class="st">"Enter a command: "</span> <span class="va">choice</span></span>
+<span id="cb21-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> <span class="st">"</span><span class="va">$choice</span><span class="st">"</span> <span class="kw">in</span></span>
+<span id="cb21-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="ss">all</span><span class="kw">|</span><span class="ss">ALL</span><span class="kw">)</span></span>
+<span id="cb21-4"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="fu">ls</span> <span class="at">-la</span> <span class="cf">;;</span></span>
+<span id="cb21-5"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="ss">list</span><span class="kw">|</span><span class="ss">LIST</span><span class="kw">)</span></span>
+<span id="cb21-6"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="fu">ls</span> <span class="at">-l</span> <span class="cf">;;</span></span>
+<span id="cb21-7"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="pp">*</span><span class="kw">)</span></span>
+<span id="cb21-8"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="st">"Invalid choice"</span> <span class="cf">;;</span></span>
+<span id="cb21-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">esac</span></span></code></pre></div>
 <p><code>|</code> separates alternative patterns; <code>;;</code> ends a branch.<br>
 <code>*)</code> handles any other answer; <code>esac</code> ends the selection.</p>
 <aside class="notes">
@@ -845,9 +882,9 @@ Here, the output is <code>Exactly ten</code>.</p>
 <section id="arithmetic" class="slide level2">
 <h2>Calculating with integers</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="va">count</span><span class="op">=</span>3</span>
-<span id="cb21-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$((count</span> <span class="op">+</span> <span class="dv">2</span><span class="va">))</span><span class="st">"</span></span>
-<span id="cb21-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$count</span><span class="st">"</span></span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb22-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="va">count</span><span class="op">=</span>3</span>
+<span id="cb22-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$((count</span> <span class="op">+</span> <span class="dv">2</span><span class="va">))</span><span class="st">"</span></span>
+<span id="cb22-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$count</span><span class="st">"</span></span></code></pre></div>
 <pre class="text"><code>5
 3</code></pre>
 <p>Bash replaces <code>$((count + 2))</code> with <code>5</code> before running <code>echo</code>.<br>
@@ -860,13 +897,13 @@ The calculation gives <code>5</code>; <code>count</code> still contains <code>3<
 <section id="arithmetic-update" class="slide level2">
 <h2>Updating a counter</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb23"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb23-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="va">count</span><span class="op">=</span>3</span>
-<span id="cb23-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="va">count</span><span class="op">=</span><span class="va">$((count</span> <span class="op">+</span> <span class="dv">1</span><span class="va">))</span></span>
-<span id="cb23-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$count</span><span class="st">"</span></span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb24-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="va">count</span><span class="op">=</span>3</span>
+<span id="cb24-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="va">count</span><span class="op">=</span><span class="va">$((count</span> <span class="op">+</span> <span class="dv">1</span><span class="va">))</span></span>
+<span id="cb24-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$count</span><span class="st">"</span></span></code></pre></div>
 <p><code>$((count + 1))</code> calculates <code>4</code>; the assignment stores it in <code>count</code>.</p>
 <div class="block">
 <p>The TD also uses <code>expr</code>, which <strong>prints</strong> a calculation's result:</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb24-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="va">count</span><span class="op">=</span><span class="va">$(</span><span class="fu">expr</span> <span class="st">"</span><span class="va">$count</span><span class="st">"</span> + 1<span class="va">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb25-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="va">count</span><span class="op">=</span><span class="va">$(</span><span class="fu">expr</span> <span class="st">"</span><span class="va">$count</span><span class="st">"</span> + 1<span class="va">)</span></span></code></pre></div>
 <p><code>$(...)</code> captures that result. Here, <code>count</code> becomes <code>5</code>.</p>
 </div>
 <aside class="notes">
@@ -887,9 +924,9 @@ The calculation gives <code>5</code>; <code>count</code> still contains <code>3<
 <section id="for" class="slide level2">
 <h2>for visits a list of words</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb25"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb25-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> group <span class="kw">in</span> L3info L3miage M1info<span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb25-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"</span><span class="va">$group</span><span class="st">"</span></span>
-<span id="cb25-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb26-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> group <span class="kw">in</span> L3info L3miage M1info<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb26-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"</span><span class="va">$group</span><span class="st">"</span></span>
+<span id="cb26-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
 <p>Each iteration assigns the next word to <code>group</code>, then runs the body.</p>
 <div class="fragment">
 <p>The list can contain literal words, numbers, filenames or <code>"$@"</code>.</p>
@@ -913,11 +950,11 @@ The calculation gives <code>5</code>; <code>count</code> still contains <code>3<
 <h2>One iteration per script argument</h2>
 <div class="slide-body">
 <p>In <code>show-files.sh</code>:</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb26-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> filename <span class="kw">in</span> <span class="st">"</span><span class="va">$@</span><span class="st">"</span><span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb26-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"File: </span><span class="va">$filename</span><span class="st">"</span></span>
-<span id="cb26-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb27-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> filename <span class="kw">in</span> <span class="st">"</span><span class="va">$@</span><span class="st">"</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb27-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"File: </span><span class="va">$filename</span><span class="st">"</span></span>
+<span id="cb27-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
 <p>Run it with:</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb27-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> show-files.sh notes.txt <span class="st">"meeting notes.txt"</span></span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb28-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> show-files.sh notes.txt <span class="st">"meeting notes.txt"</span></span></code></pre></div>
 <div class="fragment block">
 <p><strong>Two iterations.</strong> <code>"$@"</code> keeps <code>meeting notes.txt</code> as one filename.</p>
 </div>
@@ -939,11 +976,11 @@ The calculation gives <code>5</code>; <code>count</code> still contains <code>3<
 <section id="while" class="slide level2">
 <h2>while repeats after a successful test</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb28"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb28-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="va">i</span><span class="op">=</span>1</span>
-<span id="cb28-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="bu">[</span> <span class="st">"</span><span class="va">$i</span><span class="st">"</span> <span class="ot">-lt</span> 10 <span class="bu">]</span><span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb28-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"</span><span class="va">$i</span><span class="st">"</span></span>
-<span id="cb28-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="va">i</span><span class="op">=</span><span class="va">$((i</span> <span class="op">+</span> <span class="dv">1</span><span class="va">))</span></span>
-<span id="cb28-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb29-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="va">i</span><span class="op">=</span>1</span>
+<span id="cb29-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="bu">[</span> <span class="st">"</span><span class="va">$i</span><span class="st">"</span> <span class="ot">-lt</span> 10 <span class="bu">]</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb29-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"</span><span class="va">$i</span><span class="st">"</span></span>
+<span id="cb29-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="va">i</span><span class="op">=</span><span class="va">$((i</span> <span class="op">+</span> <span class="dv">1</span><span class="va">))</span></span>
+<span id="cb29-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
 <p>Test <strong>before</strong> each iteration.<br>
 The loop prints the integers <strong>1 through 9</strong>.</p>
 <aside class="notes">
@@ -964,11 +1001,11 @@ The loop prints the integers <strong>1 through 9</strong>.</p>
 <section id="prompt-loop" class="slide level2">
 <h2>Asking again until the user stops</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb29"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb29-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">read</span> <span class="at">-r</span> <span class="at">-p</span> <span class="st">"Word (end to stop): "</span> <span class="va">word</span></span>
-<span id="cb29-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="bu">[</span> <span class="st">"</span><span class="va">$word</span><span class="st">"</span> <span class="ot">!=</span> <span class="st">"end"</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb29-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"You entered: </span><span class="va">$word</span><span class="st">"</span></span>
-<span id="cb29-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">read</span> <span class="at">-r</span> <span class="at">-p</span> <span class="st">"Word (end to stop): "</span> <span class="va">word</span></span>
-<span id="cb29-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb30-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">read</span> <span class="at">-r</span> <span class="at">-p</span> <span class="st">"Word (end to stop): "</span> <span class="va">word</span></span>
+<span id="cb30-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="bu">[</span> <span class="st">"</span><span class="va">$word</span><span class="st">"</span> <span class="ot">!=</span> <span class="st">"end"</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb30-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"You entered: </span><span class="va">$word</span><span class="st">"</span></span>
+<span id="cb30-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">read</span> <span class="at">-r</span> <span class="at">-p</span> <span class="st">"Word (end to stop): "</span> <span class="va">word</span></span>
+<span id="cb30-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
 <p><code>end</code> makes the test false and stops the loop.<br>
 The last <code>read</code> updates <code>word</code> before the next test.</p>
 <aside class="notes">
@@ -989,14 +1026,14 @@ The last <code>read</code> updates <code>word</code> before the next test.</p>
 <section id="while-multiline" class="slide level2 compact">
 <h2>while can test a whole command list</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb30"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb30-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="va">i</span><span class="op">=</span>1</span>
-<span id="cb30-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span></span>
-<span id="cb30-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"Checking i=</span><span class="va">$i</span><span class="st">"</span></span>
-<span id="cb30-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">[</span> <span class="st">"</span><span class="va">$i</span><span class="st">"</span> <span class="ot">-le</span> 3 <span class="bu">]</span></span>
-<span id="cb30-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
-<span id="cb30-6"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"Body: </span><span class="va">$i</span><span class="st">"</span></span>
-<span id="cb30-7"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="va">i</span><span class="op">=</span><span class="va">$((i</span> <span class="op">+</span> <span class="dv">1</span><span class="va">))</span></span>
-<span id="cb30-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb31-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="va">i</span><span class="op">=</span>1</span>
+<span id="cb31-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span></span>
+<span id="cb31-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"Checking i=</span><span class="va">$i</span><span class="st">"</span></span>
+<span id="cb31-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">[</span> <span class="st">"</span><span class="va">$i</span><span class="st">"</span> <span class="ot">-le</span> 3 <span class="bu">]</span></span>
+<span id="cb31-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb31-6"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"Body: </span><span class="va">$i</span><span class="st">"</span></span>
+<span id="cb31-7"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="va">i</span><span class="op">=</span><span class="va">$((i</span> <span class="op">+</span> <span class="dv">1</span><span class="va">))</span></span>
+<span id="cb31-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
 <p>The <strong>last command</strong> before <code>do</code> decides whether the body runs.</p>
 <aside class="notes">
 <p>A condition list can span several lines. Each command runs in order; the last command's status determines whether the loop body runs. <a href="https://www.gnu.org/s/bash/manual/html_node/Looping-Constructs.html">Bash looping constructs</a>.</p>
@@ -1056,11 +1093,11 @@ Checking i=4</code></pre>
 <h2>Defining and calling a function</h2>
 <div class="slide-body">
 <p>Define the function, then call it with a filename:</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb32-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">count_lines()</span> <span class="kw">{</span></span>
-<span id="cb32-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">local</span> <span class="va">filename</span><span class="op">=</span><span class="st">"</span><span class="va">$1</span><span class="st">"</span></span>
-<span id="cb32-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">wc</span> <span class="at">-l</span> <span class="op">&lt;</span> <span class="st">"</span><span class="va">$filename</span><span class="st">"</span></span>
-<span id="cb32-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
-<span id="cb32-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ex">count_lines</span> <span class="st">"names.txt"</span></span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb33-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">count_lines()</span> <span class="kw">{</span></span>
+<span id="cb33-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">local</span> <span class="va">filename</span><span class="op">=</span><span class="st">"</span><span class="va">$1</span><span class="st">"</span></span>
+<span id="cb33-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">wc</span> <span class="at">-l</span> <span class="op">&lt;</span> <span class="st">"</span><span class="va">$filename</span><span class="st">"</span></span>
+<span id="cb33-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb33-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ex">count_lines</span> <span class="st">"names.txt"</span></span></code></pre></div>
 <ul>
 <li>Inside the function, <code>$1</code> is <strong>the argument passed to this call</strong>.</li>
 <li><code>local</code> gives the function its own <code>filename</code> variable.</li>
@@ -1084,8 +1121,8 @@ Checking i=4</code></pre>
 <section id="debug" class="slide level2">
 <h2>Check syntax and trace execution</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb33"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb33-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> <span class="at">-n</span> count-lines.sh</span>
-<span id="cb33-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> <span class="at">-x</span> count-lines.sh notes.txt</span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb34-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> <span class="at">-n</span> count-lines.sh</span>
+<span id="cb34-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> <span class="at">-x</span> count-lines.sh notes.txt</span></code></pre></div>
 <ul>
 <li><code>-n</code>: parse the script without executing its commands.</li>
 <li><code>-x</code>: execute and trace expanded commands on stderr.</li>
@@ -1116,14 +1153,14 @@ Checking i=4</code></pre>
 <div class="slide-body">
 <p>Support checks a web service and an overnight job. Count lines matching a pattern in <strong>each log</strong>. Save the summary in <code>search-report.txt</code>.</p>
 <p><a href="https://bynaryman.github.io/assets/courses/nunix/2026-2027/assets/demo/report-demo.zip">Download the example files</a>, extract them and open <code>report.sh</code> in <code>report-demo</code>.</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb34-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> report.sh web.log <span class="st">"worker night.log"</span></span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb35-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> report.sh web.log <span class="st">"worker night.log"</span></span></code></pre></div>
 <ul>
 <li>Ask for a pattern, such as <code>ERROR</code>.</li>
 <li>Check the arguments and file access.</li>
 <li>Process each file, then save its count.</li>
 </ul>
 <aside class="notes">
-<p>Start the guided build at about minute 60; allow 23 minutes for editing, predictions and a final run. Use the first 2 minutes to read the task and inspect the two logs. The ZIP contains two small logs and a one-line starter report.sh. Work inside its report-demo folder. The completed script is linked on the final slide. It uses the same arguments, read, file tests, functions, loops and redirections needed in TD3–5 and TP5/7 without solving their exercises. Each script-build slide reveals one code line at a time in HTML; the PDF shows all lines.</p>
+<p>Start the guided build at about minute 62; allow 23 minutes for editing, predictions and a final run. Use the first 2 minutes to read the task and inspect the two logs. The ZIP contains two small logs and a one-line starter report.sh. Work inside its report-demo folder. The completed script is linked on the final slide. It uses the same arguments, read, file tests, functions, loops and redirections needed in TD3–5 and TP5/7 without solving their exercises. Each script-build slide reveals one code line at a time in HTML; the PDF shows all lines.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1141,11 +1178,11 @@ Checking i=4</code></pre>
 <h2>1. Check that files were supplied</h2>
 <div class="slide-body">
 <p>Start <code>report.sh</code> with:</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb35-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb35-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="st">"</span><span class="va">$#</span><span class="st">"</span> <span class="ot">-eq</span> 0 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
-<span id="cb35-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"Usage: </span><span class="va">$0</span><span class="st"> LOGFILE..."</span> <span class="op">&gt;&amp;</span><span class="dv">2</span></span>
-<span id="cb35-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 1</span>
-<span id="cb35-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb36-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb36-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="st">"</span><span class="va">$#</span><span class="st">"</span> <span class="ot">-eq</span> 0 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb36-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"Usage: </span><span class="va">$0</span><span class="st"> LOGFILE..."</span> <span class="op">&gt;&amp;</span><span class="dv">2</span></span>
+<span id="cb36-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 1</span>
+<span id="cb36-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
 <p><strong>Predict:</strong> what happens with <code>bash report.sh</code> and no filename?</p>
 <div class="fragment block">
 <p>The script prints its usage on stderr and stops with status <code>1</code>.</p>
@@ -1169,8 +1206,8 @@ Checking i=4</code></pre>
 <h2>2. Ask what to search for</h2>
 <div class="slide-body">
 <p>Add after the argument check:</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb36-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">read</span> <span class="at">-r</span> <span class="at">-p</span> <span class="st">"Pattern to count: "</span> <span class="va">pattern</span></span>
-<span id="cb36-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Searching for: </span><span class="va">$pattern</span><span class="st">"</span></span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb37-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">read</span> <span class="at">-r</span> <span class="at">-p</span> <span class="st">"Pattern to count: "</span> <span class="va">pattern</span></span>
+<span id="cb37-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Searching for: </span><span class="va">$pattern</span><span class="st">"</span></span></code></pre></div>
 <p>Run the script with the two logs and type <code>ERROR</code>.</p>
 <div class="fragment block">
 <p><code>read</code> fills <code>pattern</code>. Its value will be reused for every file.</p>
@@ -1194,12 +1231,12 @@ Checking i=4</code></pre>
 <h2>3. Process one file</h2>
 <div class="slide-body">
 <p>Add a function, then call it on the first filename:</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb37-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">report_file()</span> <span class="kw">{</span></span>
-<span id="cb37-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">local</span> <span class="va">matches</span></span>
-<span id="cb37-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="va">matches</span><span class="op">=</span><span class="va">$(</span><span class="fu">grep</span> <span class="st">"</span><span class="va">$pattern</span><span class="st">"</span> <span class="st">"</span><span class="va">$1</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span><span class="va">)</span></span>
-<span id="cb37-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"</span><span class="va">$1</span><span class="st">: </span><span class="va">$matches</span><span class="st"> matching lines"</span></span>
-<span id="cb37-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
-<span id="cb37-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ex">report_file</span> <span class="st">"</span><span class="va">$1</span><span class="st">"</span></span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb38-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">report_file()</span> <span class="kw">{</span></span>
+<span id="cb38-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">local</span> <span class="va">matches</span></span>
+<span id="cb38-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="va">matches</span><span class="op">=</span><span class="va">$(</span><span class="fu">grep</span> <span class="st">"</span><span class="va">$pattern</span><span class="st">"</span> <span class="st">"</span><span class="va">$1</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span><span class="va">)</span></span>
+<span id="cb38-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"</span><span class="va">$1</span><span class="st">: </span><span class="va">$matches</span><span class="st"> matching lines"</span></span>
+<span id="cb38-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb38-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ex">report_file</span> <span class="st">"</span><span class="va">$1</span><span class="st">"</span></span></code></pre></div>
 <p><code>grep</code> selects the lines; <code>wc -l</code> counts them.<br>
 <code>$(...)</code> stores that count in the function's local variable.</p>
 <aside class="notes">
@@ -1221,14 +1258,14 @@ Checking i=4</code></pre>
 <h2>4. Check and process every file</h2>
 <div class="slide-body">
 <p>Replace the single function call with this loop:</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb38-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> logfile <span class="kw">in</span> <span class="st">"</span><span class="va">$@</span><span class="st">"</span><span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb38-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="ot">-f</span> <span class="st">"</span><span class="va">$logfile</span><span class="st">"</span> <span class="bu">]</span> <span class="kw">&amp;&amp;</span> <span class="bu">[</span> <span class="ot">-r</span> <span class="st">"</span><span class="va">$logfile</span><span class="st">"</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
-<span id="cb38-3"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="ex">report_file</span> <span class="st">"</span><span class="va">$logfile</span><span class="st">"</span></span>
-<span id="cb38-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span></span>
-<span id="cb38-5"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="st">"Cannot read file: </span><span class="va">$logfile</span><span class="st">"</span> <span class="op">&gt;&amp;</span><span class="dv">2</span></span>
-<span id="cb38-6"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="bu">exit</span> 1</span>
-<span id="cb38-7"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">fi</span></span>
-<span id="cb38-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb39-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> logfile <span class="kw">in</span> <span class="st">"</span><span class="va">$@</span><span class="st">"</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb39-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="ot">-f</span> <span class="st">"</span><span class="va">$logfile</span><span class="st">"</span> <span class="bu">]</span> <span class="kw">&amp;&amp;</span> <span class="bu">[</span> <span class="ot">-r</span> <span class="st">"</span><span class="va">$logfile</span><span class="st">"</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb39-3"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="ex">report_file</span> <span class="st">"</span><span class="va">$logfile</span><span class="st">"</span></span>
+<span id="cb39-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span></span>
+<span id="cb39-5"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="st">"Cannot read file: </span><span class="va">$logfile</span><span class="st">"</span> <span class="op">&gt;&amp;</span><span class="dv">2</span></span>
+<span id="cb39-6"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="bu">exit</span> 1</span>
+<span id="cb39-7"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">fi</span></span>
+<span id="cb39-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
 <p><strong>Predict:</strong> does <code>worker night.log</code> cause one iteration or two?</p>
 <aside class="notes">
 <p>About 5 minutes including running it and trying missing.log. "$@" keeps each filename intact. -f checks for a regular file and -r checks read access; both must succeed. An invalid input stops the script at that file. Earlier files may already have been processed.</p>
@@ -1249,10 +1286,10 @@ Checking i=4</code></pre>
 <h2>5. Save the report</h2>
 <div class="slide-body">
 <p>Before the loop, create the report and write its heading:</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb39-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="va">report</span><span class="op">=</span><span class="st">"search-report.txt"</span></span>
-<span id="cb39-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Matching lines for: </span><span class="va">$pattern</span><span class="st">"</span> <span class="op">&gt;</span> <span class="st">"</span><span class="va">$report</span><span class="st">"</span></span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb40-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="va">report</span><span class="op">=</span><span class="st">"search-report.txt"</span></span>
+<span id="cb40-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Matching lines for: </span><span class="va">$pattern</span><span class="st">"</span> <span class="op">&gt;</span> <span class="st">"</span><span class="va">$report</span><span class="st">"</span></span></code></pre></div>
 <p>Inside the loop, redirect the function's output:</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb40-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ex">report_file</span> <span class="st">"</span><span class="va">$logfile</span><span class="st">"</span> <span class="op">&gt;&gt;</span> <span class="st">"</span><span class="va">$report</span><span class="st">"</span></span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb41-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ex">report_file</span> <span class="st">"</span><span class="va">$logfile</span><span class="st">"</span> <span class="op">&gt;&gt;</span> <span class="st">"</span><span class="va">$report</span><span class="st">"</span></span></code></pre></div>
 <p><strong>Why <code>&gt;&gt;</code> here?</strong> Each file's result must be added after the previous one.</p>
 <div class="fragment">
 <p>After the loop: <code>echo "Report saved in $report"</code>.</p>
@@ -1275,7 +1312,7 @@ Checking i=4</code></pre>
 <section id="report-run" class="slide level2 compact">
 <h2>6. Run it and inspect the result</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb41"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb41-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> report.sh web.log <span class="st">"worker night.log"</span></span></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb42-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> report.sh web.log <span class="st">"worker night.log"</span></span></code></pre></div>
 <p>Type <code>ERROR</code>, then run <code>cat search-report.txt</code>:</p>
 <pre class="text"><code>Matching lines for: ERROR
 web.log: 3 matching lines
@@ -1308,7 +1345,7 @@ worker night.log: 2 matching lines</code></pre>
 <li>Run the script with normal and incorrect inputs; inspect its output.</li>
 </ol>
 <aside class="notes">
-<p>Allow 2 minutes, then keep the remaining 5 minutes as a buffer for questions. The guided report prepares the techniques for TD3–5 and TP5/7; the following reference slides supply further syntax and tools, not a second lecture to deliver in the same 90-minute slot.</p>
+<p>Allow 2 minutes, then keep the remaining 3 minutes as a buffer for questions. The guided report prepares the techniques for TD3–5 and TP5/7; the following reference slides supply further syntax and tools, not a second lecture to deliver in the same 90-minute slot.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1330,7 +1367,7 @@ worker night.log: 2 matching lines</code></pre>
 <section id="options" class="slide level2 compact">
 <h2>Options for the TP script</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb43"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb43-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> main.sh <span class="at">-p</span> samples <span class="at">-h</span></span></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb44-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> main.sh <span class="at">-p</span> samples <span class="at">-h</span></span></code></pre></div>
 <p>Bash passes these as ordinary arguments. <strong>The script interprets them</strong><br>
 with <code>getopts "hp:" option</code>, reading one option at a time:</p>
 <table class="caption-top">
@@ -1364,15 +1401,15 @@ with <code>getopts "hp:" option</code>, reading one option at a time:</p>
 <section id="getopts" class="slide level2 compact">
 <h2>Reading options with getopts</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb44"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb44-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="va">directory</span><span class="op">=</span><span class="st">"."</span></span>
-<span id="cb44-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="bu">getopts</span> <span class="st">"hp:"</span> <span class="va">option</span><span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb44-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> <span class="st">"</span><span class="va">$option</span><span class="st">"</span> <span class="kw">in</span></span>
-<span id="cb44-4"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="ss">h</span><span class="kw">)</span> <span class="bu">echo</span> <span class="st">"Usage: </span><span class="va">$0</span><span class="st"> [-p DIRECTORY]"</span><span class="kw">;</span> <span class="bu">exit</span> 0 <span class="cf">;;</span></span>
-<span id="cb44-5"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="ss">p</span><span class="kw">)</span> <span class="va">directory</span><span class="op">=</span><span class="st">"</span><span class="va">$OPTARG</span><span class="st">"</span> <span class="cf">;;</span></span>
-<span id="cb44-6"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="pp">*</span><span class="kw">)</span> <span class="bu">exit</span> 1 <span class="cf">;;</span></span>
-<span id="cb44-7"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">esac</span></span>
-<span id="cb44-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
-<span id="cb44-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Selected directory: </span><span class="va">$directory</span><span class="st">"</span></span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb45-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="va">directory</span><span class="op">=</span><span class="st">"."</span></span>
+<span id="cb45-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="bu">getopts</span> <span class="st">"hp:"</span> <span class="va">option</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb45-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> <span class="st">"</span><span class="va">$option</span><span class="st">"</span> <span class="kw">in</span></span>
+<span id="cb45-4"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="ss">h</span><span class="kw">)</span> <span class="bu">echo</span> <span class="st">"Usage: </span><span class="va">$0</span><span class="st"> [-p DIRECTORY]"</span><span class="kw">;</span> <span class="bu">exit</span> 0 <span class="cf">;;</span></span>
+<span id="cb45-5"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="ss">p</span><span class="kw">)</span> <span class="va">directory</span><span class="op">=</span><span class="st">"</span><span class="va">$OPTARG</span><span class="st">"</span> <span class="cf">;;</span></span>
+<span id="cb45-6"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="pp">*</span><span class="kw">)</span> <span class="bu">exit</span> 1 <span class="cf">;;</span></span>
+<span id="cb45-7"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">esac</span></span>
+<span id="cb45-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb45-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Selected directory: </span><span class="va">$directory</span><span class="st">"</span></span></code></pre></div>
 <p>The loop runs while another option is available.<br>
 An unknown option or a missing value reaches the <code>*)</code> branch.</p>
 <aside class="notes">
@@ -1394,10 +1431,10 @@ An unknown option or a missing value reaches the <code>*)</code> branch.</p>
 <h2>Removing arguments already handled</h2>
 <div class="slide-body">
 <p>After <code>bash inspect.sh -p logs app.log</code>, the script can do:</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb45-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="va">directory</span><span class="op">=</span><span class="st">"</span><span class="va">$2</span><span class="st">"</span></span>
-<span id="cb45-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">shift</span> 2</span>
-<span id="cb45-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$directory</span><span class="st">"</span></span>
-<span id="cb45-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$1</span><span class="st">"</span></span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb46-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="va">directory</span><span class="op">=</span><span class="st">"</span><span class="va">$2</span><span class="st">"</span></span>
+<span id="cb46-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">shift</span> 2</span>
+<span id="cb46-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$directory</span><span class="st">"</span></span>
+<span id="cb46-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$1</span><span class="st">"</span></span></code></pre></div>
 <p>Output: <code>logs</code>, then <code>app.log</code>.<br>
 <code>shift 2</code> removes the first two arguments and renumbers the remaining ones.</p>
 <div class="block">
@@ -1423,8 +1460,8 @@ An unknown option or a missing value reaches the <code>*)</code> branch.</p>
 <h2>Replacing text with sed</h2>
 <div class="slide-body">
 <p>For a file containing <code>cat cat</code>:</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb46-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">sed</span> <span class="st">'s/cat/dog/'</span> animals.txt</span>
-<span id="cb46-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">sed</span> <span class="st">'s/cat/dog/g'</span> animals.txt</span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb47-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">sed</span> <span class="st">'s/cat/dog/'</span> animals.txt</span>
+<span id="cb47-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">sed</span> <span class="st">'s/cat/dog/g'</span> animals.txt</span></code></pre></div>
 <p>Output: <code>dog cat</code>, then <code>dog dog</code>.</p>
 <ul>
 <li><code>s/old/new/</code> replaces the first match <strong>on each line</strong>.</li>
@@ -1477,8 +1514,8 @@ An unknown option or a missing value reaches the <code>*)</code> branch.</p>
 <section id="shebang" class="slide level2">
 <h2>The shebang: selecting an interpreter</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb47"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb47-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb47-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'Hello, MIAGE\n'</span></span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb48-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb48-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'Hello, MIAGE\n'</span></span></code></pre></div>
 <p>On Linux, direct execution of <code>./hello.sh</code> uses the interpreter named after <code>#!</code>.</p>
 <div class="fragment block">
 <p>The extension <code>.sh</code> does not choose Bash.<br>
@@ -1546,10 +1583,10 @@ The symbol’s name and its role depend on context.</p>
 <section id="variable-quoting" class="slide level2">
 <h2>Quoted variable expansions</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb48"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb48-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="va">filename</span><span class="op">=</span><span class="st">"meeting notes.txt"</span></span>
-<span id="cb48-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="st">"</span><span class="va">$filename</span><span class="st">"</span></span>
-<span id="cb48-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">'${filename}'</span></span>
-<span id="cb48-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">${filename}</span><span class="st">"</span></span></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb49-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="va">filename</span><span class="op">=</span><span class="st">"meeting notes.txt"</span></span>
+<span id="cb49-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="st">"</span><span class="va">$filename</span><span class="st">"</span></span>
+<span id="cb49-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">'${filename}'</span></span>
+<span id="cb49-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">${filename}</span><span class="st">"</span></span></code></pre></div>
 <ul>
 <li>Double quotes preserve the expanded value as one argument.</li>
 <li>Single quotes preserve the literal text <code>${filename}</code>.</li>
@@ -1572,9 +1609,9 @@ The symbol’s name and its role depend on context.</p>
 <section id="output" class="slide level2">
 <h2>Printing values</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb49"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb49-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="va">name</span><span class="op">=</span><span class="st">"Alice"</span></span>
-<span id="cb49-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Hello, </span><span class="va">$name</span><span class="st">"</span></span>
-<span id="cb49-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'Hello, %s\n'</span> <span class="st">"</span><span class="va">$name</span><span class="st">"</span></span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb50-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="va">name</span><span class="op">=</span><span class="st">"Alice"</span></span>
+<span id="cb50-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Hello, </span><span class="va">$name</span><span class="st">"</span></span>
+<span id="cb50-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">'Hello, %s\n'</span> <span class="st">"</span><span class="va">$name</span><span class="st">"</span></span></code></pre></div>
 <p><code>echo</code> is convenient for simple messages.<br>
 <code>printf</code> gives explicit control over formatting and newlines.</p>
 <aside class="notes">
@@ -1595,9 +1632,9 @@ The symbol’s name and its role depend on context.</p>
 <section id="environment-copy" class="slide level2">
 <h2>A child receives a copy</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb50"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb50-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">message</span><span class="op">=</span><span class="st">"parent"</span></span>
-<span id="cb50-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> <span class="at">-c</span> <span class="st">'message="child"; echo "$message"'</span></span>
-<span id="cb50-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$message</span><span class="st">"</span></span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb51-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">message</span><span class="op">=</span><span class="st">"parent"</span></span>
+<span id="cb51-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> <span class="at">-c</span> <span class="st">'message="child"; echo "$message"'</span></span>
+<span id="cb51-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$message</span><span class="st">"</span></span></code></pre></div>
 <div class="fragment output">
 <pre class="text"><code>child
 parent</code></pre>
@@ -1620,11 +1657,11 @@ parent</code></pre>
 <section id="if-grep" class="slide level2">
 <h2>The condition can be grep</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb52"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb52-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="fu">grep</span> <span class="st">' ERROR '</span> app.log<span class="kw">;</span> <span class="cf">then</span></span>
-<span id="cb52-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"At least one error was found"</span></span>
-<span id="cb52-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
-<span id="cb52-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"No match, or grep could not read the file"</span></span>
-<span id="cb52-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb53-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="fu">grep</span> <span class="st">' ERROR '</span> app.log<span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb53-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"At least one error was found"</span></span>
+<span id="cb53-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb53-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"No match, or grep could not read the file"</span></span>
+<span id="cb53-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
 <p><code>if</code> runs <code>then</code> when the command returns status <strong>0</strong>.<br>
 Any other status selects <code>else</code>. Here, <code>grep</code> succeeds when it finds a matching line.</p>
 <aside class="notes">
@@ -1645,10 +1682,10 @@ Any other status selects <code>else</code>. Here, <code>grep</code> succeeds whe
 <section id="and-or-example" class="slide level2">
 <h2>Which messages appear?</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb53"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb53-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">true</span>  <span class="kw">||</span> <span class="bu">echo</span> <span class="st">"A"</span></span>
-<span id="cb53-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">false</span> <span class="kw">||</span> <span class="bu">echo</span> <span class="st">"B"</span></span>
-<span id="cb53-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">true</span>  <span class="kw">&amp;&amp;</span> <span class="bu">echo</span> <span class="st">"C"</span></span>
-<span id="cb53-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">false</span> <span class="kw">&amp;&amp;</span> <span class="bu">echo</span> <span class="st">"D"</span></span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb54-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">true</span>  <span class="kw">||</span> <span class="bu">echo</span> <span class="st">"A"</span></span>
+<span id="cb54-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">false</span> <span class="kw">||</span> <span class="bu">echo</span> <span class="st">"B"</span></span>
+<span id="cb54-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">true</span>  <span class="kw">&amp;&amp;</span> <span class="bu">echo</span> <span class="st">"C"</span></span>
+<span id="cb54-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">false</span> <span class="kw">&amp;&amp;</span> <span class="bu">echo</span> <span class="st">"D"</span></span></code></pre></div>
 <div class="fragment output">
 <pre class="text"><code>B
 C</code></pre>
@@ -1692,9 +1729,9 @@ C</code></pre>
 <section id="while-read" class="slide level2">
 <h2>Read a file line by line</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb55"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb55-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="va">IFS</span><span class="op">=</span> <span class="bu">read</span> <span class="at">-r</span> <span class="va">name</span><span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb55-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">printf</span> <span class="st">'Hello, %s\n'</span> <span class="st">"</span><span class="va">$name</span><span class="st">"</span></span>
-<span id="cb55-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span> <span class="op">&lt;</span> names.txt</span></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb56-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="va">IFS</span><span class="op">=</span> <span class="bu">read</span> <span class="at">-r</span> <span class="va">name</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb56-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">printf</span> <span class="st">'Hello, %s\n'</span> <span class="st">"</span><span class="va">$name</span><span class="st">"</span></span>
+<span id="cb56-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span> <span class="op">&lt;</span> names.txt</span></code></pre></div>
 <ul>
 <li><code>IFS=</code> disables trimming of leading/trailing spaces for this <code>read</code>.</li>
 <li><code>-r</code> keeps backslashes unchanged, as in the earlier prompt.</li>
@@ -1719,11 +1756,11 @@ C</code></pre>
 <section id="until" class="slide level2">
 <h2>until repeats after a failed test</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb56"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb56-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="va">i</span><span class="op">=</span>1</span>
-<span id="cb56-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">until</span> <span class="bu">[</span> <span class="st">"</span><span class="va">$i</span><span class="st">"</span> <span class="ot">-ge</span> 10 <span class="bu">]</span><span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb56-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"</span><span class="va">$i</span><span class="st">"</span></span>
-<span id="cb56-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="va">i</span><span class="op">=</span><span class="va">$((i</span> <span class="op">+</span> <span class="dv">1</span><span class="va">))</span></span>
-<span id="cb56-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb57-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="va">i</span><span class="op">=</span>1</span>
+<span id="cb57-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">until</span> <span class="bu">[</span> <span class="st">"</span><span class="va">$i</span><span class="st">"</span> <span class="ot">-ge</span> 10 <span class="bu">]</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb57-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"</span><span class="va">$i</span><span class="st">"</span></span>
+<span id="cb57-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="va">i</span><span class="op">=</span><span class="va">$((i</span> <span class="op">+</span> <span class="dv">1</span><span class="va">))</span></span>
+<span id="cb57-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
 <p>This also prints <strong>1 through 9</strong>.<br>
 The loop stops when the condition succeeds.</p>
 <aside class="notes">
@@ -1787,7 +1824,7 @@ The loop stops when the condition succeeds.</p>
 <section id="substitution" class="slide level2">
 <h2>Command substitution</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb57"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb57-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Current directory: </span><span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span><span class="st">"</span></span></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb58-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Current directory: </span><span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span><span class="st">"</span></span></code></pre></div>
 <p>The shell runs <code>pwd</code> and replaces <code>$(pwd)</code> with its <strong>standard output</strong>.</p>
 <div class="block">
 <p>The older form is <code>`pwd`</code>.<br>
@@ -1811,10 +1848,10 @@ We will write <code>$(pwd)</code> because nested commands are easier to read.</p
 <section id="script-lines" class="slide level2">
 <h2>Newlines, semicolons and continuations</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb58"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb58-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"first"</span></span>
-<span id="cb58-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"second"</span><span class="kw">;</span> <span class="bu">echo</span> <span class="st">"third"</span></span>
-<span id="cb58-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"a longer message"</span> <span class="dt">\</span></span>
-<span id="cb58-4"><a href="" aria-hidden="true" tabindex="-1"></a>     <span class="st">"continued on the next line"</span></span></code></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb59-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"first"</span></span>
+<span id="cb59-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"second"</span><span class="kw">;</span> <span class="bu">echo</span> <span class="st">"third"</span></span>
+<span id="cb59-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"a longer message"</span> <span class="dt">\</span></span>
+<span id="cb59-4"><a href="" aria-hidden="true" tabindex="-1"></a>     <span class="st">"continued on the next line"</span></span></code></pre></div>
 <ul>
 <li>A newline or <code>;</code> separates commands.</li>
 <li>A backslash immediately before a newline continues the line.</li>
@@ -1837,12 +1874,12 @@ We will write <code>$(pwd)</code> because nested commands are easier to read.</p
 <section id="variable-attributes" class="slide level2">
 <h2>Integer, readonly and array variables</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb59"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb59-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">declare</span> <span class="at">-i</span> <span class="va">count</span><span class="op">=</span>3</span>
-<span id="cb59-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">readonly</span> <span class="va">course</span><span class="op">=</span><span class="st">"NUnix"</span></span>
-<span id="cb59-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">declare</span> <span class="at">-a</span> <span class="va">words</span></span>
-<span id="cb59-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="va">words</span><span class="op">[</span><span class="dv">0</span><span class="op">]=</span><span class="st">"one"</span></span>
-<span id="cb59-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="va">words</span><span class="op">[</span><span class="dv">1</span><span class="op">]=</span><span class="st">"two"</span></span>
-<span id="cb59-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">${words</span><span class="op">[</span><span class="dv">0</span><span class="op">]</span><span class="va">}</span><span class="st">"</span></span></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb60-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">declare</span> <span class="at">-i</span> <span class="va">count</span><span class="op">=</span>3</span>
+<span id="cb60-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">readonly</span> <span class="va">course</span><span class="op">=</span><span class="st">"NUnix"</span></span>
+<span id="cb60-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">declare</span> <span class="at">-a</span> <span class="va">words</span></span>
+<span id="cb60-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="va">words</span><span class="op">[</span><span class="dv">0</span><span class="op">]=</span><span class="st">"one"</span></span>
+<span id="cb60-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="va">words</span><span class="op">[</span><span class="dv">1</span><span class="op">]=</span><span class="st">"two"</span></span>
+<span id="cb60-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">${words</span><span class="op">[</span><span class="dv">0</span><span class="op">]</span><span class="va">}</span><span class="st">"</span></span></code></pre></div>
 <p><code>unset count</code> removes a variable. A readonly variable cannot be reassigned or unset in that shell.</p>
 <aside class="notes">
 <p>declare -i and indexed arrays are Bash features. Arithmetic expansion does not require declare -i. A readonly variable remains readonly until its shell exits; run this example in a fresh Bash shell.</p>
@@ -1909,10 +1946,10 @@ We will write <code>$(pwd)</code> because nested commands are easier to read.</p
 <section id="let-expr" class="slide level2">
 <h2>Arithmetic with let and expr</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb60"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb60-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">let</span> <span class="st">'count = 3 + 5'</span></span>
-<span id="cb60-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$count</span><span class="st">"</span></span>
-<span id="cb60-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">expr</span> 3 + 5</span>
-<span id="cb60-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">expr</span> 3 <span class="dt">\*</span> 5</span></code></pre></div>
+<div class="sourceCode" id="cb61"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb61-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">let</span> <span class="st">'count = 3 + 5'</span></span>
+<span id="cb61-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$count</span><span class="st">"</span></span>
+<span id="cb61-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">expr</span> 3 + 5</span>
+<span id="cb61-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">expr</span> 3 <span class="dt">\*</span> 5</span></code></pre></div>
 <ul>
 <li><code>let</code> evaluates an arithmetic expression in Bash.</li>
 <li><code>expr</code> takes separate arguments, so its spaces matter.</li>
@@ -1936,9 +1973,9 @@ We will write <code>$(pwd)</code> because nested commands are easier to read.</p
 <section id="arithmetic-command" class="slide level2">
 <h2>Bash arithmetic shortcut: (( ... ))</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb61"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb61-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="va">count</span><span class="op">=</span>3</span>
-<span id="cb61-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">((</span><span class="va">count</span> <span class="op">=</span> <span class="va">count</span> <span class="op">+</span> <span class="dv">1</span><span class="kw">))</span></span>
-<span id="cb61-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$count</span><span class="st">"</span></span></code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb62-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="va">count</span><span class="op">=</span>3</span>
+<span id="cb62-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">((</span><span class="va">count</span> <span class="op">=</span> <span class="va">count</span> <span class="op">+</span> <span class="dv">1</span><span class="kw">))</span></span>
+<span id="cb62-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$count</span><span class="st">"</span></span></code></pre></div>
 <pre class="text"><code>4</code></pre>
 <p><code>((count = count + 1))</code> tells Bash to calculate and update <code>count</code>.<br>
 It prints nothing; <code>echo</code> displays the new value.</p>
@@ -1961,10 +1998,10 @@ It prints nothing; <code>echo</code> displays the new value.</p>
 <section id="double-brackets" class="slide level2">
 <h2>Bash tests with double brackets</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb63"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb63-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="va">filename</span><span class="op">=</span><span class="st">"report.txt"</span></span>
-<span id="cb63-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">[[</span> <span class="st">"</span><span class="va">$filename</span><span class="st">"</span> <span class="ot">==</span> <span class="pp">*</span>.txt <span class="kw">]];</span> <span class="cf">then</span></span>
-<span id="cb63-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"Text file"</span></span>
-<span id="cb63-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb64-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="va">filename</span><span class="op">=</span><span class="st">"report.txt"</span></span>
+<span id="cb64-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">[[</span> <span class="st">"</span><span class="va">$filename</span><span class="st">"</span> <span class="ot">==</span> <span class="pp">*</span>.txt <span class="kw">]];</span> <span class="cf">then</span></span>
+<span id="cb64-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"Text file"</span></span>
+<span id="cb64-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
 <p><code>[[ ... ]]</code> is another form of test available in Bash.<br>
 Here, <code>== *.txt</code> checks whether the name <strong>ends in <code>.txt</code></strong>.</p>
 <p>With <code>[ ... ]</code>, string equality compares literal text; this Bash form also accepts patterns.</p>
@@ -2010,17 +2047,17 @@ Here, <code>== *.txt</code> checks whether the name <strong>ends in <code>.txt</
 <section id="if-file" class="slide level2 compact">
 <h2>Checking access to a file</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb64"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb64-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb64-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">read</span> <span class="at">-r</span> <span class="at">-p</span> <span class="st">"Enter a filename: "</span> <span class="va">filename</span></span>
-<span id="cb64-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="ot">!</span> <span class="ot">-w</span> <span class="st">"</span><span class="va">$filename</span><span class="st">"</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
-<span id="cb64-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"File is not writable"</span></span>
-<span id="cb64-5"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 1</span>
-<span id="cb64-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span> <span class="bu">[</span> <span class="ot">!</span> <span class="ot">-r</span> <span class="st">"</span><span class="va">$filename</span><span class="st">"</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
-<span id="cb64-7"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"File is not readable"</span></span>
-<span id="cb64-8"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 1</span>
-<span id="cb64-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
-<span id="cb64-10"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"File is writable and readable"</span></span>
-<span id="cb64-11"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<div class="sourceCode" id="cb65"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb65-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb65-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">read</span> <span class="at">-r</span> <span class="at">-p</span> <span class="st">"Enter a filename: "</span> <span class="va">filename</span></span>
+<span id="cb65-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="ot">!</span> <span class="ot">-w</span> <span class="st">"</span><span class="va">$filename</span><span class="st">"</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb65-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"File is not writable"</span></span>
+<span id="cb65-5"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 1</span>
+<span id="cb65-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span> <span class="bu">[</span> <span class="ot">!</span> <span class="ot">-r</span> <span class="st">"</span><span class="va">$filename</span><span class="st">"</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb65-7"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"File is not readable"</span></span>
+<span id="cb65-8"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 1</span>
+<span id="cb65-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb65-10"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"File is writable and readable"</span></span>
+<span id="cb65-11"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
 <p><code>!</code> negates a test. <code>-w</code> checks writing; <code>-r</code> checks reading.</p>
 <aside class="notes">
 <p>A directory can also pass -r, -w and -x tests. Use -f when a regular file is required. A failed access test may also mean that the path does not exist.</p>
@@ -2040,16 +2077,16 @@ Here, <code>== *.txt</code> checks whether the name <strong>ends in <code>.txt</
 <section id="if-diff" class="slide level2 compact">
 <h2>Comparing two files</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb65"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb65-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">diff</span> <span class="st">"</span><span class="va">$1</span><span class="st">"</span> <span class="st">"</span><span class="va">$2</span><span class="st">"</span> <span class="op">&gt;</span> diff.out</span>
-<span id="cb65-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="va">status</span><span class="op">=</span><span class="va">$?</span></span>
-<span id="cb65-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="st">"</span><span class="va">$status</span><span class="st">"</span> <span class="ot">-eq</span> 0 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
-<span id="cb65-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"Files are identical"</span></span>
-<span id="cb65-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span> <span class="bu">[</span> <span class="st">"</span><span class="va">$status</span><span class="st">"</span> <span class="ot">-eq</span> 1 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
-<span id="cb65-6"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span> diff.out</span>
-<span id="cb65-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
-<span id="cb65-8"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"Comparison failed"</span> <span class="op">&gt;&amp;</span><span class="dv">2</span></span>
-<span id="cb65-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
-<span id="cb65-10"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-f</span> diff.out</span></code></pre></div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb66-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">diff</span> <span class="st">"</span><span class="va">$1</span><span class="st">"</span> <span class="st">"</span><span class="va">$2</span><span class="st">"</span> <span class="op">&gt;</span> diff.out</span>
+<span id="cb66-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="va">status</span><span class="op">=</span><span class="va">$?</span></span>
+<span id="cb66-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="st">"</span><span class="va">$status</span><span class="st">"</span> <span class="ot">-eq</span> 0 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb66-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"Files are identical"</span></span>
+<span id="cb66-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span> <span class="bu">[</span> <span class="st">"</span><span class="va">$status</span><span class="st">"</span> <span class="ot">-eq</span> 1 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb66-6"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span> diff.out</span>
+<span id="cb66-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb66-8"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"Comparison failed"</span> <span class="op">&gt;&amp;</span><span class="dv">2</span></span>
+<span id="cb66-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb66-10"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-f</span> diff.out</span></code></pre></div>
 <p><code>status=$?</code> saves the previous command's status. For <code>diff</code>:<br>
 <strong>0</strong>: identical; <strong>1</strong>: different; <strong>greater than 1</strong>: error.</p>
 <aside class="notes">
@@ -2070,11 +2107,11 @@ Here, <code>== *.txt</code> checks whether the name <strong>ends in <code>.txt</
 <section id="for-copy" class="slide level2">
 <h2>Copying a known list of files</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb66"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb66-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb66-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="va">destination</span><span class="op">=</span><span class="va">$1</span></span>
-<span id="cb66-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> file <span class="kw">in</span> f1 f2 f3<span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb66-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cp</span> <span class="st">"</span><span class="va">$file</span><span class="st">"</span> <span class="st">"</span><span class="va">$destination</span><span class="st">/</span><span class="va">$file</span><span class="st">"</span></span>
-<span id="cb66-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb67-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb67-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="va">destination</span><span class="op">=</span><span class="va">$1</span></span>
+<span id="cb67-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> file <span class="kw">in</span> f1 f2 f3<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb67-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cp</span> <span class="st">"</span><span class="va">$file</span><span class="st">"</span> <span class="st">"</span><span class="va">$destination</span><span class="st">/</span><span class="va">$file</span><span class="st">"</span></span>
+<span id="cb67-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
 <p>Call with an <strong>existing destination directory</strong> as the first argument.</p>
 <aside class="notes">
 <p>Create f1, f2 and f3 first, then supply an existing destination directory as the script's first argument. Quoting keeps a destination with spaces in one argument.</p>
@@ -2094,9 +2131,9 @@ Here, <code>== *.txt</code> checks whether the name <strong>ends in <code>.txt</
 <section id="for-pipe" class="slide level2">
 <h2>A loop can feed a pipeline</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb67"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb67-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> number <span class="kw">in</span> 6 3 1 2<span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb67-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"</span><span class="va">$number</span><span class="st">"</span></span>
-<span id="cb67-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-n</span></span></code></pre></div>
+<div class="sourceCode" id="cb68"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb68-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> number <span class="kw">in</span> 6 3 1 2<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb68-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"</span><span class="va">$number</span><span class="st">"</span></span>
+<span id="cb68-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-n</span></span></code></pre></div>
 <div class="fragment output">
 <pre class="text"><code>1
 2
@@ -2121,10 +2158,10 @@ Here, <code>== *.txt</code> checks whether the name <strong>ends in <code>.txt</
 <section id="while-true" class="slide level2">
 <h2>Repeating until interrupted</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb69"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb69-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="fu">true</span><span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb69-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"alive..."</span></span>
-<span id="cb69-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sleep</span> 3</span>
-<span id="cb69-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<div class="sourceCode" id="cb70"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb70-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="fu">true</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb70-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"alive..."</span></span>
+<span id="cb70-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sleep</span> 3</span>
+<span id="cb70-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
 <p><code>true</code> always succeeds.<br>
 Use <strong>Ctrl+C</strong> to interrupt this foreground loop.</p>
 <aside class="notes">
@@ -2145,16 +2182,16 @@ Use <strong>Ctrl+C</strong> to interrupt this foreground loop.</p>
 <section id="loop-example" class="slide level2 compact">
 <h2>Skipping 4, stopping at 7</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb70"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb70-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x <span class="kw">in</span> 1 2 3 4 5 6 7 8 9<span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb70-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="st">"</span><span class="va">$x</span><span class="st">"</span> <span class="ot">-eq</span> 4 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
-<span id="cb70-3"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="cf">continue</span></span>
-<span id="cb70-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">fi</span></span>
-<span id="cb70-5"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"</span><span class="va">$x</span><span class="st">"</span></span>
-<span id="cb70-6"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="st">"</span><span class="va">$x</span><span class="st">"</span> <span class="ot">-eq</span> 7 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
-<span id="cb70-7"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="cf">break</span></span>
-<span id="cb70-8"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">fi</span></span>
-<span id="cb70-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
-<span id="cb70-10"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"After the loop: x=</span><span class="va">$x</span><span class="st">"</span></span></code></pre></div>
+<div class="sourceCode" id="cb71"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb71-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x <span class="kw">in</span> 1 2 3 4 5 6 7 8 9<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb71-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="st">"</span><span class="va">$x</span><span class="st">"</span> <span class="ot">-eq</span> 4 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb71-3"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="cf">continue</span></span>
+<span id="cb71-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">fi</span></span>
+<span id="cb71-5"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"</span><span class="va">$x</span><span class="st">"</span></span>
+<span id="cb71-6"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="st">"</span><span class="va">$x</span><span class="st">"</span> <span class="ot">-eq</span> 7 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb71-7"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="cf">break</span></span>
+<span id="cb71-8"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">fi</span></span>
+<span id="cb71-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb71-10"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"After the loop: x=</span><span class="va">$x</span><span class="st">"</span></span></code></pre></div>
 <aside class="notes">
 <p>continue skips the print at 4. At 7, the print runs before break. The final echo runs after the loop.</p>
 <style type="text/css">
@@ -2194,13 +2231,13 @@ After the loop: x=7</code></pre>
 <section id="function-scope" class="slide level2 compact">
 <h2>Function scope</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb72"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb72-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="va">label</span><span class="op">=</span><span class="st">"outside"</span></span>
-<span id="cb72-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">show_label()</span> <span class="kw">{</span></span>
-<span id="cb72-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">local</span> <span class="va">label</span><span class="op">=</span><span class="st">"inside"</span></span>
-<span id="cb72-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"</span><span class="va">$label</span><span class="st">"</span></span>
-<span id="cb72-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
-<span id="cb72-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ex">show_label</span></span>
-<span id="cb72-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$label</span><span class="st">"</span></span></code></pre></div>
+<div class="sourceCode" id="cb73"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb73-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="va">label</span><span class="op">=</span><span class="st">"outside"</span></span>
+<span id="cb73-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">show_label()</span> <span class="kw">{</span></span>
+<span id="cb73-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">local</span> <span class="va">label</span><span class="op">=</span><span class="st">"inside"</span></span>
+<span id="cb73-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"</span><span class="va">$label</span><span class="st">"</span></span>
+<span id="cb73-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb73-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ex">show_label</span></span>
+<span id="cb73-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$label</span><span class="st">"</span></span></code></pre></div>
 <pre class="text"><code>inside
 outside</code></pre>
 <p>The local <code>label</code> hides the outer variable during the call.<br>
@@ -2314,12 +2351,12 @@ The outer value is available again when the function finishes.</p>
 <section id="reading-script" class="slide level2">
 <h2>Reading a small script</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb74"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb74-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb74-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> filename <span class="kw">in</span> <span class="st">"</span><span class="va">$@</span><span class="st">"</span><span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb74-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="ot">-f</span> <span class="st">"</span><span class="va">$filename</span><span class="st">"</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
-<span id="cb74-4"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="fu">wc</span> <span class="at">-l</span> <span class="st">"</span><span class="va">$filename</span><span class="st">"</span></span>
-<span id="cb74-5"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">fi</span></span>
-<span id="cb74-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<div class="sourceCode" id="cb75"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb75-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb75-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> filename <span class="kw">in</span> <span class="st">"</span><span class="va">$@</span><span class="st">"</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb75-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="ot">-f</span> <span class="st">"</span><span class="va">$filename</span><span class="st">"</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb75-4"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="fu">wc</span> <span class="at">-l</span> <span class="st">"</span><span class="va">$filename</span><span class="st">"</span></span>
+<span id="cb75-5"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">fi</span></span>
+<span id="cb75-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
 <p>For each argument that names a regular file, print its line count.</p>
 
 <div id="3ade8a4a-fb1d-4a6c-8409-ac45482d5fc9" class="hidden">
