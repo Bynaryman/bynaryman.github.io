@@ -383,39 +383,51 @@ The symbol’s name and its role depend on context.</p>
 <section id="arguments" class="slide level2 compact">
 <h2>Positional parameters</h2>
 <div class="slide-body">
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ex">./hello.sh</span> Alice <span class="st">"L3 MIAGE"</span></span></code></pre></div>
+<p>A script uses these parameters to read its arguments:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> arguments.sh <span class="st">"L3 MIAGE"</span> Unix</span></code></pre></div>
 <table class="caption-top">
 <thead>
 <tr class="header">
 <th>Parameter</th>
-<th>Value inside this script</th>
+<th>Meaning</th>
+<th>Value for this call</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><code>$0</code></td>
-<td><code>./hello.sh</code></td>
+<td>Script name</td>
+<td><code>arguments.sh</code></td>
 </tr>
 <tr class="even">
 <td><code>$1</code></td>
-<td><code>Alice</code></td>
+<td>First argument</td>
+<td><code>L3 MIAGE</code></td>
 </tr>
 <tr class="odd">
 <td><code>$2</code></td>
-<td><code>L3 MIAGE</code></td>
+<td>Second argument</td>
+<td><code>Unix</code></td>
 </tr>
 <tr class="even">
 <td><code>$#</code></td>
+<td>Number of arguments</td>
 <td><code>2</code></td>
 </tr>
 <tr class="odd">
 <td><code>"$@"</code></td>
-<td>Every argument, each kept as a separate word</td>
+<td>All arguments separately</td>
+<td><code>"L3 MIAGE"</code> <code>"Unix"</code></td>
+</tr>
+<tr class="even">
+<td><code>"$*"</code></td>
+<td>All arguments as one string</td>
+<td><code>"L3 MIAGE Unix"</code></td>
 </tr>
 </tbody>
 </table>
 <aside class="notes">
-<p>Use braces from the tenth argument onward: ${10}. $10 means $1 followed by literal 0. getconf ARG_MAX reports an implementation limit in bytes for combined argument and environment data, not a fixed number of arguments. Other system limits and runtime conditions also apply.</p>
+<p>$0 is arguments.sh, not bash: it names the script being interpreted. The quotation marks in the last two table rows show the grouping of the values; they are not characters in those values. With the default IFS, "$<em>" joins the arguments with spaces. The next slide demonstrates the difference between "$@" and "$</em>". Use braces from the tenth argument onward: ${10}.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -432,9 +444,10 @@ The symbol’s name and its role depend on context.</p>
 <section id="all-arguments" class="slide level2">
 <h2>Passing arguments with spaces</h2>
 <div class="slide-body">
-<p>Run <code>arguments.sh</code> with <strong>two arguments</strong>:</p>
+<p>Use the <strong>same script call</strong>:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> arguments.sh <span class="st">"L3 MIAGE"</span> Unix</span></code></pre></div>
-<p>Inside the script, <code>printf '&lt;%s&gt;\n'</code> prints one line per argument.</p>
+<p>Inside the script, <code>printf</code> uses <code>%s</code> for a string and <code>\n</code> for a newline.<br>
+It repeats the format for each argument.</p>
 <div class="columns">
 <div class="column">
 <p><strong><code>"$@"</code>: two arguments</strong></p>
