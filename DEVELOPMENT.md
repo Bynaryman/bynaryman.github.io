@@ -22,6 +22,21 @@ python3 -m http.server 4001 --directory _site
 
 Check the homepage, publications, CV, projects, courses, and blog at desktop, tablet, and phone widths. Test both palettes, light/dark/system mode, navigation, search, and publication disclosures. Accessibility runs on pull requests through Axe; Lighthouse uploads reports for the actual deployed site after deployment or a manual run. Neither report is a substitute for visual and keyboard checks.
 
+## TR-Rack browser editor
+
+The Apps navigation page is `_pages/apps.md`; the standalone editor is served at
+`/apps/tr-rack/`. In the sibling `midiquest_revive` repository, run
+`npm run build:public`, then import that output here:
+
+```sh
+python3 scripts/sync_tr_rack.py ../midiquest_revive/dist-public
+npm run check
+```
+
+Use only `dist-public`: the editor's normal development build can contain private
+hardware captures. The public build and importer allow only application assets
+and bundled fonts. `apps/tr-rack/release.json` records their SHA-256 checksums.
+
 ## OPC course material
 
 `_pages/opc.md` is the course landing page, linked from `_pages/courses.md`.

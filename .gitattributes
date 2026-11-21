@@ -1,0 +1,2 @@
+# Preserve public build bytes so release checksums survive cross-platform checkouts.
+apps/tr-rack/** -text
