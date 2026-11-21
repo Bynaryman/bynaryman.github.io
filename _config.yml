@@ -294,6 +294,7 @@ jekyll-minifier:
     - "robots.txt"
     - "assets/js/search/*.js"
     - "assets/courses/**"
+    - "apps/tr-rack/**"
   uglifier_args:
     harmony: true
 

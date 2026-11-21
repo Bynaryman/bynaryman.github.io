@@ -4,6 +4,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urljoin, urlsplit, unquote
 import hashlib
+import json
 import sys
 
 root = Path(sys.argv[1] if len(sys.argv) > 1 else '_site').resolve()
@@ -57,7 +58,20 @@ for unwanted in ['googletagmanager.com', 'badge.dimensions.ai', 'MathJax-script'
 draft_slugs = ['codez-for-annotated-research-figures', 'layout-feedback-that-changed-the-optimizer', 'mlir-loop-to-silicon-with-visible-arithmetic', 'ttihp-accumulator-variants', 'openroad-placement-as-a-visual-medium', 'suf-as-a-reproducible-software-to-silicon-instrument']
 for slug in draft_slugs:
     if any(slug in name for name in pages): errors.append(f'Deferred blog draft was published: {slug}')
+
+# Standalone application bundles are already built. Jekyll must preserve their bytes.
+app = root / 'apps/tr-rack'
+manifest = app / 'release.json'
+if not manifest.is_file():
+    errors.append('TR-Rack release manifest is missing')
+else:
+    for name, checksum in json.loads(manifest.read_text(encoding='utf-8'))['files'].items():
+        asset = (app / name).resolve()
+        if not asset.is_relative_to(app) or not asset.is_file():
+            errors.append(f'TR-Rack public asset is missing or invalid: {name}')
+        elif hashlib.sha256(asset.read_bytes()).hexdigest() != checksum:
+            errors.append(f'TR-Rack public asset was modified during site build: {name}')
 if errors:
     print('\n'.join(sorted(set(errors))))
     sys.exit(1)
-print(f'Checked {len(pages)} HTML files: local links, assets, stylesheet versions, anchors, IDs, homepage scripts, and draft exclusions pass.')
+print(f'Checked {len(pages)} HTML files: local links, assets, stylesheet versions, anchors, IDs, homepage scripts, draft exclusions, and TR-Rack release checksums pass.')
