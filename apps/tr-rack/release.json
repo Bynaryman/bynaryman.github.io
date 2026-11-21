@@ -1,1 +1,15 @@
-{"version":"0.2.0","files":{"favicon.svg":"bb71824f4ef3498c64da369d66c9c502392f5282ac1d2cb6782e1a8ee39e60be","index.html":"564268c26b73316e02f08acf5077fa15e2b05978ebf92f85ce2d85c3e1f9ec78","assets/effect-data-Dj-SBvQu.js":"32c9f4124560c2e6136148557a4fd8ddad898c14dd8baf2737eb41539b52158e","assets/index-DuRYguii.js":"93e8f0ed0447f82f560d6715ed00d3b073560e9d223003e76e6ef5907ba9e79f","assets/index-DVbanY2P.css":"3025c8900bab978624e6cba5fe20fccc8bd39268bf0612cb51739a720349e5ba","fonts/Sora-OFL.txt":"ba0b9729c9428ba79a0459ab8ec575791b51509dbec213e383d0316d37fec299","fonts/Sora-Regular.ttf":"517e945dedbeeb8d700ccae77d189a6ef2a01f6dcc95ba5d032ef9a30f7f0de9","fonts/Sora-Semibold.ttf":"b02621d4009da9a18eb8a5cbe277f084eb9c3f065ba08a6e77769e81863becf2","fonts/VT323-OFL.txt":"27d9af34210253e7ca1251fbace86c6f65b40031d6ce1a75493a1b2093631298","fonts/VT323-Regular.woff2":"dc6a870a116251f87186b5a787702fc7bf6939f2126f66ca82e0a7142a6ba9f6"}}
+{
+  "version": "0.2.0",
+  "files": {
+    "favicon.svg": "bb71824f4ef3498c64da369d66c9c502392f5282ac1d2cb6782e1a8ee39e60be",
+    "index.html": "564268c26b73316e02f08acf5077fa15e2b05978ebf92f85ce2d85c3e1f9ec78",
+    "assets/effect-data-Dj-SBvQu.js": "32c9f4124560c2e6136148557a4fd8ddad898c14dd8baf2737eb41539b52158e",
+    "assets/index-DuRYguii.js": "93e8f0ed0447f82f560d6715ed00d3b073560e9d223003e76e6ef5907ba9e79f",
+    "assets/index-DVbanY2P.css": "3025c8900bab978624e6cba5fe20fccc8bd39268bf0612cb51739a720349e5ba",
+    "fonts/Sora-OFL.txt": "ba0b9729c9428ba79a0459ab8ec575791b51509dbec213e383d0316d37fec299",
+    "fonts/Sora-Regular.ttf": "517e945dedbeeb8d700ccae77d189a6ef2a01f6dcc95ba5d032ef9a30f7f0de9",
+    "fonts/Sora-Semibold.ttf": "b02621d4009da9a18eb8a5cbe277f084eb9c3f065ba08a6e77769e81863becf2",
+    "fonts/VT323-OFL.txt": "27d9af34210253e7ca1251fbace86c6f65b40031d6ce1a75493a1b2093631298",
+    "fonts/VT323-Regular.woff2": "dc6a870a116251f87186b5a787702fc7bf6939f2126f66ca82e0a7142a6ba9f6"
+  }
+}
