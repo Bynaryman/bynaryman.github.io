@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#fefcf4" />
+    <title>SeaMOS · GDSII &amp; OASIS viewer</title>
+    <meta name="description" content="Explore chip layouts in 3D and render their layers in glass, copper, chrome and silicon." />
+    <link rel="icon" href="./assets/mark.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./studio.css" />
+    <script src="./appearance.js"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand" aria-label="SeaMOS">Sea<span>MOS</span></div>
+      <div class="breadcrumb"><a href="../">Apps</a><span aria-hidden="true">/</span>Chip layout viewer</div>
+      <div class="header-actions">
+        <button id="appearance" class="icon-button" aria-label="Dark appearance" aria-pressed="false"><i data-icon="theme"></i></button>
+        <button id="open" class="button" aria-label="Open layout" title="Open a GDSII (.gds) or OASIS (.oas) file">
+          <i data-icon="folder"></i><span>Open layout</span>
+        </button>
+        <input hidden type="file" id="file" accept=".gds,.gdsii,.gds2,.oas,.oasis" />
+        <button id="export" class="button primary" aria-label="Export PNG" disabled><i data-icon="download"></i><span>Export PNG</span></button>
+      </div>
+    </header>
+    <main class="workspace">
+      <div class="work-area">
+        <section class="viewport-panel" aria-label="3D layout viewport">
+          <div class="viewport-top">
+            <div class="scene-heading">
+              <div class="overline"><i data-icon="viewport"></i> Viewport</div>
+              <h1 id="scene-name">Prism core</h1>
+              <div class="file-meta"><span id="file-type">GDSII</span><span id="filename">prism_core.gds</span></div>
+            </div>
+            <div class="camera-select">
+              <i data-icon="cube"></i
+              ><select id="view" aria-label="Camera view">
+                <option value="perspective">Perspective</option>
+                <option value="horizon">Horizon</option>
+                <option value="top">Top view</option>
+                <option value="front">Front view</option>
+              </select>
+            </div>
+          </div>
+          <div id="viewport">
+            <canvas
+              id="scene"
+              aria-label="Interactive 3D chip layout. Drag to orbit, scroll to zoom. Use the camera controls below for keyboard navigation."
+              tabindex="0"
+            ></canvas>
+            <canvas id="traced" hidden aria-hidden="true"></canvas>
+            <div class="view-bottom">
+              <canvas id="axes" width="110" height="100" aria-label="Three-dimensional orientation axes"></canvas>
+              <div class="tools" aria-label="Camera controls">
+                <button class="icon-button active" id="orbit" title="Orbit" aria-label="Orbit" aria-pressed="true"><i data-icon="orbit"></i></button>
+                <button class="icon-button" id="pan" title="Pan" aria-label="Pan" aria-pressed="false"><i data-icon="hand"></i></button>
+                <span class="divider"></span>
+                <button class="icon-button" id="minus" title="Zoom out" aria-label="Zoom out"><i data-icon="minus"></i></button>
+                <button class="icon-button" id="plus" title="Zoom in" aria-label="Zoom in"><i data-icon="plus"></i></button>
+                <button class="icon-button" id="fit" title="Fit layout (F)" aria-label="Fit layout"><i data-icon="fit"></i></button>
+                <span class="divider"></span>
+                <button class="icon-button" id="grid" title="Toggle grid" aria-label="Show grid" aria-pressed="true"><i data-icon="grid"></i></button>
+              </div>
+              <span class="view-hint">Drag to orbit · Scroll to zoom</span>
+            </div>
+            <div id="notice" role="status" aria-live="polite" hidden></div>
+            <div id="drop-overlay" hidden><i data-icon="folder"></i>Open this layout</div>
+          </div>
+        </section>
+        <section class="library" aria-labelledby="presets-title">
+          <div class="library-head">
+            <div>
+              <i data-icon="swatches"></i>
+              <h2 id="presets-title">Render presets</h2>
+            </div>
+            <button id="shuffle-palette" class="shuffle" disabled title="Randomize colors across all layers and keep their finishes">
+              <i data-icon="dice"></i>Shuffle palette
+            </button>
+          </div>
+          <div class="presets" id="presets"></div>
+        </section>
+      </div>
+      <aside class="inspector" aria-label="Layout inspector">
+        <div class="panel-title">
+          <i data-icon="sliders"></i>
+          <h2>Inspector</h2>
+        </div>
+        <div class="tabs" role="tablist" aria-label="Inspector view">
+          <button id="material-tab" role="tab" aria-selected="true" aria-controls="material-panel">Material</button>
+          <button id="layers-tab" role="tab" aria-selected="false" aria-controls="layers-panel">Layers <span id="layer-count">–</span></button>
+        </div>
+        <div id="material-panel" role="tabpanel" aria-labelledby="material-tab">
+          <section class="inspector-section">
+            <div class="section-heading">
+              <h3>Layer material</h3>
+              <button id="shuffle-material" class="shuffle" disabled title="Randomize the selected layer’s color and surface properties">
+                <i data-icon="dice"></i>Randomize
+              </button>
+            </div>
+            <label class="control-label" for="target">Target layer</label>
+            <div class="select-wrap">
+              <span id="target-swatch"></span
+              ><select id="target"></select>
+            </div>
+            <label class="control-label" for="surface">Surface</label>
+            <select id="surface">
+              <option value="metal">Metal</option>
+              <option value="glass">Glass</option>
+              <option value="matte">Matte</option>
+            </select>
+            <label class="color-line" for="color"
+              >Base color <span class="color-value"><input id="color" type="color" value="#db9a6b" /><span id="hex">#DB9A6B</span></span></label
+            >
+            <div class="range-row">
+              <label for="rough">Roughness</label><output id="rough-value" for="rough"></output
+              ><input type="range" id="rough" min="0" max="1" step=".01" />
+            </div>
+            <div class="range-row">
+              <label for="property" id="property-label">Metalness</label><output id="property-value" for="property"></output
+              ><input type="range" id="property" min="0" max="1" step=".01" />
+            </div>
+          </section>
+        </div>
+        <div id="layers-panel" role="tabpanel" aria-labelledby="layers-tab" hidden>
+          <section class="inspector-section">
+            <h3>Layer stack</h3>
+            <div id="cell-field" hidden>
+              <label for="cell">Layout cell</label
+              ><select id="cell"></select>
+            </div>
+            <label for="color-mode" class="control-label">Color by</label>
+            <select id="color-mode">
+              <option value="layer">Layer material</option>
+              <option value="hierarchy">Layout hierarchy</option>
+              <option value="logic">Logic type</option>
+            </select>
+            <p id="color-hint" class="mode-hint" hidden></p>
+            <ul id="cell-legend" aria-label="Cell colors" hidden></ul>
+            <div id="layer-list"></div>
+            <p class="mode-hint">Heights are illustrative. Imported layers are stacked by layer number and datatype.</p>
+          </section>
+        </div>
+        <section class="inspector-section scene-section">
+          <h3>Scene settings</h3>
+          <div class="range-row">
+            <label for="spacing">Layer spacing</label><output for="spacing" id="spacing-value"></output
+            ><input type="range" id="spacing" min="0" max="100" step="1" value="8" />
+          </div>
+          <div class="range-row">
+            <label for="exposure">Exposure</label><output for="exposure" id="exposure-value"></output
+            ><input type="range" id="exposure" min="0.35" max="2" step=".05" value="1.05" />
+          </div>
+        </section>
+        <section class="inspector-section" id="bryce-variations" hidden>
+          <h3>Bryce environment</h3>
+          <div class="variation">
+            <button class="shuffle" id="shuffle-sky"><i data-icon="dice"></i>Shuffle sky</button
+            ><output id="sky-name" aria-live="polite">Sunset</output>
+          </div>
+          <div class="variation">
+            <button class="shuffle" id="shuffle-water"><i data-icon="dice"></i>Shuffle water</button
+            ><output id="water-name" aria-live="polite">Sunset ripples</output>
+          </div>
+        </section>
+        <section class="inspector-section render-section">
+          <h3>Renderer</h3>
+          <div class="segmented">
+            <button id="preview-mode" class="selected" aria-pressed="true"><i data-icon="cube"></i>Preview</button
+            ><button id="trace-mode" aria-pressed="false"><i data-icon="rays"></i>Ray trace</button>
+          </div>
+          <div id="samples-field" hidden>
+            <label class="control-label" for="samples">Samples per pixel</label
+            ><select id="samples">
+              <option value="4">4 · Quick</option>
+              <option value="16">16 · Balanced</option>
+              <option value="64">64 · Fine</option>
+            </select>
+          </div>
+          <p class="mode-hint" id="mode-hint">Real-time material preview.</p>
+        </section>
+      </aside>
+    </main>
+    <footer class="statusbar">
+      <span id="ready" role="status"><b></b> Opening layout</span><span class="foot-divider"></span><span id="stats"></span
+      ><span id="dimensions"></span><button id="demo" title="Restore the bundled example"><i data-icon="reset"></i>Load demo</button>
+    </footer>
+    <dialog id="cell-dialog" aria-labelledby="choose-title">
+      <form method="dialog">
+        <h2 id="choose-title">Choose a cell</h2>
+        <p id="choose-reason"></p>
+        <label class="control-label" for="choose-cell">Layout cell</label
+        ><select id="choose-cell"></select>
+        <div class="dialog-actions">
+          <button class="button" value="cancel">Cancel</button><button class="button primary" value="open">Open cell</button>
+        </div>
+      </form>
+    </dialog>
+    <noscript>Enable JavaScript to open and render layouts in SeaMOS.</noscript>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

@@ -178,6 +178,7 @@ export class Viewport {
       mesh.material.dispose();
     }
     this.layers = layers;
+    this.vertexColors = [];
     this.meshes = layers.map((layer) => {
       const geometry = new T.BufferGeometry();
       geometry.setAttribute("position", new T.BufferAttribute(layer.positions, 3));
@@ -192,6 +193,16 @@ export class Viewport {
     this.apply();
     this.setView(this.environment === "ocean" ? "horizon" : "perspective");
   }
+  setColors(colors) {
+    this.vertexColors = colors;
+    for (const [i, mesh] of this.meshes.entries()) {
+      if (colors.length) mesh.geometry.setAttribute("color", new T.BufferAttribute(colors[i], 3, true));
+      else mesh.geometry.deleteAttribute("color");
+      mesh.material.vertexColors = !!colors.length;
+    }
+    this.worker?.postMessage({ type: "colors", colors });
+    this.apply();
+  }
   apply() {
     this.height = stackLayers(this.layers, this.spacing);
     for (const [i, layer] of this.layers.entries()) {
@@ -202,7 +213,7 @@ export class Viewport {
       mesh.position.y = layer.y;
       mesh.scale.y = layer.thickness;
       const glass = s.type === "glass";
-      m.color.set(s.color);
+      m.color.set(m.vertexColors ? "#ffffff" : s.color);
       m.roughness = Math.max(0.025, s.roughness);
       m.metalness = s.type === "metal" ? s.metalness : 0;
       m.transmission = glass ? 0.9 : 0;
@@ -338,6 +349,7 @@ export class Viewport {
       };
       this.worker.onerror = () => this.traceFailure("Ray tracing could not finish this layout.");
       this.worker.postMessage({ type: "geometry", layers: this.layers.map((l) => ({ positions: l.positions, indices: l.indices })) });
+      if (this.vertexColors.length) this.worker.postMessage({ type: "colors", colors: this.vertexColors });
     }
     if (this.environment === "ocean" && !this.workerHasSky) {
       const { data: pixels, width, height } = this.skyPixels;

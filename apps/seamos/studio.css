@@ -153,7 +153,6 @@ i svg,
 }
 .brand span {
   color: var(--blue);
-  padding: 0 2px;
 }
 .breadcrumb {
   display: flex;
@@ -652,6 +651,21 @@ select {
 #layer-list {
   max-height: 330px;
   overflow: auto;
+}
+#cell-legend {
+  list-style: none;
+  max-height: 9rem;
+  overflow: auto;
+  margin: 8px 0;
+  padding: 0;
+  font-size: 0.78rem;
+}
+#cell-legend li {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  overflow-wrap: anywhere;
+  padding: 3px 0;
 }
 #cell-field {
   margin-bottom: 8px;

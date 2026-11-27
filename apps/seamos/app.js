@@ -1,6 +1,7 @@
 import { icon } from "./icons.js";
 import { presets, makeLayers, applyPreset, randomMaterial, randomPalette } from "./materials.js";
 import { defaultSky, defaultWater, randomSky, randomWater } from "./bryce.js";
+import { colorLayout } from "./cell-colors.js";
 import { Viewport } from "./viewport.js";
 
 const $ = (id) => document.getElementById(id);
@@ -9,7 +10,9 @@ let layers = [],
   selected = 0,
   preset = presets[0],
   custom = false,
-  currentFile;
+  currentFile,
+  currentCell,
+  cellNames = [];
 let request = 0,
   reader,
   cancelImport,
@@ -217,11 +220,43 @@ function switchTab(material) {
     $(name + "-panel").hidden = !on;
   }
 }
+function updateColorMode() {
+  const mode = $("color-mode").value;
+  const { colors, legend } = colorLayout(layers, mode, cellNames, currentCell);
+  vp.setColors(colors);
+  const hint = $("color-hint");
+  hint.hidden = mode === "layer";
+  hint.textContent =
+    mode === "logic"
+      ? "Matches SKY130 HD and IHP SG13G2 standard cells. Other geometry is gray."
+      : "Each direct child cell has a color shared by its descendants. Open a child to see the next level.";
+  $("cell-legend").hidden = !legend.length;
+  $("cell-legend").replaceChildren(
+    ...legend.map(({ label, color }) => {
+      const li = document.createElement("li"),
+        swatch = document.createElement("span");
+      swatch.className = "layer-dot";
+      swatch.style.background = color;
+      li.append(swatch, document.createTextNode(label));
+      return li;
+    })
+  );
+}
+function showCells(select, cells, roots) {
+  const top = new Set(roots);
+  const groups = [document.createElement("optgroup"), document.createElement("optgroup")];
+  groups[0].label = "Top cells";
+  groups[1].label = "Child cells";
+  for (const name of cells) groups[top.has(name) ? 0 : 1].append(new Option(name, name));
+  select.replaceChildren(...groups.filter((group) => group.childElementCount));
+}
 function install(mesh, file, cellChange) {
   layers = makeLayers(mesh, file.sample);
   applyPreset(layers, preset);
   custom = false;
   currentFile = file;
+  currentCell = mesh.name;
+  cellNames = mesh.cellNames;
   selected = file.sample
     ? Math.max(
         0,
@@ -229,10 +264,10 @@ function install(mesh, file, cellChange) {
       )
     : layers.length - 1;
   $("target").replaceChildren(...layers.map((l, i) => new Option(l.name, String(i))));
-  $("cell").replaceChildren(...mesh.cells.map((n) => new Option(n, n)));
+  showCells($("cell"), mesh.cells, mesh.roots);
   $("cell").value = mesh.name;
   $("cell-field").hidden = mesh.cells.length < 2;
-  $("scene-name").textContent = file.sample ? "Prism core" : mesh.name;
+  $("scene-name").textContent = file.sample && mesh.name === "PRISM_CORE" ? "Prism core" : mesh.name;
   $("filename").textContent = file.name;
   $("file-type").textContent = mesh.format;
   $("layer-count").textContent = String(layers.length);
@@ -241,6 +276,7 @@ function install(mesh, file, cellChange) {
   if (!cellChange) switchTab(true);
   studioView = null;
   vp.setLayout(layers);
+  updateColorMode();
   $("view").value = vp.environment === "ocean" ? "horizon" : "perspective";
   $("export").disabled = false;
   $("shuffle-palette").disabled = false;
@@ -257,7 +293,7 @@ async function loadFile(file, cell) {
   reader = null;
   ready("Opening layout");
   $("notice").hidden = true;
-  let timeout;
+  let timeout, catalog;
   try {
     if (file.size > 64 * 1024 * 1024) throw new Error("Choose a layout file of 64 MiB or less.");
     const buffer = await file.arrayBuffer();
@@ -265,28 +301,32 @@ async function loadFile(file, cell) {
     const worker = new Worker(new URL("./layout-worker.js", import.meta.url), { type: "module" });
     reader = worker;
     const result = await new Promise((resolve, reject) => {
-      timeout = setTimeout(() => reject(new Error("This layout exceeded the import time limit. Try a smaller cell export.")), 90000);
+      timeout = setTimeout(() => reject(new Error("This layout exceeded the import time limit. Try a smaller cell.")), 90000);
       cancelImport = () => reject(new Error("Import replaced."));
-      worker.onmessage = ({ data }) => (data.error ? reject(Object.assign(new Error(data.error), { cells: data.cells })) : resolve(data));
+      worker.onmessage = ({ data }) => {
+        if (data.type === "catalog") catalog = data;
+        else if (data.error) reject(new Error(data.error));
+        else resolve(data);
+      };
       worker.onerror = () => reject(new Error("The layout reader could not complete this file."));
       worker.postMessage({ buffer, cell }, [buffer]);
     });
     if (id === request) install(result, file, cell !== undefined);
   } catch (error) {
     if (id === request) {
-      if (error.cells?.length > 1) {
+      if (catalog?.cells.length > 1) {
         retryFile = file;
         $("choose-reason").textContent = error.message;
-        $("choose-cell").replaceChildren(...error.cells.map((n) => new Option(n, n)));
+        showCells($("choose-cell"), catalog.cells, catalog.roots);
         $("choose-cell").selectedIndex = Math.max(
           0,
-          error.cells.findIndex((n) => n !== (cell ?? error.cells[0]))
+          catalog.cells.findIndex((n) => n !== (cell ?? catalog.cells[0]))
         );
         $("cell-dialog").returnValue = "cancel";
         $("cell-dialog").showModal();
       } else notice(error.message);
       ready(layers.length ? "Ready · import failed" : "Import failed");
-      if (currentFile) $("cell").value = currentFile.sample ? "PRISM_CORE" : $("scene-name").textContent;
+      if (currentFile) $("cell").value = currentCell;
     }
   } finally {
     clearTimeout(timeout);
@@ -329,6 +369,7 @@ $("demo").onclick = demo;
 $("cell").onchange = () => {
   if (currentFile) loadFile(currentFile, $("cell").value);
 };
+$("color-mode").onchange = updateColorMode;
 $("target").onchange = () => {
   selected = Number($("target").value);
   syncMaterial();
