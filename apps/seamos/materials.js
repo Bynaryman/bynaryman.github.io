@@ -82,6 +82,11 @@ function between(min, max) {
   return Math.round((min + (max - min) * Math.random()) * 100) / 100;
 }
 
+export function randomBaseColor(style) {
+  const { h } = new Color(style.color).getHSL({}, SRGBColorSpace);
+  return shade(h + between(0.2, 0.8), between(0.35, 0.75), style.type === "glass" ? between(0.62, 0.8) : between(0.38, 0.65));
+}
+
 export function randomMaterial() {
   const type = ["metal", "glass", "matte"][Math.floor(Math.random() * 3)];
   const glass = type === "glass";

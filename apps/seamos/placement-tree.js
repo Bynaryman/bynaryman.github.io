@@ -37,6 +37,11 @@ export function layerTree(layer) {
     order = placementsTree.geometry.index.array;
   const local = new Ray();
   return {
+    parts,
+    trees,
+    placementsTree,
+    partIds,
+    offsets,
     raycastFirst(ray, side, near, far) {
       let result = null;
       placementsTree.shapecast({

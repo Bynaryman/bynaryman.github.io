@@ -109,9 +109,13 @@
               <option value="glass">Glass</option>
               <option value="matte">Matte</option>
             </select>
-            <label class="color-line" for="color"
-              >Base color <span class="color-value"><input id="color" type="color" value="#db9a6b" /><span id="hex">#DB9A6B</span></span></label
-            >
+            <div class="color-line">
+              <label for="color">Base color</label>
+              <span class="color-value"><input id="color" type="color" value="#db9a6b" /><span id="hex">#DB9A6B</span></span>
+              <button id="shuffle-base-color" class="shuffle" disabled title="Shuffle base color" aria-label="Shuffle base color">
+                <i data-icon="dice"></i>
+              </button>
+            </div>
             <div class="range-row">
               <label for="rough">Roughness</label><output id="rough-value" for="rough"></output
               ><input type="range" id="rough" min="0" max="1" step=".01" />
@@ -149,7 +153,10 @@
             <div class="cell-actions">
               <button id="inspect-cell" class="button" disabled>Open cell</button> <button id="whole-chip" class="button" disabled>Whole chip</button>
             </div>
-            <label for="color-mode" class="control-label">Color by</label>
+            <div class="variation">
+              <label for="color-mode" class="control-label">Color by</label>
+              <button id="shuffle-cell-colors" class="shuffle" disabled><i data-icon="dice"></i>Shuffle colors</button>
+            </div>
             <select id="color-mode">
               <option value="layer">Layer material</option>
               <option value="hierarchy">Layout hierarchy</option>
@@ -188,6 +195,11 @@
             ><button id="trace-mode" aria-pressed="false"><i data-icon="rays"></i>Ray trace</button>
           </div>
           <div id="samples-field" hidden>
+            <label class="control-label" for="trace-device">Trace device</label>
+            <select id="trace-device">
+              <option value="auto">Auto · prefer GPU</option>
+              <option value="cpu">CPU</option>
+            </select>
             <label class="control-label" for="samples">Samples per pixel</label
             ><select id="samples">
               <option value="4">4 · Quick</option>

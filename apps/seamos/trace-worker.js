@@ -1,12 +1,16 @@
 // Whitted-style rays with jittered camera / area light samples. Layer transforms
 // live outside each BVH so material, visibility and spacing edits reuse the trees.
 import { Color, DoubleSide, Ray, Vector3 } from "./lib/intersections.js";
+import { GpuTracer } from "./gpu-tracer.js";
 import { layerTree } from "./placement-tree.js";
 import { denoiseFrame } from "./postprocess.js";
 import { sampleSky, waterLevel, waterNormal } from "./bryce.js";
 let panorama,
   colors = [];
 let frame, display, displayTimer;
+let gpu,
+  gpuFailure,
+  renderQueue = Promise.resolve();
 let trees = [],
   current = 0;
 const pause = () => new Promise((resolve) => setTimeout(resolve, 0));
@@ -183,6 +187,39 @@ async function render(scene) {
     present();
   }
 }
+async function traceScene(scene) {
+  const active = () => current === scene.revision;
+  if (!active()) return;
+  if (scene.device !== "cpu" && !gpuFailure) {
+    try {
+      gpu ??= await GpuTracer.create(trees);
+      if (!active()) return;
+      gpu.configure(scene, colors, panorama);
+      postMessage({ revision: scene.revision, backend: "GPU · WebGL2 ray tracing" });
+      for (let sample = 0; sample <= scene.samples; sample++) {
+        const scale = sample === 0 ? Math.min(1, 240 / scene.width) : 1;
+        const width = Math.max(1, Math.round(scene.width * scale)),
+          height = Math.max(1, Math.round(scene.height * scale));
+        const linear = await gpu.pass(width, height, sample, active);
+        if (!active() || !linear) return;
+        frame = { revision: scene.revision, width, height, linear, sample, samples: scene.samples };
+        present();
+      }
+      return;
+    } catch (error) {
+      gpu?.dispose();
+      gpu = null;
+      gpuFailure = error.message || "GPU initialization failed";
+      if (!active()) return;
+    }
+  }
+  postMessage({
+    revision: scene.revision,
+    backend: scene.device === "cpu" ? "CPU ray tracing" : "CPU ray tracing · GPU fallback",
+    reason: scene.device === "cpu" ? null : gpuFailure,
+  });
+  await render(scene);
+}
 self.onmessage = async ({ data }) => {
   try {
     if (data.type === "panorama") {
@@ -194,6 +231,9 @@ self.onmessage = async ({ data }) => {
       return;
     }
     if (data.type === "geometry") {
+      gpu?.dispose();
+      gpu = null;
+      gpuFailure = null;
       trees = data.layers.map(layerTree);
       return;
     }
@@ -210,7 +250,8 @@ self.onmessage = async ({ data }) => {
     frame = null;
     if (data.type === "render") {
       display = data;
-      await render(data);
+      renderQueue = renderQueue.catch(() => {}).then(() => traceScene(data));
+      await renderQueue;
     }
   } catch (error) {
     postMessage({ revision: current, error: error.message || "The ray tracer ran out of resources." });

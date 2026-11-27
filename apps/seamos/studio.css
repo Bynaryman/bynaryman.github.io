@@ -578,6 +578,12 @@ select {
   justify-content: space-between;
   align-items: center;
 }
+.color-line label {
+  margin-right: auto;
+}
+.color-line .shuffle {
+  margin-left: 6px;
+}
 .color-value,
 .range-row output {
   display: inline-flex;
