@@ -195,7 +195,7 @@ async function traceScene(scene) {
       gpu ??= await GpuTracer.create(trees);
       if (!active()) return;
       gpu.configure(scene, colors, panorama);
-      postMessage({ revision: scene.revision, backend: "GPU · WebGL2 ray tracing" });
+      postMessage({ revision: scene.revision, backend: "GPU · WebGL2 ray tracing", adapter: gpu.adapterName });
       for (let sample = 0; sample <= scene.samples; sample++) {
         const scale = sample === 0 ? Math.min(1, 240 / scene.width) : 1;
         const width = Math.max(1, Math.round(scene.width * scale)),

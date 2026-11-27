@@ -648,6 +648,9 @@ select {
 .mode-hint {
   margin-top: 9px;
 }
+#mode-hint {
+  overflow-wrap: anywhere;
+}
 .segmented svg {
   width: 14px;
   height: 14px;

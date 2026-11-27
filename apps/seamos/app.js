@@ -27,10 +27,16 @@ const vp = new Viewport($("scene"), $("traced"), (message, failed) => {
     showMode();
   }
 });
-vp.onBackend = (backend, reason) => {
-  $("mode-hint").textContent = backend;
-  $("mode-hint").title = reason || "";
-};
+let lastReportedBackend;
+vp.onBackend = showBackend;
+function showBackend() {
+  const backend = vp.trace ? vp.traceBackend : vp.previewBackend;
+  $("mode-hint").textContent = backend || "Choosing ray-tracing device…";
+  if (backend && backend !== lastReportedBackend) {
+    console.info("[SeaMOS] " + backend);
+    lastReportedBackend = backend;
+  }
+}
 function notice(message) {
   clearTimeout(noticeTimer);
   $("notice").textContent = message;
@@ -52,8 +58,7 @@ function showMode() {
   }
   $("preview-mode").disabled = !vp.renderer;
   $("samples-field").hidden = !vp.trace;
-  $("mode-hint").textContent = vp.trace ? vp.traceBackend || "Choosing ray-tracing device…" : "Real-time WebGL material preview.";
-  if (!vp.trace || !vp.traceBackend) $("mode-hint").removeAttribute("title");
+  showBackend();
 }
 function showRange(id, text) {
   const input = $(id);
@@ -482,6 +487,7 @@ for (const id of ["preview-mode", "trace-mode"])
   $(id).onclick = () => {
     if (vp.trace === (id === "trace-mode")) return;
     vp.trace = id === "trace-mode";
+    vp.traceBackend = null;
     showMode();
     vp.update();
     ready(vp.trace ? "Preparing ray trace" : "Ready");

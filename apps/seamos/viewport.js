@@ -1,5 +1,6 @@
 import * as T from "./lib/graphics.js";
 import { stackLayers } from "./materials.js";
+import { webglAdapter } from "./webgl-adapter.js";
 
 import { loadPanorama, OceanPreview } from "./ocean-preview.js";
 import { defaultSky, defaultWater, sunDirection, waterLevel } from "./bryce.js";
@@ -34,6 +35,11 @@ export class Viewport {
     this.world.add(this.group);
     try {
       this.renderer = new T.WebGLRenderer({ canvas, antialias: true, preserveDrawingBuffer: true, powerPreference: "high-performance" });
+      const refreshPreviewDevice = () => {
+        const adapter = webglAdapter(this.renderer.getContext());
+        this.previewBackend = (adapter.software ? "Software WebGL2 preview" : "WebGL2 preview") + " · " + adapter.name;
+        if (!this.trace) this.onBackend?.();
+      };
       this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
       this.renderer.toneMapping = T.ACESFilmicToneMapping;
       this.renderer.shadowMap.enabled = true;
@@ -45,6 +51,12 @@ export class Viewport {
       this.world.environmentIntensity = 0.78;
       env.dispose();
       pmrem.dispose();
+      refreshPreviewDevice();
+      canvas.addEventListener("webglcontextrestored", refreshPreviewDevice);
+      canvas.addEventListener("webglcontextlost", () => {
+        this.previewBackend = "WebGL2 preview unavailable · Graphics context lost";
+        if (!this.trace) this.onBackend?.();
+      });
     } catch {
       this.renderer = null;
       this.trace = true;
@@ -421,8 +433,8 @@ export class Viewport {
       this.worker.onmessage = ({ data }) => {
         if (data.revision !== this.revision || !this.trace) return;
         if (data.backend) {
-          this.traceBackend = data.backend;
-          this.onBackend?.(data.backend, data.reason);
+          this.traceBackend = [data.backend, data.adapter || data.reason].filter(Boolean).join(" · ");
+          this.onBackend?.();
           return;
         }
         if (data.error) {
@@ -480,6 +492,7 @@ export class Viewport {
   traceFailure(message) {
     this.stopTrace(true);
     this.trace = !this.renderer;
+    this.traceBackend = this.trace ? "Ray tracer unavailable · " + message : null;
     this.onRenderState(message, true);
   }
   exportCanvas() {

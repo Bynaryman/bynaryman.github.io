@@ -1,6 +1,21 @@
 const { test } = require("node:test");
 const assert = require("node:assert/strict");
 
+test("renderer diagnostics identify the active adapter and respect masked hardware names", async () => {
+  const { webglAdapter } = await import("../apps/seamos/webgl-adapter.js");
+  const read = (model, standard = "WebKit WebGL") =>
+    webglAdapter({
+      RENDERER: 1,
+      getExtension: () => (model ? { UNMASKED_RENDERER_WEBGL: 2 } : null),
+      getParameter: (id) => (id === 2 ? model : standard),
+    });
+  const rtx = "ANGLE (NVIDIA Corporation, NVIDIA RTX 2000 Ada Generation Laptop GPU/PCIe/SSE2, OpenGL 4.5.0)";
+  assert.deepEqual(read(rtx), { name: rtx, software: false });
+  assert.equal(read("NVIDIA GeForce 8800 GTX, or similar").name, "NVIDIA (exact model hidden by browser)");
+  assert.equal(read(null).name, "Adapter model hidden by browser");
+  assert.equal(read(null, "llvmpipe (LLVM 19.1.0)").software, true);
+});
+
 test("denoising smooths small variations and preserves a contrasting single-pixel trace", async () => {
   const { denoiseFrame } = await import("../apps/seamos/postprocess.js");
   const raw = Uint8ClampedArray.from([70, 90, 74, 237, 75, 91, 71].flatMap((v) => [v, v, v, 255]));

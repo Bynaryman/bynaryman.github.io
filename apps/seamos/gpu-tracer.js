@@ -1,6 +1,7 @@
 import { Color } from "./lib/intersections.js";
 import { atlas, packTrees, packColors } from "./gpu-geometry.js";
 import { waterLevel } from "./bryce.js";
+import { webglAdapter } from "./webgl-adapter.js";
 
 const vertexShader = `#version 300 es
 void main() {
@@ -24,20 +25,20 @@ export class GpuTracer {
     const gl = new OffscreenCanvas(1, 1).getContext("webgl2", { alpha: false, antialias: false, depth: false, powerPreference: "high-performance" });
     if (!gl) throw new Error("WebGL2 unavailable");
     try {
-      const info = gl.getExtension("WEBGL_debug_renderer_info");
-      if (info && /swiftshader|llvmpipe|software rasterizer/i.test(gl.getParameter(info.UNMASKED_RENDERER_WEBGL)))
-        throw new Error("software graphics adapter");
+      const adapter = webglAdapter(gl);
+      if (adapter.software) throw new Error("software graphics adapter · " + adapter.name);
       if (!gl.getExtension("EXT_color_buffer_float")) throw new Error("floating-point render targets unavailable");
       const response = await fetch(new URL("./raytrace.frag", import.meta.url));
       if (!response.ok) throw new Error("ray shader unavailable");
-      return new GpuTracer(gl, trees, await response.text());
+      return new GpuTracer(gl, trees, await response.text(), adapter.name);
     } catch (error) {
       gl.getExtension("WEBGL_lose_context")?.loseContext();
       throw error;
     }
   }
-  constructor(gl, trees, source) {
+  constructor(gl, trees, source, adapterName) {
     this.gl = gl;
+    this.adapterName = adapterName;
     this.limit = gl.getParameter(gl.MAX_TEXTURE_SIZE);
     this.program = gl.createProgram();
     const shaders = [compile(gl, gl.VERTEX_SHADER, vertexShader), compile(gl, gl.FRAGMENT_SHADER, source)];
