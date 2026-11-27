@@ -17,19 +17,27 @@ function branchColor(name) {
 export function colorLayout(layers, mode, cells, selected) {
   if (mode === "layer") return { colors: [], legend: [] };
   const palette = new Map();
-  const colors = layers.map(({ spans, positions }) => {
+  function tint(branch, type) {
+    const id = mode === "logic" ? type : branch;
+    if (!palette.has(id)) {
+      const name = cells[branch];
+      const entry = mode === "logic" ? logic[id] : { label: name, color: name === selected ? "#89939a" : branchColor(name) };
+      palette.set(id, { ...entry, linear: new Color(entry.color).toArray().map((v) => Math.round(255 * v)) });
+    }
+    return palette.get(id).linear;
+  }
+  const colors = layers.map(({ spans, positions, parts }) => {
+    if (parts)
+      return parts.map(({ placements }) => {
+        const bytes = new Uint8Array((placements.length / 8) * 3);
+        for (let i = 0; i < placements.length; i += 8) bytes.set(tint(placements[i + 6], placements[i + 7]), (i / 8) * 3);
+        return bytes;
+      });
     const bytes = new Uint8Array(positions.length);
     let start = 0;
     for (let i = 0; i < spans.length; i += 3) {
       const end = spans[i] * 3;
-      const id = spans[i + (mode === "logic" ? 2 : 1)];
-      if (!palette.has(id)) {
-        const name = cells[spans[i + 1]];
-        const entry = mode === "logic" ? logic[id] : { label: name, color: name === selected ? "#89939a" : branchColor(name) };
-        const linear = new Color(entry.color).toArray().map((v) => Math.round(255 * v));
-        palette.set(id, { ...entry, linear });
-      }
-      const [r, g, b] = palette.get(id).linear;
+      const [r, g, b] = tint(spans[i + 1], spans[i + 2]);
       while (start < end) {
         bytes[start++] = r;
         bytes[start++] = g;

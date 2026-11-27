@@ -1,6 +1,7 @@
 import { icon } from "./icons.js";
 import { presets, makeLayers, applyPreset, randomMaterial, randomPalette } from "./materials.js";
 import { defaultSky, defaultWater, randomSky, randomWater } from "./bryce.js";
+import { logicType } from "./logic-types.js";
 import { colorLayout } from "./cell-colors.js";
 import { Viewport } from "./viewport.js";
 
@@ -17,7 +18,8 @@ let request = 0,
   reader,
   cancelImport,
   noticeTimer,
-  retryFile;
+  catalogFile,
+  catalog;
 const vp = new Viewport($("scene"), $("traced"), (message, failed) => {
   ready(message);
   if (failed) {
@@ -172,7 +174,7 @@ function renderLayers() {
           selected = i;
           syncMaterial();
           renderLayers();
-          switchTab(true);
+          switchTab("material");
         };
         const eye = document.createElement("button");
         eye.className = "layer-eye";
@@ -210,11 +212,10 @@ function syncMaterial() {
   $("property").value = glass ? s.ior : s.metalness;
   showRange("property", Number($("property").value).toFixed(2));
 }
-function switchTab(material) {
-  for (const [name, on] of [
-    ["material", material],
-    ["layers", !material],
-  ]) {
+const tabs = ["material", "cells", "layers"];
+function switchTab(active) {
+  for (const name of tabs) {
+    const on = name === active;
     $(name + "-tab").setAttribute("aria-selected", String(on));
     $(name + "-tab").tabIndex = on ? 0 : -1;
     $(name + "-panel").hidden = !on;
@@ -242,13 +243,31 @@ function updateColorMode() {
     })
   );
 }
-function showCells(select, cells, roots) {
-  const top = new Set(roots);
-  const groups = [document.createElement("optgroup"), document.createElement("optgroup")];
-  groups[0].label = "Top cells";
-  groups[1].label = "Child cells";
-  for (const name of cells) groups[top.has(name) ? 0 : 1].append(new Option(name, name));
-  select.replaceChildren(...groups.filter((group) => group.childElementCount));
+function showCells() {
+  if (!catalog) return;
+  const text = $("cell-search").value.trim().toLowerCase(),
+    category = $("cell-category").value;
+  const top = new Set(catalog.roots);
+  const matches = catalog.cells.filter(
+    (name) => name.toLowerCase().includes(text) && (category === "all" || (category === "top" ? top.has(name) : String(logicType(name)) === category))
+  );
+  const previous = $("cell").value;
+  const list = document.createDocumentFragment();
+  for (const name of matches) list.append(new Option(name, name));
+  $("cell").replaceChildren(list);
+  $("cell").value = matches.includes(previous) ? previous : matches.includes(currentCell) ? currentCell : matches[0] ?? "";
+  $("cell-label").textContent = fmt.format(matches.length) + " matching " + (matches.length === 1 ? "cell" : "cells");
+  $("inspect-cell").disabled = !matches.length;
+  $("whole-chip").disabled = !catalog.roots.length;
+}
+function setCatalog(file, data) {
+  if (catalogFile !== file) {
+    $("cell-search").value = "";
+    $("cell-category").value = "all";
+  }
+  catalogFile = file;
+  catalog = data;
+  showCells();
 }
 function install(mesh, file, cellChange) {
   layers = makeLayers(mesh, file.sample);
@@ -262,20 +281,23 @@ function install(mesh, file, cellChange) {
         0,
         layers.findIndex((l) => l.slot === 5)
       )
-    : layers.length - 1;
+    : Math.max(
+        0,
+        layers.findLastIndex((l) => l.visible)
+      );
   $("target").replaceChildren(...layers.map((l, i) => new Option(l.name, String(i))));
-  showCells($("cell"), mesh.cells, mesh.roots);
-  $("cell").value = mesh.name;
-  $("cell-field").hidden = mesh.cells.length < 2;
+  setCatalog(file, { cells: mesh.cells, roots: mesh.roots });
+  if ([...$("cell").options].some((o) => o.value === currentCell)) $("cell").value = currentCell;
   $("scene-name").textContent = file.sample && mesh.name === "PRISM_CORE" ? "Prism core" : mesh.name;
   $("filename").textContent = file.name;
   $("file-type").textContent = mesh.format;
   $("layer-count").textContent = String(layers.length);
   $("stats").textContent = fmt.format(layers.length) + " layers · " + fmt.format(layers.reduce((sum, l) => sum + l.count, 0)) + " polygons";
   $("dimensions").textContent = fmt.format(mesh.width) + " × " + fmt.format(mesh.height) + " µm";
-  if (!cellChange) switchTab(true);
+  if (!cellChange) switchTab("material");
   studioView = null;
   vp.setLayout(layers);
+  showMode();
   updateColorMode();
   $("view").value = vp.environment === "ocean" ? "horizon" : "perspective";
   $("export").disabled = false;
@@ -293,7 +315,7 @@ async function loadFile(file, cell) {
   reader = null;
   ready("Opening layout");
   $("notice").hidden = true;
-  let timeout, catalog;
+  let timeout;
   try {
     if (file.size > 64 * 1024 * 1024) throw new Error("Choose a layout file of 64 MiB or less.");
     const buffer = await file.arrayBuffer();
@@ -304,8 +326,9 @@ async function loadFile(file, cell) {
       timeout = setTimeout(() => reject(new Error("This layout exceeded the import time limit. Try a smaller cell.")), 90000);
       cancelImport = () => reject(new Error("Import replaced."));
       worker.onmessage = ({ data }) => {
-        if (data.type === "catalog") catalog = data;
-        else if (data.error) reject(new Error(data.error));
+        if (data.type === "catalog") {
+          if (id === request) setCatalog(file, data);
+        } else if (data.error) reject(new Error(data.error));
         else resolve(data);
       };
       worker.onerror = () => reject(new Error("The layout reader could not complete this file."));
@@ -314,19 +337,8 @@ async function loadFile(file, cell) {
     if (id === request) install(result, file, cell !== undefined);
   } catch (error) {
     if (id === request) {
-      if (catalog?.cells.length > 1) {
-        retryFile = file;
-        $("choose-reason").textContent = error.message;
-        showCells($("choose-cell"), catalog.cells, catalog.roots);
-        $("choose-cell").selectedIndex = Math.max(
-          0,
-          catalog.cells.findIndex((n) => n !== (cell ?? catalog.cells[0]))
-        );
-        $("cell-dialog").returnValue = "cancel";
-        $("cell-dialog").showModal();
-      } else notice(error.message);
+      notice(error.message);
       ready(layers.length ? "Ready · import failed" : "Import failed");
-      if (currentFile) $("cell").value = currentCell;
     }
   } finally {
     clearTimeout(timeout);
@@ -352,10 +364,6 @@ async function demo() {
   }
 }
 $("open").onclick = () => $("file").click();
-$("cell-dialog").onclose = () => {
-  if ($("cell-dialog").returnValue === "open" && retryFile) loadFile(retryFile, $("choose-cell").value);
-  retryFile = null;
-};
 $("samples").onchange = () => {
   vp.samples = Number($("samples").value);
   vp.update();
@@ -366,8 +374,19 @@ $("file").onchange = (e) => {
   e.target.value = "";
 };
 $("demo").onclick = demo;
-$("cell").onchange = () => {
-  if (currentFile) loadFile(currentFile, $("cell").value);
+$("cell-search").oninput = showCells;
+$("cell-category").onchange = showCells;
+$("inspect-cell").onclick = () => {
+  if (catalogFile && $("cell").value && (currentFile !== catalogFile || currentCell !== $("cell").value)) loadFile(catalogFile, $("cell").value);
+};
+$("cell").ondblclick = () => $("inspect-cell").click();
+$("whole-chip").onclick = () => {
+  if (!catalogFile) return;
+  $("cell-search").value = "";
+  $("cell-category").value = "all";
+  showCells();
+  $("cell").value = catalog.roots[0];
+  $("inspect-cell").click();
 };
 $("color-mode").onchange = updateColorMode;
 $("target").onchange = () => {
@@ -375,14 +394,15 @@ $("target").onchange = () => {
   syncMaterial();
   renderLayers();
 };
-for (const name of ["material", "layers"]) {
-  $(name + "-tab").onclick = () => switchTab(name === "material");
+for (const [i, name] of tabs.entries()) {
+  $(name + "-tab").onclick = () => switchTab(name);
   $(name + "-tab").onkeydown = (e) => {
-    if (["ArrowLeft", "ArrowRight"].includes(e.key)) {
-      e.preventDefault();
-      switchTab(name === "layers");
-      $(name === "layers" ? "material-tab" : "layers-tab").focus();
-    }
+    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(e.key)) return;
+    e.preventDefault();
+    const next =
+      e.key === "Home" ? tabs[0] : e.key === "End" ? tabs.at(-1) : tabs[(i + (e.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length];
+    switchTab(next);
+    $(next + "-tab").focus();
   };
 }
 $("shuffle-material").onclick = () => {
@@ -521,7 +541,7 @@ window.addEventListener("drop", (e) => {
   if (file) loadFile(file);
 });
 updateSceneInputs();
-switchTab(true);
+switchTab("material");
 showMode();
 renderPresets();
 const initialPreset = presets.find((p) => p.id === new URLSearchParams(location.search).get("preset"));

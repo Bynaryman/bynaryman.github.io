@@ -9,6 +9,7 @@ export {
   EquirectangularReflectionMapping,
   HalfFloatType,
   Matrix4,
+  InstancedMesh,
   RepeatWrapping,
   ShaderMaterial,
   SRGBColorSpace,

@@ -12,6 +12,8 @@ void emit_polygon(uint32_t layer, uint32_t datatype, const Vec2* points, uint32_
 
 extern "C" __attribute__((import_module("layout"), import_name("enter_cell")))
 void enter_cell(const char* name, unsigned depth);
+extern "C" __attribute__((import_module("layout"), import_name("place_cell")))
+void place_cell(const char* name, double a, double b, double c, double d, double x, double y);
 
 // Trap on allocation failure before the native reader writes through a null or truncated pointer.
 namespace gdstk {
@@ -44,6 +46,9 @@ Library library = {};
 Array<Cell*> roots = {};
 Array<Vec2> transformed = {};
 uint64_t polygons = 0, points = 0, instances = 0;
+bool shared_geometry = false;
+constexpr uint64_t placement_bytes = 128 * 1024 * 1024;
+constexpr uint64_t shared_vertices = 4000000;
 
 struct Transform {
     double a = 1, b = 0, c = 0, d = 1, x = 0, y = 0;
@@ -63,6 +68,7 @@ struct Transform {
 struct CellCache {
     Array<Polygon*> path_outlines;
     bool visiting;
+    bool emitted;
 };
 
 // Check the product before letting the library materialize a regular array's offsets.
@@ -87,9 +93,9 @@ const char* for_each_offset(const Repetition& repetition, uint64_t limit, const 
 const char* output_polygon(const Polygon& polygon, const Transform& transform) {
     const uint64_t count = polygon.point_array.count;
     if (count < 3) return nullptr;
-    const uint64_t remaining = (max_points - points) / count;
-    const uint64_t limit = std::min(max_polygons - polygons, remaining);
-    const char* reason = remaining < max_polygons - polygons ? vertex_limit : polygon_limit;
+    const uint64_t remaining = ((shared_geometry ? shared_vertices : max_points) - points) / count;
+    const uint64_t limit = shared_geometry ? remaining : std::min(max_polygons - polygons, remaining);
+    const char* reason = shared_geometry ? "The unique geometry exceeds the browser mesh memory budget." : remaining < max_polygons - polygons ? vertex_limit : polygon_limit;
     return for_each_offset(polygon.repetition, limit, reason, [&](Vec2 offset) -> const char* {
         transformed.count = 0;
         transformed.ensure_slots(count);
@@ -106,7 +112,9 @@ const char* output_polygon(const Polygon& polygon, const Transform& transform) {
 }
 
 const char* visit(Cell* cell, const Transform& transform, unsigned depth) {
-    if (++instances > max_instances) return instance_limit;
+    const uint64_t capacity = shared_geometry ? placement_bytes / (8 * sizeof(double)) : max_instances;
+    const char* placement_error = shared_geometry ? "The placement data exceeds the browser memory budget." : instance_limit;
+    if (++instances > capacity) return placement_error;
     if (depth > max_depth) return "The cell hierarchy exceeds 128 levels.";
     // The module is instantiated once per read. Cache path outlines across repeated instances.
     auto* cache = static_cast<CellCache*>(cell->owner);
@@ -119,20 +127,28 @@ const char* visit(Cell* cell, const Transform& transform, unsigned depth) {
     }
     if (cache->visiting) return "Layout contains a circular cell reference.";
     cache->visiting = true;
+    struct Leave {
+        CellCache* cache;
+        ~Leave() { cache->visiting = false; }
+    } leave{cache};
     enter_cell(cell->name, depth);
-    for (auto group : {cell->polygon_array, cache->path_outlines}) {
-        for (uint64_t i = 0; i < group.count; ++i)
-            if (const char* error = output_polygon(*group[i], transform)) return error;
+    if (shared_geometry && (cell->polygon_array.count || cache->path_outlines.count))
+        place_cell(cell->name, transform.a, transform.b, transform.c, transform.d, transform.x, transform.y);
+    if (!shared_geometry || !cache->emitted) {
+        for (auto group : {cell->polygon_array, cache->path_outlines}) {
+            for (uint64_t i = 0; i < group.count; ++i)
+                if (const char* error = output_polygon(*group[i], shared_geometry ? Transform{} : transform)) return error;
+        }
     }
+    if (shared_geometry) cache->emitted = true;
     for (uint64_t i = 0; i < cell->reference_array.count; ++i) {
         const Reference& ref = *cell->reference_array[i];
         if (ref.type != ReferenceType::Cell) return "Layout refers to a missing cell.";
-        const char* error = for_each_offset(ref.repetition, max_instances - instances, instance_limit, [&](Vec2 offset) {
+        const char* error = for_each_offset(ref.repetition, capacity - instances, placement_error, [&](Vec2 offset) {
             return visit(ref.cell, transform.child(ref, offset), depth + 1);
         });
         if (error) return error;
     }
-    cache->visiting = false;
     return nullptr;
 }
 }  // namespace
@@ -160,6 +176,12 @@ EXPORTED("cell_name") const char* cell_name(uint32_t index) { return library.cel
 EXPORTED("read_cell") const char* read_cell(uint32_t index) {
     if (index >= library.cell_array.count) return "Unknown layout cell.";
     return visit(library.cell_array[index], Transform{}, 0);
+}
+
+EXPORTED("read_shared_cell") const char* read_shared_cell(uint32_t index) {
+    shared_geometry = true;
+    polygons = points = instances = 0;
+    return read_cell(index);
 }
 
 int main() { return 0; }

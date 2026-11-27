@@ -87,6 +87,7 @@
         </div>
         <div class="tabs" role="tablist" aria-label="Inspector view">
           <button id="material-tab" role="tab" aria-selected="true" aria-controls="material-panel">Material</button>
+          <button id="cells-tab" role="tab" aria-selected="false" aria-controls="cells-panel">Cells</button>
           <button id="layers-tab" role="tab" aria-selected="false" aria-controls="layers-panel">Layers <span id="layer-count">–</span></button>
         </div>
         <div id="material-panel" role="tabpanel" aria-labelledby="material-tab">
@@ -124,9 +125,29 @@
         <div id="layers-panel" role="tabpanel" aria-labelledby="layers-tab" hidden>
           <section class="inspector-section">
             <h3>Layer stack</h3>
-            <div id="cell-field" hidden>
-              <label for="cell">Layout cell</label
-              ><select id="cell"></select>
+            <div id="layer-list"></div>
+            <p class="mode-hint">
+              Heights are illustrative. Recognized SKY130 masks follow process order. Boundary and annotation layers can be shown individually.
+            </p>
+          </section>
+        </div>
+        <div id="cells-panel" role="tabpanel" aria-labelledby="cells-tab" hidden>
+          <section class="inspector-section">
+            <h3>Cell browser</h3>
+            <label class="control-label" for="cell-category">Category</label>
+            <select id="cell-category">
+              <option value="all">All cells</option>
+              <option value="top">Top cells</option>
+              <option value="1">Sequential</option>
+              <option value="2">Combinational</option>
+              <option value="0">Unclassified</option>
+            </select>
+            <label class="control-label" for="cell-search">Search cell names</label>
+            <input type="search" id="cell-search" autocomplete="off" />
+            <label class="control-label" for="cell" id="cell-label">Cells</label>
+            <select id="cell" size="6"></select>
+            <div class="cell-actions">
+              <button id="inspect-cell" class="button" disabled>Open cell</button> <button id="whole-chip" class="button" disabled>Whole chip</button>
             </div>
             <label for="color-mode" class="control-label">Color by</label>
             <select id="color-mode">
@@ -136,8 +157,6 @@
             </select>
             <p id="color-hint" class="mode-hint" hidden></p>
             <ul id="cell-legend" aria-label="Cell colors" hidden></ul>
-            <div id="layer-list"></div>
-            <p class="mode-hint">Heights are illustrative. Imported layers are stacked by layer number and datatype.</p>
           </section>
         </div>
         <section class="inspector-section scene-section">
@@ -189,17 +208,6 @@
       <span id="ready" role="status"><b></b> Opening layout</span><span class="foot-divider"></span><span id="stats"></span
       ><span id="dimensions"></span><button id="demo" title="Restore the bundled example"><i data-icon="reset"></i>Load demo</button>
     </footer>
-    <dialog id="cell-dialog" aria-labelledby="choose-title">
-      <form method="dialog">
-        <h2 id="choose-title">Choose a cell</h2>
-        <p id="choose-reason"></p>
-        <label class="control-label" for="choose-cell">Layout cell</label
-        ><select id="choose-cell"></select>
-        <div class="dialog-actions">
-          <button class="button" value="cancel">Cancel</button><button class="button primary" value="open">Open cell</button>
-        </div>
-      </form>
-    </dialog>
     <noscript>Enable JavaScript to open and render layouts in SeaMOS.</noscript>
     <script type="module" src="./app.js"></script>
   </body>

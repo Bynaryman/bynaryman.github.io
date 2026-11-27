@@ -57,18 +57,16 @@ test("nested polygons retain the owning branch and the nearest recognized logic 
   );
 });
 
-test("an oversized array identifies the placement limit and its child can open independently", async (t) => {
+test("a 450-by-450 array opens as a whole chip with one shared polygon definition", async (t) => {
   const { readLayout } = await import("../apps/seamos/parser.js");
   t.mock.method(globalThis, "fetch", async (url) => new Response(await readFile(url)));
   const bytes = await readFile(path.join(__dirname, "fixtures/strata/oversized.gds"));
-  let catalog;
-  await assert.rejects(
-    readLayout(bytes, undefined, (cells) => {
-      catalog = cells;
-    }),
-    /200,000 cell placements/
-  );
-  assert.deepEqual(catalog, ["BIG", "UNIT"]);
+  const { name, cells, templates } = await readLayout(bytes);
+  assert.equal(name, "BIG");
+  assert.deepEqual(cells, ["BIG", "UNIT"]);
+  assert.equal(templates.length, 1);
+  assert.equal(templates[0].placements.length / 8, 202500);
+  assert.equal(templates[0].layers[0].polygons.length, 1);
   const { layers } = await readLayout(bytes, "UNIT");
   assert.equal(layers[0].polygons.length, 1);
 });

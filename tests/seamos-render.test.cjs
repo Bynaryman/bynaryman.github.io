@@ -57,3 +57,19 @@ test("exposure and denoising redisplay the completed samples and can restore the
   assert.notDeepEqual(await display(2, 1, true), raw);
   assert.deepEqual(await display(3, 1, false), raw);
 });
+
+test("ray intersections use a shared cell at its transformed placement", async () => {
+  const { layerTree } = await import("../apps/seamos/placement-tree.js");
+  const { Ray, Vector3, DoubleSide } = await import("../apps/seamos/lib/intersections.js");
+  const positions = new Float32Array([0, 1, 0, 1, 1, 0, 0, 1, 1]);
+  const indices = new Uint32Array([0, 2, 1]);
+  // 90-degree rotation and 2x magnification, followed by translation.
+  const placements = new Float32Array([1, 0, 0, 1, 0, 0, 0, 0, 0, 2, -2, 0, 8, 10, 0, 1]);
+  const tree = layerTree({ parts: [{ positions, indices, placements }] });
+  const down = (x, z) => new Ray(new Vector3(x, 4, z), new Vector3(0, -1, 0));
+  const hit = tree.raycastFirst(down(7.6, 10.4), DoubleSide, 0, 10);
+  assert.equal(hit.instance, 1);
+  assert.equal(hit.distance, 3);
+  assert.equal(hit.face.normal.y, 1);
+  assert.equal(tree.raycastFirst(down(5, 5), DoubleSide, 0, 10), null);
+});
