@@ -1,6 +1,45 @@
 const { test } = require("node:test");
 const assert = require("node:assert/strict");
 
+test("scan follows visible stack height and leaves the sky and the original trace untouched", async () => {
+  const { stackRange, heightByte, paintScan, scanPhase, coated } = await import("../apps/seamos/surface-effects.js");
+  const range = stackRange([
+    { y: 0, thickness: 1, visible: false },
+    { y: 2, thickness: 1, visible: true },
+    { y: 3, thickness: 1, visible: true },
+  ]);
+  const mask = new Uint8Array([0, heightByte(2, range), heightByte(3, range), heightByte(4, range)]);
+  assert.deepEqual([...mask], [0, 1, 128, 255]);
+  const source = new Uint8ClampedArray(16).fill(32),
+    scan = { enabled: true, band: "#ffffff", trail: "#ff0088" };
+  const frame = paintScan(source, mask, scan, (0.5 + 0.09) / 1.32);
+  assert.deepEqual([...frame.slice(0, 8)], [...source.slice(0, 8)]);
+  assert.ok(frame[8] > 210);
+  assert.equal(frame[12], 32);
+  assert.equal(source[8], 32);
+  assert.equal(scanPhase(0.25, 0, 6000), 0.25);
+  assert.equal(scanPhase(0.25, 2, 1500), 0.75);
+  assert.equal(coated("iridescent", false), true);
+  assert.equal(coated("metal", true), true);
+  assert.equal(coated("glass", true), false);
+});
+
+test("export tiles cover every output pixel once and include neighboring pixels for both image filters", async () => {
+  const { imageTiles } = await import("../apps/seamos/image-export.js");
+  const w = 19,
+    h = 17,
+    pad = 2,
+    covered = new Uint8Array(w * h);
+  for (const t of imageTiles(w, h, pad, 8)) {
+    assert.equal(t.x, Math.max(0, t.left - pad));
+    assert.equal(t.y, Math.max(0, t.top - pad));
+    assert.equal(t.x + t.width, Math.min(w, t.left + t.w + pad));
+    assert.equal(t.y + t.height, Math.min(h, t.top + t.h + pad));
+    for (let y = t.top; y < t.top + t.h; y++) for (let x = t.left; x < t.left + t.w; x++) covered[y * w + x]++;
+  }
+  assert.ok(covered.every((n) => n === 1));
+});
+
 test("renderer diagnostics identify the active adapter and respect masked hardware names", async () => {
   const { webglAdapter } = await import("../apps/seamos/webgl-adapter.js");
   const read = (model, standard = "WebKit WebGL") =>

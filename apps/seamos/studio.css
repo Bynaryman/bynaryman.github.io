@@ -987,7 +987,8 @@ select {
 #stack-materials {
   margin-block: 9px;
 }
-#share-dialog {
+#share-dialog,
+#export-dialog {
   width: min(32rem, calc(100% - 2rem));
   color: var(--ink);
   background: var(--paper);
@@ -995,10 +996,12 @@ select {
   border: 1px solid var(--ink);
   box-shadow: 4px 4px var(--shadow);
 }
-#share-dialog::backdrop {
+#share-dialog::backdrop,
+#export-dialog::backdrop {
   background: rgb(12 17 30 / 45%);
 }
-#share-dialog h2 {
+#share-dialog h2,
+#export-dialog h2 {
   font: normal 1.85rem var(--display);
 }
 .share-field {
@@ -1020,4 +1023,61 @@ select {
   #share span {
     display: none;
   }
+}
+
+.lighting-toggle {
+  margin-top: 12px;
+  font-size: 0.84rem;
+}
+.lighting-toggle input {
+  accent-color: var(--blue);
+}
+.lighting-colors,
+.export-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 8px;
+}
+.lighting-colors label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font: 0.75rem var(--mono);
+}
+.lighting-colors input {
+  width: 26px;
+  height: 25px;
+  padding: 1px;
+  cursor: pointer;
+}
+#export-options {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.export-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 10px;
+}
+.export-pair label {
+  font-size: 0.8rem;
+}
+.export-pair input {
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 6px;
+}
+.export-actions {
+  margin-top: 16px;
+}
+#export-status {
+  font: 0.76rem/1.4 var(--mono);
 }

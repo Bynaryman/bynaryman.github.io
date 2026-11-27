@@ -1,5 +1,7 @@
+import { currentSize, renderImage } from "./image-export.js";
+import { defaultFinish, defaultScan } from "./surface-effects.js";
 import { icon } from "./icons.js";
-import { presets, makeLayers, applyPreset, randomMaterial, randomPalette, randomBaseColor } from "./materials.js";
+import { presets, makeLayers, applyPreset, randomMaterial, randomPalette, randomBaseColor, randomEffectColors } from "./materials.js";
 import { defaultSky, defaultWater, randomSky, randomWater, sharedSky, sharedWater } from "./bryce.js";
 import { layoutByteLimit, readView, remoteFile, viewLink } from "./share-view.js";
 import { logicType } from "./logic-types.js";
@@ -213,6 +215,7 @@ function renderLayers() {
   );
 }
 function syncMaterial() {
+  $("film-controls").hidden = !vp.finish.allMetals && !layers.some((l) => l.style.type === "iridescent");
   if (!layers.length) return;
   const layer = layers[selected],
     s = layer.style;
@@ -540,6 +543,45 @@ function updateDisplay() {
 $("exposure").oninput = updateDisplay;
 $("denoise").onchange = updateDisplay;
 $("effect").onchange = updateDisplay;
+function syncLighting() {
+  const f = vp.finish,
+    scan = vp.scan;
+  $("film-enabled").checked = f.allMetals;
+  $("film-face").value = f.face;
+  $("film-rim").value = f.rim;
+  $("film-controls").hidden = !f.allMetals && !layers.some((l) => l.style.type === "iridescent");
+  $("scan-enabled").checked = scan.enabled;
+  $("scan-controls").hidden = !scan.enabled;
+  $("scan-band").value = scan.band;
+  $("scan-trail").value = scan.trail;
+  $("scan-speed").value = scan.speed;
+  showRange("scan-speed", scan.speed === 0 ? "Paused" : scan.speed + "×");
+  $("scan-seek").hidden = scan.speed !== 0;
+  $("scan-position").value = Math.round(vp.scanPosition() * 100);
+  showRange("scan-position", $("scan-position").value + "%");
+}
+function editFinish() {
+  vp.setFinish({ allMetals: $("film-enabled").checked, face: $("film-face").value, rim: $("film-rim").value });
+  syncLighting();
+}
+function editScan(phase) {
+  vp.setScan(
+    { enabled: $("scan-enabled").checked, speed: Number($("scan-speed").value), band: $("scan-band").value, trail: $("scan-trail").value },
+    phase
+  );
+  syncLighting();
+}
+for (const id of ["film-enabled", "film-face", "film-rim"]) $(id).oninput = editFinish;
+for (const id of ["scan-enabled", "scan-speed", "scan-band", "scan-trail"]) $(id).oninput = () => editScan();
+$("scan-position").oninput = () => editScan(Math.min(0.999999, Number($("scan-position").value) / 100));
+$("shuffle-film").onclick = () => {
+  [$("film-face").value, $("film-rim").value] = randomEffectColors(vp.finish.face);
+  editFinish();
+};
+$("shuffle-scan").onclick = () => {
+  [$("scan-band").value, $("scan-trail").value] = randomEffectColors(vp.scan.band);
+  editScan();
+};
 for (const id of ["preview-mode", "trace-mode"])
   $(id).onclick = () => {
     if (vp.trace === (id === "trace-mode")) return;
@@ -587,21 +629,81 @@ $("scene").onkeydown = (e) => {
     actions[e.key]();
   }
 };
+let exporting;
+function exportFields() {
+  const trace = $("export-renderer").value === "trace";
+  const size = $("export-size").value;
+  const dimensions = size === "current" ? currentSize(vp, trace) : size === "hd" ? [1920, 1080] : size === "4k" ? [3840, 2160] : null;
+  if (dimensions) [$("export-width").value, $("export-height").value] = dimensions;
+  $("export-sampling").hidden = !trace;
+  $("encoding-quality").hidden = $("export-format").value === "image/png";
+  showRange("export-quality", $("export-quality").value + "%");
+}
 $("export").onclick = () => {
+  $("export-renderer").value = vp.trace ? "trace" : "preview";
+  $("export-renderer").options[0].disabled = !vp.renderer;
+  $("export-samples").value = vp.samples;
+  $("export-status").textContent = "";
+  exportFields();
+  $("export-dialog").showModal();
+};
+for (const id of ["export-size", "export-format", "export-renderer"]) $(id).onchange = exportFields;
+$("export-quality").oninput = exportFields;
+for (const id of ["export-width", "export-height"])
+  $(id).oninput = () => {
+    $("export-size").value = "custom";
+  };
+$("export-close").onclick = () => $("export-dialog").close();
+function exportBusy(busy) {
+  $("export-options").disabled = busy;
+  $("save-image").disabled = busy;
+  $("export-close").textContent = busy ? "Cancel" : "Close";
+}
+$("export-dialog").onclose = () => {
+  exporting?.abort();
+  exporting = null;
+  exportBusy(false);
+};
+$("export-form").onsubmit = async (e) => {
+  e.preventDefault();
+  if (exporting) return;
+  const job = new AbortController();
+  exporting = job;
+  exportBusy(true);
+  const fmt = $("export-format").value;
+  const name = (currentFile?.name.replace(/\.[^.]+$/, "") || "layout") + "-" + (custom ? "custom" : variedBryce() ? "bryce-variant" : preset.id);
+  $("export-status").textContent = "Rendering image…";
   try {
-    const canvas = vp.exportCanvas();
-    canvas.toBlob((blob) => {
-      if (!blob) return notice("Could not export this frame.");
-      const url = URL.createObjectURL(blob),
-        a = document.createElement("a");
-      a.href = url;
-      a.download =
-        (currentFile?.name.replace(/\.[^.]+$/, "") || "layout") + "-" + (custom ? "custom" : variedBryce() ? "bryce-variant" : preset.id) + ".png";
-      a.click();
-      setTimeout(() => URL.revokeObjectURL(url), 3000);
-    }, "image/png");
+    const blob = await renderImage(
+      vp,
+      {
+        width: Number($("export-width").value),
+        height: Number($("export-height").value),
+        trace: $("export-renderer").value === "trace",
+        samples: Number($("export-samples").value),
+        format: fmt,
+        quality: Number($("export-quality").value) / 100,
+      },
+      job.signal,
+      (percent) => {
+        $("export-status").textContent = percent === 100 ? "Encoding image…" : "Rendering · " + percent + "%";
+      }
+    );
+    job.signal.throwIfAborted();
+    const url = URL.createObjectURL(blob),
+      a = document.createElement("a");
+    a.href = url;
+    a.download = name + "." + { "image/png": "png", "image/jpeg": "jpg", "image/webp": "webp" }[blob.type];
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 3000);
+    $("export-dialog").close();
   } catch (error) {
-    notice(error.message);
+    if (!job.signal.aborted) $("export-status").textContent = error.message || "Export failed.";
+  } finally {
+    if (exporting === job) {
+      exporting = null;
+      exportBusy(false);
+    }
   }
 };
 let dragDepth = 0;
@@ -643,6 +745,8 @@ function sceneState() {
     spacing: vp.spacing,
     exposure: vp.exposure,
     effect: vp.effect,
+    finish: { ...vp.finish },
+    scan: { ...vp.scan, phase: vp.scanPosition() },
     grid: vp.grid.visible,
     trace: !!vp.trace,
     samples: vp.samples,
@@ -657,6 +761,22 @@ function sceneState() {
   };
 }
 const inRange = (v, min, max) => Number.isFinite(v) && v >= min && v <= max;
+function restoreLighting(s) {
+  const color = (v, fallback) => (typeof v === "string" && /^#[0-9a-f]{6}$/i.test(v) ? v : fallback);
+  const f = s.finish ?? {},
+    sc = s.scan ?? {};
+  vp.setFinish({ allMetals: f.allMetals === true, face: color(f.face, defaultFinish.face), rim: color(f.rim, defaultFinish.rim) });
+  vp.setScan(
+    {
+      enabled: sc.enabled === true,
+      speed: inRange(sc.speed, 0, 4) ? sc.speed : 1,
+      band: color(sc.band, defaultScan.band),
+      trail: color(sc.trail, defaultScan.trail),
+    },
+    inRange(sc.phase, 0, 1) ? sc.phase : 0.32
+  );
+  syncLighting();
+}
 function restoreScene(s) {
   const saved = new Map(s.layers.filter((row) => Array.isArray(row) && row.length === 7).map((row) => [row[0], row]));
   for (const l of layers) {
@@ -665,7 +785,7 @@ function restoreScene(s) {
     const [, visible, type, color, roughness, metalness, ior] = row;
     if (typeof visible === "boolean") l.visible = visible;
     if (
-      ["glass", "metal", "matte"].includes(type) &&
+      ["glass", "metal", "matte", "iridescent"].includes(type) &&
       typeof color === "string" &&
       /^#[0-9a-f]{6}$/i.test(color) &&
       inRange(roughness, 0, 1) &&
@@ -706,6 +826,7 @@ function restoreScene(s) {
     }
     vp.controls.update();
   }
+  restoreLighting(s);
   vp.trace = s.trace === true || !vp.renderer;
   vp.traceBackend = null;
   updateDisplay();
@@ -808,6 +929,8 @@ async function openInitial() {
       showEnvironment();
       renderPresets();
     }
+    if (!state)
+      restoreLighting({ finish: { allMetals: url.searchParams.get("film") === "1" }, scan: { enabled: url.searchParams.get("scan") === "1" } });
     if (file) await loadFile(file, state?.cell, state);
     else await demo(state?.cell, state);
   } catch (error) {
