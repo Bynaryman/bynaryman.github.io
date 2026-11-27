@@ -177,18 +177,58 @@ export class Viewport {
     this.stopTrace(true);
     for (const mesh of this.meshes) {
       this.group.remove(mesh);
-      mesh.geometry.dispose();
+      mesh.traverse((part) => {
+        part.geometry?.dispose();
+        if (part.isInstancedMesh) part.dispose();
+      });
       mesh.material.dispose();
     }
     this.layers = layers;
+    this.sharedLayout = layers.some((l) => l.parts);
     this.vertexColors = [];
     this.meshes = layers.map((layer) => {
-      const geometry = new T.BufferGeometry();
-      geometry.setAttribute("position", new T.BufferAttribute(layer.positions, 3));
-      geometry.setIndex(new T.BufferAttribute(layer.indices, 1));
-      geometry.computeVertexNormals();
       const material = new T.MeshPhysicalMaterial({ flatShading: true, side: T.DoubleSide });
-      const mesh = new T.Mesh(geometry, material);
+      const makeGeometry = ({ positions, indices }) => {
+        const geometry = new T.BufferGeometry();
+        geometry.setAttribute("position", new T.BufferAttribute(positions, 3));
+        geometry.setIndex(new T.BufferAttribute(indices, 1));
+        geometry.computeVertexNormals();
+        return geometry;
+      };
+      let mesh;
+      if (layer.parts) {
+        mesh = new T.Group();
+        mesh.material = material;
+        for (const part of layer.parts) {
+          const transforms = part.placements;
+          const child = new T.InstancedMesh(makeGeometry(part), material, transforms.length / 8);
+          const matrix = new T.Matrix4();
+          for (let i = 0; i < transforms.length; i += 8) {
+            matrix.set(
+              transforms[i],
+              0,
+              transforms[i + 2],
+              transforms[i + 4],
+              0,
+              1,
+              0,
+              0,
+              transforms[i + 1],
+              0,
+              transforms[i + 3],
+              transforms[i + 5],
+              0,
+              0,
+              0,
+              1
+            );
+            child.setMatrixAt(i / 8, matrix);
+          }
+          child.userData.surfaceCount = part.surfaceCount;
+          child.receiveShadow = true;
+          mesh.add(child);
+        }
+      } else mesh = new T.Mesh(makeGeometry(layer), material);
       mesh.castShadow = mesh.receiveShadow = true;
       this.group.add(mesh);
       return mesh;
@@ -199,6 +239,21 @@ export class Viewport {
   setColors(colors) {
     this.vertexColors = colors;
     for (const [i, mesh] of this.meshes.entries()) {
+      if (this.layers[i].parts) {
+        const color = new T.Color();
+        for (const [j, part] of mesh.children.entries()) {
+          if (colors.length) {
+            const bytes = colors[i][j];
+            for (let k = 0; k < bytes.length; k += 3) part.setColorAt(k / 3, color.setRGB(bytes[k] / 255, bytes[k + 1] / 255, bytes[k + 2] / 255));
+            part.instanceColor.needsUpdate = true;
+          } else if (part.instanceColor) {
+            // Keep the GPU color buffer for reuse across inspections.
+            part.instanceColor.array.fill(1);
+            part.instanceColor.needsUpdate = true;
+          }
+        }
+        continue;
+      }
       if (colors.length) mesh.geometry.setAttribute("color", new T.BufferAttribute(colors[i], 3, true));
       else mesh.geometry.deleteAttribute("color");
       mesh.material.vertexColors = !!colors.length;
@@ -216,7 +271,7 @@ export class Viewport {
       mesh.position.y = layer.y;
       mesh.scale.y = layer.thickness;
       const glass = s.type === "glass";
-      m.color.set(m.vertexColors ? "#ffffff" : s.color);
+      m.color.set(this.vertexColors.length ? "#ffffff" : s.color);
       m.roughness = Math.max(0.025, s.roughness);
       m.metalness = s.type === "metal" ? s.metalness : 0;
       m.transmission = glass ? 0.9 : 0;
@@ -226,6 +281,7 @@ export class Viewport {
       m.clearcoatRoughness = m.roughness;
       m.envMapIntensity = glass ? 1.15 : 1;
       mesh.castShadow = !glass;
+      for (const child of mesh.children) child.castShadow = !glass;
       m.needsUpdate = true;
     }
     if (this.renderer) this.renderer.toneMappingExposure = this.exposure;
@@ -292,6 +348,21 @@ export class Viewport {
   }
   drawPreview() {
     if (!this.renderer) return;
+    if (this.sharedLayout) {
+      const overview = this.camera.position.distanceTo(this.controls.target) > 5;
+      for (const [i, layer] of this.layers.entries()) {
+        const mesh = this.meshes[i],
+          glass = layer.style.type === "glass";
+        if (!layer.parts) continue;
+        mesh.material.transmission = glass && !overview ? 0.9 : 0;
+        mesh.material.transparent = glass && overview;
+        mesh.material.opacity = glass && overview ? 0.45 : 1;
+        for (const child of mesh.children) {
+          child.castShadow = !overview && !glass;
+          child.geometry.setDrawRange(0, overview ? child.userData.surfaceCount : Infinity);
+        }
+      }
+    }
     if (this.environment === "ocean") this.ocean.renderReflection(this.renderer, this.world, this.camera);
     this.renderer.render(this.world, this.camera);
   }
@@ -366,7 +437,7 @@ export class Viewport {
         );
       };
       this.worker.onerror = () => this.traceFailure("Ray tracing could not finish this layout.");
-      this.worker.postMessage({ type: "geometry", layers: this.layers.map((l) => ({ positions: l.positions, indices: l.indices })) });
+      this.worker.postMessage({ type: "geometry", layers: this.layers.map((l) => ({ positions: l.positions, indices: l.indices, parts: l.parts })) });
       if (this.vertexColors.length) this.worker.postMessage({ type: "colors", colors: this.vertexColors });
     }
     if (this.environment === "ocean" && !this.workerHasSky) {

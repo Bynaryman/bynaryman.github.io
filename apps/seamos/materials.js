@@ -13,15 +13,52 @@ export const presets = [
     colors: ["#264855", "#3c8588", "#658897", "#70acac", "#c9bbc8", "#aab5c9", "#a1dfeb", "#f1cba2"],
   },
 ];
+// SKY130 mask names and purposes used by the Tiny Tapeout standard-cell flow.
+const skyMasks = new Map([
+  ["64/20", "N-well"],
+  ["94/20", "P+ implant"],
+  ["93/44", "N+ implant"],
+  ["78/44", "High-Vt implant"],
+  ["65/20", "Diffusion"],
+  ["65/44", "Tap"],
+  ["66/20", "Poly"],
+  ["95/20", "Nitride cut"],
+  ["66/44", "Local contact"],
+  ["67/20", "Local interconnect"],
+  ["67/44", "Metal contact"],
+  ["68/20", "Metal 1"],
+  ["68/44", "Via 1"],
+  ["69/20", "Metal 2"],
+  ["69/44", "Via 2"],
+  ["70/20", "Metal 3"],
+  ["70/44", "Via 3"],
+  ["71/20", "Metal 4"],
+  ["71/44", "Via 4"],
+  ["72/20", "Metal 5"],
+]);
+const skyAnnotations = new Map([
+  ["235/4", "Placement boundary"],
+  ["236/0", "Boundary"],
+  ["81/4", "Standard-cell area"],
+  ["81/23", "Diode area"],
+  ["83/44", "Text"],
+]);
 export function makeLayers(layout, sample) {
-  return layout.layers.map((data, i) => {
+  const sky = layout.cellNames.some((n) => n.startsWith("sky130_fd_sc_"));
+  const keyOf = (l) => l.layer + "/" + l.datatype;
+  const order = new Map([...skyMasks.keys()].map((key, i) => [key, i]));
+  const sorted = sky ? [...layout.layers].sort((a, b) => (order.get(keyOf(a)) ?? 1000) - (order.get(keyOf(b)) ?? 1000)) : layout.layers;
+  return sorted.map((data, i) => {
     const slot = sample ? data.layer - 1 : layout.layers.length === 1 ? 5 : Math.round((i * 7) / (layout.layers.length - 1));
+    const key = keyOf(data);
+    const annotation = sky && (skyAnnotations.has(key) || data.datatype === 5 || data.datatype === 16);
+    const label = sky && (skyMasks.get(key) ?? skyAnnotations.get(key));
     return {
       ...data,
       key: data.layer + "/" + data.datatype,
       slot,
-      visible: true,
-      name: sample ? sampleNames[slot] : "Layer " + data.layer + " / " + data.datatype,
+      visible: !annotation,
+      name: sample ? sampleNames[slot] : label ? label + " · " + key : "Layer " + data.layer + " / " + data.datatype,
     };
   });
 }

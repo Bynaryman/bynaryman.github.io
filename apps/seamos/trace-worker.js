@@ -1,6 +1,7 @@
 // Whitted-style rays with jittered camera / area light samples. Layer transforms
 // live outside each BVH so material, visibility and spacing edits reuse the trees.
-import { BufferAttribute, BufferGeometry, Color, DoubleSide, MeshBVH, Ray, Vector3 } from "./lib/intersections.js";
+import { Color, DoubleSide, Ray, Vector3 } from "./lib/intersections.js";
+import { layerTree } from "./placement-tree.js";
 import { denoiseFrame } from "./postprocess.js";
 import { sampleSky, waterLevel, waterNormal } from "./bryce.js";
 let panorama,
@@ -34,7 +35,7 @@ function nearest(origin, dir, layers, maximum = Infinity, shadow = false) {
       best = hit.distance / scale;
       const normal = hit.face.normal.clone();
       normal.y /= layer.thickness;
-      result = { layer, vertex: hit.face.a, normal: normal.normalize(), distance: best };
+      result = { layer, part: hit.part, vertex: hit.instance ?? hit.face.a, normal: normal.normalize(), distance: best };
     }
   }
   if (!shadow && dir.y < 0) {
@@ -85,7 +86,8 @@ function trace(origin, dir, scene, depth) {
     const light = (scene.grid && gridLine ? 0.38 : 0.32) * (0.6 + 0.4 * visibility);
     return [light * 0.76, light * 0.91, light * 1.12];
   }
-  const { style: s, colors: bytes } = hit.layer,
+  const { style: s } = hit.layer,
+    bytes = hit.part === undefined ? hit.layer.colors : hit.layer.colors?.[hit.part],
     offset = hit.vertex * 3,
     c = bytes ? new Color(bytes[offset] / 255, bytes[offset + 1] / 255, bytes[offset + 2] / 255) : hit.layer.tint,
     metal = s.type === "metal" ? s.metalness : 0;
@@ -192,12 +194,7 @@ self.onmessage = async ({ data }) => {
       return;
     }
     if (data.type === "geometry") {
-      trees = data.layers.map(({ positions, indices }) => {
-        const geo = new BufferGeometry();
-        geo.setAttribute("position", new BufferAttribute(positions, 3));
-        geo.setIndex(new BufferAttribute(indices, 1));
-        return new MeshBVH(geo, { maxLeafTris: 10 });
-      });
+      trees = data.layers.map(layerTree);
       return;
     }
     if (data.type === "display") {

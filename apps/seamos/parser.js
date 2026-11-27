@@ -17,7 +17,8 @@ export async function readLayout(buffer, cellName, onCells) {
   const directory = new PreopenDirectory(".", new Map([["layout", new File(bytes, { readonly: true })]]));
   const output = new ConsoleStdout(() => {});
   const wasi = new WASI([], [], [new Fd(), output, output, directory]);
-  const groups = new Map();
+  let groups = new Map();
+  const templates = new Map();
   let api, branch, type;
   const cellIds = new Map(),
     kinds = [],
@@ -27,6 +28,13 @@ export async function readLayout(buffer, cellName, onCells) {
     if (depth <= 1) branch = id;
     type = kinds[id] || (depth ? logicAtDepth[depth - 1] : 0);
     logicAtDepth[depth] = type;
+  }
+  function placeCell(address, a, b, c, d, x, y) {
+    const id = cellIds.get(address);
+    if (!templates.has(id)) templates.set(id, { layers: new Map(), placements: [] });
+    const template = templates.get(id);
+    template.placements.push(a, b, c, d, x, y, branch, type);
+    groups = template.layers;
   }
   function polygon(layerID, typeID, address, count) {
     const layer = layerID >>> 0;
@@ -52,7 +60,7 @@ export async function readLayout(buffer, cellName, onCells) {
   if (!response.ok) throw new Error("The layout reader could not be loaded.");
   const { instance } = await WebAssembly.instantiate(await response.arrayBuffer(), {
     wasi_snapshot_preview1: wasi.wasiImport,
-    layout: { polygon, enter_cell: enterCell },
+    layout: { polygon, enter_cell: enterCell, place_cell: placeCell },
   });
   api = instance.exports;
   wasi.initialize(instance);
@@ -72,7 +80,15 @@ export async function readLayout(buffer, cellName, onCells) {
     onCells?.(cells, roots);
     const name = cellName ?? cells[0];
     if (!cells.includes(name)) throw new Error("The selected cell is unavailable.");
-    check(api.read_cell(all.indexOf(name)));
+    const index = all.indexOf(name);
+    const error = api.read_cell(index);
+    if (error && /expands beyond/.test(stringAt(error))) {
+      groups.clear();
+      check(api.read_shared_cell(index));
+      const parts = Array.from(templates.values(), (t) => ({ layers: Array.from(t.layers.values()), placements: new Float64Array(t.placements) }));
+      return { cells, roots, name, cellNames: all, templates: parts };
+    }
+    check(error);
     return { cells, roots, name, cellNames: all, layers: Array.from(groups.values()) };
   } catch (error) {
     if (error instanceof WebAssembly.RuntimeError || error instanceof RangeError) {
