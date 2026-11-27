@@ -1,6 +1,7 @@
 import { icon } from "./icons.js";
 import { presets, makeLayers, applyPreset, randomMaterial, randomPalette, randomBaseColor } from "./materials.js";
-import { defaultSky, defaultWater, randomSky, randomWater } from "./bryce.js";
+import { defaultSky, defaultWater, randomSky, randomWater, sharedSky, sharedWater } from "./bryce.js";
+import { layoutByteLimit, readView, remoteFile, viewLink } from "./share-view.js";
 import { logicType } from "./logic-types.js";
 import { colorLayout, shuffleColorOffset } from "./cell-colors.js";
 import { Viewport } from "./viewport.js";
@@ -20,6 +21,7 @@ let request = 0,
   noticeTimer,
   catalogFile,
   catalog;
+let peeled = [];
 const vp = new Viewport($("scene"), $("traced"), (message, failed) => {
   ready(message);
   if (failed) {
@@ -62,7 +64,7 @@ function showMode() {
 }
 function showRange(id, text) {
   const input = $(id);
-  input.style.setProperty("--fill", (100 * (Number(input.value) - Number(input.min))) / (Number(input.max) - Number(input.min)) + "%");
+  input.style.setProperty("--fill", (100 * (Number(input.value) - Number(input.min))) / (Number(input.max) - Number(input.min) || 1) + "%");
   $(id + "-value").textContent = text;
 }
 function updateSceneInputs() {
@@ -87,7 +89,7 @@ function showEnvironment() {
 let presetRequest = 0,
   skyRequest = 0;
 let studioView, studioSpacing;
-async function selectPreset(p) {
+async function selectPreset(p, active = () => true) {
   const ticket = ++presetRequest;
   ++skyRequest;
   let panorama;
@@ -96,11 +98,11 @@ async function selectPreset(p) {
     try {
       panorama = await vp.prepareOcean();
     } catch {
-      if (ticket === presetRequest) notice("Could not load the Bryce sky. Select Bryce to retry.");
+      if (ticket === presetRequest && active()) notice("Could not load the Bryce sky. Select Bryce to retry.");
       return;
     }
   }
-  if (ticket !== presetRequest) return;
+  if (ticket !== presetRequest || !active()) return;
   const wasOcean = vp.environment === "ocean";
   if (ocean && !wasOcean) {
     studioSpacing = vp.spacing;
@@ -163,6 +165,12 @@ function renderPresets() {
   );
 }
 function renderLayers() {
+  const visible = layers.filter((layer) => layer.visible).length;
+  const available = visible + peeled.length;
+  $("layer-depth").max = available;
+  $("layer-depth").value = visible;
+  $("layer-depth").disabled = !available;
+  showRange("layer-depth", visible + " / " + available);
   $("layer-list").replaceChildren(
     ...layers
       .map((layer, i) => {
@@ -193,8 +201,9 @@ function renderLayers() {
         eye.setAttribute("aria-pressed", String(layer.visible));
         eye.title = (layer.visible ? "Hide " : "Show ") + layer.name;
         eye.onclick = () => {
+          peeled = peeled.filter((key) => key !== layer.key);
           layer.visible = !layer.visible;
-          vp.apply();
+          vp.applyVisibility();
           renderLayers();
         };
         row.append(btn, eye);
@@ -283,6 +292,7 @@ function setCatalog(file, data) {
 }
 function install(mesh, file, cellChange) {
   layers = makeLayers(mesh, file.sample);
+  peeled = [];
   applyPreset(layers, preset);
   custom = false;
   currentFile = file;
@@ -314,6 +324,9 @@ function install(mesh, file, cellChange) {
   $("view").value = vp.environment === "ocean" ? "horizon" : "perspective";
   $("export").disabled = false;
   $("shuffle-palette").disabled = false;
+  $("shuffle-finishes").disabled = false;
+  $("stack-materials").disabled = false;
+  $("share").disabled = false;
   $("shuffle-material").disabled = false;
   $("shuffle-base-color").disabled = false;
   syncMaterial();
@@ -321,16 +334,21 @@ function install(mesh, file, cellChange) {
   renderPresets();
   ready(vp.trace ? "Preparing ray trace" : "Ready");
 }
-async function loadFile(file, cell) {
+function beginImport() {
   const id = ++request;
   cancelImport?.();
   reader?.terminate();
   reader = null;
+  cancelImport = null;
+  return id;
+}
+async function loadFile(file, cell, state) {
+  const id = beginImport();
   ready("Opening layout");
   $("notice").hidden = true;
   let timeout;
   try {
-    if (file.size > 64 * 1024 * 1024) throw new Error("Choose a layout file of 64 MiB or less.");
+    if (file.size > layoutByteLimit) throw new Error("Choose a layout file of 64 MiB or less.");
     const buffer = await file.arrayBuffer();
     if (id !== request) return;
     const worker = new Worker(new URL("./layout-worker.js", import.meta.url), { type: "module" });
@@ -347,7 +365,10 @@ async function loadFile(file, cell) {
       worker.onerror = () => reject(new Error("The layout reader could not complete this file."));
       worker.postMessage({ buffer, cell }, [buffer]);
     });
-    if (id === request) install(result, file, cell !== undefined);
+    if (id === request) {
+      install(result, file, cell !== undefined);
+      if (state) restoreScene(state);
+    }
   } catch (error) {
     if (id === request) {
       notice(error.message);
@@ -362,13 +383,13 @@ async function loadFile(file, cell) {
     }
   }
 }
-async function demo() {
-  const id = request;
+async function demo(cell, state) {
+  const id = beginImport();
   try {
     const response = await fetch("./assets/prism_core.gds");
     if (!response.ok) throw new Error("Could not load the demo layout.");
     const blob = await response.blob();
-    if (request === id) await loadFile({ name: "prism_core.gds", size: blob.size, sample: true, arrayBuffer: () => blob.arrayBuffer() });
+    if (request === id) await loadFile({ name: "prism_core.gds", size: blob.size, sample: true, arrayBuffer: () => blob.arrayBuffer() }, cell, state);
   } catch (error) {
     if (request === id) {
       notice(error.message);
@@ -386,7 +407,7 @@ $("file").onchange = (e) => {
   if (file) loadFile(file);
   e.target.value = "";
 };
-$("demo").onclick = demo;
+$("demo").onclick = () => demo();
 $("cell-search").oninput = showCells;
 $("cell-category").onchange = showCells;
 $("inspect-cell").onclick = () => {
@@ -444,6 +465,41 @@ $("shuffle-palette").onclick = () => {
   randomPalette(layers);
   updateMaterials();
 };
+$("stack-materials").onclick = $("shuffle-finishes").onclick = () => {
+  for (const layer of layers) layer.style = randomMaterial();
+  updateMaterials();
+};
+function setLayerDepth(depth) {
+  const visible = layers.filter((layer) => layer.visible);
+  depth = Math.max(0, Math.min(visible.length + peeled.length, depth));
+  if (depth === visible.length) return;
+  if (depth < visible.length) {
+    for (const layer of visible.slice(depth).reverse()) {
+      layer.visible = false;
+      peeled.push(layer.key);
+    }
+  } else {
+    const restore = new Set(peeled.splice(peeled.length - (depth - visible.length)));
+    for (const layer of layers) if (restore.has(layer.key)) layer.visible = true;
+  }
+  vp.applyVisibility();
+  renderLayers();
+}
+$("layer-depth").oninput = () => setLayerDepth(Number($("layer-depth").value));
+let wheelDelta = 0,
+  lastWheel = 0;
+function peelWheel(e) {
+  if ((!e.ctrlKey && !e.currentTarget.contains($("layer-depth"))) || !layers.length || !e.deltaY) return;
+  e.preventDefault();
+  e.stopPropagation();
+  if (e.timeStamp - lastWheel > 200 || Math.sign(wheelDelta) !== Math.sign(e.deltaY)) wheelDelta = 0;
+  lastWheel = e.timeStamp;
+  wheelDelta += e.deltaY * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? 100 : 1);
+  if (Math.abs(wheelDelta) < 12) return;
+  setLayerDepth(Number($("layer-depth").value) - Math.sign(wheelDelta));
+  wheelDelta = 0;
+}
+for (const id of ["layer-wheel", "viewport"]) $(id).addEventListener("wheel", peelWheel, { passive: false, capture: true });
 $("shuffle-sky").onclick = async () => {
   const ticket = ++skyRequest,
     next = randomSky(vp.sky);
@@ -478,11 +534,12 @@ $("spacing").oninput = () => {
   vp.apply();
 };
 function updateDisplay() {
-  vp.setDisplay(Number($("exposure").value), $("denoise").value === "bilateral");
+  vp.setDisplay(Number($("exposure").value), $("denoise").value === "bilateral", $("effect").value);
   updateSceneInputs();
 }
 $("exposure").oninput = updateDisplay;
 $("denoise").onchange = updateDisplay;
+$("effect").onchange = updateDisplay;
 for (const id of ["preview-mode", "trace-mode"])
   $(id).onclick = () => {
     if (vp.trace === (id === "trace-mode")) return;
@@ -571,10 +628,198 @@ window.addEventListener("drop", (e) => {
   const file = e.dataTransfer.files[0];
   if (file) loadFile(file);
 });
+function sceneState() {
+  return {
+    version: 1,
+    filename: currentFile.name,
+    cell: currentCell,
+    preset: preset.id,
+    custom,
+    layers: layers.map((l) => [l.key, l.visible, l.style.type, l.style.color, l.style.roughness, l.style.metalness, l.style.ior]),
+    peeled: [...peeled],
+    selected: layers[selected]?.key,
+    colorMode: $("color-mode").value,
+    palette: { ...paletteOffsets },
+    spacing: vp.spacing,
+    exposure: vp.exposure,
+    effect: vp.effect,
+    grid: vp.grid.visible,
+    trace: !!vp.trace,
+    samples: vp.samples,
+    denoise: vp.denoise,
+    view: $("view").value,
+    fov: vp.camera.fov,
+    position: vp.camera.position.toArray(),
+    target: vp.controls.target.toArray(),
+    aspect: vp.camera.aspect,
+    sky: vp.environment === "ocean" ? [vp.sky.name, vp.sky.turn] : undefined,
+    water: vp.environment === "ocean" && vp.water !== defaultWater ? vp.water : undefined,
+  };
+}
+const inRange = (v, min, max) => Number.isFinite(v) && v >= min && v <= max;
+function restoreScene(s) {
+  const saved = new Map(s.layers.filter((row) => Array.isArray(row) && row.length === 7).map((row) => [row[0], row]));
+  for (const l of layers) {
+    const row = saved.get(l.key);
+    if (!row) continue;
+    const [, visible, type, color, roughness, metalness, ior] = row;
+    if (typeof visible === "boolean") l.visible = visible;
+    if (
+      ["glass", "metal", "matte"].includes(type) &&
+      typeof color === "string" &&
+      /^#[0-9a-f]{6}$/i.test(color) &&
+      inRange(roughness, 0, 1) &&
+      inRange(metalness, 0, 1) &&
+      inRange(ior, 1, 2.5)
+    )
+      l.style = { type, color, roughness, metalness, ior };
+  }
+  const hidden = new Set(layers.filter((l) => !l.visible).map((l) => l.key));
+  peeled = Array.isArray(s.peeled) ? [...new Set(s.peeled.filter((k) => hidden.has(k)))] : [];
+  const index = layers.findIndex((l) => l.key === s.selected);
+  if (index >= 0) selected = index;
+  custom = s.custom === true;
+  if (inRange(s.spacing, 0, 100)) $("spacing").value = vp.spacing = s.spacing;
+  if (inRange(s.exposure, 0.35, 2)) $("exposure").value = s.exposure;
+  if (["ink", "blueprint", "off"].includes(s.effect)) $("effect").value = s.effect;
+  $("denoise").value = s.denoise === true ? "bilateral" : "off";
+  if ([4, 16, 64].includes(s.samples)) $("samples").value = vp.samples = s.samples;
+  if (typeof s.grid === "boolean") vp.grid.visible = s.grid;
+  $("grid").setAttribute("aria-pressed", String(vp.environment !== "ocean" && vp.grid.visible));
+  for (const key of Object.keys(paletteOffsets)) paletteOffsets[key] = inRange(s.palette?.[key], 0, 1) ? s.palette[key] : null;
+  if (["layer", "logic", "hierarchy"].includes(s.colorMode)) $("color-mode").value = s.colorMode;
+  updateColorMode();
+  if (["perspective", "horizon", "top", "front"].includes(s.view)) $("view").value = s.view;
+  vp.setView($("view").value);
+  if (inRange(s.fov, 1, 120)) {
+    vp.camera.fov = s.fov;
+    vp.camera.updateProjectionMatrix();
+  }
+  if ([s.position, s.target].every((v) => Array.isArray(v) && v.length === 3 && v.every((n) => inRange(n, -1e5, 1e5)))) {
+    vp.controls.target.fromArray(s.target);
+    vp.camera.position.fromArray(s.position);
+    if (inRange(s.aspect, 0.01, 100) && s.aspect !== vp.camera.aspect) {
+      vp.camera.position
+        .sub(vp.controls.target)
+        .multiplyScalar(vp.fitDistance(vp.camera.aspect) / vp.fitDistance(s.aspect))
+        .add(vp.controls.target);
+    }
+    vp.controls.update();
+  }
+  vp.trace = s.trace === true || !vp.renderer;
+  vp.traceBackend = null;
+  updateDisplay();
+  vp.update();
+  showMode();
+  syncMaterial();
+  renderLayers();
+  renderPresets();
+  ready(vp.trace ? "Preparing ray trace" : "Ready");
+}
+
+let shareRequest = 0;
+async function prepareShare() {
+  const ticket = ++shareRequest,
+    file = currentFile,
+    state = sceneState();
+  const address = $("hosted-url").value.trim();
+  $("copy-view").disabled = true;
+  $("view-url").value = "";
+  $("share-status").textContent = "Preparing link…";
+  try {
+    if (address && address !== file.modelURL && address !== file.hostedCopy) {
+      const remote = await remoteFile(address);
+      if (remote.size !== file.size) throw new Error("The hosted file differs from the open layout.");
+      const a = new Uint8Array(await remote.arrayBuffer()),
+        b = new Uint8Array(await file.arrayBuffer());
+      if (!a.every((v, i) => v === b[i])) throw new Error("The hosted file differs from the open layout.");
+    }
+    const url = await viewLink(location.href, state, file, address);
+    if (ticket !== shareRequest) return;
+    if (!file.sample && !file.modelURL) file.hostedCopy = address;
+    $("view-url").value = url;
+    $("copy-view").disabled = false;
+    $("share-status").textContent =
+      !file.sample && !address
+        ? "Includes the layout bytes. Anyone with this link can open the chip." + (url.length > 8000 ? " A hosted URL makes a shorter link." : "")
+        : "Includes the camera, materials, visibility and scene settings.";
+  } catch (error) {
+    if (ticket === shareRequest)
+      $("share-status").textContent =
+        error instanceof TypeError ? "Could not read that URL. Use a direct layout URL that allows browser access." : error.message;
+  }
+}
+$("share").onclick = () => {
+  const local = !currentFile.sample && !currentFile.modelURL;
+  $("hosted-source").hidden = !local;
+  $("hosted-url").value = currentFile.modelURL || currentFile.hostedCopy || "";
+  $("share-source").textContent = local
+    ? "Share a copy of " + currentFile.name + " in the link, or use a hosted copy of the same file."
+    : currentFile.name;
+  $("share-dialog").showModal();
+  prepareShare();
+};
+$("use-url").onclick = prepareShare;
+$("hosted-url").onkeydown = (e) => {
+  if (e.key === "Enter") prepareShare();
+};
+$("hosted-url").oninput = () => {
+  shareRequest++;
+  $("view-url").value = "";
+  $("copy-view").disabled = true;
+  $("share-status").textContent = "Choose Use URL to update the link.";
+};
+$("share-dialog").onclose = () => {
+  shareRequest++;
+};
+$("copy-view").onclick = async () => {
+  const input = $("view-url");
+  try {
+    await navigator.clipboard.writeText(input.value);
+    $("share-status").textContent = "Link copied.";
+  } catch {
+    input.focus();
+    input.select();
+    $("share-status").textContent = "Link selected. Use your browser’s Copy command.";
+  }
+};
+async function openInitial() {
+  const id = beginImport(),
+    url = new URL(location.href);
+  try {
+    const { state, file } = await readView(url);
+    if (request !== id) return;
+    const p = presets.find((p) => p.id === (state?.preset || url.searchParams.get("preset")));
+    if (p) await selectPreset(p, () => request === id);
+    if (request !== id) return;
+    const effect = url.searchParams.get("effect");
+    if (!state && ["ink", "blueprint", "off"].includes(effect)) {
+      $("effect").value = effect;
+      updateDisplay();
+    }
+    if (p?.environment === "ocean" && state) {
+      const sky = sharedSky(...(Array.isArray(state.sky) ? state.sky.slice(0, 2) : []));
+      if (sky.name !== defaultSky.name || sky.turn !== 0) {
+        const panorama = await vp.prepareOcean(sky);
+        if (request !== id) return;
+        vp.setSky(sky, panorama);
+      }
+      vp.setWater(sharedWater(state.water));
+      showEnvironment();
+      renderPresets();
+    }
+    if (file) await loadFile(file, state?.cell, state);
+    else await demo(state?.cell, state);
+  } catch (error) {
+    if (id === request) {
+      notice("Could not open shared view. " + (error instanceof TypeError ? "Check that the layout URL allows browser access." : error.message));
+      ready("Shared view unavailable");
+    }
+  }
+}
 updateSceneInputs();
 switchTab("material");
 showMode();
 renderPresets();
-const initialPreset = presets.find((p) => p.id === new URLSearchParams(location.search).get("preset"));
-if (initialPreset) selectPreset(initialPreset);
-demo();
+window.addEventListener("hashchange", openInitial);
+openInitial();

@@ -3,7 +3,7 @@
 import { Color, DoubleSide, Ray, Vector3 } from "./lib/intersections.js";
 import { GpuTracer } from "./gpu-tracer.js";
 import { layerTree } from "./placement-tree.js";
-import { denoiseFrame } from "./postprocess.js";
+import { denoiseFrame, styleFrame } from "./postprocess.js";
 import { sampleSky, waterLevel, waterNormal } from "./bryce.js";
 let panorama,
   colors = [];
@@ -147,6 +147,7 @@ function present() {
     pixels[j + 3] = 255;
   }
   if (display.denoise && sample === samples) pixels = denoiseFrame(pixels, width, height);
+  pixels = styleFrame(pixels, width, height, display.effect);
   postMessage({ revision, width, height, pixels, sample, samples, displayRevision: display.displayRevision }, [pixels.buffer]);
 }
 async function render(scene) {

@@ -16,6 +16,38 @@ test("renderer diagnostics identify the active adapter and respect masked hardwa
   assert.equal(read(null, "llvmpipe (LLVM 19.1.0)").software, true);
 });
 
+test("shared views round-trip local file bytes and reference hosted layouts without embedding them", async () => {
+  const { viewLink, readView, modelURL } = await import("../apps/seamos/share-view.js");
+  const bytes = Uint8Array.from([0, 1, 128, 254, 255]);
+  const file = new File([bytes], "μchip.oas");
+  const state = { version: 1, cell: "CHIP", filename: file.name, layers: [], effect: "ink", peeled: ["2/1"] };
+  const base = "https://example.org/apps/seamos/?preset=bryce#old";
+  const url = new URL(await viewLink(base, state, file));
+  assert.equal(url.search, "");
+  const restored = await readView(url);
+  assert.equal(restored.file.name, file.name);
+  assert.deepEqual(new Uint8Array(await restored.file.arrayBuffer()), bytes);
+  assert.deepEqual(restored.state, state);
+  const source = "https://example.org/layouts/chip.oas";
+  const hosted = new URL(await viewLink(base, state, file, source));
+  assert.equal(hosted.searchParams.get("model"), source);
+  assert.equal(new URLSearchParams(hosted.hash.slice(1)).has("file"), false);
+  assert.throws(() => modelURL("file:///tmp/chip.oas"));
+  await assert.rejects(readView(new URL(base + "&view=oops")));
+});
+
+test("ink and blueprint highlight a color boundary without changing the source frame", async () => {
+  const { styleFrame } = await import("../apps/seamos/postprocess.js");
+  const raw = Uint8ClampedArray.from([80, 80, 80, 230, 230].flatMap((v) => [v, v, v, 255]));
+  const ink = styleFrame(raw, 5, 1, "ink"),
+    blue = styleFrame(raw, 5, 1, "blueprint");
+  assert.equal(ink[0], 80);
+  assert.ok(ink[8] < 80);
+  assert.ok(blue[10] > blue[2]);
+  assert.equal(raw[8], 80);
+  assert.equal(styleFrame(raw, 5, 1, "off"), raw);
+});
+
 test("denoising smooths small variations and preserves a contrasting single-pixel trace", async () => {
   const { denoiseFrame } = await import("../apps/seamos/postprocess.js");
   const raw = Uint8ClampedArray.from([70, 90, 74, 237, 75, 91, 71].flatMap((v) => [v, v, v, 255]));
