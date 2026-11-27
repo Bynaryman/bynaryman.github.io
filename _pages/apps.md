@@ -9,19 +9,19 @@ nav_order: 3.5
 
 <link rel="stylesheet" href="{{ '/assets/css/apps.css' | relative_url | bust_file_cache }}">
 
-<section class="app-feature" aria-labelledby="strata-title">
+<section class="app-feature" aria-labelledby="seamos-title">
   <div class="app-feature-copy">
     <p class="app-category">GDSII / OASIS</p>
-    <h2 id="strata-title">Strata Studio</h2>
+    <h2 id="seamos-title">SeaMOS</h2>
     <p class="app-lead"><mark>Render a chip layout in glass, copper or chrome.</mark></p>
-    <p>Orbit the layer stack, tune individual materials and ray trace a still. Open a local layout or explore the bundled Prism core demo.</p>
+    <p>Browse layout cells, color them by hierarchy or logic type, and ray trace the layer stack. Open a local layout or explore the bundled Prism core demo.</p>
     <div class="app-links">
-      <a class="app-launch" href="{{ '/apps/strata/' | relative_url }}">Open Strata Studio ↗</a>
-      <a href="{{ '/apps/strata/' | relative_url }}?preset=bryce">Open Bryce preset</a>
+      <a class="app-launch" href="{{ '/apps/seamos/' | relative_url }}">Open SeaMOS ↗</a>
+      <a href="{{ '/apps/seamos/' | relative_url }}?preset=bryce">Open Bryce preset</a>
     </div>
   </div>
-  <a class="app-preview" href="{{ '/apps/strata/' | relative_url }}" aria-label="Open Strata Studio">
-    <img src="{{ '/assets/img/apps/strata.webp' | relative_url }}" alt="Strata Studio showing the Prism core layer stack reflected in rippled water beneath the Bryce sunset sky." width="1320" height="820" loading="lazy">
+  <a class="app-preview" href="{{ '/apps/seamos/' | relative_url }}" aria-label="Open SeaMOS">
+    <img src="{{ '/assets/img/apps/seamos.webp' | relative_url }}" alt="SeaMOS showing the Prism core layer stack reflected in rippled water beneath the Bryce sunset sky." width="1320" height="820" loading="lazy">
   </a>
 </section>
 

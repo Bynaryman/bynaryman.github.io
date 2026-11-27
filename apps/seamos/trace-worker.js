@@ -2,7 +2,8 @@
 // live outside each BVH so material, visibility and spacing edits reuse the trees.
 import { BufferAttribute, BufferGeometry, Color, DoubleSide, MeshBVH, Ray, Vector3 } from "./lib/intersections.js";
 import { sampleSky, waterLevel, waterNormal } from "./bryce.js";
-let panorama;
+let panorama,
+  colors = [];
 let trees = [],
   current = 0;
 const pause = () => new Promise((resolve) => setTimeout(resolve, 0));
@@ -31,7 +32,7 @@ function nearest(origin, dir, layers, maximum = Infinity, shadow = false) {
       best = hit.distance / scale;
       const normal = hit.face.normal.clone();
       normal.y /= layer.thickness;
-      result = { layer, normal: normal.normalize(), distance: best };
+      result = { layer, vertex: hit.face.a, normal: normal.normalize(), distance: best };
     }
   }
   if (!shadow && dir.y < 0) {
@@ -86,7 +87,9 @@ function trace(origin, dir, scene, depth) {
     }
     return [c * 0.88, c * 0.99, c * 1.05];
   }
-  const { style: s, tint: c } = hit.layer,
+  const { style: s, colors: bytes } = hit.layer,
+    offset = hit.vertex * 3,
+    c = bytes ? new Color(bytes[offset] / 255, bytes[offset + 1] / 255, bytes[offset + 2] / 255) : hit.layer.tint,
     metal = s.type === "metal" ? s.metalness : 0;
   const glass = s.type === "glass";
   const direct = Math.max(0, n.dot(light)) * visibility * 1.1;
@@ -132,7 +135,10 @@ async function render(scene) {
     m = scene.matrix;
   scene.light = scene.ocean ? new Vector3(...scene.sunDirection).normalize() : sun;
   scene.tint = new Color(scene.sunlight);
-  for (const layer of scene.layers) layer.tint = new Color(layer.style.color);
+  for (const [i, layer] of scene.layers.entries()) {
+    layer.tint = new Color(layer.style.color);
+    layer.colors = colors[i];
+  }
   const origin = new Vector3(m[12], m[13], m[14]),
     direction = new Vector3();
   const tan = Math.tan((scene.fov * Math.PI) / 360),
@@ -170,6 +176,10 @@ self.onmessage = async ({ data }) => {
   try {
     if (data.type === "panorama") {
       panorama = data.sky;
+      return;
+    }
+    if (data.type === "colors") {
+      colors = data.colors;
       return;
     }
     if (data.type === "geometry") {

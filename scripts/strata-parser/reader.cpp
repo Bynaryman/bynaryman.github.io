@@ -10,6 +10,9 @@ using namespace gdstk;
 extern "C" __attribute__((import_module("layout"), import_name("polygon")))
 void emit_polygon(uint32_t layer, uint32_t datatype, const Vec2* points, uint32_t count);
 
+extern "C" __attribute__((import_module("layout"), import_name("enter_cell")))
+void enter_cell(const char* name, unsigned depth);
+
 // Trap on allocation failure before the native reader writes through a null or truncated pointer.
 namespace gdstk {
 static size_t checked_size(uint64_t bytes) {
@@ -33,7 +36,9 @@ constexpr uint64_t max_polygons = 150000;
 constexpr uint64_t max_points = 1000000;
 constexpr uint64_t max_instances = 200000;
 constexpr unsigned max_depth = 128;
-constexpr const char* too_large = "The selected cell exceeds the geometry budget (150,000 polygons, 1 million vertices or 200,000 instances).";
+constexpr const char* polygon_limit = "This cell expands beyond 150,000 polygons.";
+constexpr const char* vertex_limit = "This cell expands beyond 1,000,000 polygon vertices.";
+constexpr const char* instance_limit = "This cell expands beyond 200,000 cell placements.";
 
 Library library = {};
 Array<Cell*> roots = {};
@@ -62,14 +67,14 @@ struct CellCache {
 
 // Check the product before letting the library materialize a regular array's offsets.
 template <typename Callback>
-const char* for_each_offset(const Repetition& repetition, uint64_t limit, Callback callback) {
-    if (limit == 0) return too_large;
+const char* for_each_offset(const Repetition& repetition, uint64_t limit, const char* limit_message, Callback callback) {
+    if (limit == 0) return limit_message;
     if (repetition.type == RepetitionType::None) return callback(Vec2{0, 0});
     if (repetition.type == RepetitionType::Rectangular || repetition.type == RepetitionType::Regular) {
         if (!repetition.rows || !repetition.columns || repetition.columns > limit / repetition.rows)
-            return too_large;
+            return limit_message;
     }
-    if (repetition.get_count() > limit) return too_large;
+    if (repetition.get_count() > limit) return limit_message;
 
     Array<Vec2> offsets = {};
     repetition.get_offsets(offsets);
@@ -84,7 +89,8 @@ const char* output_polygon(const Polygon& polygon, const Transform& transform) {
     if (count < 3) return nullptr;
     const uint64_t remaining = (max_points - points) / count;
     const uint64_t limit = std::min(max_polygons - polygons, remaining);
-    return for_each_offset(polygon.repetition, limit, [&](Vec2 offset) -> const char* {
+    const char* reason = remaining < max_polygons - polygons ? vertex_limit : polygon_limit;
+    return for_each_offset(polygon.repetition, limit, reason, [&](Vec2 offset) -> const char* {
         transformed.count = 0;
         transformed.ensure_slots(count);
         for (uint64_t i = 0; i < count; ++i) {
@@ -100,7 +106,7 @@ const char* output_polygon(const Polygon& polygon, const Transform& transform) {
 }
 
 const char* visit(Cell* cell, const Transform& transform, unsigned depth) {
-    if (++instances > max_instances) return too_large;
+    if (++instances > max_instances) return instance_limit;
     if (depth > max_depth) return "The cell hierarchy exceeds 128 levels.";
     // The module is instantiated once per read. Cache path outlines across repeated instances.
     auto* cache = static_cast<CellCache*>(cell->owner);
@@ -113,6 +119,7 @@ const char* visit(Cell* cell, const Transform& transform, unsigned depth) {
     }
     if (cache->visiting) return "Layout contains a circular cell reference.";
     cache->visiting = true;
+    enter_cell(cell->name, depth);
     for (auto group : {cell->polygon_array, cache->path_outlines}) {
         for (uint64_t i = 0; i < group.count; ++i)
             if (const char* error = output_polygon(*group[i], transform)) return error;
@@ -120,7 +127,7 @@ const char* visit(Cell* cell, const Transform& transform, unsigned depth) {
     for (uint64_t i = 0; i < cell->reference_array.count; ++i) {
         const Reference& ref = *cell->reference_array[i];
         if (ref.type != ReferenceType::Cell) return "Layout refers to a missing cell.";
-        const char* error = for_each_offset(ref.repetition, max_instances - instances, [&](Vec2 offset) {
+        const char* error = for_each_offset(ref.repetition, max_instances - instances, instance_limit, [&](Vec2 offset) {
             return visit(ref.cell, transform.child(ref, offset), depth + 1);
         });
         if (error) return error;
@@ -147,9 +154,12 @@ EXPORTED("open_layout") const char* open_layout(int oasis) {
 EXPORTED("root_count") uint32_t root_count() { return roots.count; }
 EXPORTED("root_name") const char* root_name(uint32_t index) { return roots[index]->name; }
 
+EXPORTED("cell_count") uint32_t cell_count() { return library.cell_array.count; }
+EXPORTED("cell_name") const char* cell_name(uint32_t index) { return library.cell_array[index]->name; }
+
 EXPORTED("read_cell") const char* read_cell(uint32_t index) {
-    if (index >= roots.count) return "Unknown top-level cell.";
-    return visit(roots[index], Transform{}, 0);
+    if (index >= library.cell_array.count) return "Unknown layout cell.";
+    return visit(library.cell_array[index], Transform{}, 0);
 }
 
 int main() { return 0; }

@@ -102,8 +102,8 @@ The six April 16–21, 2026 draft files are explicitly excluded in `_config.yml`
 
 Write future articles concisely: state the problem, method, evidence, and limitations. Preserve exact publication titles and distinguish a design submission, fabrication, and measured silicon results.
 
-## Strata Studio
+## SeaMOS
 
-The GDSII/OASIS viewer is served directly from `apps/strata/` and linked from the Apps page. From this repository, run `python3 -m http.server 4001` and open `/apps/strata/`. The checked-in assets run entirely in the browser.
+The GDSII/OASIS viewer is served directly from `apps/seamos/` and linked from the Apps page. From this repository, run `python3 -m http.server 4001` and open `/apps/seamos/`. The checked-in assets run entirely in the browser. The old /apps/strata/ URL forwards its preset and fragment.
 
 To refresh the graphics libraries, run `npm ci && npm run build` in `scripts/strata-graphics/`. The reader build is documented in `scripts/strata-parser/README.md`. Run `npm test` to check both layout formats against the same hierarchical test design.

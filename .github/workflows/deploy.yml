@@ -7,7 +7,7 @@ on:
       - main
     paths:
       - "assets/**"
-      - "apps/strata/**"
+      - "apps/seamos/**"
       - "_bibliography/**"
       - "_plugins/**"
       - "scripts/**"
@@ -40,7 +40,7 @@ on:
       - main
     paths:
       - "assets/**"
-      - "apps/strata/**"
+      - "apps/seamos/**"
       - "_bibliography/**"
       - "_plugins/**"
       - "scripts/**"

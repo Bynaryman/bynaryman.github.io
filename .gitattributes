@@ -1,4 +1,4 @@
 # Preserve public build bytes so release checksums survive cross-platform checkouts.
 apps/tr-rack/** -text
 # Generated graphics bundles contain upstream shader whitespace.
-apps/strata/lib/*.js -text -whitespace linguist-generated=true
+apps/seamos/lib/*.js -text -whitespace linguist-generated=true

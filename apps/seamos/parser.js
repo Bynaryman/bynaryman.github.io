@@ -1,10 +1,12 @@
 import { WASI, File, Fd, PreopenDirectory, ConsoleStdout } from "./lib/wasi.js";
 
+import { logicType } from "./logic-types.js";
+
 const decoder = new TextDecoder();
 const binaryURL = new URL("./lib/layout-reader.wasm", import.meta.url);
 const maxFileBytes = 64 * 1024 * 1024;
 
-/** Read one top-level cell into polygon rings in micrometres. Run inside a worker. */
+/** Read a selected cell into polygon rings in micrometres. Run inside a worker. */
 export async function readLayout(buffer, cellName, onCells) {
   const bytes = buffer instanceof Uint8Array ? buffer : new Uint8Array(buffer);
   if (bytes.length > maxFileBytes) throw new Error("Choose a layout file smaller than 64 MiB.");
@@ -16,13 +18,25 @@ export async function readLayout(buffer, cellName, onCells) {
   const output = new ConsoleStdout(() => {});
   const wasi = new WASI([], [], [new Fd(), output, output, directory]);
   const groups = new Map();
-  let api;
+  let api, branch, type;
+  const cellIds = new Map(),
+    kinds = [],
+    logicAtDepth = [];
+  function enterCell(address, depth) {
+    const id = cellIds.get(address);
+    if (depth <= 1) branch = id;
+    type = kinds[id] || (depth ? logicAtDepth[depth - 1] : 0);
+    logicAtDepth[depth] = type;
+  }
   function polygon(layerID, typeID, address, count) {
     const layer = layerID >>> 0;
     const datatype = typeID >>> 0;
     const key = layer + "/" + datatype;
-    if (!groups.has(key)) groups.set(key, { layer, datatype, polygons: [] });
-    groups.get(key).polygons.push(new Float64Array(api.memory.buffer, address, count * 2).slice());
+    if (!groups.has(key)) groups.set(key, { layer, datatype, polygons: [], branches: [], logic: [] });
+    const group = groups.get(key);
+    group.branches.push(branch);
+    group.logic.push(type);
+    group.polygons.push(new Float64Array(api.memory.buffer, address, count * 2).slice());
   }
   function stringAt(address) {
     const heap = new Uint8Array(api.memory.buffer);
@@ -38,20 +52,28 @@ export async function readLayout(buffer, cellName, onCells) {
   if (!response.ok) throw new Error("The layout reader could not be loaded.");
   const { instance } = await WebAssembly.instantiate(await response.arrayBuffer(), {
     wasi_snapshot_preview1: wasi.wasiImport,
-    layout: { polygon },
+    layout: { polygon, enter_cell: enterCell },
   });
   api = instance.exports;
   wasi.initialize(instance);
   try {
     check(api.open_layout(Number(oasis)));
-    const all = Array.from({ length: api.root_count() }, (_, index) => stringAt(api.root_name(index)));
+    const roots = Array.from({ length: api.root_count() }, (_, index) => stringAt(api.root_name(index))).filter((n) => n !== "$$$CONTEXT_INFO$$$");
+    const all = Array.from({ length: api.cell_count() }, (_, index) => {
+      const address = api.cell_name(index),
+        name = stringAt(address);
+      cellIds.set(address, index);
+      kinds.push(logicType(name));
+      return name;
+    });
     // KLayout may write a bookkeeping cell alongside the actual design.
-    const cells = all.filter((name) => name !== "$$$CONTEXT_INFO$$$");
-    onCells?.(cells);
+    const top = new Set(roots);
+    const cells = roots.concat(all.filter((name) => !top.has(name) && name !== "$$$CONTEXT_INFO$$$").sort());
+    onCells?.(cells, roots);
     const name = cellName ?? cells[0];
-    if (!cells.includes(name)) throw new Error("The selected top-level cell is unavailable.");
+    if (!cells.includes(name)) throw new Error("The selected cell is unavailable.");
     check(api.read_cell(all.indexOf(name)));
-    return { cells, name, layers: Array.from(groups.values()) };
+    return { cells, roots, name, cellNames: all, layers: Array.from(groups.values()) };
   } catch (error) {
     if (error instanceof WebAssembly.RuntimeError || error instanceof RangeError) {
       throw new Error("The reader could not decode this layout within its memory limit.");

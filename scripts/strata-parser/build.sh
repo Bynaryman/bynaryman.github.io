@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Requires Git and Zig 0.15.2. All dependencies and build products live in a temporary checkout.
 here=$(cd "$(dirname "$0")" && pwd)
-output="$here/../../apps/strata/lib"
+output="$here/../../apps/seamos/lib"
 work=$(mktemp -d)
 trap 'rm -rf "$work"' EXIT
 git -C "$work" init -q

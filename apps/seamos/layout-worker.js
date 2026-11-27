@@ -34,10 +34,12 @@ function meshLayout(layout) {
       const bevelCapacity = useBevel ? layer.polygons.reduce((n, p) => n + (p.length === 8 ? 4 : 0), 0) : 0;
       const positions = new Float32Array(vertexCount * 6 + bevelCapacity * 3);
       const indices = new Uint32Array(vertexCount * 12 + bevelCapacity * 6);
+      // One span per polygon. All its extruded vertices share the same owners.
+      const spans = new Uint32Array(layer.polygons.length * 3);
       let v = 0,
         t = 0,
         count = 0;
-      for (const ring of layer.polygons) {
+      for (const [polygon, ring] of layer.polygons.entries()) {
         const points = [];
         for (let i = 0; i < ring.length; i += 2) {
           const point = new Vector2((ring[i] - cx) * scale, (ring[i + 1] - cy) * scale);
@@ -83,28 +85,35 @@ function meshLayout(layout) {
             t += 6;
           }
         }
+        spans.set([v, layer.branches[polygon], layer.logic[polygon]], count * 3);
         count++;
       }
-      return { layer: layer.layer, datatype: layer.datatype, count, positions: positions.subarray(0, v * 3), indices: indices.subarray(0, t) };
+      return {
+        layer: layer.layer,
+        datatype: layer.datatype,
+        count,
+        spans: spans.subarray(0, count * 3),
+        positions: positions.subarray(0, v * 3),
+        indices: indices.subarray(0, t),
+      };
     })
     .filter((layer) => layer.count);
   if (!layers.length) throw new Error("This cell contains no drawable polygons.");
-  return { name: layout.name, cells: layout.cells, width, height, layers };
+  return { name: layout.name, cells: layout.cells, roots: layout.roots, cellNames: layout.cellNames, width, height, layers };
 }
 self.onmessage = async ({ data }) => {
-  let cells = [];
   try {
     const mesh = meshLayout(
-      await readLayout(data.buffer, data.cell, (names) => {
-        cells = names;
+      await readLayout(data.buffer, data.cell, (cells, roots) => {
+        postMessage({ type: "catalog", cells, roots });
       })
     );
     mesh.format = new Uint8Array(data.buffer)[0] === 37 ? "OASIS" : "GDSII";
     postMessage(
       mesh,
-      mesh.layers.flatMap((layer) => [layer.positions.buffer, layer.indices.buffer])
+      mesh.layers.flatMap((layer) => [layer.positions.buffer, layer.indices.buffer, layer.spans.buffer])
     );
   } catch (error) {
-    postMessage({ error: error.message || "The layout could not be read.", cells });
+    postMessage({ error: error.message || "The layout could not be read." });
   }
 };

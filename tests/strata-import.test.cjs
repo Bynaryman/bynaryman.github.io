@@ -4,13 +4,19 @@ const { readFile } = require("node:fs/promises");
 const path = require("node:path");
 
 test("GDSII and compressed OASIS preserve layer tags, paths and transformed arrays", async (t) => {
-  const { readLayout } = await import("../apps/strata/parser.js");
+  const { readLayout } = await import("../apps/seamos/parser.js");
   t.mock.method(globalThis, "fetch", async (url) => new Response(await readFile(url)));
 
   for (const extension of ["gds", "oas"]) {
     const file = await readFile(path.join(__dirname, "fixtures", "strata", "hierarchy." + extension));
-    const { cells, layers } = await readLayout(file, "ROOT");
-    assert.deepEqual(cells.sort(), ["OTHER", "ROOT"]);
+    const { cells, roots, layers } = await readLayout(file, "ROOT");
+    assert.deepEqual(roots.sort(), ["OTHER", "ROOT"]);
+    assert.deepEqual(cells.sort(), ["CHILD", "OTHER", "ROOT"]);
+    const child = await readLayout(file, "CHILD");
+    assert.deepEqual(
+      child.layers.map((layer) => layer.polygons.length),
+      [1, 1]
+    );
     const boxes = layers.find((layer) => layer.layer === 113 && layer.datatype === 9);
     const paths = layers.find((layer) => layer.layer === 276 && layer.datatype === 43);
     assert.equal(boxes.polygons.length, 6);
@@ -34,4 +40,35 @@ test("GDSII and compressed OASIS preserve layer tags, paths and transformed arra
     const other = await readLayout(file, "OTHER");
     assert.equal(other.layers[0].polygons.length, 1);
   }
+});
+
+test("nested polygons retain the owning branch and the nearest recognized logic type", async (t) => {
+  const { readLayout } = await import("../apps/seamos/parser.js");
+  t.mock.method(globalThis, "fetch", async (url) => new Response(await readFile(url)));
+  const bytes = await readFile(path.join(__dirname, "fixtures/strata/logic.oas"));
+  const { cellNames, layers } = await readLayout(bytes, "TOP");
+  const layer = layers[0];
+  const roles = Object.fromEntries(layer.branches.map((id, i) => [cellNames[id], layer.logic[i]]));
+  assert.deepEqual(roles, { CORE: 1, ALU: 2, CUSTOM: 0 });
+  const alu = await readLayout(bytes, "ALU");
+  assert.deepEqual(
+    alu.layers[0].branches.map((id) => alu.cellNames[id]),
+    ["sg13g2_nand2_1"]
+  );
+});
+
+test("an oversized array identifies the placement limit and its child can open independently", async (t) => {
+  const { readLayout } = await import("../apps/seamos/parser.js");
+  t.mock.method(globalThis, "fetch", async (url) => new Response(await readFile(url)));
+  const bytes = await readFile(path.join(__dirname, "fixtures/strata/oversized.gds"));
+  let catalog;
+  await assert.rejects(
+    readLayout(bytes, undefined, (cells) => {
+      catalog = cells;
+    }),
+    /200,000 cell placements/
+  );
+  assert.deepEqual(catalog, ["BIG", "UNIT"]);
+  const { layers } = await readLayout(bytes, "UNIT");
+  assert.equal(layers[0].polygons.length, 1);
 });
