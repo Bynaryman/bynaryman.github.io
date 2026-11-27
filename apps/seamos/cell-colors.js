@@ -6,22 +6,33 @@ const logic = [
   { label: "Combinational", color: "#499fd2" },
 ];
 
-function branchColor(name) {
+export function shuffleColorOffset(previous = 0) {
+  return (previous + 0.23 + Math.random() * 0.54) % 1;
+}
+function hueColor(hue, saturation, lightness) {
+  return "#" + new Color().setHSL(hue % 1, saturation, lightness, SRGBColorSpace).getHexString();
+}
+function branchColor(name, shift) {
   // Stable across imports and when opening the same block in isolation.
   let hash = 2166136261;
   for (let i = 0; i < name.length; ++i) hash = Math.imul(hash ^ name.charCodeAt(i), 16777619);
   const hue = ((hash >>> 0) * 0.61803398875) % 1;
-  return "#" + new Color().setHSL(hue, 0.64, 0.58, SRGBColorSpace).getHexString();
+  return hueColor(hue + shift, 0.64, 0.58);
 }
 
-export function colorLayout(layers, mode, cells, selected) {
+export function colorLayout(layers, mode, cells, selected, shift = null) {
   if (mode === "layer") return { colors: [], legend: [] };
   const palette = new Map();
   function tint(branch, type) {
     const id = mode === "logic" ? type : branch;
     if (!palette.has(id)) {
       const name = cells[branch];
-      const entry = mode === "logic" ? logic[id] : { label: name, color: name === selected ? "#89939a" : branchColor(name) };
+      let entry;
+      if (mode === "logic") {
+        entry = shift === null ? logic[id] : { label: logic[id].label, color: hueColor(shift + id / 3, id ? 0.72 : 0.32, id === 2 ? 0.62 : 0.51) };
+      } else {
+        entry = { label: name, color: name === selected && shift === null ? "#89939a" : branchColor(name, shift ?? 0) };
+      }
       palette.set(id, { ...entry, linear: new Color(entry.color).toArray().map((v) => Math.round(255 * v)) });
     }
     return palette.get(id).linear;

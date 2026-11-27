@@ -73,3 +73,63 @@ test("ray intersections use a shared cell at its transformed placement", async (
   assert.equal(hit.face.normal.y, 1);
   assert.equal(tree.raycastFirst(down(5, 5), DoubleSide, 0, 10), null);
 });
+
+test("GPU tables retain cell mesh reuse and the color of each placement", async () => {
+  const { layerTree } = await import("../apps/seamos/placement-tree.js");
+  const { packTrees, packColors } = await import("../apps/seamos/gpu-geometry.js");
+  const positions = new Float32Array([0, 1, 0, 1, 1, 0, 0, 1, 1]);
+  const indices = new Uint32Array([0, 2, 1]);
+  const placements = new Float32Array(24 * 8);
+  for (let i = 0; i < 24; i++) placements.set([1, 0, 0, 1, 23 - i, 0, i, 0], i * 8);
+  const packed = packTrees([layerTree({ parts: [{ positions, indices, placements }] })], 4096);
+  const root = packed.layers[0].root;
+  assert.ok(packed.layers[0].shared);
+  assert.equal(root, 1);
+  const nodes = packed.nodes.data,
+    end = nodes[8 * root + 3];
+  assert.ok(end > root + 2);
+  const seen = [];
+  for (let n = root; n < end; n++) {
+    const count = nodes[n * 8 + 7],
+      first = nodes[n * 8 + 3];
+    if (!count) {
+      assert.ok(first > n + 1 && first <= end);
+      continue;
+    }
+    for (let j = 0; j < count; j++) seen.push(packed.primitives.data[(first + j) * 4]);
+  }
+  assert.deepEqual(
+    seen.sort((a, b) => a - b),
+    Array.from({ length: 24 }, (_, i) => i)
+  );
+  const rgb = new Uint8Array(24 * 3);
+  for (let i = 0; i < 24; i++) rgb.set([i, 30, 90], i * 3);
+  packColors(packed, [[rgb]]);
+  for (const i of seen) {
+    const offset = i * 8;
+    assert.equal(packed.instances.data[offset + 4], 23 - i);
+    assert.equal(packed.instances.data[offset + 6], 0);
+    const color = packed.instances.data[offset + 7];
+    assert.deepEqual([...packed.tint.data.subarray(4 * color, 4 * color + 3)], [i, 30, 90]);
+  }
+});
+
+test("shuffled category colors agree for instanced and flattened layouts", async () => {
+  const { colorLayout, shuffleColorOffset } = await import("../apps/seamos/cell-colors.js");
+  const cells = ["TOP", "ALU"],
+    flat = [{ spans: [3, 0, 0, 6, 1, 1], positions: new Float32Array(18) }];
+  const shared = [{ parts: [{ placements: [1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 2, 0, 1, 1] }] }];
+  const shift = shuffleColorOffset();
+  for (const mode of ["hierarchy", "logic"]) {
+    const base = colorLayout(flat, mode, cells, "TOP");
+    const shuffled = colorLayout(flat, mode, cells, "TOP", shift);
+    const instanced = colorLayout(shared, mode, cells, "TOP", shift);
+    assert.deepEqual(shuffled.legend, instanced.legend);
+    assert.deepEqual([...instanced.colors[0][0]], [...shuffled.colors[0].slice(0, 3), ...shuffled.colors[0].slice(9, 12)]);
+    assert.notDeepEqual(base.colors, shuffled.colors);
+    assert.deepEqual(
+      base.legend.map((x) => x.label),
+      shuffled.legend.map((x) => x.label)
+    );
+  }
+});

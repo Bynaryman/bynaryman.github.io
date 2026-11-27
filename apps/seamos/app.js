@@ -1,8 +1,8 @@
 import { icon } from "./icons.js";
-import { presets, makeLayers, applyPreset, randomMaterial, randomPalette } from "./materials.js";
+import { presets, makeLayers, applyPreset, randomMaterial, randomPalette, randomBaseColor } from "./materials.js";
 import { defaultSky, defaultWater, randomSky, randomWater } from "./bryce.js";
 import { logicType } from "./logic-types.js";
-import { colorLayout } from "./cell-colors.js";
+import { colorLayout, shuffleColorOffset } from "./cell-colors.js";
 import { Viewport } from "./viewport.js";
 
 const $ = (id) => document.getElementById(id);
@@ -27,6 +27,10 @@ const vp = new Viewport($("scene"), $("traced"), (message, failed) => {
     showMode();
   }
 });
+vp.onBackend = (backend, reason) => {
+  $("mode-hint").textContent = backend;
+  $("mode-hint").title = reason || "";
+};
 function notice(message) {
   clearTimeout(noticeTimer);
   $("notice").textContent = message;
@@ -48,7 +52,8 @@ function showMode() {
   }
   $("preview-mode").disabled = !vp.renderer;
   $("samples-field").hidden = !vp.trace;
-  $("mode-hint").textContent = vp.trace ? "CPU ray tracing with progressive sampling." : "Real-time WebGL material preview.";
+  $("mode-hint").textContent = vp.trace ? vp.traceBackend || "Choosing ray-tracing device…" : "Real-time WebGL material preview.";
+  if (!vp.trace || !vp.traceBackend) $("mode-hint").removeAttribute("title");
 }
 function showRange(id, text) {
   const input = $(id);
@@ -221,15 +226,17 @@ function switchTab(active) {
     $(name + "-panel").hidden = !on;
   }
 }
+const paletteOffsets = { hierarchy: null, logic: null };
 function updateColorMode() {
   const mode = $("color-mode").value;
-  const { colors, legend } = colorLayout(layers, mode, cellNames, currentCell);
+  const { colors, legend } = colorLayout(layers, mode, cellNames, currentCell, paletteOffsets[mode]);
+  $("shuffle-cell-colors").disabled = !layers.length;
   vp.setColors(colors);
   const hint = $("color-hint");
   hint.hidden = mode === "layer";
   hint.textContent =
     mode === "logic"
-      ? "Matches SKY130 HD and IHP SG13G2 standard cells. Other geometry is gray."
+      ? "Matches SKY130 HD and IHP SG13G2 standard cells. Other geometry is unclassified."
       : "Each direct child cell has a color shared by its descendants. Open a child to see the next level.";
   $("cell-legend").hidden = !legend.length;
   $("cell-legend").replaceChildren(
@@ -303,6 +310,7 @@ function install(mesh, file, cellChange) {
   $("export").disabled = false;
   $("shuffle-palette").disabled = false;
   $("shuffle-material").disabled = false;
+  $("shuffle-base-color").disabled = false;
   syncMaterial();
   renderLayers();
   renderPresets();
@@ -389,6 +397,18 @@ $("whole-chip").onclick = () => {
   $("inspect-cell").click();
 };
 $("color-mode").onchange = updateColorMode;
+$("shuffle-cell-colors").onclick = () => {
+  const mode = $("color-mode").value;
+  if (mode === "layer") return $("shuffle-palette").click();
+  paletteOffsets[mode] = shuffleColorOffset(paletteOffsets[mode] ?? 0);
+  updateColorMode();
+};
+$("trace-device").onchange = () => {
+  vp.traceDevice = $("trace-device").value;
+  vp.traceBackend = null;
+  showMode();
+  vp.update();
+};
 $("target").onchange = () => {
   selected = Number($("target").value);
   syncMaterial();
@@ -405,6 +425,11 @@ for (const [i, name] of tabs.entries()) {
     $(next + "-tab").focus();
   };
 }
+$("shuffle-base-color").onclick = () => {
+  const style = layers[selected].style;
+  style.color = randomBaseColor(style);
+  updateMaterials();
+};
 $("shuffle-material").onclick = () => {
   if (!layers.length) return;
   layers[selected].style = randomMaterial();

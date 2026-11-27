@@ -25,6 +25,7 @@ export class Viewport {
     this.spacing = 8;
     this.exposure = 1.05;
     this.samples = 4;
+    this.traceDevice = "auto";
     this.denoise = false;
     this.displayRevision = 0;
     this.layers = [];
@@ -175,6 +176,7 @@ export class Viewport {
   }
   setLayout(layers) {
     this.stopTrace(true);
+    this.traceBackend = null;
     for (const mesh of this.meshes) {
       this.group.remove(mesh);
       mesh.traverse((part) => {
@@ -418,6 +420,11 @@ export class Viewport {
       this.worker = new Worker(new URL("./trace-worker.js", import.meta.url), { type: "module" });
       this.worker.onmessage = ({ data }) => {
         if (data.revision !== this.revision || !this.trace) return;
+        if (data.backend) {
+          this.traceBackend = data.backend;
+          this.onBackend?.(data.backend, data.reason);
+          return;
+        }
         if (data.error) {
           this.traceFailure(data.error);
           return;
@@ -453,6 +460,7 @@ export class Viewport {
       type: "render",
       revision: this.revision,
       samples: this.samples,
+      device: this.traceDevice,
       width: Math.max(1, Math.round(w * scale)),
       height: Math.max(1, Math.round(h * scale)),
       matrix: this.camera.matrixWorld.elements,

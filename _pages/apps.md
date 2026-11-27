@@ -14,7 +14,7 @@ nav_order: 3.5
     <p class="app-category">GDSII / OASIS</p>
     <h2 id="seamos-title">SeaMOS</h2>
     <p class="app-lead"><mark>Render a chip layout in glass, copper or chrome.</mark></p>
-    <p>Browse layout cells, color them by hierarchy or logic type, and ray trace the layer stack. Open a local layout or explore the bundled Prism core demo.</p>
+    <p>Browse cells, shuffle their hierarchy or logic-type colors, and ray trace the layer stack on your GPU. Open a local layout or explore the bundled Prism core demo.</p>
     <div class="app-links">
       <a class="app-launch" href="{{ '/apps/seamos/' | relative_url }}">Open SeaMOS ↗</a>
       <a href="{{ '/apps/seamos/' | relative_url }}?preset=bryce">Open Bryce preset</a>
