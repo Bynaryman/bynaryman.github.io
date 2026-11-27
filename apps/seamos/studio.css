@@ -762,6 +762,16 @@ dialog p {
   justify-content: flex-end;
   margin-top: 16px;
 }
+@media (min-width: 691px) {
+  html {
+    scrollbar-gutter: stable;
+  }
+  /* Inspector tabs and controls can change height independently of the render. */
+  .work-area {
+    align-self: start;
+    min-height: calc(100dvh - 131px);
+  }
+}
 @media (max-width: 1100px) {
   .view-hint {
     display: none;

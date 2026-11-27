@@ -10,7 +10,7 @@ export class Viewport {
     this.traced = traced;
     this.onRenderState = onRenderState;
     this.world = new T.Scene();
-    this.studioBackground = new T.Color();
+    this.studioBackground = new T.Color("#c6d5e4");
     this.world.background = this.studioBackground;
     this.environment = "studio";
     this.sky = defaultSky;
@@ -25,6 +25,8 @@ export class Viewport {
     this.spacing = 8;
     this.exposure = 1.05;
     this.samples = 4;
+    this.denoise = false;
+    this.displayRevision = 0;
     this.layers = [];
     this.meshes = [];
     this.group = new T.Group();
@@ -61,7 +63,7 @@ export class Viewport {
     this.world.add(fill);
     this.grid = { visible: true };
     this.gridUniform = { value: 1 };
-    const floorMaterial = new T.MeshStandardMaterial({ color: "#14191c", roughness: 1, metalness: 0, envMapIntensity: 0.025 });
+    const floorMaterial = new T.MeshStandardMaterial({ color: "#75869b", roughness: 1, metalness: 0, envMapIntensity: 0.025 });
     floorMaterial.onBeforeCompile = (shader) => {
       shader.uniforms.showGrid = this.gridUniform;
       shader.vertexShader =
@@ -98,9 +100,7 @@ export class Viewport {
   }
   applyAppearance() {
     this.lightUI = document.documentElement.dataset.theme !== "dark";
-    this.floor.material.color.set(this.lightUI ? "#75869b" : "#141b29");
-    this.studioBackground.set(this.lightUI ? "#c6d5e4" : "#172433");
-    this.update();
+    this.drawAxes();
   }
   prepareOcean(sky = defaultSky) {
     if (sky !== defaultSky) return loadPanorama(sky);
@@ -157,6 +157,9 @@ export class Viewport {
   }
   resize() {
     const { clientWidth: w, clientHeight: h } = this.canvas.parentElement;
+    if (this.viewportWidth === w && this.viewportHeight === h) return;
+    this.viewportWidth = w;
+    this.viewportHeight = h;
     const aspect = w / Math.max(1, h);
     if (this.lastAspect && aspect !== this.lastAspect) {
       const scale = this.fitDistance(aspect) / this.fitDistance(this.lastAspect);
@@ -280,15 +283,28 @@ export class Viewport {
       this.frame = 0;
       this.camera.updateMatrixWorld();
       this.gridUniform.value = this.grid.visible ? 1 : 0;
-      if (this.renderer) {
-        if (this.environment === "ocean") this.ocean.renderReflection(this.renderer, this.world, this.camera);
-        this.renderer.render(this.world, this.camera);
-      }
+      this.drawPreview();
       this.drawAxes();
       if (this.trace && this.layers.length) {
         this.traceTimer = setTimeout(() => this.startTrace(), 200);
       }
     });
+  }
+  drawPreview() {
+    if (!this.renderer) return;
+    if (this.environment === "ocean") this.ocean.renderReflection(this.renderer, this.world, this.camera);
+    this.renderer.render(this.world, this.camera);
+  }
+  setDisplay(exposure, denoise) {
+    if (this.exposure === exposure && this.denoise === denoise) return;
+    if (this.exposure !== exposure && this.renderer) {
+      this.renderer.toneMappingExposure = exposure;
+      if (!this.trace || this.traced.hidden) this.drawPreview();
+    }
+    this.exposure = exposure;
+    this.denoise = denoise;
+    this.displayRevision++;
+    if (this.trace) this.worker?.postMessage({ type: "display", revision: this.revision, displayRevision: this.displayRevision, exposure, denoise });
   }
   drawAxes() {
     const axis = document.getElementById("axes"),
@@ -335,6 +351,8 @@ export class Viewport {
           this.traceFailure(data.error);
           return;
         }
+        if (data.displayRevision !== this.displayRevision) return;
+        this.shownDisplayRevision = data.displayRevision;
         const { width, height, pixels, sample, samples } = data;
         if (this.traced.width !== width || this.traced.height !== height) {
           this.traced.width = width;
@@ -375,7 +393,8 @@ export class Viewport {
       water: this.water,
       sunDirection: sunDirection(this.sky),
       sunlight: this.sky.light,
-      lightUI: this.lightUI,
+      denoise: this.denoise,
+      displayRevision: this.displayRevision,
       layers: this.layers.map(({ y, thickness, visible, style }) => ({ y, thickness, visible, style })),
     });
   }
@@ -386,6 +405,7 @@ export class Viewport {
   }
   exportCanvas() {
     if (this.trace && (this.traced.hidden || !this.traceSamples)) throw new Error("Wait for the first full-size ray-traced sample, then export.");
+    if (this.trace && this.shownDisplayRevision !== this.displayRevision) throw new Error("Updating the displayed image. Export when it is ready.");
     return this.trace ? this.traced : this.canvas;
   }
 }

@@ -1,9 +1,11 @@
 // Whitted-style rays with jittered camera / area light samples. Layer transforms
 // live outside each BVH so material, visibility and spacing edits reuse the trees.
 import { BufferAttribute, BufferGeometry, Color, DoubleSide, MeshBVH, Ray, Vector3 } from "./lib/intersections.js";
+import { denoiseFrame } from "./postprocess.js";
 import { sampleSky, waterLevel, waterNormal } from "./bryce.js";
 let panorama,
   colors = [];
+let frame, display, displayTimer;
 let trees = [],
   current = 0;
 const pause = () => new Promise((resolve) => setTimeout(resolve, 0));
@@ -80,12 +82,8 @@ function trace(origin, dir, scene, depth) {
   const visibility = nearest(start, light, scene.layers, Infinity, true) ? 0.09 : 1;
   if (!hit.layer) {
     const gridLine = Math.min(Math.abs(point.x - Math.round(point.x)), Math.abs(point.z - Math.round(point.z))) < 0.012;
-    const c = (scene.grid && gridLine ? 0.052 : 0.028) * (0.54 + 0.46 * visibility);
-    if (scene.lightUI) {
-      const light = (scene.grid && gridLine ? 0.38 : 0.32) * (0.6 + 0.4 * visibility);
-      return [light * 0.76, light * 0.91, light * 1.12];
-    }
-    return [c * 0.88, c * 0.99, c * 1.05];
+    const light = (scene.grid && gridLine ? 0.38 : 0.32) * (0.6 + 0.4 * visibility);
+    return [light * 0.76, light * 0.91, light * 1.12];
   }
   const { style: s, colors: bytes } = hit.layer,
     offset = hit.vertex * 3,
@@ -130,6 +128,21 @@ function channel(value) {
     linear = clamp((v * (2.51 * v + 0.03)) / (v * (2.43 * v + 0.59) + 0.14), 0, 1);
   return 255 * (linear <= 0.0031308 ? 12.92 * linear : 1.055 * Math.pow(linear, 1 / 2.4) - 0.055);
 }
+function present() {
+  clearTimeout(displayTimer);
+  if (!frame) return;
+  const { revision, width, height, linear, sample, samples } = frame;
+  const gain = display.exposure / Math.max(1, sample);
+  let pixels = new Uint8ClampedArray(width * height * 4);
+  for (let i = 0, j = 0; i < linear.length; i += 3, j += 4) {
+    pixels[j] = channel(linear[i] * gain);
+    pixels[j + 1] = channel(linear[i + 1] * gain);
+    pixels[j + 2] = channel(linear[i + 2] * gain);
+    pixels[j + 3] = 255;
+  }
+  if (display.denoise && sample === samples) pixels = denoiseFrame(pixels, width, height);
+  postMessage({ revision, width, height, pixels, sample, samples, displayRevision: display.displayRevision }, [pixels.buffer]);
+}
 async function render(scene) {
   const revision = scene.revision,
     m = scene.matrix;
@@ -149,8 +162,6 @@ async function render(scene) {
     const width = Math.max(1, Math.round(scene.width * scale)),
       height = Math.max(1, Math.round(scene.height * scale));
     if (sample <= 1) accum = new Float32Array(width * height * 3);
-    const pixels = new Uint8ClampedArray(width * height * 4),
-      divisor = Math.max(1, sample);
     for (let y = 0; y < height; y++) {
       if (y % 6 === 0) {
         await pause();
@@ -162,14 +173,12 @@ async function render(scene) {
         direction.set(m[0] * u + m[4] * v - m[8], m[1] * u + m[5] * v - m[9], m[2] * u + m[6] * v - m[10]).normalize();
         const rgb = trace(origin, direction, scene, 0),
           pixel = y * width + x;
-        for (let k = 0; k < 3; k++) {
-          accum[3 * pixel + k] += rgb[k];
-          pixels[4 * pixel + k] = channel((accum[3 * pixel + k] * scene.exposure) / divisor);
-        }
-        pixels[4 * pixel + 3] = 255;
+        for (let k = 0; k < 3; k++) accum[3 * pixel + k] += rgb[k];
       }
     }
-    postMessage({ revision, width, height, pixels, sample, samples }, [pixels.buffer]);
+    // Keep the last complete pass available while the next pass is accumulating.
+    frame = { revision, width, height, linear: sample === samples ? accum : accum.slice(), sample, samples };
+    present();
   }
 }
 self.onmessage = async ({ data }) => {
@@ -191,8 +200,21 @@ self.onmessage = async ({ data }) => {
       });
       return;
     }
+    if (data.type === "display") {
+      if (current === data.revision) {
+        display = data;
+        clearTimeout(displayTimer);
+        displayTimer = setTimeout(present, 0);
+      }
+      return;
+    }
     current = data.revision;
-    if (data.type === "render") await render(data);
+    clearTimeout(displayTimer);
+    frame = null;
+    if (data.type === "render") {
+      display = data;
+      await render(data);
+    }
   } catch (error) {
     postMessage({ revision: current, error: error.message || "The ray tracer ran out of resources." });
   }
