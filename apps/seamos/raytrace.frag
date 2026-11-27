@@ -5,7 +5,9 @@ precision highp sampler2D;
 
 uniform sampler2D nodes, primitives, vertices, instances, tints, materials, panorama, previous;
 uniform mat4 camera;
-uniform vec2 resolution;
+uniform vec2 resolution, pixelOrigin, stackRange;
+uniform vec3 filmFace, filmRim;
+float firstHeight;
 uniform float tanFov, aspect, waterHeight;
 uniform int layerCount, sampleNumber;
 uniform bool useTints, ocean, grid;
@@ -173,6 +175,7 @@ vec3 trace(Ray ray) {
     Hit hit=nearest(ray,false);
     if(hit.layer==-1) return sum+weight*environment(ray.d);
     vec3 point=ray.o+ray.d*hit.t;
+    if(bounce==0 && hit.layer>=0) firstHeight=1.+round(254.*clamp((point.y-stackRange.x)*stackRange.y,0.,1.));
     if(hit.layer==-2 && ocean) {
       vec3 n=seaNormal(point.xz,hit.t);
       float fres=0.17+0.83*pow(1.0-clamp(-dot(ray.d,n),0.0,1.0),5.0);
@@ -197,12 +200,13 @@ vec3 trace(Ray ray) {
     }
     vec4 colorType=entry(materials,3*hit.layer+1), finish=entry(materials,3*hit.layer+2);
     vec3 c=useTints ? entry(tints,hit.tint).rgb : colorType.rgb;
+    float cosine=clamp(-dot(n,ray.d),0.0,1.0);
+    if(finish.w>0.5) c=mix(c,mix(filmFace,filmRim,smoothstep(0.,1.,1.-cosine)),0.82);
     float direct=max(0.0,dot(n,light))*visibility*1.1;
     vec3 local=ocean ? c*(0.26+direct*sunlight) : c*(0.26+direct)*vec3(1,0.96,0.89);
     bool glass=colorType.w==2.0;
     float metal=finish.y;
     if(!glass && metal<0.005) return sum+weight*local;
-    float cosine=clamp(-dot(n,ray.d),0.0,1.0);
     float f0=pow((finish.z-1.0)/(finish.z+1.0),2.0);
     float fres=f0+(1.0-f0)*pow(1.0-cosine,5.0);
     vec3 next=reflect(ray.d,n);
@@ -222,10 +226,12 @@ vec3 trace(Ray ray) {
 }
 void main() {
   ivec2 pixel=ivec2(gl_FragCoord.xy);
-  rng=uint(pixel.x)+uint(pixel.y)*uint(resolution.x)+uint(sampleNumber+1)*0x9e3779b9u;
-  vec2 uv=(vec2(pixel)+vec2(random01(),random01()))/resolution;
+  ivec2 globalPixel=pixel+ivec2(pixelOrigin);
+  firstHeight=0.;
+  rng=uint(globalPixel.x)+uint(globalPixel.y)*uint(resolution.x)+uint(sampleNumber+1)*0x9e3779b9u;
+  vec2 uv=(vec2(globalPixel)+vec2(random01(),random01()))/resolution;
   vec3 dir=normalize(mat3(camera)*vec3((uv.x*2.0-1.0)*aspect*tanFov,(1.0-uv.y*2.0)*tanFov,-1));
   vec3 rgb=trace(Ray(camera[3].xyz,dir));
-  if(sampleNumber>1) rgb+=texelFetch(previous,pixel,0).rgb;
-  radiance=vec4(rgb,1);
+  if(sampleNumber>1) { vec4 accum=texelFetch(previous,pixel,0); rgb+=accum.rgb; firstHeight=accum.a; }
+  radiance=vec4(rgb,firstHeight);
 }

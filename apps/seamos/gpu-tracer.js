@@ -1,3 +1,4 @@
+import { coated, metalSurface, defaultFinish } from "./surface-effects.js";
 import { Color } from "./lib/intersections.js";
 import { atlas, packTrees, packColors } from "./gpu-geometry.js";
 import { waterLevel } from "./bryce.js";
@@ -51,6 +52,10 @@ export class GpuTracer {
     for (const name of [
       "camera",
       "resolution",
+      "pixelOrigin",
+      "stackRange",
+      "filmFace",
+      "filmRim",
       "tanFov",
       "aspect",
       "waterHeight",
@@ -126,9 +131,9 @@ export class GpuTracer {
           ...new Color(s.color).toArray(),
           s.type === "glass" ? 2 : 0,
           s.roughness,
-          s.type === "metal" ? s.metalness : 0,
+          metalSurface(s.type) ? s.metalness : 0,
           s.ior,
-          0,
+          Number(coated(s.type, scene.finish?.allMetals)),
         ],
         12 * i
       );
@@ -143,6 +148,10 @@ export class GpuTracer {
       this.upload("panorama", { ...sky, data: sky.pixels }, true);
       this.lastSky = sky;
     }
+    this.tile = scene.tile;
+    gl.uniform2fv(u.stackRange, scene.range || [0, 1]);
+    gl.uniform3fv(u.filmFace, new Color(scene.finish?.face || defaultFinish.face).toArray());
+    gl.uniform3fv(u.filmRim, new Color(scene.finish?.rim || defaultFinish.rim).toArray());
     gl.uniformMatrix4fv(u.camera, false, scene.matrix);
     gl.uniform1f(u.tanFov, Math.tan((scene.fov * Math.PI) / 360));
     gl.uniform1f(u.aspect, scene.aspect);
@@ -175,11 +184,12 @@ export class GpuTracer {
     }
     this.readback = new Float32Array(4 * width * height);
     gl.viewport(0, 0, width, height);
-    gl.uniform2f(this.uniform.resolution, width, height);
   }
-  async pass(width, height, sample, active) {
+  async pass(width, height, sample, active, readFrame = true) {
     const gl = this.gl;
     this.resize(width, height);
+    gl.uniform2f(this.uniform.resolution, this.tile?.fullWidth ?? width, this.tile?.fullHeight ?? height);
+    gl.uniform2f(this.uniform.pixelOrigin, this.tile?.x ?? 0, this.tile?.y ?? 0);
     gl.bindFramebuffer(gl.FRAMEBUFFER, this.framebuffer);
     gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, this.targets[sample % 2], 0);
     if (gl.checkFramebufferStatus(gl.FRAMEBUFFER) !== gl.FRAMEBUFFER_COMPLETE) throw new Error("GPU frame allocation failed");
@@ -205,15 +215,18 @@ export class GpuTracer {
         gl.deleteSync(fence);
       }
     }
+    if (!readFrame) return null;
     gl.readPixels(0, 0, width, height, gl.RGBA, gl.FLOAT, this.readback);
     this.check();
     const linear = new Float32Array(3 * width * height);
+    const heights = new Uint8Array(width * height);
     for (let j = 0, i = 0; i < linear.length; i += 3, j += 4) {
+      heights[j / 4] = this.readback[j + 3];
       linear[i] = this.readback[j];
       linear[i + 1] = this.readback[j + 1];
       linear[i + 2] = this.readback[j + 2];
     }
-    return linear;
+    return { linear, heights };
   }
   dispose() {
     this.gl.getExtension("WEBGL_lose_context")?.loseContext();

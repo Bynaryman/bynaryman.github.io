@@ -1,3 +1,5 @@
+import { currentSize } from "./image-export.js";
+import { defaultFinish, defaultScan, coated, metalSurface, stackRange, scanPhase, paintScan } from "./surface-effects.js";
 import * as T from "./lib/graphics.js";
 import { stackLayers } from "./materials.js";
 import { webglAdapter } from "./webgl-adapter.js";
@@ -30,6 +32,12 @@ export class Viewport {
     this.traceDevice = "auto";
     this.denoise = false;
     this.effect = "off";
+    this.finish = { ...defaultFinish };
+    this.scan = { ...defaultScan };
+    this.phase = 0.32;
+    this.phaseTime = performance.now();
+    this.filmFace = { value: new T.Color(this.finish.face) };
+    this.filmRim = { value: new T.Color(this.finish.rim) };
     this.displayRevision = 0;
     this.layers = [];
     this.meshes = [];
@@ -204,6 +212,20 @@ export class Viewport {
     this.vertexColors = [];
     this.meshes = layers.map((layer) => {
       const material = new T.MeshPhysicalMaterial({ flatShading: true, side: T.DoubleSide });
+      const filmAmount = { value: 0 };
+      material.userData.filmAmount = filmAmount;
+      material.onBeforeCompile = (shader) => {
+        Object.assign(shader.uniforms, { filmFace: this.filmFace, filmRim: this.filmRim, filmAmount });
+        shader.fragmentShader =
+          "uniform vec3 filmFace,filmRim; uniform float filmAmount;\n" +
+          shader.fragmentShader.replace(
+            "#include <normal_fragment_maps>",
+            `#include <normal_fragment_maps>
+          float grazing=1.-clamp(abs(dot(normal,normalize(vViewPosition))),0.,1.);
+          diffuseColor.rgb=mix(diffuseColor.rgb,mix(filmFace,filmRim,smoothstep(0.,1.,grazing)),filmAmount);
+        `
+          );
+      };
       const makeGeometry = ({ positions, indices }) => {
         const geometry = new T.BufferGeometry();
         geometry.setAttribute("position", new T.BufferAttribute(positions, 3));
@@ -246,6 +268,7 @@ export class Viewport {
         }
       } else mesh = new T.Mesh(makeGeometry(layer), material);
       mesh.castShadow = mesh.receiveShadow = true;
+      mesh.traverse((part) => part.layers.enable(1));
       this.group.add(mesh);
       return mesh;
     });
@@ -289,11 +312,12 @@ export class Viewport {
       const glass = s.type === "glass";
       m.color.set(this.vertexColors.length ? "#ffffff" : s.color);
       m.roughness = Math.max(0.025, s.roughness);
-      m.metalness = s.type === "metal" ? s.metalness : 0;
+      m.userData.filmAmount.value = coated(s.type, this.finish.allMetals) ? 0.82 : 0;
+      m.metalness = metalSurface(s.type) ? s.metalness : 0;
       m.transmission = glass ? 0.9 : 0;
       m.ior = s.ior;
       m.thickness = layer.thickness * 1.2;
-      m.clearcoat = glass ? 1 : s.type === "metal" ? 0.28 : 0;
+      m.clearcoat = glass ? 1 : metalSurface(s.type) ? 0.28 : 0;
       m.clearcoatRoughness = m.roughness;
       m.envMapIntensity = glass ? 1.15 : 1;
       mesh.castShadow = !glass;
@@ -366,7 +390,7 @@ export class Viewport {
       }
     });
   }
-  drawPreview() {
+  drawPreview(phase = this.scanPosition()) {
     if (!this.renderer) return;
     if (this.sharedLayout) {
       const overview = this.camera.position.distanceTo(this.controls.target) > 5;
@@ -385,10 +409,52 @@ export class Viewport {
     }
     if (this.environment === "ocean") this.ocean.renderReflection(this.renderer, this.world, this.camera);
     this.renderer.render(this.world, this.camera);
-    if (this.effect !== "off") {
+    if (this.effect !== "off" || this.scan.enabled) {
       this.previewEffect ??= new PreviewEffect();
-      this.previewEffect.draw(this.renderer, this.camera, this.effect);
+      this.previewEffect.capture(this.renderer, this.world, this.camera, this.scan.enabled, stackRange(this.layers));
+      this.previewEffect.draw(this.renderer, this.camera, this.effect, this.scan, phase);
     }
+  }
+  scanPosition(now = performance.now()) {
+    return scanPhase(this.phase, this.scan.enabled ? this.scan.speed : 0, now - this.phaseTime);
+  }
+  setFinish(finish) {
+    const used = this.layers.some((l) => coated(l.style.type, this.finish.allMetals) || coated(l.style.type, finish.allMetals));
+    this.finish = { ...finish };
+    this.filmFace.value.set(finish.face);
+    this.filmRim.value.set(finish.rim);
+    for (const [i, mesh] of this.meshes.entries())
+      mesh.material.userData.filmAmount.value = coated(this.layers[i].style.type, finish.allMetals) ? 0.82 : 0;
+    if (used) this.update();
+  }
+  setScan(scan, phase = this.scanPosition()) {
+    this.phase = phase;
+    this.phaseTime = performance.now();
+    const capture = this.scan.enabled !== scan.enabled;
+    this.scan = { ...scan };
+    cancelAnimationFrame(this.scanFrame);
+    if (this.trace && !this.traced.hidden) this.paintTrace(phase);
+    else if (capture) this.drawPreview(phase);
+    else if (this.renderer && scan.enabled) this.previewEffect?.draw(this.renderer, this.camera, this.effect, this.scan, phase);
+    if (!scan.enabled || !scan.speed) return;
+    let last = 0;
+    const tick = (now) => {
+      if (now - last >= 1000 / 30) {
+        last = now;
+        const position = this.scanPosition(now);
+        if (this.trace && !this.traced.hidden) this.paintTrace(position);
+        else if (this.renderer && !this.frame) this.previewEffect?.draw(this.renderer, this.camera, this.effect, this.scan, position);
+      }
+      this.scanFrame = requestAnimationFrame(tick);
+    };
+    this.scanFrame = requestAnimationFrame(tick);
+  }
+  paintTrace(phase) {
+    const f = this.traceFrame;
+    if (!f) return;
+    if (this.scan.enabled && this.scanPixels?.length !== f.pixels.length) this.scanPixels = new Uint8ClampedArray(f.pixels.length);
+    const pixels = paintScan(f.pixels, f.heights, this.scan, phase, this.scanPixels);
+    this.traced.getContext("2d").putImageData(new ImageData(pixels, f.width, f.height), 0, 0);
   }
   setDisplay(exposure, denoise, effect = this.effect) {
     if (this.exposure === exposure && this.denoise === denoise && this.effect === effect) return;
@@ -432,6 +498,7 @@ export class Viewport {
     clearTimeout(this.traceTimer);
     this.revision = (this.revision || 0) + 1;
     this.traced.hidden = true;
+    this.traceFrame = null;
     if (this.worker) {
       if (release) {
         this.worker.terminate();
@@ -442,7 +509,7 @@ export class Viewport {
   }
   startTrace() {
     if (!this.worker) {
-      this.worker = new Worker(new URL("./trace-worker.js", import.meta.url), { type: "module" });
+      this.worker = this.geometryWorker();
       this.worker.onmessage = ({ data }) => {
         if (data.revision !== this.revision || !this.trace) return;
         if (data.backend) {
@@ -461,7 +528,8 @@ export class Viewport {
           this.traced.width = width;
           this.traced.height = height;
         }
-        this.traced.getContext("2d").putImageData(new ImageData(pixels, width, height), 0, 0);
+        this.traceFrame = { width, height, pixels, heights: data.heights };
+        this.paintTrace(this.scanPosition());
         this.traced.hidden = false;
         this.traceSamples = sample;
         this.onRenderState(
@@ -469,26 +537,37 @@ export class Viewport {
         );
       };
       this.worker.onerror = () => this.traceFailure("Ray tracing could not finish this layout.");
-      this.worker.postMessage({ type: "geometry", layers: this.layers.map((l) => ({ positions: l.positions, indices: l.indices, parts: l.parts })) });
-      if (this.vertexColors.length) this.worker.postMessage({ type: "colors", colors: this.vertexColors });
     }
     if (this.environment === "ocean" && !this.workerHasSky) {
-      const { data: pixels, width, height } = this.skyPixels;
-      this.worker.postMessage({ type: "panorama", sky: { pixels, width, height } });
+      this.sendSky(this.worker);
       this.workerHasSky = true;
     }
-    const w = this.canvas.clientWidth,
-      h = this.canvas.clientHeight;
-    const scale = Math.min(1, Math.sqrt(420000 / (w * h)));
+    const [width, height] = currentSize(this, true);
     this.onRenderState("Tracing reflections…");
-    this.worker.postMessage({
+    this.worker.postMessage(this.traceSettings(width, height));
+  }
+  sendSky(worker) {
+    const { data: pixels, width, height } = this.skyPixels;
+    worker.postMessage({ type: "panorama", sky: { pixels, width, height } });
+  }
+  geometryWorker() {
+    const worker = new Worker(new URL("./trace-worker.js", import.meta.url), { type: "module" });
+    worker.postMessage({ type: "geometry", layers: this.layers.map((l) => ({ positions: l.positions, indices: l.indices, parts: l.parts })) });
+    if (this.vertexColors.length) worker.postMessage({ type: "colors", colors: this.vertexColors });
+    return worker;
+  }
+  traceSettings(width, height) {
+    this.camera.updateMatrixWorld();
+    return {
       type: "render",
       revision: this.revision,
       samples: this.samples,
       device: this.traceDevice,
-      width: Math.max(1, Math.round(w * scale)),
-      height: Math.max(1, Math.round(h * scale)),
-      matrix: this.camera.matrixWorld.elements,
+      width,
+      height,
+      finish: { ...this.finish },
+      range: stackRange(this.layers),
+      matrix: this.camera.matrixWorld.elements.slice(),
       fov: this.camera.fov,
       aspect: this.camera.aspect,
       exposure: this.exposure,
@@ -500,18 +579,13 @@ export class Viewport {
       denoise: this.denoise,
       effect: this.effect,
       displayRevision: this.displayRevision,
-      layers: this.layers.map(({ y, thickness, visible, style }) => ({ y, thickness, visible, style })),
-    });
+      layers: this.layers.map(({ y, thickness, visible, style }) => ({ y, thickness, visible, style: { ...style } })),
+    };
   }
   traceFailure(message) {
     this.stopTrace(true);
     this.trace = !this.renderer;
     this.traceBackend = this.trace ? "Ray tracer unavailable · " + message : null;
     this.onRenderState(message, true);
-  }
-  exportCanvas() {
-    if (this.trace && (this.traced.hidden || !this.traceSamples)) throw new Error("Wait for the first full-size ray-traced sample, then export.");
-    if (this.trace && this.shownDisplayRevision !== this.displayRevision) throw new Error("Updating the displayed image. Export when it is ready.");
-    return this.trace ? this.traced : this.canvas;
   }
 }

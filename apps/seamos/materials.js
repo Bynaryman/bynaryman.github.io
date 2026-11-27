@@ -1,3 +1,4 @@
+import { metalSurface } from "./surface-effects.js";
 import { Color, SRGBColorSpace } from "./lib/graphics.js";
 
 const sampleNames = ["Substrate", "Active silicon", "Interconnect", "Metal 1", "Vias", "Metal 2", "Passivation", "Bond pads"];
@@ -87,14 +88,20 @@ export function randomBaseColor(style) {
   return shade(h + between(0.2, 0.8), between(0.35, 0.75), style.type === "glass" ? between(0.62, 0.8) : between(0.38, 0.65));
 }
 
+export function randomEffectColors(previous) {
+  const { h } = new Color(previous).getHSL({}, SRGBColorSpace);
+  const hue = h + between(0.18, 0.8);
+  return [shade(hue, between(0.65, 0.92), between(0.58, 0.74)), shade(hue + between(0.23, 0.55), between(0.65, 0.92), between(0.51, 0.68))];
+}
 export function randomMaterial() {
-  const type = ["metal", "glass", "matte"][Math.floor(Math.random() * 3)];
+  const types = ["metal", "glass", "matte", "iridescent"];
+  const type = types[Math.floor(Math.random() * types.length)];
   const glass = type === "glass";
   return {
     type,
     color: shade(Math.random(), between(0.22, 0.72), glass ? between(0.62, 0.83) : between(0.32, 0.68)),
-    roughness: glass ? between(0.04, 0.27) : type === "metal" ? between(0.09, 0.45) : between(0.45, 0.91),
-    metalness: type === "metal" ? between(0.68, 1) : 0,
+    roughness: glass ? between(0.04, 0.27) : metalSurface(type) ? between(0.09, 0.45) : between(0.45, 0.91),
+    metalness: metalSurface(type) ? between(0.68, 1) : 0,
     ior: between(1.32, 1.84),
   };
 }

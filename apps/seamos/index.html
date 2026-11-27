@@ -23,7 +23,7 @@
         <button id="share" class="button" aria-label="Share view" title="Share this layout and view" disabled>
           <i data-icon="link"></i><span>Share</span>
         </button>
-        <button id="export" class="button primary" aria-label="Export PNG" disabled><i data-icon="download"></i><span>Export PNG</span></button>
+        <button id="export" class="button primary" aria-label="Export image" disabled><i data-icon="download"></i><span>Export image</span></button>
       </div>
     </header>
     <dialog id="share-dialog" aria-labelledby="share-title">
@@ -41,6 +41,54 @@
       <label class="control-label" for="view-url">View link</label>
       <div class="share-field"><input id="view-url" readonly /><button id="copy-view" class="button primary">Copy link</button></div>
       <p class="mode-hint" id="share-status" role="status"></p>
+    </dialog>
+    <dialog id="export-dialog" aria-labelledby="export-title">
+      <div class="section-heading">
+        <h2 id="export-title">Export image</h2>
+        <button id="export-close" class="button">Close</button>
+      </div>
+      <form id="export-form">
+        <fieldset id="export-options">
+          <label class="control-label" for="export-renderer">Renderer</label
+          ><select id="export-renderer">
+            <option value="preview">WebGL preview</option>
+            <option value="trace">Ray trace</option>
+          </select>
+          <label class="control-label" for="export-size">Image size</label
+          ><select id="export-size">
+            <option value="current">Current view</option>
+            <option value="hd">Full HD · 1920 × 1080</option>
+            <option value="4k">4K UHD · 3840 × 2160</option>
+            <option value="custom">Custom dimensions</option>
+          </select>
+          <div class="export-pair">
+            <label>Width (px)<input id="export-width" type="number" min="1" step="1" required /></label
+            ><label>Height (px)<input id="export-height" type="number" min="1" step="1" required /></label>
+          </div>
+          <div id="export-sampling">
+            <label class="control-label" for="export-samples">Ray samples per pixel</label
+            ><select id="export-samples">
+              <option value="4">4 · Quick</option>
+              <option value="16">16 · Balanced</option>
+              <option value="64">64 · Fine</option>
+            </select>
+          </div>
+          <label class="control-label" for="export-format">File format</label
+          ><select id="export-format">
+            <option value="image/png">PNG · lossless</option>
+            <option value="image/jpeg">JPEG</option>
+            <option value="image/webp">WebP</option>
+          </select>
+          <div class="range-row" id="encoding-quality" hidden>
+            <label for="export-quality">Encoding quality</label><output id="export-quality-value" for="export-quality">90%</output
+            ><input id="export-quality" type="range" min="1" max="100" step="1" value="90" />
+          </div>
+        </fieldset>
+        <div class="export-actions">
+          <output id="export-status" role="status"></output
+          ><button id="save-image" class="button primary"><i data-icon="download"></i>Download image</button>
+        </div>
+      </form>
     </dialog>
     <main class="workspace">
       <div class="work-area">
@@ -130,6 +178,7 @@
             <label class="control-label" for="surface">Surface</label>
             <select id="surface">
               <option value="metal">Metal</option>
+              <option value="iridescent">Iridescent metal</option>
               <option value="glass">Glass</option>
               <option value="matte">Matte</option>
             </select>
@@ -204,6 +253,34 @@
             <option value="ink">Ink edges</option>
             <option value="blueprint">Blueprint</option>
           </select>
+          <div class="variation lighting-toggle">
+            <label><input id="film-enabled" type="checkbox" /> Iridescent metal</label>
+          </div>
+          <div id="film-controls" class="lighting-colors" hidden>
+            <label>Face-on <input id="film-face" type="color" value="#f29956" /></label
+            ><label>Grazing <input id="film-rim" type="color" value="#9756ff" /></label>
+            <button class="shuffle" id="shuffle-film" aria-label="Shuffle iridescent colors" title="Shuffle iridescent colors">
+              <i data-icon="dice"></i>
+            </button>
+          </div>
+          <div class="variation lighting-toggle">
+            <label><input id="scan-enabled" type="checkbox" /> Layer scan</label>
+          </div>
+          <div id="scan-controls" hidden>
+            <div class="lighting-colors">
+              <label>Band <input id="scan-band" type="color" value="#72faff" /></label
+              ><label>Trail <input id="scan-trail" type="color" value="#9773ff" /></label>
+              <button class="shuffle" id="shuffle-scan" aria-label="Shuffle scan colors" title="Shuffle scan colors"><i data-icon="dice"></i></button>
+            </div>
+            <div class="range-row">
+              <label for="scan-speed">Scan speed</label><output id="scan-speed-value" for="scan-speed"></output
+              ><input id="scan-speed" type="range" min="0" max="4" step=".25" value="1" />
+            </div>
+            <div class="range-row" id="scan-seek" hidden>
+              <label for="scan-position">Scan position</label><output id="scan-position-value" for="scan-position"></output
+              ><input id="scan-position" type="range" min="0" max="100" value="32" />
+            </div>
+          </div>
           <div class="range-row">
             <label for="spacing">Layer spacing</label><output for="spacing" id="spacing-value"></output
             ><input type="range" id="spacing" min="0" max="100" step="1" value="8" />
