@@ -295,6 +295,7 @@ jekyll-minifier:
     - "assets/js/search/*.js"
     - "assets/courses/**"
     - "apps/tr-rack/**"
+    - "apps/strata/**"
   uglifier_args:
     harmony: true
 

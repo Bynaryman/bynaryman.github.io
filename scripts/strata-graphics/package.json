@@ -1,0 +1,14 @@
+{
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "esbuild graphics.js --bundle --format=esm --minify --outfile=../../apps/strata/lib/graphics.js && esbuild intersections.js --bundle --format=esm --minify --outfile=../../apps/strata/lib/intersections.js"
+  },
+  "dependencies": {
+    "three": "0.180.0",
+    "three-mesh-bvh": "0.9.2"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.12"
+  }
+}
