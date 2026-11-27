@@ -46,7 +46,7 @@ function showMode() {
   }
   $("preview-mode").disabled = !vp.renderer;
   $("samples-field").hidden = !vp.trace;
-  $("mode-hint").textContent = vp.trace ? "Progressive reflections, refraction and soft shadows." : "Real-time material preview.";
+  $("mode-hint").textContent = vp.trace ? "CPU ray tracing with progressive sampling." : "Real-time WebGL material preview.";
 }
 function showRange(id, text) {
   const input = $(id);
@@ -422,14 +422,20 @@ for (const id of ["surface", "color", "rough", "property"])
     if (id === "property") s[s.type === "glass" ? "ior" : "metalness"] = Number($(id).value);
     updateMaterials();
   };
-for (const id of ["spacing", "exposure"])
-  $(id).oninput = () => {
-    vp[id] = Number($(id).value);
-    updateSceneInputs();
-    vp.apply();
-  };
+$("spacing").oninput = () => {
+  vp.spacing = Number($("spacing").value);
+  updateSceneInputs();
+  vp.apply();
+};
+function updateDisplay() {
+  vp.setDisplay(Number($("exposure").value), $("denoise").value === "bilateral");
+  updateSceneInputs();
+}
+$("exposure").oninput = updateDisplay;
+$("denoise").onchange = updateDisplay;
 for (const id of ["preview-mode", "trace-mode"])
   $(id).onclick = () => {
+    if (vp.trace === (id === "trace-mode")) return;
     vp.trace = id === "trace-mode";
     showMode();
     vp.update();

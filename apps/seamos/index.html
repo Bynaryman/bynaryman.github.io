@@ -175,8 +175,13 @@
               <option value="16">16 · Balanced</option>
               <option value="64">64 · Fine</option>
             </select>
+            <label class="control-label" for="denoise">Denoise final image</label>
+            <select id="denoise">
+              <option value="off">Off</option>
+              <option value="bilateral">Edge-aware filter</option>
+            </select>
           </div>
-          <p class="mode-hint" id="mode-hint">Real-time material preview.</p>
+          <p class="mode-hint" id="mode-hint">Real-time WebGL material preview.</p>
         </section>
       </aside>
     </main>
