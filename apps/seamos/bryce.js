@@ -7,6 +7,10 @@ const skies = [
   { name: "Squall", file: "bryce-squall", elevation: 14, light: 0xd7deeb },
 ];
 export const defaultSky = { ...skies[0], turn: 0 };
+export function sharedSky(name, turn) {
+  const sky = skies.find((s) => s.name === name);
+  return sky && Number.isFinite(turn) && turn >= 0 && turn <= 1 ? { ...sky, turn } : defaultSky;
+}
 function pickDifferent(choices, name) {
   const available = choices.filter((choice) => choice.name !== name);
   return available[Math.floor(Math.random() * available.length)];
@@ -34,6 +38,16 @@ const seas = [
   { name: "Wind chop", color: [0.024, 0.14, 0.17], amplitude: 1.7, frequency: 1.58 },
   { name: "Silver tide", color: [0.16, 0.21, 0.26], amplitude: 0.72, frequency: 0.95 },
 ];
+export function sharedWater(value) {
+  const sea = seas.find((s) => s.name === value?.name);
+  if (!sea || !Array.isArray(value.bands) || value.bands.length !== 4) return defaultWater;
+  const bands = value.bands.map((b) => {
+    if (!b || !["x", "z", "amplitude", "phase"].every((k) => Number.isFinite(b[k]) && Math.abs(b[k]) < 64) || Math.hypot(b.x, b.z) < 0.001)
+      return null;
+    return { x: b.x, z: b.z, amplitude: b.amplitude, phase: b.phase };
+  });
+  return bands.includes(null) ? defaultWater : { name: sea.name, color: sea.color, bands };
+}
 export function randomWater(previous) {
   const sea = pickDifferent(seas, previous.name);
   const angle = Math.random() * Math.PI * 2,

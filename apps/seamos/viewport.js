@@ -1,6 +1,7 @@
 import * as T from "./lib/graphics.js";
 import { stackLayers } from "./materials.js";
 import { webglAdapter } from "./webgl-adapter.js";
+import { PreviewEffect } from "./frame-effects.js";
 
 import { loadPanorama, OceanPreview } from "./ocean-preview.js";
 import { defaultSky, defaultWater, sunDirection, waterLevel } from "./bryce.js";
@@ -28,6 +29,7 @@ export class Viewport {
     this.samples = 4;
     this.traceDevice = "auto";
     this.denoise = false;
+    this.effect = "off";
     this.displayRevision = 0;
     this.layers = [];
     this.meshes = [];
@@ -304,6 +306,10 @@ export class Viewport {
   fitDistance(aspect) {
     return Math.max(22.8, 29 / aspect);
   }
+  applyVisibility() {
+    for (const [i, layer] of this.layers.entries()) this.meshes[i].visible = layer.visible;
+    this.update();
+  }
   setView(view) {
     this.camera.fov = view === "horizon" ? 38 : 29;
     this.camera.updateProjectionMatrix();
@@ -379,17 +385,24 @@ export class Viewport {
     }
     if (this.environment === "ocean") this.ocean.renderReflection(this.renderer, this.world, this.camera);
     this.renderer.render(this.world, this.camera);
+    if (this.effect !== "off") {
+      this.previewEffect ??= new PreviewEffect();
+      this.previewEffect.draw(this.renderer, this.camera, this.effect);
+    }
   }
-  setDisplay(exposure, denoise) {
-    if (this.exposure === exposure && this.denoise === denoise) return;
+  setDisplay(exposure, denoise, effect = this.effect) {
+    if (this.exposure === exposure && this.denoise === denoise && this.effect === effect) return;
+    const redraw = this.effect !== effect || this.exposure !== exposure;
+    this.effect = effect;
     if (this.exposure !== exposure && this.renderer) {
       this.renderer.toneMappingExposure = exposure;
-      if (!this.trace || this.traced.hidden) this.drawPreview();
     }
+    if (redraw && (!this.trace || this.traced.hidden)) this.drawPreview();
     this.exposure = exposure;
     this.denoise = denoise;
     this.displayRevision++;
-    if (this.trace) this.worker?.postMessage({ type: "display", revision: this.revision, displayRevision: this.displayRevision, exposure, denoise });
+    if (this.trace)
+      this.worker?.postMessage({ type: "display", revision: this.revision, displayRevision: this.displayRevision, exposure, denoise, effect });
   }
   drawAxes() {
     const axis = document.getElementById("axes"),
@@ -485,6 +498,7 @@ export class Viewport {
       sunDirection: sunDirection(this.sky),
       sunlight: this.sky.light,
       denoise: this.denoise,
+      effect: this.effect,
       displayRevision: this.displayRevision,
       layers: this.layers.map(({ y, thickness, visible, style }) => ({ y, thickness, visible, style })),
     });

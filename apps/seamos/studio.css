@@ -980,3 +980,44 @@ select {
   font: 0.74rem var(--mono);
   color: var(--muted);
 }
+.library-head,
+.shuffle-actions {
+  flex-wrap: wrap;
+}
+#stack-materials {
+  margin-block: 9px;
+}
+#share-dialog {
+  width: min(32rem, calc(100% - 2rem));
+  color: var(--ink);
+  background: var(--paper);
+  padding: 18px;
+  border: 1px solid var(--ink);
+  box-shadow: 4px 4px var(--shadow);
+}
+#share-dialog::backdrop {
+  background: rgb(12 17 30 / 45%);
+}
+#share-dialog h2 {
+  font: normal 1.85rem var(--display);
+}
+.share-field {
+  display: flex;
+  gap: 6px;
+}
+.share-field input {
+  min-width: 0;
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 7px;
+  font: 0.8rem var(--mono);
+}
+#share-status:empty {
+  display: none;
+}
+@media (max-width: 460px) {
+  #share span {
+    display: none;
+  }
+}

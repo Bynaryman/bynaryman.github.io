@@ -20,9 +20,28 @@
           <i data-icon="folder"></i><span>Open layout</span>
         </button>
         <input hidden type="file" id="file" accept=".gds,.gdsii,.gds2,.oas,.oasis" />
+        <button id="share" class="button" aria-label="Share view" title="Share this layout and view" disabled>
+          <i data-icon="link"></i><span>Share</span>
+        </button>
         <button id="export" class="button primary" aria-label="Export PNG" disabled><i data-icon="download"></i><span>Export PNG</span></button>
       </div>
     </header>
+    <dialog id="share-dialog" aria-labelledby="share-title">
+      <div class="section-heading">
+        <h2 id="share-title">Share view</h2>
+        <form method="dialog"><button class="button">Close</button></form>
+      </div>
+      <p id="share-source" class="mode-hint"></p>
+      <div id="hosted-source" hidden>
+        <label class="control-label" for="hosted-url">Hosted layout URL (optional)</label>
+        <div class="share-field">
+          <input id="hosted-url" type="url" placeholder="https://…/chip.oas" /><button id="use-url" class="button">Use URL</button>
+        </div>
+      </div>
+      <label class="control-label" for="view-url">View link</label>
+      <div class="share-field"><input id="view-url" readonly /><button id="copy-view" class="button primary">Copy link</button></div>
+      <p class="mode-hint" id="share-status" role="status"></p>
+    </dialog>
     <main class="workspace">
       <div class="work-area">
         <section class="viewport-panel" aria-label="3D layout viewport">
@@ -73,9 +92,14 @@
               <i data-icon="swatches"></i>
               <h2 id="presets-title">Render presets</h2>
             </div>
-            <button id="shuffle-palette" class="shuffle" disabled title="Randomize colors across all layers and keep their finishes">
-              <i data-icon="dice"></i>Shuffle palette
-            </button>
+            <div class="shuffle-actions">
+              <button id="shuffle-palette" class="shuffle" disabled title="Randomize colors across all layers and keep their finishes">
+                <i data-icon="dice"></i>Shuffle palette
+              </button>
+              <button id="shuffle-finishes" class="shuffle" disabled title="Randomize colors and materials across all layers">
+                <i data-icon="dice"></i>Shuffle materials
+              </button>
+            </div>
           </div>
           <div class="presets" id="presets"></div>
         </section>
@@ -129,6 +153,12 @@
         <div id="layers-panel" role="tabpanel" aria-labelledby="layers-tab" hidden>
           <section class="inspector-section">
             <h3>Layer stack</h3>
+            <div class="range-row" id="layer-wheel" title="Scroll to peel or restore one layer. Ctrl + wheel also works over the chip.">
+              <label for="layer-depth">Visible layers</label><output id="layer-depth-value" for="layer-depth"></output>
+              <input type="range" id="layer-depth" min="0" max="0" value="0" step="1" disabled />
+            </div>
+            <p class="mode-hint">Scroll here or Ctrl + wheel over the chip to peel and restore layers.</p>
+            <button id="stack-materials" class="shuffle" disabled><i data-icon="dice"></i>Shuffle materials</button>
             <div id="layer-list"></div>
             <p class="mode-hint">
               Heights are illustrative. Recognized SKY130 masks follow process order. Boundary and annotation layers can be shown individually.
@@ -168,6 +198,12 @@
         </div>
         <section class="inspector-section scene-section">
           <h3>Scene settings</h3>
+          <label class="control-label" for="effect">Image effect</label>
+          <select id="effect">
+            <option value="off">None</option>
+            <option value="ink">Ink edges</option>
+            <option value="blueprint">Blueprint</option>
+          </select>
           <div class="range-row">
             <label for="spacing">Layer spacing</label><output for="spacing" id="spacing-value"></output
             ><input type="range" id="spacing" min="0" max="100" step="1" value="8" />
