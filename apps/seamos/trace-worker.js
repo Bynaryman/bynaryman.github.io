@@ -1,3 +1,4 @@
+import { boxHit, silicaIOR } from "./cutaway.js";
 import { coated, metalSurface, heightByte, defaultFinish } from "./surface-effects.js";
 // Whitted-style rays with jittered camera / area light samples. Layer transforms
 // live outside each BVH so material, visibility and spacing edits reuse the trees.
@@ -21,26 +22,68 @@ const epsilon = 0.000015;
 const maxBounces = 4;
 const clamp = (x, lo, hi) => Math.max(lo, Math.min(hi, x));
 
-function nearest(origin, dir, layers, maximum = Infinity, shadow = false) {
-  let best = maximum,
+function nearest(origin, dir, scene, shadow = false) {
+  const { layers, section } = scene;
+  let near = epsilon,
+    far = Infinity,
+    cutT = -1;
+  const axis = section?.axis === 0 ? "x" : "z";
+  if (section) {
+    const offset = section.cutAt - origin[axis],
+      d = dir[axis];
+    if (Math.abs(d) < 1e-15) {
+      if (offset < 0) far = 0;
+    } else {
+      cutT = offset / d;
+      if (d < 0) near = Math.max(near, cutT);
+      else far = Math.min(far, cutT);
+    }
+  }
+  let best = far,
     result = null;
   for (let i = 0; i < trees.length; i++) {
     const layer = layers[i];
     if (!layer.visible || (shadow && layer.style.type === "glass")) continue;
+    if (cutT > epsilon && cutT <= best + epsilon) {
+      const h = (origin.y + cutT * dir.y - layer.y) / layer.thickness;
+      if (h >= 0 && h <= 1) {
+        testRay.origin.set(origin.x + cutT * dir.x, 2, origin.z + cutT * dir.z);
+        testRay.direction.set(0, -1, 0);
+        const cap = trees[i].raycastFirst(testRay, DoubleSide, epsilon, Infinity);
+        if (cap && 2 - cap.distance >= h) {
+          if (shadow) return true;
+          const normal = new Vector3();
+          normal[axis] = 1;
+          best = cutT;
+          result = { layer, part: cap.part, vertex: cap.instance ?? cap.face.a, normal, distance: cutT };
+        }
+      }
+    }
+    if (best <= near) continue;
     const t0 = (layer.y - origin.y) / dir.y,
       t1 = (layer.y + layer.thickness - origin.y) / dir.y;
-    if (Math.max(t0, t1) < epsilon || Math.min(t0, t1) > best) continue;
+    if (Math.max(t0, t1) < near || Math.min(t0, t1) > best) continue;
     testRay.origin.set(origin.x, (origin.y - layer.y) / layer.thickness, origin.z);
     testRay.direction.set(dir.x, dir.y / layer.thickness, dir.z);
     const scale = testRay.direction.length();
     testRay.direction.multiplyScalar(1 / scale);
-    const hit = trees[i].raycastFirst(testRay, DoubleSide, epsilon * scale, best * scale);
+    const hit = trees[i].raycastFirst(testRay, DoubleSide, near * scale, best * scale);
     if (hit) {
       if (shadow) return true;
       best = hit.distance / scale;
       const normal = hit.face.normal.clone();
       normal.y /= layer.thickness;
       result = { layer, part: hit.part, vertex: hit.instance ?? hit.face.a, normal: normal.normalize(), distance: best };
+    }
+  }
+  if (!result) best = Infinity;
+  if (!shadow && section?.oxide) {
+    const shell = boxHit(origin, dir, section.lo, section.hi, epsilon);
+    if (shell && shell.distance + epsilon < best) {
+      best = shell.distance;
+      const normal = new Vector3();
+      normal[shell.axis] = shell.sign;
+      result = { normal, distance: best, oxide: true };
     }
   }
   if (!shadow && dir.y < 0) {
@@ -59,19 +102,35 @@ function studio(d) {
   return [upper + warm + 0.78 * cool, upper * 1.05 + 0.92 * warm + 0.9 * cool, upper * 1.13 + 0.82 * warm + cool];
 }
 function trace(origin, dir, scene, depth, heights, pixel) {
-  const hit = nearest(origin, dir, scene.layers);
+  const hit = nearest(origin, dir, scene);
   if (!hit) return scene.ocean ? sampleSky(panorama, dir) : studio(dir);
   const point = origin.clone().addScaledVector(dir, hit.distance);
   if (heights && hit.layer) heights[pixel] = heightByte(point.y, scene.range || [0, 1]);
+  const limit = maxBounces + (scene.section?.oxide ? 2 : 0);
+  if (hit.oxide) {
+    const entering = dir.dot(hit.normal) < 0,
+      n = hit.normal.clone().multiplyScalar(entering ? 1 : -1);
+    const cos = clamp(-dir.dot(n), 0, 1),
+      eta = entering ? 1 / silicaIOR : silicaIOR;
+    const k = 1 - eta * eta * (1 - cos * cos),
+      f0 = ((silicaIOR - 1) / (silicaIOR + 1)) ** 2;
+    const pass = k >= 0 && Math.random() > f0 + (1 - f0) * (1 - cos) ** 5;
+    const next = pass
+      ? dir
+          .clone()
+          .multiplyScalar(eta)
+          .addScaledVector(n, eta * cos - Math.sqrt(k))
+      : dir.clone().reflect(n);
+    if (depth >= limit) return scene.ocean ? sampleSky(panorama, next) : studio(next);
+    return trace(point.addScaledVector(n, (pass ? -4 : 4) * epsilon), next, scene, depth + 1, pass ? heights : null, pixel);
+  }
   if (scene.ocean && !hit.layer) {
     const normal = waterNormal(point.x, point.z, hit.distance, new Vector3(), scene.water.bands);
     const reflected = dir.clone().reflect(normal);
     reflected.y = Math.max(0.0001, reflected.y);
     reflected.normalize();
     const reflection =
-      depth < maxBounces
-        ? trace(point.clone().addScaledVector(hit.normal, epsilon * 4), reflected, scene, depth + 1)
-        : sampleSky(panorama, reflected);
+      depth < limit ? trace(point.clone().addScaledVector(hit.normal, epsilon * 4), reflected, scene, depth + 1) : sampleSky(panorama, reflected);
     const fresnel = 0.17 + 0.83 * (1 - clamp(-dir.dot(normal), 0, 1)) ** 5;
     const haze = 1 - Math.exp(-hit.distance * 0.00085);
     const horizon = sampleSky(panorama, new Vector3(dir.x, 0.0001, dir.z).normalize());
@@ -86,7 +145,7 @@ function trace(origin, dir, scene, depth, heights, pixel) {
   light.x += (Math.random() - 0.5) * spread;
   light.z += (Math.random() - 0.5) * spread;
   light.normalize();
-  const visibility = nearest(start, light, scene.layers, Infinity, true) ? 0.09 : 1;
+  const visibility = nearest(start, light, scene, true) ? 0.09 : 1;
   if (!hit.layer) {
     const gridLine = Math.min(Math.abs(point.x - Math.round(point.x)), Math.abs(point.z - Math.round(point.z))) < 0.012;
     const light = (scene.grid && gridLine ? 0.38 : 0.32) * (0.6 + 0.4 * visibility);
@@ -111,12 +170,18 @@ function trace(origin, dir, scene, depth, heights, pixel) {
     ? [c.r * (0.26 + direct * scene.tint.r), c.g * (0.26 + direct * scene.tint.g), c.b * (0.26 + direct * scene.tint.b)]
     : [c.r * diffuse, c.g * diffuse * 0.96, c.b * diffuse * 0.89];
   if (!glass && metal < 0.005) return local;
-  const f0 = ((1 - s.ior) / (1 + s.ior)) ** 2;
+  let surrounding = 1;
+  if (scene.section?.oxide) {
+    const adjacent = point.clone().addScaledVector(hit.normal, 8 * epsilon);
+    if (["x", "y", "z"].every((k, i) => adjacent[k] > scene.section.lo[i] && adjacent[k] < scene.section.hi[i])) surrounding = silicaIOR;
+  }
+  const relative = s.ior / surrounding;
+  const f0 = ((1 - relative) / (1 + relative)) ** 2;
   const fresnel = f0 + (1 - f0) * (1 - cos) ** 5;
   const next = dir.clone();
   let transmit = false;
   if (glass) {
-    const eta = entering ? 1 / s.ior : s.ior;
+    const eta = entering ? 1 / relative : relative;
     const k = 1 - eta * eta * (1 - cos * cos);
     transmit = k >= 0 && Math.random() > fresnel;
     if (transmit) next.multiplyScalar(eta).addScaledVector(n, eta * cos - Math.sqrt(k));
@@ -128,7 +193,7 @@ function trace(origin, dir, scene, depth, heights, pixel) {
   next.z += (Math.random() - 0.5) * jitter;
   next.normalize();
   const secondary =
-    depth < maxBounces
+    depth < limit
       ? trace(point.clone().addScaledVector(n, (transmit ? -1 : 1) * epsilon * 4), next, scene, depth + 1)
       : scene.ocean
         ? sampleSky(panorama, next)

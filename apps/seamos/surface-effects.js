@@ -11,7 +11,7 @@ export function stackRange(layers) {
   let bottom = Infinity,
     top = -Infinity;
   for (const l of layers)
-    if (l.visible) {
+    if (l.visible && l.thickness > 0) {
       bottom = Math.min(bottom, l.y);
       top = Math.max(top, l.y + l.thickness);
     }
