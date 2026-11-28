@@ -249,18 +249,20 @@ function syncMaterial() {
 const inspectorDepth = $("inspector-depth");
 function detailMode(depth) {
   document.documentElement.dataset.inspector = depth;
-  inspectorDepth.value = depth;
+  inspectorDepth.setAttribute("aria-checked", String(depth === "advanced"));
+  inspectorDepth.title = depth === "advanced" ? "Switch to simple controls" : "Show advanced controls";
 }
 try {
   detailMode(localStorage.getItem("seamos-inspector") === "advanced" ? "advanced" : "simple");
 } catch {
   detailMode("simple");
 }
-inspectorDepth.onchange = () => {
-  detailMode(inspectorDepth.value);
-  if (inspectorDepth.value === "advanced") $("scene-settings").open = true;
+inspectorDepth.onclick = () => {
+  const depth = document.documentElement.dataset.inspector === "advanced" ? "simple" : "advanced";
+  detailMode(depth);
+  if (depth === "advanced") $("scene-settings").open = true;
   try {
-    localStorage.setItem("seamos-inspector", inspectorDepth.value);
+    localStorage.setItem("seamos-inspector", depth);
   } catch {}
 };
 const tabs = ["material", "cells", "layers", "motion"];

@@ -1098,10 +1098,48 @@ html:not([data-inspector="advanced"]) .advanced-only {
   display: none;
 }
 #inspector-depth {
-  width: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   margin-left: auto;
-  padding: 3px 5px;
+  min-height: 32px;
+  padding: 2px 3px;
   font: 0.75rem var(--mono);
+}
+.inspector-track {
+  display: flex;
+  align-items: center;
+  width: 36px;
+  height: 21px;
+  padding: 2px;
+  border: 1px solid var(--muted);
+  border-radius: 12px;
+  background: var(--raised);
+}
+.inspector-track i {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  color: var(--paper);
+  background: var(--muted);
+}
+.inspector-track svg {
+  width: 12px;
+  height: 12px;
+}
+#inspector-depth[aria-checked="true"] .inspector-track {
+  border-color: var(--blue);
+  background: var(--lcd);
+}
+#inspector-depth[aria-checked="true"] i {
+  transform: translateX(15px);
+  color: var(--on-blue);
+  background: var(--blue);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .inspector-track i {
+    transition: transform 120ms ease-out;
+  }
 }
 .scene-section summary {
   cursor: pointer;
