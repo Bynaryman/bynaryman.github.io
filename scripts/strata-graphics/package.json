@@ -2,9 +2,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "esbuild graphics.js --bundle --format=esm --minify --outfile=../../apps/seamos/lib/graphics.js && esbuild intersections.js --bundle --format=esm --minify --outfile=../../apps/seamos/lib/intersections.js"
+    "build": "esbuild graphics.js --bundle --format=esm --minify --outfile=../../apps/seamos/lib/graphics.js && esbuild intersections.js --bundle --format=esm --minify --outfile=../../apps/seamos/lib/intersections.js && npm run build:video",
+    "build:video": "esbuild video.js --bundle --format=esm --minify --outfile=../../apps/seamos/lib/video.js"
   },
   "dependencies": {
+    "mediabunny": "1.66.5",
     "three": "0.180.0",
     "three-mesh-bvh": "0.9.2"
   },

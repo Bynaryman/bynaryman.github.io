@@ -68,16 +68,29 @@ async function traceTiles(vp, ctx, width, height, samples, phase, signal, progre
     ctx.putImageData(new ImageData(paintScan(f.pixels, f.heights, scan, phase), width, height), 0, 0);
     return;
   }
-  const scene = vp.traceSettings(width, height);
-  scene.aspect = width / height;
-  scene.samples = samples;
-  const padding = Number(scene.denoise) + Number(scene.effect !== "off");
-  const tiles = imageTiles(width, height, padding);
   const worker = vp.geometryWorker();
   try {
-    if (scene.ocean) vp.sendSky(worker);
+    if (vp.environment === "ocean") vp.sendSky(worker);
+    await traceMovieFrame(vp, worker, ctx, samples, phase, signal, progress);
+  } finally {
+    worker.terminate();
+  }
+}
+
+// Use the same tiled renderer for stills and every frame of a movie. A movie
+// keeps its worker (and the chip's acceleration structures) for the whole shot.
+export async function traceMovieFrame(vp, worker, ctx, samples, phase, signal, progress, motion = {}) {
+  signal.throwIfAborted();
+  const { width, height } = ctx.canvas,
+    scan = { ...vp.scan };
+  const scene = { ...vp.traceSettings(width, height), ...motion, samples, aspect: width / height };
+  const padding = Number(scene.denoise) + Number(scene.effect !== "off");
+  const tiles = imageTiles(width, height, padding);
+  let abort;
+  try {
     await new Promise((resolve, reject) => {
-      signal.addEventListener("abort", () => reject(signal.reason), { once: true });
+      abort = () => reject(signal.reason);
+      signal.addEventListener("abort", abort, { once: true });
       let tile,
         done = 0;
       function next() {
@@ -85,7 +98,7 @@ async function traceTiles(vp, ctx, width, height, samples, phase, signal, progre
         if (!tile) return resolve();
         worker.postMessage({ ...scene, tile, width: tile.width, height: tile.height, revision: ++scene.revision });
       }
-      worker.onerror = () => reject(new Error("The export renderer stopped. Try a smaller image or fewer samples."));
+      worker.onerror = () => reject(new Error("The ray tracer stopped. Try a smaller size or fewer samples."));
       worker.onmessage = ({ data }) => {
         try {
           if (data.error) throw new Error(data.error);
@@ -102,7 +115,8 @@ async function traceTiles(vp, ctx, width, height, samples, phase, signal, progre
       next();
     });
   } finally {
-    worker.terminate();
+    signal.removeEventListener("abort", abort);
+    worker.onerror = worker.onmessage = null;
   }
 }
 export async function renderImage(vp, { width, height, trace, samples, format, quality }, signal, progress) {

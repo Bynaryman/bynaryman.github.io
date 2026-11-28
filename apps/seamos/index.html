@@ -91,6 +91,56 @@
         </div>
       </form>
     </dialog>
+    <dialog id="movie-options" aria-labelledby="movie-options-title">
+      <div class="section-heading">
+        <h2 id="movie-options-title">Export movie</h2>
+        <button id="movie-options-close" class="button">Close</button>
+      </div>
+      <form id="movie-export-form">
+        <label class="control-label" for="movie-renderer">Renderer</label>
+        <select id="movie-renderer">
+          <option value="preview">WebGL preview</option>
+          <option value="trace">Ray trace each frame</option>
+        </select>
+        <div class="export-pair">
+          <label
+            >Movie size<select id="shot-size">
+              <option value="360">360p</option>
+              <option value="720" selected>720p</option>
+              <option value="1080">1080p</option>
+            </select></label
+          >
+          <label
+            >Frame rate<select id="movie-fps">
+              <option value="12">12 fps</option>
+              <option value="24" selected>24 fps</option>
+              <option value="30">30 fps</option>
+            </select></label
+          >
+        </div>
+        <label class="control-label" for="movie-quality">Encoding quality</label>
+        <select id="movie-quality">
+          <option value="compact">Compact</option>
+          <option value="balanced" selected>Balanced</option>
+          <option value="high">High</option>
+        </select>
+        <div id="movie-trace-options" hidden>
+          <label class="control-label" for="movie-samples">Ray samples per pixel</label>
+          <select id="movie-samples">
+            <option value="1">1 · Draft</option>
+            <option value="4" selected>4 · Quick</option>
+            <option value="16">16 · Balanced</option>
+            <option value="64">64 · Fine</option>
+            <option value="256">256 · Ultra</option>
+          </select>
+          <label class="lighting-toggle"><input id="movie-denoise" type="checkbox" checked /> Denoise each frame</label>
+        </div>
+        <div class="export-actions">
+          <output id="movie-estimate" class="mode-hint"></output
+          ><button id="save-movie" class="button primary"><i data-icon="download"></i>Render movie</button>
+        </div>
+      </form>
+    </dialog>
     <dialog id="movie-dialog" aria-labelledby="movie-title">
       <div class="section-heading">
         <h2 id="movie-title">Movie preview</h2>
@@ -266,36 +316,31 @@
         </div>
         <div id="motion-panel" role="tabpanel" aria-labelledby="motion-tab" hidden>
           <section class="inspector-section">
-            <label for="shot" class="control-label">Movie preset</label>
-            <select id="shot">
-              <option value="orbit">Turntable</option>
-              <option value="sun">Sun sweep</option>
-              <option value="sea" id="sea-shot">Ocean swell · Bryce</option>
-              <option value="slice">Follow the slice</option>
-              <option value="keys">Two camera keyframes</option>
-            </select>
+            <fieldset id="motion-effects">
+              <legend>Animate</legend>
+              <label><input type="checkbox" role="switch" id="shot-orbit" checked />Turntable</label>
+              <label><input type="checkbox" role="switch" id="shot-sun" />Sun sweep</label>
+              <label><input type="checkbox" role="switch" id="shot-sea" />Ocean swell · Bryce</label>
+              <label><input type="checkbox" role="switch" id="shot-slice" />Follow the slice</label>
+              <label><input type="checkbox" role="switch" id="shot-keys" />Camera keyframes</label>
+            </fieldset>
             <div id="key-controls" hidden>
-              <p class="mode-hint">Frame each view in the viewport and save its camera position.</p>
-              <div class="cell-actions">
-                <button id="key-start" class="button">Set start</button><button id="key-end" class="button">Set end</button>
+              <label for="key-list" class="control-label">Camera path</label>
+              <select id="key-list" size="3" aria-describedby="key-hint"></select>
+              <div class="key-actions">
+                <button class="button" id="key-add">Add view</button><button class="button" id="key-update">Update</button
+                ><button class="button" id="key-remove">Remove</button><button class="button" id="key-earlier">Move earlier</button
+                ><button class="button" id="key-later">Move later</button>
               </div>
-              <output id="keys-status" class="mode-hint" aria-live="polite"></output>
+              <p class="mode-hint" id="key-hint">Add two or more views. Select a keyframe to recall its camera.</p>
             </div>
-            <div class="export-pair">
-              <label for="shot-duration"
-                >Duration<select id="shot-duration">
-                  <option value="3">3 seconds</option>
-                  <option value="6" selected>6 seconds</option>
-                  <option value="12">12 seconds</option>
-                </select></label
-              >
-              <label for="shot-size"
-                >Movie size<select id="shot-size">
-                  <option value="720">720p</option>
-                  <option value="1080">1080p</option>
-                </select></label
-              >
-            </div>
+            <label class="control-label" for="shot-duration">Duration</label>
+            <select id="shot-duration">
+              <option value="1">1 second</option>
+              <option value="3">3 seconds</option>
+              <option value="6" selected>6 seconds</option>
+              <option value="12">12 seconds</option>
+            </select>
             <div class="cell-actions">
               <button class="button" id="play-shot">Play</button><button class="button primary" id="record-shot">Export movie</button>
             </div>

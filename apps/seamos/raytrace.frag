@@ -12,7 +12,7 @@ uniform float oxideIOR;
 uniform vec2 resolution, pixelOrigin, stackRange;
 uniform vec3 filmFace, filmRim;
 float firstHeight;
-uniform float tanFov, aspect, waterHeight;
+uniform float tanFov, aspect, waterHeight, skyTurn, waveTime;
 uniform int layerCount, sampleNumber;
 uniform bool useTints, ocean, grid;
 uniform vec3 sun, sunlight, waterColor;
@@ -196,11 +196,12 @@ float panel(vec2 p, vec2 center, vec2 size) {
 }
 vec3 environment(vec3 d) {
   if(ocean) {
-    vec2 uv=vec2(atan(d.z,d.x)/(2.0*pi)+0.5,0.5-asin(clamp(d.y,-1.0,1.0))/pi);
+    vec2 uv=vec2(fract(atan(d.z,d.x)/(2.0*pi)+0.5+skyTurn),0.5-asin(clamp(d.y,-1.0,1.0))/pi);
     return textureLod(panorama,uv,0.0).rgb;
   }
   float upper=0.16+0.3*max(d.y,0.0);
-  vec2 p=d.xz/max(d.y,0.01);
+  float angle=2.*pi*skyTurn;
+  vec2 p=mat2(cos(angle),sin(angle),-sin(angle),cos(angle))*d.xz/max(d.y,0.01);
   float warm=step(0.0,d.y)*4.8*min(1.0,5.0*panel(p,vec2(-1,0.85),vec2(0.72,1)));
   float cool=step(0.0,d.y)*3.4*min(1.0,6.0*panel(p,vec2(1.4,-0.4),vec2(0.28,1.1)));
   return upper*vec3(1,1.05,1.13)+warm*vec3(1,0.92,0.82)+cool*vec3(0.78,0.9,1);
@@ -211,7 +212,7 @@ vec3 seaNormal(vec2 p,float t) {
   for(int j=0;j<4;j++) {
     vec4 b=bands[j];
     float k=length(b.xy);
-    slope+=b.xy/k * b.z*cos(dot(p,b.xy)+b.w*warp)/(1.0+t*k*0.0008);
+    slope+=b.xy/k * b.z*cos(dot(p,b.xy)+b.w*warp+waveTime*float(j+1))/(1.0+t*k*0.0008);
   }
   return normalize(vec3(-slope.x,1,-slope.y));
 }

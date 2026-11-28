@@ -336,3 +336,52 @@ test("Ultra completes all 256 samples in the CPU worker for an exported tile", a
   assert.equal(image.pixels.length, 8 * 6 * 4);
   assert.ok(image.pixels.some((v, i) => i % 4 === 0 && v > 0 && v < 255));
 });
+
+test("camera paths visit each saved view in sequence, including the intermediate views", async () => {
+  const { cameraAt } = await import("../apps/seamos/movie.js");
+  const keys = [1, 3, -2, 4].map((n, i) => ({ target: [n, i, 0], position: [n, i + 2, 4], fov: 30 + i }));
+  for (const [i, k] of keys.entries()) {
+    const pose = cameraAt(keys, i / (keys.length - 1));
+    assert.deepEqual(pose.target, k.target);
+    assert.equal(pose.fov, k.fov);
+    pose.position.forEach((v, j) => assert.ok(Math.abs(v - k.position[j]) < 1e-9));
+  }
+  assert.deepEqual(cameraAt(keys, 0.5).target, [0.5, 1.5, 0]);
+});
+
+test("old start/end links and combined motion settings restore without losing camera order", async () => {
+  const { readShot } = await import("../apps/seamos/movie.js");
+  const start = { position: [0, 0, 3], target: [0, 0, 0], fov: 28 },
+    end = { ...start, fov: 40 };
+  const legacy = readShot({ preset: "keys", start, end, size: 1080 });
+  assert.deepEqual(legacy.keys, [start, end]);
+  assert.deepEqual(legacy.effects, ["keys"]);
+  assert.equal(legacy.size, 1080);
+  const combined = readShot({
+    ...legacy,
+    keys: [start, {}, end, start],
+    effects: ["sun", "sea", "keys", "unknown"],
+    renderer: "trace",
+    samples: 256,
+    fps: 30,
+    denoise: false,
+  });
+  assert.deepEqual(combined.keys, [start, end, start]);
+  assert.deepEqual(combined.effects, ["sun", "sea", "keys"]);
+  assert.equal(combined.samples, 256);
+  assert.equal(combined.denoise, false);
+  assert.deepEqual(readShot(combined), combined);
+  assert.deepEqual(readShot({ effects: [] }).effects, []);
+});
+
+test("Bryce wave phase and panorama rotation animate the CPU ray scene and loop back", async () => {
+  const { waterNormal, defaultWater, sampleSky } = await import("../apps/seamos/bryce.js");
+  const { Vector3 } = await import("../apps/seamos/lib/intersections.js");
+  const water = (t) => waterNormal(2, 3, 4, new Vector3(), defaultWater.bands, t);
+  assert.ok(water(0).distanceTo(water(1)) > 0.01);
+  assert.ok(water(0).distanceTo(water(2 * Math.PI)) < 1e-12);
+  const sky = { width: 4, height: 1, pixels: Uint8Array.of(255, 0, 0, 255, 0, 255, 0, 255, 0, 0, 255, 255, 255, 255, 255, 255) };
+  const d = new Vector3(1, 0, 0);
+  assert.deepEqual(sampleSky(sky, d, 1), sampleSky(sky, d));
+  assert.notDeepEqual(sampleSky(sky, d, 0.25), sampleSky(sky, d));
+});
