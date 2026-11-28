@@ -519,7 +519,10 @@ select {
   gap: 5px;
 }
 .tabs {
-  margin: 13px 14px 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.8fr) minmax(0, 1.22fr) minmax(0, 1fr);
+  gap: 3px;
+  margin: 13px 8px 0;
 }
 .tabs button,
 .segmented button {
@@ -535,6 +538,12 @@ select {
 }
 .tabs span {
   padding: 0 4px;
+}
+.tabs button {
+  min-width: 0;
+  gap: 2px;
+  padding: 6px 1px;
+  font-size: 0.73rem;
 }
 .inspector-section {
   padding: 15px;
@@ -988,6 +997,7 @@ select {
   margin-block: 9px;
 }
 #share-dialog,
+#movie-dialog,
 #export-dialog {
   width: min(32rem, calc(100% - 2rem));
   color: var(--ink);
@@ -996,10 +1006,12 @@ select {
   border: 1px solid var(--ink);
   box-shadow: 4px 4px var(--shadow);
 }
+#movie-dialog::backdrop,
 #share-dialog::backdrop,
 #export-dialog::backdrop {
   background: rgb(12 17 30 / 45%);
 }
+#movie-dialog h2,
 #share-dialog h2,
 #export-dialog h2 {
   font: normal 1.85rem var(--display);
@@ -1080,4 +1092,44 @@ select {
 }
 #export-status {
   font: 0.76rem/1.4 var(--mono);
+}
+
+html:not([data-inspector="advanced"]) .advanced-only {
+  display: none;
+}
+#inspector-depth {
+  width: auto;
+  margin-left: auto;
+  padding: 3px 5px;
+  font: 0.75rem var(--mono);
+}
+.scene-section summary {
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+}
+.scene-section[open] summary {
+  margin-bottom: 10px;
+}
+#movie-dialog {
+  width: min(800px, 95vw);
+}
+#movie-frame {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 68vh;
+  object-fit: contain;
+  background: #191d24;
+  margin: 12px 0;
+}
+#movie-status,
+#keys-status {
+  display: block;
+}
+#motion-panel .export-pair {
+  margin: 12px 0;
+}
+#motion-panel .export-pair select {
+  width: 100%;
 }

@@ -22,10 +22,10 @@ const epsilon = 0.000015;
 const maxBounces = 4;
 const clamp = (x, lo, hi) => Math.max(lo, Math.min(hi, x));
 
-function nearest(origin, dir, scene, shadow = false) {
+function nearest(origin, dir, scene, shadow = false, distanceLimit = Infinity) {
   const { layers, section } = scene;
   let near = epsilon,
-    far = Infinity,
+    far = distanceLimit,
     cutT = -1;
   const axis = section?.axis === 0 ? "x" : "z";
   if (section) {
@@ -106,7 +106,7 @@ function trace(origin, dir, scene, depth, heights, pixel) {
   if (!hit) return scene.ocean ? sampleSky(panorama, dir) : studio(dir);
   const point = origin.clone().addScaledVector(dir, hit.distance);
   if (heights && hit.layer) heights[pixel] = heightByte(point.y, scene.range || [0, 1]);
-  const limit = maxBounces + (scene.section?.oxide ? 2 : 0);
+  const limit = (scene.samples >= 256 ? 10 : maxBounces) + (scene.section?.oxide ? 2 : 0);
   if (hit.oxide) {
     const entering = dir.dot(hit.normal) < 0,
       n = hit.normal.clone().multiplyScalar(entering ? 1 : -1);
@@ -146,9 +146,22 @@ function trace(origin, dir, scene, depth, heights, pixel) {
   light.z += (Math.random() - 0.5) * spread;
   light.normalize();
   const visibility = nearest(start, light, scene, true) ? 0.09 : 1;
+  let ambient = 1;
+  if (scene.samples >= 256 && hit.layer?.style.type !== "glass") {
+    const phi = 2 * Math.PI * Math.random(),
+      r = Math.sqrt(Math.random());
+    const tangent = (Math.abs(n.y) < 0.9 ? new Vector3(0, 1, 0) : new Vector3(1, 0, 0)).cross(n).normalize();
+    const hemi = n
+      .clone()
+      .multiplyScalar(Math.sqrt(1 - r * r))
+      .addScaledVector(tangent, r * Math.cos(phi))
+      .addScaledVector(n.clone().cross(tangent), r * Math.sin(phi));
+    const radius = hit.layer ? clamp(3 * hit.layer.thickness, 0.0012, 0.65) : 0.36;
+    if (nearest(start, hemi, scene, true, radius)) ambient = 0.28;
+  }
   if (!hit.layer) {
     const gridLine = Math.min(Math.abs(point.x - Math.round(point.x)), Math.abs(point.z - Math.round(point.z))) < 0.012;
-    const light = (scene.grid && gridLine ? 0.38 : 0.32) * (0.6 + 0.4 * visibility);
+    const light = (scene.grid && gridLine ? 0.38 : 0.32) * (0.6 * ambient + 0.4 * visibility);
     return [light * 0.76, light * 0.91, light * 1.12];
   }
   const { style: s } = hit.layer,
@@ -165,9 +178,9 @@ function trace(origin, dir, scene, depth, heights, pixel) {
   }
   const glass = s.type === "glass";
   const direct = Math.max(0, n.dot(light)) * visibility * 1.1;
-  const diffuse = 0.26 + direct;
+  const diffuse = 0.26 * ambient + direct;
   const local = scene.ocean
-    ? [c.r * (0.26 + direct * scene.tint.r), c.g * (0.26 + direct * scene.tint.g), c.b * (0.26 + direct * scene.tint.b)]
+    ? [c.r * (0.26 * ambient + direct * scene.tint.r), c.g * (0.26 * ambient + direct * scene.tint.g), c.b * (0.26 * ambient + direct * scene.tint.b)]
     : [c.r * diffuse, c.g * diffuse * 0.96, c.b * diffuse * 0.89];
   if (!glass && metal < 0.005) return local;
   let surrounding = 1;
@@ -264,7 +277,7 @@ async function render(scene) {
       }
     }
     // Keep the last complete pass available while the next pass is accumulating.
-    if (scene.tile && sample !== samples) continue;
+    if ((scene.tile || (samples >= 256 && sample > 1 && sample % 8 !== 0)) && sample !== samples) continue;
     frame = { revision, width, height, heights, linear: sample === samples ? accum : accum.slice(), sample, samples };
     present();
   }
@@ -282,7 +295,13 @@ async function traceScene(scene) {
         const scale = sample === 0 ? Math.min(1, 240 / scene.width) : 1;
         const width = Math.max(1, Math.round(scene.width * scale)),
           height = Math.max(1, Math.round(scene.height * scale));
-        const result = await gpu.pass(width, height, sample, active, !scene.tile || sample === scene.samples);
+        const result = await gpu.pass(
+          width,
+          height,
+          sample,
+          active,
+          (!scene.tile && (scene.samples < 256 || sample <= 1 || sample % 8 === 0)) || sample === scene.samples
+        );
         if (!active()) return;
         if (!result) continue;
         frame = { revision: scene.revision, width, height, ...result, sample, samples: scene.samples };

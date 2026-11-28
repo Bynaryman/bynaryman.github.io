@@ -57,6 +57,7 @@ export class GpuTracer {
       "stackRange",
       "cutAxis",
       "oxide",
+      "ultra",
       "oxideLo",
       "oxideHi",
       "oxideIOR",
@@ -157,6 +158,7 @@ export class GpuTracer {
     this.tile = scene.tile;
     const section = scene.section;
     gl.uniform1i(u.cutAxis, section?.axis ?? -1);
+    gl.uniform1i(u.ultra, Number(scene.samples >= 256));
     gl.uniform1i(u.oxide, Number(!!section?.oxide));
     gl.uniform3fv(u.oxideLo, section?.lo ?? [0, 0, 0]);
     gl.uniform3fv(u.oxideHi, section?.hi ?? [0, 0, 0]);

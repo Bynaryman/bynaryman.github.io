@@ -1,3 +1,4 @@
+import { moviePanel } from "./movie.js";
 import { defaultCut, hasWiring } from "./cutaway.js";
 import { currentSize, renderImage } from "./image-export.js";
 import { defaultFinish, defaultScan } from "./surface-effects.js";
@@ -25,6 +26,7 @@ let request = 0,
   catalogFile,
   catalog;
 let peeled = [];
+let peReveal = [];
 const vp = new Viewport($("scene"), $("traced"), (message, failed) => {
   ready(message);
   if (failed) {
@@ -32,6 +34,7 @@ const vp = new Viewport($("scene"), $("traced"), (message, failed) => {
     showMode();
   }
 });
+const movie = moviePanel(vp, () => currentFile?.name.replace(/\.[^.]+$/, "") || "layout", notice);
 let lastReportedBackend;
 vp.onBackend = showBackend;
 function showBackend() {
@@ -85,6 +88,7 @@ function variedBryce() {
   return vp.environment === "ocean" && (vp.sky !== defaultSky || vp.water !== defaultWater);
 }
 function showEnvironment() {
+  movie.sync();
   $("bryce-variations").hidden = vp.environment !== "ocean";
   $("sky-name").value = vp.sky.name;
   $("water-name").value = vp.water.name;
@@ -169,6 +173,9 @@ function renderPresets() {
 }
 function renderLayers() {
   showViaButton();
+  const reveal = $("reveal-pe");
+  reveal.textContent = peReveal.length ? "Restore upper layers" : "Reveal PE cells";
+  reveal.disabled = !peReveal.length && !upperLayers().some((l) => l.visible);
   const visible = layers.filter((layer) => layer.visible && layer.thickness > 0).length;
   const available = visible + layers.filter((l) => l.thickness > 0 && peeled.includes(l.key)).length;
   $("layer-depth").max = available;
@@ -206,6 +213,7 @@ function renderLayers() {
         eye.setAttribute("aria-pressed", String(layer.visible));
         eye.title = (layer.visible ? "Hide " : "Show ") + layer.name;
         eye.onclick = () => {
+          peReveal = peReveal.filter((key) => key !== layer.key);
           peeled = peeled.filter((key) => key !== layer.key);
           layer.visible = !layer.visible;
           vp.applyVisibility();
@@ -238,7 +246,24 @@ function syncMaterial() {
   $("property").value = glass ? s.ior : s.metalness;
   showRange("property", Number($("property").value).toFixed(2));
 }
-const tabs = ["material", "cells", "layers"];
+const inspectorDepth = $("inspector-depth");
+function detailMode(depth) {
+  document.documentElement.dataset.inspector = depth;
+  inspectorDepth.value = depth;
+}
+try {
+  detailMode(localStorage.getItem("seamos-inspector") === "advanced" ? "advanced" : "simple");
+} catch {
+  detailMode("simple");
+}
+inspectorDepth.onchange = () => {
+  detailMode(inspectorDepth.value);
+  if (inspectorDepth.value === "advanced") $("scene-settings").open = true;
+  try {
+    localStorage.setItem("seamos-inspector", inspectorDepth.value);
+  } catch {}
+};
+const tabs = ["material", "cells", "layers", "motion"];
 function switchTab(active) {
   for (const name of tabs) {
     const on = name === active;
@@ -247,18 +272,21 @@ function switchTab(active) {
     $(name + "-panel").hidden = !on;
   }
 }
-const paletteOffsets = { hierarchy: null, logic: null };
+const paletteOffsets = { hierarchy: null, logic: null, pe: null };
 function updateColorMode() {
   const mode = $("color-mode").value;
+  $("reveal-pe").hidden = mode !== "pe";
   const { colors, legend } = colorLayout(layers, mode, cellNames, currentCell, paletteOffsets[mode]);
   $("shuffle-cell-colors").disabled = !layers.length;
   vp.setColors(colors);
   const hint = $("color-hint");
   hint.hidden = mode === "layer";
   hint.textContent =
-    mode === "logic"
-      ? "Matches SKY130 HD and IHP SG13G2 standard cells. Other geometry is unclassified."
-      : "Each direct child cell has a color shared by its descendants. Open a child to see the next level.";
+    mode === "pe"
+      ? "Color marks placed cells exclusive to each processing element. Shared logic, filler and top-level routing are gray."
+      : mode === "logic"
+        ? "Matches SKY130 HD and IHP SG13G2 standard cells. Other geometry is unclassified."
+        : "Each direct child cell has a color shared by its descendants. Open a child to see the next level.";
   $("cell-legend").hidden = !legend.length;
   $("cell-legend").replaceChildren(
     ...legend.map(({ label, color }) => {
@@ -298,8 +326,11 @@ function setCatalog(file, data) {
   showCells();
 }
 function install(mesh, file, cellChange) {
+  $("pe-option").hidden = $("pe-option").disabled = !mesh.peMapped;
+  if (!mesh.peMapped && $("color-mode").value === "pe") $("color-mode").value = "layer";
   layers = makeLayers(mesh, file.sample);
   peeled = [];
+  peReveal = [];
   applyPreset(layers, preset);
   custom = false;
   currentFile = file;
@@ -327,6 +358,7 @@ function install(mesh, file, cellChange) {
   studioView = null;
   vp.setLayout(layers, mesh.width, mesh.height, mesh.cellNames.some((n) => n.startsWith("sky130_")) && hasWiring(layers));
   syncCut();
+  movie.restore();
   showMode();
   updateColorMode();
   $("view").value = vp.environment === "ocean" ? "horizon" : "perspective";
@@ -344,6 +376,7 @@ function install(mesh, file, cellChange) {
   ready(vp.trace ? "Preparing ray trace" : "Ready");
 }
 function beginImport() {
+  movie.stop();
   const id = ++request;
   cancelImport?.();
   reader?.terminate();
@@ -484,6 +517,7 @@ function setLayerDepth(depth) {
   const eligible = peeled.filter((k) => allowed.has(k));
   depth = Math.max(0, Math.min(visible.length + eligible.length, depth));
   if (depth === visible.length) return;
+  peReveal = [];
   if (depth < visible.length) {
     for (const layer of visible.slice(depth).reverse()) {
       layer.visible = false;
@@ -497,6 +531,27 @@ function setLayerDepth(depth) {
   vp.applyVisibility();
   renderLayers();
 }
+function upperLayers() {
+  const firstMetal = layers.findIndex((l) => l.key === "68/20");
+  return firstMetal < 0 ? [] : layers.slice(firstMetal).filter((l) => l.thickness > 0);
+}
+function revealPE() {
+  if (peReveal.length) {
+    for (const l of layers) if (peReveal.includes(l.key)) l.visible = true;
+    peeled = peeled.filter((key) => !peReveal.includes(key));
+    peReveal = [];
+  } else {
+    const upper = upperLayers().filter((l) => l.visible);
+    peReveal = upper.map((l) => l.key);
+    for (const l of upper.reverse()) {
+      l.visible = false;
+      peeled.push(l.key);
+    }
+  }
+  vp.applyVisibility();
+  renderLayers();
+}
+$("reveal-pe").onclick = revealPE;
 $("layer-depth").oninput = () => setLayerDepth(Number($("layer-depth").value));
 let wheelDelta = 0,
   lastWheel = 0;
@@ -813,8 +868,10 @@ function sceneState() {
     custom,
     layers: layers.map((l) => [l.key, l.visible, l.style.type, l.style.color, l.style.roughness, l.style.metalness, l.style.ior]),
     peeled: [...peeled],
+    peReveal: [...peReveal],
     selected: layers[selected]?.key,
     colorMode: $("color-mode").value,
+    movie: movie.state(),
     palette: { ...paletteOffsets },
     spacing: vp.spacing,
     exposure: vp.exposure,
@@ -853,6 +910,7 @@ function restoreLighting(s) {
   syncLighting();
 }
 function restoreScene(s) {
+  movie.restore(s.movie);
   const saved = new Map(s.layers.filter((row) => Array.isArray(row) && row.length === 7).map((row) => [row[0], row]));
   for (const l of layers) {
     const row = saved.get(l.key);
@@ -871,6 +929,12 @@ function restoreScene(s) {
   }
   const hidden = new Set(layers.filter((l) => !l.visible).map((l) => l.key));
   peeled = Array.isArray(s.peeled) ? [...new Set(s.peeled.filter((k) => hidden.has(k)))] : [];
+  peReveal =
+    Array.isArray(s.peReveal) && !$("pe-option").disabled
+      ? upperLayers()
+          .map((l) => l.key)
+          .filter((k) => peeled.includes(k) && s.peReveal.includes(k))
+      : [];
   const index = layers.findIndex((l) => l.key === s.selected);
   if (index >= 0) selected = index;
   custom = s.custom === true;
@@ -878,11 +942,11 @@ function restoreScene(s) {
   if (inRange(s.exposure, 0.35, 2)) $("exposure").value = s.exposure;
   if (["ink", "blueprint", "off"].includes(s.effect)) $("effect").value = s.effect;
   $("denoise").value = s.denoise === true ? "bilateral" : "off";
-  if ([4, 16, 64].includes(s.samples)) $("samples").value = vp.samples = s.samples;
+  if ([4, 16, 64, 256].includes(s.samples)) $("samples").value = vp.samples = s.samples;
   if (typeof s.grid === "boolean") vp.grid.visible = s.grid;
   $("grid").setAttribute("aria-pressed", String(vp.environment !== "ocean" && vp.grid.visible));
   for (const key of Object.keys(paletteOffsets)) paletteOffsets[key] = inRange(s.palette?.[key], 0, 1) ? s.palette[key] : null;
-  if (["layer", "logic", "hierarchy"].includes(s.colorMode)) $("color-mode").value = s.colorMode;
+  if (["layer", "logic", "hierarchy", ...($("pe-option").disabled ? [] : ["pe"])].includes(s.colorMode)) $("color-mode").value = s.colorMode;
   updateColorMode();
   const cut = s.cut || defaultCut;
   vp.setCut({
@@ -1018,6 +1082,12 @@ async function openInitial() {
       restoreLighting({ finish: { allMetals: url.searchParams.get("film") === "1" }, scan: { enabled: url.searchParams.get("scan") === "1" } });
     if (file) await loadFile(file, state?.cell, state);
     else await demo(state?.cell, state);
+    if (!state && url.searchParams.get("color") === "pe" && !$("pe-option").disabled && (file ? currentFile === file : currentFile?.sample)) {
+      $("color-mode").value = "pe";
+      updateColorMode();
+      switchTab("cells");
+      if (!vp.cut.enabled) revealPE();
+    }
     if (!state && vp.cut.enabled && url.searchParams.get("focus") === "via" && currentFile && (file ? currentFile === file : currentFile.sample))
       focusVia();
   } catch (error) {

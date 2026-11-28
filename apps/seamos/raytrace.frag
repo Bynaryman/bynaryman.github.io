@@ -6,7 +6,7 @@ precision highp sampler2D;
 uniform sampler2D nodes, primitives, vertices, instances, tints, materials, panorama, previous;
 uniform mat4 camera;
 uniform int cutAxis; // -1 for the open view, 0 or 2 for the horizontal layout axes
-uniform bool oxide;
+uniform bool oxide, ultra;
 uniform vec3 oxideLo, oxideHi;
 uniform float oxideIOR;
 uniform vec2 resolution, pixelOrigin, stackRange;
@@ -137,8 +137,8 @@ Hit oxideHit(Ray ray) {
 
 // Search only the retained half-space. At the cut plane a vertical probe
 // finds the upper face of an extrusion, including its bevel and instance tint.
-Hit nearest(Ray ray, bool shadow) {
-  float nearT=eps, farClip=farT, cutT=-1.;
+Hit nearest(Ray ray, bool shadow, float limit) {
+  float nearT=eps, farClip=limit, cutT=-1.;
   if(cutAxis>=0) {
     float d=ray.d[cutAxis], offset=oxideHi[cutAxis]-ray.o[cutAxis];
     if(abs(d)<1e-15) { if(offset<0.) farClip=0.; }
@@ -219,8 +219,8 @@ vec3 seaNormal(vec2 p,float t) {
 vec3 trace(Ray ray) {
   vec3 sum=vec3(0), weight=vec3(1);
   bool primary=true;
-  for(int bounce=0;bounce<=(oxide?6:4);bounce++) {
-    Hit hit=nearest(ray,false);
+  for(int bounce=0;bounce<=((ultra?10:4)+(oxide?2:0));bounce++) {
+    Hit hit=nearest(ray,false,farT);
     if(hit.layer==-1) return sum+weight*environment(ray.d);
     vec3 point=ray.o+ray.d*hit.t;
     if(primary && hit.layer>=0) firstHeight=1.+round(254.*clamp((point.y-stackRange.x)*stackRange.y,0.,1.));
@@ -252,18 +252,26 @@ vec3 trace(Ray ray) {
     bool entering=dot(ray.d,hit.normal)<0.0;
     vec3 n=entering ? hit.normal : -hit.normal;
     vec3 light=normalize(sun+vec3(random01()-0.5,0,random01()-0.5)*(ocean?0.035:0.34));
-    float visibility=nearest(Ray(point+n*eps*3.0,light),true).layer>=0 ? 0.09:1.0;
+    float visibility=nearest(Ray(point+n*eps*3.0,light),true,farT).layer>=0 ? 0.09:1.0;
+    float ambient=1.;
+    if(ultra && (hit.layer==-2 || entry(materials,3*hit.layer+1).w!=2.)) {
+      float phi=2.*pi*random01(), r=sqrt(random01());
+      vec3 tangent=normalize(cross(abs(n.y)<0.9?vec3(0,1,0):vec3(1,0,0),n));
+      vec3 hemi=r*(cos(phi)*tangent+sin(phi)*cross(n,tangent))+sqrt(max(0.,1.-r*r))*n;
+      float radius=hit.layer==-2?0.36:clamp(3.*entry(materials,3*hit.layer).y,0.0012,0.65);
+      if(nearest(Ray(point+n*eps*3.,hemi),true,radius).layer>=0) ambient=0.28;
+    }
     if(hit.layer==-2) {
       vec2 line=abs(point.xz-round(point.xz));
       float base=grid && min(line.x,line.y)<0.012 ? 0.38:0.32;
-      return sum+weight*base*(0.6+0.4*visibility)*vec3(0.76,0.91,1.12);
+      return sum+weight*base*(0.6*ambient+0.4*visibility)*vec3(0.76,0.91,1.12);
     }
     vec4 colorType=entry(materials,3*hit.layer+1), finish=entry(materials,3*hit.layer+2);
     vec3 c=useTints ? entry(tints,hit.tint).rgb : colorType.rgb;
     float cosine=clamp(-dot(n,ray.d),0.0,1.0);
     if(finish.w>0.5) c=mix(c,mix(filmFace,filmRim,smoothstep(0.,1.,1.-cosine)),0.82);
     float direct=max(0.0,dot(n,light))*visibility*1.1;
-    vec3 local=ocean ? c*(0.26+direct*sunlight) : c*(0.26+direct)*vec3(1,0.96,0.89);
+    vec3 local=ocean ? c*(0.26*ambient+direct*sunlight) : c*(0.26*ambient+direct)*vec3(1,0.96,0.89);
     bool glass=colorType.w==2.0;
     float metal=finish.y;
     if(!glass && metal<0.005) return sum+weight*local;

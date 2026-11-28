@@ -266,3 +266,73 @@ test("a cut through a concave footprint leaves its gap open and keeps the placed
   }
   assert.deepEqual(nearestVia(layer, { x: 15, z: 4 }), { x: 11, z: 3, width: 4 });
 });
+
+test("movie keyframes take the short orbit across the angle boundary and interpolate the target and zoom", async () => {
+  const { cameraBetween } = await import("../apps/seamos/movie.js");
+  const key = (yaw, radius, x, fov) => ({
+    position: [x + radius * Math.sin(yaw), 0, radius * Math.cos(yaw)],
+    target: [x, 0, 0],
+    fov,
+  });
+  const a = key(Math.PI * 0.95, 2, 0, 50),
+    b = key(-Math.PI * 0.95, 8, 4, 30);
+  for (const [t, expected] of [
+    [0, a],
+    [0.5, { position: [2, 0, -4], target: [2, 0, 0], fov: 40 }],
+    [1, b],
+  ]) {
+    const frame = cameraBetween(a, b, t);
+    assert.deepEqual(frame.target, expected.target);
+    assert.equal(frame.fov, expected.fov);
+    frame.position.forEach((v, i) => assert.ok(Math.abs(v - expected.position[i]) < 1e-9));
+  }
+});
+
+test("PE colors follow placed instances and leave shared cells neutral when shuffled", async () => {
+  const { colorLayout } = await import("../apps/seamos/cell-colors.js");
+  const layers = [{ parts: [{ placements: new Float32Array(6 * 8), pe: Uint8Array.of(4, 2, 0, 3, 1, 2) }] }];
+  const color = (shift) => colorLayout(layers, "pe", ["TOP"], "TOP", shift);
+  const base = color(null),
+    shuffled = color(0.341);
+  assert.equal(base.legend.length, 5);
+  const original = base.colors[0][0],
+    tints = shuffled.colors[0][0];
+  assert.deepEqual(tints.slice(6, 9), original.slice(6, 9));
+  assert.deepEqual(tints.slice(3, 6), tints.slice(15));
+  assert.notDeepEqual(tints.slice(0, 3), original.slice(0, 3));
+  assert.notDeepEqual(tints.slice(3, 6), tints.slice(0, 3));
+});
+
+test("Ultra completes all 256 samples in the CPU worker for an exported tile", async (t) => {
+  const messages = [];
+  globalThis.self = {};
+  globalThis.postMessage = (m) => messages.push(m);
+  t.after(() => {
+    delete globalThis.self;
+    delete globalThis.postMessage;
+  });
+  await import("../apps/seamos/trace-worker.js?cpu-ultra");
+  await self.onmessage({
+    data: {
+      type: "render",
+      device: "cpu",
+      revision: 1,
+      samples: 256,
+      width: 8,
+      height: 6,
+      aspect: 4 / 3,
+      tile: { x: 0, y: 0, fullWidth: 8, fullHeight: 6 },
+      matrix: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0.6, 0, 1],
+      layers: [],
+      fov: 65,
+      grid: true,
+      exposure: 1,
+      sunlight: "#ffffff",
+    },
+  });
+  assert.match(messages[0].backend, /CPU ray tracing/);
+  const image = messages.at(-1);
+  assert.equal(image.sample, 256);
+  assert.equal(image.pixels.length, 8 * 6 * 4);
+  assert.ok(image.pixels.some((v, i) => i % 4 === 0 && v > 0 && v < 255));
+});

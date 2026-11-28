@@ -6,6 +6,13 @@ const logic = [
   { label: "Combinational", color: "#499fd2" },
 ];
 
+const elements = [
+  { label: "Shared, routing & other", color: "#667078" },
+  { label: "PE (1,1) · C11", color: "#57aeff" },
+  { label: "PE (1,2) · C21", color: "#33c99a" },
+  { label: "PE (2,1) · C12", color: "#ffb74a" },
+  { label: "PE (2,2) · C22", color: "#cc86ed" },
+];
 export function shuffleColorOffset(previous = 0) {
   return (previous + 0.23 + Math.random() * 0.54) % 1;
 }
@@ -23,12 +30,14 @@ function branchColor(name, shift) {
 export function colorLayout(layers, mode, cells, selected, shift = null) {
   if (mode === "layer") return { colors: [], legend: [] };
   const palette = new Map();
-  function tint(branch, type) {
-    const id = mode === "logic" ? type : branch;
+  function tint(branch, type, pe = 0) {
+    const id = mode === "pe" ? pe : mode === "logic" ? type : branch;
     if (!palette.has(id)) {
       const name = cells[branch];
       let entry;
-      if (mode === "logic") {
+      if (mode === "pe")
+        entry = shift === null || !id ? elements[id] : { label: elements[id].label, color: hueColor(shift + (id - 1) / 4, 0.72, 0.6) };
+      else if (mode === "logic") {
         entry = shift === null ? logic[id] : { label: logic[id].label, color: hueColor(shift + id / 3, id ? 0.72 : 0.32, id === 2 ? 0.62 : 0.51) };
       } else {
         entry = { label: name, color: name === selected && shift === null ? "#89939a" : branchColor(name, shift ?? 0) };
@@ -39,9 +48,9 @@ export function colorLayout(layers, mode, cells, selected, shift = null) {
   }
   const colors = layers.map(({ spans, positions, parts }) => {
     if (parts)
-      return parts.map(({ placements }) => {
+      return parts.map(({ placements, pe }) => {
         const bytes = new Uint8Array((placements.length / 8) * 3);
-        for (let i = 0; i < placements.length; i += 8) bytes.set(tint(placements[i + 6], placements[i + 7]), (i / 8) * 3);
+        for (let i = 0; i < placements.length; i += 8) bytes.set(tint(placements[i + 6], placements[i + 7], pe?.[i / 8]), (i / 8) * 3);
         return bytes;
       });
     const bytes = new Uint8Array(positions.length);

@@ -203,6 +203,7 @@ export class Viewport {
     this.update();
   }
   resize() {
+    if (this.movieActive) return;
     const { clientWidth: w, clientHeight: h } = this.canvas.parentElement;
     if (this.viewportWidth === w && this.viewportHeight === h) return;
     this.viewportWidth = w;
@@ -532,6 +533,7 @@ export class Viewport {
     this.canvas.style.cursor = pan ? "grab" : "default";
   }
   update() {
+    if (this.movieActive) return;
     this.stopTrace(false);
     if (this.frame) return;
     this.frame = requestAnimationFrame(() => {
@@ -602,7 +604,7 @@ export class Viewport {
     if (!scan.enabled || !scan.speed) return;
     let last = 0;
     const tick = (now) => {
-      if (now - last >= 1000 / 30) {
+      if (!this.movieActive && now - last >= 1000 / 30) {
         last = now;
         const position = this.scanPosition(now);
         if (this.trace && !this.traced.hidden) this.paintTrace(position);
