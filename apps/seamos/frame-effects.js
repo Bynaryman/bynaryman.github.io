@@ -9,13 +9,19 @@ export class PreviewEffect {
     this.clearColor = new Color();
     this.heightMaterial = new ShaderMaterial({
       side: DoubleSide,
+      clipping: true,
       uniforms: { stackRange: { value: new Vector2() } },
-      vertexShader: `varying float height; void main(){vec4 p=vec4(position,1.);
+      vertexShader: `#include <clipping_planes_pars_vertex>
+varying float height; void main(){vec4 p=vec4(position,1.);
         #ifdef USE_INSTANCING
           p=instanceMatrix*p;
         #endif
-        p=modelMatrix*p; height=p.y; gl_Position=projectionMatrix*viewMatrix*p;}`,
-      fragmentShader: `varying float height;uniform vec2 stackRange;void main(){
+        p=modelMatrix*p; height=p.y;vec4 mvPosition=viewMatrix*p; gl_Position=projectionMatrix*mvPosition;
+#include <clipping_planes_vertex>
+}`,
+      fragmentShader: `#include <clipping_planes_pars_fragment>
+varying float height;uniform vec2 stackRange;void main(){
+#include <clipping_planes_fragment>
         gl_FragColor=vec4((1.+254.*clamp((height-stackRange.x)*stackRange.y,0.,1.))/255.,0.,0.,1.);
       }`,
     });
@@ -63,7 +69,7 @@ export class PreviewEffect {
     quad.frustumCulled = false;
     this.scene.add(quad);
   }
-  capture(renderer, world, camera, scanEnabled, range) {
+  capture(renderer, world, camera, scanEnabled, range, planes) {
     const { width, height } = renderer.domElement;
     if (!width || !height) return;
     this.target.setSize(width, height);
@@ -80,6 +86,7 @@ export class PreviewEffect {
     renderer.getClearColor(this.clearColor);
     try {
       world.background = null;
+      this.heightMaterial.clippingPlanes = planes;
       world.overrideMaterial = this.heightMaterial;
       this.heightMaterial.uniforms.stackRange.value.fromArray(range);
       renderer.shadowMap.autoUpdate = false;

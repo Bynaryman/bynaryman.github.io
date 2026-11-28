@@ -209,7 +209,7 @@ function meshShared(layout) {
           for (let i = 0; i < positions.length; i += 3) positions[i] *= -1;
           for (let i = 0; i < indices.length; i += 3) [indices[i], indices[i + 1]] = [indices[i + 1], indices[i]];
         }
-        layer.parts.push({ positions, indices, placements, surfaceCount });
+        layer.parts.push({ positions, indices, placements, spans: source.spans, surfaceCount });
         layer.count += (source.count * placements.length) / 8;
       }
     }

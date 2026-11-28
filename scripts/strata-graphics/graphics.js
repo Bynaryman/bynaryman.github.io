@@ -1,6 +1,7 @@
 export {
   ACESFilmicToneMapping,
   AmbientLight,
+  BoxGeometry,
   BufferAttribute,
   BufferGeometry,
   Color,
@@ -23,6 +24,7 @@ export {
   MeshStandardMaterial,
   MOUSE,
   PerspectiveCamera,
+  Plane,
   PlaneGeometry,
   PCFSoftShadowMap,
   PMREMGenerator,

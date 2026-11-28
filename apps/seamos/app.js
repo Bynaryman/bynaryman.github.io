@@ -1,3 +1,4 @@
+import { defaultCut, hasWiring } from "./cutaway.js";
 import { currentSize, renderImage } from "./image-export.js";
 import { defaultFinish, defaultScan } from "./surface-effects.js";
 import { icon } from "./icons.js";
@@ -167,8 +168,9 @@ function renderPresets() {
   );
 }
 function renderLayers() {
-  const visible = layers.filter((layer) => layer.visible).length;
-  const available = visible + peeled.length;
+  showViaButton();
+  const visible = layers.filter((layer) => layer.visible && layer.thickness > 0).length;
+  const available = visible + layers.filter((l) => l.thickness > 0 && peeled.includes(l.key)).length;
   $("layer-depth").max = available;
   $("layer-depth").value = visible;
   $("layer-depth").disabled = !available;
@@ -176,6 +178,7 @@ function renderLayers() {
   $("layer-list").replaceChildren(
     ...layers
       .map((layer, i) => {
+        if (layer.thickness === 0) return null;
         const row = document.createElement("div");
         row.className = "layer-line" + (layer.visible ? "" : " is-hidden") + (i === selected ? " chosen" : "");
         const btn = document.createElement("button");
@@ -211,6 +214,7 @@ function renderLayers() {
         row.append(btn, eye);
         return row;
       })
+      .filter(Boolean)
       .reverse()
   );
 }
@@ -321,10 +325,12 @@ function install(mesh, file, cellChange) {
   $("dimensions").textContent = fmt.format(mesh.width) + " × " + fmt.format(mesh.height) + " µm";
   if (!cellChange) switchTab("material");
   studioView = null;
-  vp.setLayout(layers);
+  vp.setLayout(layers, mesh.width, mesh.height, mesh.cellNames.some((n) => n.startsWith("sky130_")) && hasWiring(layers));
+  syncCut();
   showMode();
   updateColorMode();
   $("view").value = vp.environment === "ocean" ? "horizon" : "perspective";
+  if (vp.cut.enabled) faceCut();
   $("export").disabled = false;
   $("shuffle-palette").disabled = false;
   $("shuffle-finishes").disabled = false;
@@ -473,8 +479,10 @@ $("stack-materials").onclick = $("shuffle-finishes").onclick = () => {
   updateMaterials();
 };
 function setLayerDepth(depth) {
-  const visible = layers.filter((layer) => layer.visible);
-  depth = Math.max(0, Math.min(visible.length + peeled.length, depth));
+  const visible = layers.filter((layer) => layer.visible && layer.thickness > 0);
+  const allowed = new Set(layers.filter((l) => l.thickness > 0).map((l) => l.key));
+  const eligible = peeled.filter((k) => allowed.has(k));
+  depth = Math.max(0, Math.min(visible.length + eligible.length, depth));
   if (depth === visible.length) return;
   if (depth < visible.length) {
     for (const layer of visible.slice(depth).reverse()) {
@@ -482,7 +490,8 @@ function setLayerDepth(depth) {
       peeled.push(layer.key);
     }
   } else {
-    const restore = new Set(peeled.splice(peeled.length - (depth - visible.length)));
+    const restore = new Set(eligible.slice(-(depth - visible.length)));
+    peeled = peeled.filter((k) => !restore.has(k));
     for (const layer of layers) if (restore.has(layer.key)) layer.visible = true;
   }
   vp.applyVisibility();
@@ -543,6 +552,71 @@ function updateDisplay() {
 $("exposure").oninput = updateDisplay;
 $("denoise").onchange = updateDisplay;
 $("effect").onchange = updateDisplay;
+function syncCut() {
+  const cut = vp.cut;
+  $("cut-enabled").checked = cut.enabled;
+  $("cut-controls").hidden = !cut.enabled;
+  $("cut-view").hidden = !cut.enabled;
+  $("cut-axis").value = cut.axis;
+  $("cut-oxide").checked = cut.oxide;
+  $("cut-scale").checked = cut.trueScale;
+  $("cut-scale-field").hidden = !vp.skyWiring;
+  $("cut-position").value = cut.position;
+  showRange("cut-position", fmt.format(cut.position) + "%");
+  $("spacing").disabled = cut.enabled && vp.skyWiring;
+  showViaButton();
+  $("cut-hint").textContent = vp.skyWiring
+    ? "SKY130 wiring from local interconnect to Metal 5. SiO₂ approximates the insulating films."
+    : "Illustrative mask heights and a uniform SiO₂ fill. Use Ray trace to see refraction.";
+}
+function viaLayer() {
+  const vias = layers.filter((l) => l.visible && (vp.skyWiring ? /^(68|69|70|71)\/44$/.test(l.key) : currentFile?.sample && l.slot === 4));
+  return vias.includes(layers[selected]) ? layers[selected] : vias[0];
+}
+function showViaButton() {
+  const layer = viaLayer(),
+    button = $("focus-via");
+  button.hidden = !layer;
+  if (layer && vp.skyWiring) {
+    const via = layer.layer - 67;
+    button.textContent = "Focus Via " + via + " · M" + via + "–M" + (via + 1);
+  } else button.textContent = "Focus a via";
+}
+function focusVia() {
+  const layer = viaLayer();
+  if (!layer) return;
+  vp.focusVia(layer);
+  $("view").value = "cut";
+  syncCut();
+}
+$("focus-via").onclick = focusVia;
+function faceCut() {
+  $("view").value = "cut";
+  vp.setView("cut");
+}
+function editCut(event) {
+  vp.setCut(
+    {
+      enabled: $("cut-enabled").checked,
+      axis: $("cut-axis").value,
+      position: event.target.id === "cut-position" ? Number($("cut-position").value) : vp.cut.position,
+      oxide: $("cut-oxide").checked,
+      trueScale: $("cut-scale").checked,
+    },
+    $("view").value === "cut"
+  );
+  syncCut();
+  if (event.target.id === "cut-enabled" || event.target.id === "cut-axis") {
+    if (vp.cut.enabled && (event.target.id === "cut-enabled" || $("view").value === "cut")) faceCut();
+    else if (!vp.cut.enabled && $("view").value === "cut") {
+      $("view").value = "perspective";
+      vp.setView("perspective");
+    }
+    renderLayers();
+  }
+}
+for (const id of ["cut-enabled", "cut-oxide", "cut-axis", "cut-position", "cut-scale"]) $(id).oninput = editCut;
+$("face-cut").onclick = faceCut;
 function syncLighting() {
   const f = vp.finish,
     scan = vp.scan;
@@ -745,6 +819,7 @@ function sceneState() {
     spacing: vp.spacing,
     exposure: vp.exposure,
     effect: vp.effect,
+    cut: { ...vp.cut },
     finish: { ...vp.finish },
     scan: { ...vp.scan, phase: vp.scanPosition() },
     grid: vp.grid.visible,
@@ -809,7 +884,16 @@ function restoreScene(s) {
   for (const key of Object.keys(paletteOffsets)) paletteOffsets[key] = inRange(s.palette?.[key], 0, 1) ? s.palette[key] : null;
   if (["layer", "logic", "hierarchy"].includes(s.colorMode)) $("color-mode").value = s.colorMode;
   updateColorMode();
-  if (["perspective", "horizon", "top", "front"].includes(s.view)) $("view").value = s.view;
+  const cut = s.cut || defaultCut;
+  vp.setCut({
+    enabled: cut.enabled === true,
+    axis: cut.axis === "x" ? "x" : "y",
+    position: inRange(cut.position, 0, 100) ? cut.position : 50,
+    oxide: cut.oxide !== false,
+    trueScale: cut.trueScale === true,
+  });
+  syncCut();
+  if (["perspective", "horizon", "top", "front", ...(vp.cut.enabled ? ["cut"] : [])].includes(s.view)) $("view").value = s.view;
   vp.setView($("view").value);
   if (inRange(s.fov, 1, 120)) {
     vp.camera.fov = s.fov;
@@ -929,10 +1013,13 @@ async function openInitial() {
       showEnvironment();
       renderPresets();
     }
+    if (!state) vp.setCut({ ...defaultCut, enabled: url.searchParams.get("cut") === "1" });
     if (!state)
       restoreLighting({ finish: { allMetals: url.searchParams.get("film") === "1" }, scan: { enabled: url.searchParams.get("scan") === "1" } });
     if (file) await loadFile(file, state?.cell, state);
     else await demo(state?.cell, state);
+    if (!state && vp.cut.enabled && url.searchParams.get("focus") === "via" && currentFile && (file ? currentFile === file : currentFile.sample))
+      focusVia();
   } catch (error) {
     if (id === request) {
       notice("Could not open shared view. " + (error instanceof TypeError ? "Check that the layout URL allows browser access." : error.message));

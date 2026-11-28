@@ -106,6 +106,7 @@
                 <option value="horizon">Horizon</option>
                 <option value="top">Top view</option>
                 <option value="front">Front view</option>
+                <option id="cut-view" value="cut" hidden>Cut face</option>
               </select>
             </div>
           </div>
@@ -247,6 +248,28 @@
         </div>
         <section class="inspector-section scene-section">
           <h3>Scene settings</h3>
+          <div class="variation lighting-toggle">
+            <label><input type="checkbox" id="cut-enabled" /> Wiring cutaway</label>
+          </div>
+          <div id="cut-controls" hidden>
+            <label class="control-label" for="cut-axis">Slice along</label>
+            <select id="cut-axis">
+              <option value="x">Layout X</option>
+              <option value="y" selected>Layout Y</option>
+            </select>
+            <div class="range-row">
+              <label for="cut-position">Retained width</label><output for="cut-position" id="cut-position-value">50%</output>
+              <input type="range" id="cut-position" min="0" max="100" value="50" step="0.1" />
+            </div>
+            <div class="variation lighting-toggle">
+              <label><input type="checkbox" id="cut-oxide" checked /> SiO₂ fill</label> <button class="shuffle" id="face-cut">Face cut</button>
+            </div>
+            <div class="variation lighting-toggle" id="cut-scale-field" hidden>
+              <label><input id="cut-scale" type="checkbox" /> True vertical scale</label>
+            </div>
+            <button class="shuffle" id="focus-via" hidden>Focus a via</button>
+            <p class="mode-hint" id="cut-hint"></p>
+          </div>
           <label class="control-label" for="effect">Image effect</label>
           <select id="effect">
             <option value="off">None</option>

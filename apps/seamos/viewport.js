@@ -1,3 +1,5 @@
+import { defaultCut, cutVolume, wireStack, silicaIOR } from "./cutaway.js";
+import { cutFaces, nearestVia } from "./cut-faces.js";
 import { currentSize } from "./image-export.js";
 import { defaultFinish, defaultScan, coated, metalSurface, stackRange, scanPhase, paintScan } from "./surface-effects.js";
 import * as T from "./lib/graphics.js";
@@ -34,6 +36,27 @@ export class Viewport {
     this.effect = "off";
     this.finish = { ...defaultFinish };
     this.scan = { ...defaultScan };
+    this.cut = { ...defaultCut };
+    this.footprint = [10, 10];
+    this.clipPlane = new T.Plane();
+    this.clipPlanes = [this.clipPlane];
+    this.caps = new T.Group();
+    this.world.add(this.caps);
+    this.oxide = new T.Mesh(
+      new T.BoxGeometry(1, 1, 1),
+      new T.MeshPhysicalMaterial({
+        color: "#bfebea",
+        transparent: true,
+        opacity: 0.18,
+        depthWrite: false,
+        roughness: 0.14,
+        ior: silicaIOR,
+        clearcoat: 1,
+      })
+    );
+    this.oxide.visible = false;
+    this.oxide.renderOrder = 2;
+    this.world.add(this.oxide);
     this.phase = 0.32;
     this.phaseTime = performance.now();
     this.filmFace = { value: new T.Color(this.finish.face) };
@@ -53,6 +76,7 @@ export class Viewport {
       this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
       this.renderer.toneMapping = T.ACESFilmicToneMapping;
       this.renderer.shadowMap.enabled = true;
+      this.renderer.localClippingEnabled = true;
       this.renderer.shadowMap.type = T.PCFSoftShadowMap;
       const env = new T.RoomEnvironment();
       const pmrem = new T.PMREMGenerator(this.renderer);
@@ -196,7 +220,12 @@ export class Viewport {
     this.renderer?.setSize(w, h, false);
     this.update();
   }
-  setLayout(layers) {
+  setLayout(layers, width, height, skyWiring) {
+    this.clearCaps();
+    const scale = 10 / Math.max(width, height);
+    this.footprint = [width * scale, height * scale];
+    this.worldPerMicron = scale;
+    this.skyWiring = skyWiring;
     this.stopTrace(true);
     this.traceBackend = null;
     for (const mesh of this.meshes) {
@@ -277,6 +306,7 @@ export class Viewport {
   }
   setColors(colors) {
     this.vertexColors = colors;
+    this.capsDirty = true;
     for (const [i, mesh] of this.meshes.entries()) {
       if (this.layers[i].parts) {
         const color = new T.Color();
@@ -301,12 +331,28 @@ export class Viewport {
     this.apply();
   }
   apply() {
-    this.height = stackLayers(this.layers, this.spacing);
+    const trueScale = this.cut.enabled && this.skyWiring && this.cut.trueScale;
+    const verticalScale = trueScale ? this.worldPerMicron : 0.48;
+    this.controls.minDistance = trueScale ? Math.min(0.4, 0.3 * verticalScale) : 0.4;
+    this.camera.near = trueScale ? Math.min(0.06, Math.max(0.0001, 0.08 * verticalScale)) : 0.06;
+    this.camera.updateProjectionMatrix();
+    this.height = this.cut.enabled && this.skyWiring ? wireStack(this.layers, verticalScale) : stackLayers(this.layers, this.spacing);
+    if (this.cut.enabled && this.layers.some((l) => l.name === "Vias")) {
+      const via = this.layers.find((l) => l.name === "Vias"),
+        bottom = this.layers.find((l) => l.name === "Metal 1"),
+        top = this.layers.find((l) => l.name === "Metal 2");
+      if (bottom && top) {
+        via.y = bottom.y + bottom.thickness;
+        via.thickness = top.y - via.y;
+      }
+    }
     for (const [i, layer] of this.layers.entries()) {
       const mesh = this.meshes[i],
         m = mesh.material,
         s = layer.style;
-      mesh.visible = layer.visible;
+      mesh.visible = layer.visible && layer.thickness > 0 && !(this.cut.enabled && this.cut.position === 0);
+      m.clippingPlanes = this.cut.enabled ? this.clipPlanes : null;
+      m.clipShadows = this.cut.enabled;
       mesh.position.y = layer.y;
       mesh.scale.y = layer.thickness;
       const glass = s.type === "glass";
@@ -324,17 +370,126 @@ export class Viewport {
       for (const child of mesh.children) child.castShadow = !glass;
       m.needsUpdate = true;
     }
+    this.syncSection();
     if (this.renderer) this.renderer.toneMappingExposure = this.exposure;
     this.update();
+  }
+  setCut(cut, trackFace = false) {
+    const previous = this.section,
+      previousHeight = this.height;
+    const planeChanged = cut.enabled !== this.cut.enabled || cut.axis !== this.cut.axis || cut.position !== this.cut.position;
+    const changeStack = cut.enabled !== this.cut.enabled || cut.trueScale !== this.cut.trueScale;
+    this.cut = { ...cut };
+    if (planeChanged) this.capsDirty = true;
+    if (changeStack) this.apply();
+    else this.applyVisibility();
+    if (!cut.enabled && this.caps.children.length) this.clearCaps();
+    if (trackFace && previous && this.section?.axis === previous.axis) {
+      const axis = previous.axis,
+        step = this.section.cutAt - previous.cutAt;
+      const vertical = previousHeight ? this.controls.target.y * (this.height / previousHeight - 1) : 0;
+      this.controls.target.y += vertical;
+      this.camera.position.y += vertical;
+      this.controls.target.setComponent(axis, this.controls.target.getComponent(axis) + step);
+      this.camera.position.setComponent(axis, this.camera.position.getComponent(axis) + step);
+      this.controls.update();
+    }
+  }
+  focusVia(layer) {
+    const target = this.controls.target.clone();
+    target.setComponent(this.section.axis, this.section.cutAt);
+    const via = nearestVia(layer, target);
+    if (!via) return;
+    const alongX = this.cut.axis === "x";
+    const position = 50 + (100 * (alongX ? via.x : via.z)) / this.footprint[alongX ? 0 : 1];
+    this.setCut({ ...this.cut, trueScale: !!this.skyWiring, position: Math.min(100, Math.max(0, position)) });
+    target.set(via.x, layer.y + layer.thickness / 2, via.z);
+    const dir = new T.Vector3(alongX ? 1 : 0.11, 0.095, alongX ? 0.11 : 1).normalize();
+    this.camera.fov = 31;
+    this.camera.updateProjectionMatrix();
+    const distance = Math.max(this.controls.minDistance, layer.thickness * 6.5, (via.width * 13) / this.camera.aspect);
+    this.camera.position.copy(target).addScaledVector(dir, distance);
+    this.controls.target.copy(target);
+    this.controls.update();
+    this.update();
+  }
+  clearCaps() {
+    for (const cap of this.caps.children) {
+      cap.geometry.dispose();
+      cap.material.dispose();
+    }
+    this.caps.clear();
+    this.capsDirty = true;
+  }
+  syncSection() {
+    this.section = cutVolume(this.cut, this.footprint, this.layers, this.cut.trueScale && this.skyWiring ? 0.09 * this.worldPerMicron : 0.04);
+    const s = this.section;
+    this.caps.visible = !!s && !s.empty;
+    this.oxide.visible = !!s?.oxide;
+    if (!s) return;
+    this.clipPlane.normal.set(s.axis === 0 ? -1 : 0, 0, s.axis === 2 ? -1 : 0);
+    this.clipPlane.constant = s.cutAt;
+    if (s.oxide) {
+      this.oxide.position
+        .fromArray(s.lo)
+        .add(new T.Vector3(...s.hi))
+        .multiplyScalar(0.5);
+      this.oxide.scale.fromArray(s.hi).sub(new T.Vector3(...s.lo));
+    }
+    for (const cap of this.caps.children) this.styleCap(cap);
+  }
+  styleCap(cap) {
+    const i = cap.userData.layer,
+      l = this.layers[i];
+    cap.visible = this.meshes[i].visible;
+    cap.position.y = l.y;
+    cap.scale.y = l.thickness;
+    cap.material.color.set(this.vertexColors.length ? "#ffffff" : l.style.color);
+  }
+  buildCaps() {
+    this.clearCaps();
+    for (const [i, l] of this.layers.entries()) {
+      if (!l.thickness) continue;
+      const { positions, colors } = cutFaces(l, this.section, this.vertexColors[i]);
+      if (!positions.length) continue;
+      const geo = new T.BufferGeometry();
+      geo.setAttribute("position", new T.BufferAttribute(positions, 3));
+      geo.computeVertexNormals();
+      if (colors.length) geo.setAttribute("color", new T.BufferAttribute(colors, 3, true));
+      const cap = new T.Mesh(geo, new T.MeshStandardMaterial({ side: T.DoubleSide, vertexColors: !!colors.length, roughness: 0.55 }));
+      cap.userData.layer = i;
+      cap.layers.enable(1);
+      cap.renderOrder = 1;
+      this.styleCap(cap);
+      this.caps.add(cap);
+    }
+    this.capsDirty = false;
   }
   fitDistance(aspect) {
     return Math.max(22.8, 29 / aspect);
   }
   applyVisibility() {
-    for (const [i, layer] of this.layers.entries()) this.meshes[i].visible = layer.visible;
+    for (const [i, layer] of this.layers.entries())
+      this.meshes[i].visible = layer.visible && layer.thickness > 0 && !(this.cut.enabled && this.cut.position === 0);
+    this.syncSection();
     this.update();
   }
   setView(view) {
+    if (view === "cut" && this.section) {
+      const axis = this.section.axis,
+        target = new T.Vector3(0, this.height / 2, 0);
+      target.setComponent(axis, this.section.cutAt);
+      const dir = new T.Vector3(axis === 0 ? 1 : 0.16, 0.14, axis === 2 ? 1 : 0.16).normalize();
+      this.camera.fov = 31;
+      this.camera.updateProjectionMatrix();
+      const width = this.footprint[axis === 0 ? 1 : 0];
+      const distance = Math.max(4, this.height * 2.9, (width * 2.2) / this.camera.aspect);
+      this.camera.position.copy(target).addScaledVector(dir, distance);
+      this.controls.target.copy(target);
+      this.controls.update();
+      this.update();
+      return;
+    }
     this.camera.fov = view === "horizon" ? 38 : 29;
     this.camera.updateProjectionMatrix();
     const targetY = view === "horizon" ? (this.height || 1) * 0.48 + 0.55 : (this.height || 1) * 0.04;
@@ -392,6 +547,7 @@ export class Viewport {
   }
   drawPreview(phase = this.scanPosition()) {
     if (!this.renderer) return;
+    if (this.caps.visible && this.capsDirty) this.buildCaps();
     if (this.sharedLayout) {
       const overview = this.camera.position.distanceTo(this.controls.target) > 5;
       for (const [i, layer] of this.layers.entries()) {
@@ -403,7 +559,7 @@ export class Viewport {
         mesh.material.opacity = glass && overview ? 0.45 : 1;
         for (const child of mesh.children) {
           child.castShadow = !overview && !glass;
-          child.geometry.setDrawRange(0, overview ? child.userData.surfaceCount : Infinity);
+          child.geometry.setDrawRange(0, overview && !this.cut.enabled ? child.userData.surfaceCount : Infinity);
         }
       }
     }
@@ -411,7 +567,14 @@ export class Viewport {
     this.renderer.render(this.world, this.camera);
     if (this.effect !== "off" || this.scan.enabled) {
       this.previewEffect ??= new PreviewEffect();
-      this.previewEffect.capture(this.renderer, this.world, this.camera, this.scan.enabled, stackRange(this.layers));
+      this.previewEffect.capture(
+        this.renderer,
+        this.world,
+        this.camera,
+        this.scan.enabled,
+        stackRange(this.layers),
+        this.section ? this.clipPlanes : null
+      );
       this.previewEffect.draw(this.renderer, this.camera, this.effect, this.scan, phase);
     }
   }
@@ -566,6 +729,7 @@ export class Viewport {
       width,
       height,
       finish: { ...this.finish },
+      section: this.section,
       range: stackRange(this.layers),
       matrix: this.camera.matrixWorld.elements.slice(),
       fov: this.camera.fov,
@@ -579,7 +743,12 @@ export class Viewport {
       denoise: this.denoise,
       effect: this.effect,
       displayRevision: this.displayRevision,
-      layers: this.layers.map(({ y, thickness, visible, style }) => ({ y, thickness, visible, style: { ...style } })),
+      layers: this.layers.map(({ y, thickness, visible, style }) => ({
+        y,
+        thickness,
+        visible: visible && thickness > 0 && !this.section?.empty,
+        style: { ...style },
+      })),
     };
   }
   traceFailure(message) {

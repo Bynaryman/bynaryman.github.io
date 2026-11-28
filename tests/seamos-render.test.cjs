@@ -219,3 +219,50 @@ test("shuffled category colors agree for instanced and flattened layouts", async
     );
   }
 });
+
+test("the SKY130 cut connects vias to both metal faces and confines oxide to the retained wiring", async () => {
+  const { wireStack, cutVolume, defaultCut, boxHit } = await import("../apps/seamos/cutaway.js");
+  const layers = ["64/20", "68/20", "68/44", "69/20"].map((key) => ({ key, visible: true }));
+  wireStack(layers);
+  const [well, m1, via, m2] = layers;
+  assert.equal(well.thickness, 0);
+  assert.ok(Math.abs(via.y - (m1.y + m1.thickness)) < 1e-12);
+  assert.ok(Math.abs(m2.y - (via.y + via.thickness)) < 1e-12);
+  assert.equal(cutVolume(defaultCut, [10, 5], layers), null);
+  const { lo, hi } = cutVolume({ ...defaultCut, enabled: true, axis: "x", position: 30 }, [10, 5], layers);
+  assert.deepEqual([lo[0], hi[0]], [-5, -2]);
+  const ray = (x) => ({ x, y: via.y, z: 0 }),
+    dir = { x: -1, y: 0, z: 0 };
+  assert.deepEqual(boxHit(ray(1), dir, lo, hi, 1e-5), { distance: 3, axis: "x", sign: 1 });
+  assert.deepEqual(boxHit(ray(-3), dir, lo, hi, 1e-5), { distance: 2, axis: "x", sign: -1 });
+  assert.equal(boxHit({ ...ray(0), z: 3 }, dir, lo, hi, 1e-5), null);
+  assert.equal(cutVolume({ ...defaultCut, enabled: true, position: 0 }, [10, 5], layers).oxide, false);
+  const empty = cutVolume({ ...defaultCut, enabled: true }, [10, 5], []);
+  assert.equal(empty.oxide, false);
+  assert.ok([...empty.lo, ...empty.hi].every(Number.isFinite));
+});
+
+test("a cut through a concave footprint leaves its gap open and keeps the placed instance color", async () => {
+  const { cutFaces, nearestVia } = await import("../apps/seamos/cut-faces.js");
+  const ring = [
+    [-2, 0],
+    [2, 0],
+    [2, 2],
+    [1, 2],
+    [1, 1],
+    [-1, 1],
+    [-1, 2],
+    [-2, 2],
+  ];
+  const positions = new Float32Array([0, 1].flatMap((h) => ring.flatMap(([x, z]) => [x, h, z])));
+  const part = { positions, spans: new Uint32Array([16, 0, 0]), placements: new Float32Array([0, 1, -1, 0, 4, 5, 0, 0, 0, 1, -1, 0, 12, 3, 0, 0]) };
+  const layer = { parts: [part] };
+  const { positions: cut, colors } = cutFaces(layer, { axis: 0, cutAt: 2.5 }, [new Uint8Array([8, 15, 42, 250, 0, 0])]);
+  assert.equal(cut.length, 36);
+  for (let i = 0; i < cut.length; i += 3) {
+    assert.equal(cut[i], 2.5);
+    assert.ok(cut[i + 2] <= 4 || cut[i + 2] >= 6);
+    assert.deepEqual([...colors.slice(i, i + 3)], [8, 15, 42]);
+  }
+  assert.deepEqual(nearestVia(layer, { x: 15, z: 4 }), { x: 11, z: 3, width: 4 });
+});

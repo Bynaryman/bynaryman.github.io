@@ -1,3 +1,4 @@
+import { silicaIOR } from "./cutaway.js";
 import { coated, metalSurface, defaultFinish } from "./surface-effects.js";
 import { Color } from "./lib/intersections.js";
 import { atlas, packTrees, packColors } from "./gpu-geometry.js";
@@ -54,6 +55,11 @@ export class GpuTracer {
       "resolution",
       "pixelOrigin",
       "stackRange",
+      "cutAxis",
+      "oxide",
+      "oxideLo",
+      "oxideHi",
+      "oxideIOR",
       "filmFace",
       "filmRim",
       "tanFov",
@@ -149,6 +155,12 @@ export class GpuTracer {
       this.lastSky = sky;
     }
     this.tile = scene.tile;
+    const section = scene.section;
+    gl.uniform1i(u.cutAxis, section?.axis ?? -1);
+    gl.uniform1i(u.oxide, Number(!!section?.oxide));
+    gl.uniform3fv(u.oxideLo, section?.lo ?? [0, 0, 0]);
+    gl.uniform3fv(u.oxideHi, section?.hi ?? [0, 0, 0]);
+    gl.uniform1f(u.oxideIOR, silicaIOR);
     gl.uniform2fv(u.stackRange, scene.range || [0, 1]);
     gl.uniform3fv(u.filmFace, new Color(scene.finish?.face || defaultFinish.face).toArray());
     gl.uniform3fv(u.filmRim, new Color(scene.finish?.rim || defaultFinish.rim).toArray());
