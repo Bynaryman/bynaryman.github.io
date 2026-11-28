@@ -166,10 +166,9 @@
         <div class="panel-title">
           <i data-icon="sliders"></i>
           <h2>Inspector</h2>
-          <select id="inspector-depth" aria-label="Inspector controls">
-            <option value="simple">Simple</option>
-            <option value="advanced">Advanced</option>
-          </select>
+          <button id="inspector-depth" type="button" role="switch" aria-checked="false" aria-label="Advanced controls" title="Show advanced controls">
+            Advanced <span class="inspector-track" aria-hidden="true"><i data-icon="loupe"></i></span>
+          </button>
         </div>
         <div class="tabs" role="tablist" aria-label="Inspector view">
           <button id="material-tab" role="tab" aria-selected="true" aria-controls="material-panel">Material</button>

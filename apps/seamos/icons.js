@@ -2,6 +2,7 @@ const paths = {
   link: '<path d="m10 14 4-4m-6 2-2 2a3.5 3.5 0 0 0 5 5l3-3m-4-8 3-3a3.5 3.5 0 0 1 5 5l-2 2"/>',
   dice: '<rect x="3.5" y="3.5" width="17" height="17" rx="2"/><path d="M8 8h.01M16 8h.01M12 12h.01M8 16h.01M16 16h.01" stroke-width="3.3"/>',
   theme: '<circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor" stroke="none"/>',
+  loupe: '<circle cx="10" cy="10" r="6.5"/><path d="m15 15 6 6" stroke-width="2.5"/>',
   folder: '<path d="M3 8V5.5A1.5 1.5 0 0 1 4.5 4H10l2 3h7a2 2 0 0 1 2 2v2M3 9h17.5l-2 10H5Z"/>',
   download: '<path d="M12 3v12m-4-4 4 4 4-4M4 16v4h16v-4"/>',
   cube: '<path d="m12 3 9 5v9l-9 5-9-5V8zm-9 5 9 5 9-5m-9 5v9"/>',
