@@ -996,6 +996,7 @@ select {
 #stack-materials {
   margin-block: 9px;
 }
+#movie-options,
 #share-dialog,
 #movie-dialog,
 #export-dialog {
@@ -1006,11 +1007,13 @@ select {
   border: 1px solid var(--ink);
   box-shadow: 4px 4px var(--shadow);
 }
+#movie-options::backdrop,
 #movie-dialog::backdrop,
 #share-dialog::backdrop,
 #export-dialog::backdrop {
   background: rgb(12 17 30 / 45%);
 }
+#movie-options h2,
 #movie-dialog h2,
 #share-dialog h2,
 #export-dialog h2 {
@@ -1161,13 +1164,86 @@ html:not([data-inspector="advanced"]) .advanced-only {
   background: #191d24;
   margin: 12px 0;
 }
-#movie-status,
-#keys-status {
+#movie-status {
   display: block;
 }
-#motion-panel .export-pair {
-  margin: 12px 0;
-}
-#motion-panel .export-pair select {
+#movie-options select,
+#key-list,
+#shot-duration {
   width: 100%;
+}
+#movie-trace-options .lighting-toggle {
+  display: block;
+  margin-top: 10px;
+}
+#motion-effects {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 4px;
+}
+#motion-effects legend {
+  margin: 0 0 6px;
+  padding: 0;
+  font-weight: 600;
+}
+#motion-effects label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 29px;
+  font-size: 0.83rem;
+  cursor: pointer;
+}
+#motion-effects input {
+  order: 1;
+  appearance: none;
+  width: 29px;
+  height: 16px;
+  margin: 0;
+  border: 1px solid var(--muted);
+  border-radius: 12px;
+  background: var(--raised);
+  cursor: pointer;
+}
+#motion-effects input::before {
+  content: "";
+  display: block;
+  width: 10px;
+  height: 10px;
+  margin: 2px;
+  border-radius: 50%;
+  background: var(--muted);
+}
+#motion-effects input:checked {
+  background: var(--lcd);
+  border-color: var(--blue);
+}
+#motion-effects input:checked::before {
+  background: var(--blue);
+  transform: translateX(13px);
+}
+#motion-effects label:has(:disabled) {
+  opacity: 0.55;
+  cursor: default;
+}
+#key-controls {
+  border-block: 1px solid var(--line);
+  margin-block: 8px;
+  padding-block: 3px;
+}
+.key-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 5px;
+}
+.key-actions button {
+  padding: 4px 6px;
+  font: 0.72rem var(--mono);
+}
+#motion-panel .cell-actions {
+  margin-top: 12px;
 }

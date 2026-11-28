@@ -74,6 +74,8 @@ export class GpuTracer {
       "sun",
       "sunlight",
       "waterColor",
+      "skyTurn",
+      "waveTime",
       "bands[0]",
     ])
       this.uniform[name] = gl.getUniformLocation(this.program, name);
@@ -174,7 +176,9 @@ export class GpuTracer {
     gl.uniform1i(u.grid, Number(scene.grid));
     gl.uniform1i(u.ocean, Number(scene.ocean));
     gl.uniform1i(u.useTints, Number(!!colors.length));
-    gl.uniform3fv(u.sun, scene.ocean ? scene.sunDirection : [-0.45, 0.83, 0.34]);
+    gl.uniform3fv(u.sun, scene.motionSunDirection ?? (scene.ocean ? scene.sunDirection : [-0.45, 0.83, 0.34]));
+    gl.uniform1f(u.skyTurn, scene.skyTurn ?? 0);
+    gl.uniform1f(u.waveTime, scene.waveTime ?? 0);
     gl.uniform3fv(u.sunlight, new Color(scene.sunlight).toArray());
     if (scene.ocean) {
       gl.uniform3fv(u.waterColor, scene.water.color);

@@ -92,10 +92,11 @@ function nearest(origin, dir, scene, shadow = false, distanceLimit = Infinity) {
   }
   return result;
 }
-function studio(d) {
+function studio(d, scene) {
   const upper = 0.16 + 0.3 * Math.max(d.y, 0);
-  const a = d.x / Math.max(0.01, d.y),
-    b = d.z / Math.max(0.01, d.y);
+  const height = Math.max(0.01, d.y);
+  const a = (scene.studioCos * d.x - scene.studioSin * d.z) / height,
+    b = (scene.studioSin * d.x + scene.studioCos * d.z) / height;
   const panel = (x, z, w, h) => Math.max(0, 1 - Math.max(Math.abs(a - x) / w, Math.abs(b - z) / h));
   const warm = d.y > 0 ? 4.8 * Math.min(1, 5 * panel(-1.0, 0.85, 0.72, 1.0)) : 0;
   const cool = d.y > 0 ? 3.4 * Math.min(1, 6 * panel(1.4, -0.4, 0.28, 1.1)) : 0;
@@ -103,7 +104,7 @@ function studio(d) {
 }
 function trace(origin, dir, scene, depth, heights, pixel) {
   const hit = nearest(origin, dir, scene);
-  if (!hit) return scene.ocean ? sampleSky(panorama, dir) : studio(dir);
+  if (!hit) return scene.ocean ? sampleSky(panorama, dir, scene.skyTurn) : studio(dir, scene);
   const point = origin.clone().addScaledVector(dir, hit.distance);
   if (heights && hit.layer) heights[pixel] = heightByte(point.y, scene.range || [0, 1]);
   const limit = (scene.samples >= 256 ? 10 : maxBounces) + (scene.section?.oxide ? 2 : 0);
@@ -121,19 +122,21 @@ function trace(origin, dir, scene, depth, heights, pixel) {
           .multiplyScalar(eta)
           .addScaledVector(n, eta * cos - Math.sqrt(k))
       : dir.clone().reflect(n);
-    if (depth >= limit) return scene.ocean ? sampleSky(panorama, next) : studio(next);
+    if (depth >= limit) return scene.ocean ? sampleSky(panorama, next, scene.skyTurn) : studio(next, scene);
     return trace(point.addScaledVector(n, (pass ? -4 : 4) * epsilon), next, scene, depth + 1, pass ? heights : null, pixel);
   }
   if (scene.ocean && !hit.layer) {
-    const normal = waterNormal(point.x, point.z, hit.distance, new Vector3(), scene.water.bands);
+    const normal = waterNormal(point.x, point.z, hit.distance, new Vector3(), scene.water.bands, scene.waveTime);
     const reflected = dir.clone().reflect(normal);
     reflected.y = Math.max(0.0001, reflected.y);
     reflected.normalize();
     const reflection =
-      depth < limit ? trace(point.clone().addScaledVector(hit.normal, epsilon * 4), reflected, scene, depth + 1) : sampleSky(panorama, reflected);
+      depth < limit
+        ? trace(point.clone().addScaledVector(hit.normal, epsilon * 4), reflected, scene, depth + 1)
+        : sampleSky(panorama, reflected, scene.skyTurn);
     const fresnel = 0.17 + 0.83 * (1 - clamp(-dir.dot(normal), 0, 1)) ** 5;
     const haze = 1 - Math.exp(-hit.distance * 0.00085);
-    const horizon = sampleSky(panorama, new Vector3(dir.x, 0.0001, dir.z).normalize());
+    const horizon = sampleSky(panorama, new Vector3(dir.x, 0.0001, dir.z).normalize(), scene.skyTurn);
     return scene.water.color.map((base, i) => (base * (1 - fresnel) + reflection[i] * fresnel) * (1 - haze) + horizon[i] * haze);
   }
   const n = hit.normal.clone();
@@ -209,8 +212,8 @@ function trace(origin, dir, scene, depth, heights, pixel) {
     depth < limit
       ? trace(point.clone().addScaledVector(n, (transmit ? -1 : 1) * epsilon * 4), next, scene, depth + 1)
       : scene.ocean
-        ? sampleSky(panorama, next)
-        : studio(next);
+        ? sampleSky(panorama, next, scene.skyTurn)
+        : studio(next, scene);
   const color = [c.r, c.g, c.b];
   if (glass) return secondary.map((x, i) => x * (transmit ? 0.68 + 0.32 * color[i] : 1));
   return secondary.map((x, i) => local[i] * (1 - metal * 0.85) + x * (metal * (0.12 + 0.88 * color[i]) + fresnel * (1 - metal)));
@@ -241,7 +244,11 @@ function present() {
 async function render(scene) {
   const revision = scene.revision,
     m = scene.matrix;
-  scene.light = scene.ocean ? new Vector3(...scene.sunDirection).normalize() : sun;
+  const angle = 2 * Math.PI * (scene.skyTurn ?? 0);
+  scene.studioCos = Math.cos(angle);
+  scene.studioSin = Math.sin(angle);
+  const lightDirection = scene.motionSunDirection ?? (scene.ocean ? scene.sunDirection : null);
+  scene.light = lightDirection ? new Vector3(...lightDirection).normalize() : sun;
   scene.tint = new Color(scene.sunlight);
   scene.filmFace = new Color(scene.finish?.face || defaultFinish.face);
   scene.filmRim = new Color(scene.finish?.rim || defaultFinish.rim);

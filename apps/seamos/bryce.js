@@ -64,12 +64,14 @@ export function randomWater(previous) {
   });
   return { name: sea.name, color: sea.color, bands };
 }
-export function waterNormal(x, z, distance, normal, bands) {
+export function waterNormal(x, z, distance, normal, bands, waveTime = 0) {
   const warp = 1.8 * Math.sin(0.42 * x + 0.19 * z) + 0.65 * Math.sin(0.73 * z - 0.17 * x);
   let dx = 0,
     dz = 0;
-  for (const band of bands) {
-    const wave = (band.amplitude * Math.cos(band.x * x + band.z * z + band.phase * warp)) / (1 + distance * Math.hypot(band.x, band.z) * 0.0008);
+  for (const [i, band] of bands.entries()) {
+    const wave =
+      (band.amplitude * Math.cos(band.x * x + band.z * z + band.phase * warp + waveTime * (i + 1))) /
+      (1 + distance * Math.hypot(band.x, band.z) * 0.0008);
     const k = Math.hypot(band.x, band.z);
     dx += (wave * band.x) / k;
     dz += (wave * band.z) / k;
@@ -81,8 +83,8 @@ const linear = Float32Array.from({ length: 256 }, (_, i) => {
   return v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
 });
 // Equirectangular, bilinear sky sampling, with a wrapped longitude and clamped poles.
-export function sampleSky({ width, height, pixels }, d) {
-  const x = (Math.atan2(d.z, d.x) / (2 * Math.PI) + 0.5) * width - 0.5;
+export function sampleSky({ width, height, pixels }, d, skyTurn = 0) {
+  const x = (Math.atan2(d.z, d.x) / (2 * Math.PI) + 0.5 + skyTurn) * width - 0.5;
   const y = Math.max(0, Math.min(height - 1, (0.5 - Math.asin(Math.min(1, Math.max(-1, d.y))) / Math.PI) * height - 0.5));
   const ix = Math.floor(x),
     iy = Math.floor(y),
