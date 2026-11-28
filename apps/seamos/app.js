@@ -205,6 +205,8 @@ function renderLayers() {
           syncMaterial();
           renderLayers();
           switchTab("material");
+          $("material-settings").open = true;
+          $("target").focus();
         };
         const eye = document.createElement("button");
         eye.className = "layer-eye";
@@ -247,6 +249,18 @@ function syncMaterial() {
   showRange("property", Number($("property").value).toFixed(2));
 }
 const inspectorDepth = $("inspector-depth");
+for (const section of document.querySelectorAll("details.fold")) {
+  const key = "seamos-fold-" + section.id;
+  try {
+    const saved = localStorage.getItem(key);
+    if (saved !== null) section.open = saved === "open";
+  } catch {}
+  section.addEventListener("toggle", () => {
+    try {
+      localStorage.setItem(key, section.open ? "open" : "closed");
+    } catch {}
+  });
+}
 function detailMode(depth) {
   document.documentElement.dataset.inspector = depth;
   inspectorDepth.setAttribute("aria-checked", String(depth === "advanced"));
@@ -260,7 +274,6 @@ try {
 inspectorDepth.onclick = () => {
   const depth = document.documentElement.dataset.inspector === "advanced" ? "simple" : "advanced";
   detailMode(depth);
-  if (depth === "advanced") $("scene-settings").open = true;
   try {
     localStorage.setItem("seamos-inspector", depth);
   } catch {}
@@ -1088,6 +1101,7 @@ async function openInitial() {
       $("color-mode").value = "pe";
       updateColorMode();
       switchTab("cells");
+      $("cell-colors").open = true;
       if (!vp.cut.enabled) revealPE();
     }
     if (!state && vp.cut.enabled && url.searchParams.get("focus") === "via" && currentFile && (file ? currentFile === file : currentFile.sample))

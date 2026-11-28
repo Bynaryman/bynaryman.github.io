@@ -245,14 +245,11 @@ i svg,
   gap: 3px 12px;
   min-width: 0;
 }
-.overline,
-.inspector-section h3 {
+.overline {
   font: normal 0.72rem var(--mono);
   letter-spacing: 0.095em;
   text-transform: uppercase;
   color: var(--muted);
-}
-.overline {
   grid-column: 1/-1;
   display: flex;
   align-items: center;
@@ -433,7 +430,6 @@ select {
   background: var(--lcd);
   border-style: dashed;
 }
-.library-head > div,
 .panel-title {
   display: flex;
   align-items: center;
@@ -450,6 +446,36 @@ select {
 .library-head h2,
 .panel-title h2 {
   font: normal 1.55rem/1 var(--display);
+}
+.library {
+  position: relative;
+}
+.library-head {
+  display: list-item;
+  padding-block: 13px;
+}
+.library-head h2 {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  vertical-align: middle;
+}
+.library:not([open]) > summary {
+  border-bottom: none;
+}
+.shuffle-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px 12px 0;
+}
+@media (min-width: 851px) {
+  .library .shuffle-actions {
+    position: absolute;
+    right: 12px;
+    top: 9px;
+    padding: 0;
+  }
 }
 .small,
 .mode-hint {
@@ -548,9 +574,6 @@ select {
 .inspector-section {
   padding: 15px;
   border-bottom: 1px solid var(--line);
-}
-.inspector-section h3 {
-  margin-bottom: 12px;
 }
 .control-label {
   display: block;
@@ -772,10 +795,18 @@ select {
   html {
     scrollbar-gutter: stable;
   }
-  /* Inspector tabs and controls can change height independently of the render. */
-  .work-area {
-    align-self: start;
-    min-height: calc(100dvh - 131px);
+  /* Folding either column must preserve the camera and the sampled image. */
+  .viewport-panel,
+  #viewport {
+    flex: none;
+  }
+  #viewport {
+    height: calc(100dvh - 25rem);
+  }
+}
+@media (min-width: 691px) and (max-width: 850px) {
+  #viewport {
+    height: calc(100dvh - 30rem);
   }
 }
 @media (max-width: 1100px) {
@@ -960,9 +991,6 @@ select {
 .section-heading {
   margin-bottom: 10px;
 }
-.section-heading h3 {
-  margin: 0;
-}
 .shuffle {
   display: inline-flex;
   align-items: center;
@@ -988,10 +1016,6 @@ select {
 .variation output {
   font: 0.74rem var(--mono);
   color: var(--muted);
-}
-.library-head,
-.shuffle-actions {
-  flex-wrap: wrap;
 }
 #stack-materials {
   margin-block: 9px;
@@ -1144,12 +1168,12 @@ html:not([data-inspector="advanced"]) .advanced-only {
     transition: transform 120ms ease-out;
   }
 }
-.scene-section summary {
+.fold > summary {
   cursor: pointer;
   font: inherit;
   font-weight: 600;
 }
-.scene-section[open] summary {
+.inspector-section[open] > summary {
   margin-bottom: 10px;
 }
 #movie-dialog {
@@ -1182,11 +1206,6 @@ html:not([data-inspector="advanced"]) .advanced-only {
   margin: 0;
   display: grid;
   gap: 4px;
-}
-#motion-effects legend {
-  margin: 0 0 6px;
-  padding: 0;
-  font-weight: 600;
 }
 #motion-effects label {
   display: flex;
@@ -1228,11 +1247,6 @@ html:not([data-inspector="advanced"]) .advanced-only {
 #motion-effects label:has(:disabled) {
   opacity: 0.55;
   cursor: default;
-}
-#key-controls {
-  border-block: 1px solid var(--line);
-  margin-block: 8px;
-  padding-block: 3px;
 }
 .key-actions {
   display: flex;
