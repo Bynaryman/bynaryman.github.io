@@ -194,23 +194,20 @@
             <div id="drop-overlay" hidden><i data-icon="folder"></i>Open this layout</div>
           </div>
         </section>
-        <section class="library" aria-labelledby="presets-title">
-          <div class="library-head">
-            <div>
-              <i data-icon="swatches"></i>
-              <h2 id="presets-title">Render presets</h2>
-            </div>
-            <div class="shuffle-actions">
-              <button id="shuffle-palette" class="shuffle" disabled title="Randomize colors across all layers and keep their finishes">
-                <i data-icon="dice"></i>Shuffle palette
-              </button>
-              <button id="shuffle-finishes" class="shuffle" disabled title="Randomize colors and materials across all layers">
-                <i data-icon="dice"></i>Shuffle materials
-              </button>
-            </div>
+        <details class="library fold" id="preset-library" open>
+          <summary class="library-head">
+            <h2 id="presets-title"><i data-icon="swatches"></i> Render presets</h2>
+          </summary>
+          <div class="shuffle-actions">
+            <button id="shuffle-palette" class="shuffle" disabled title="Randomize colors across all layers and keep their finishes">
+              <i data-icon="dice"></i>Shuffle palette
+            </button>
+            <button id="shuffle-finishes" class="shuffle" disabled title="Randomize colors and materials across all layers">
+              <i data-icon="dice"></i>Shuffle materials
+            </button>
           </div>
           <div class="presets" id="presets"></div>
-        </section>
+        </details>
       </div>
       <aside class="inspector" aria-label="Layout inspector">
         <div class="panel-title">
@@ -227,14 +224,14 @@
           <button id="motion-tab" role="tab" aria-selected="false" aria-controls="motion-panel">Motion</button>
         </div>
         <div id="material-panel" role="tabpanel" aria-labelledby="material-tab">
-          <section class="inspector-section">
-            <div class="section-heading">
-              <h3>Layer material</h3>
+          <details class="inspector-section fold" id="material-settings" open>
+            <summary>Layer material</summary>
+            <div class="variation">
+              <label class="control-label" for="target">Target layer</label>
               <button id="shuffle-material" class="shuffle" disabled title="Randomize the selected layer’s color and surface properties">
                 <i data-icon="dice"></i>Randomize
               </button>
             </div>
-            <label class="control-label" for="target">Target layer</label>
             <div class="select-wrap">
               <span id="target-swatch"></span
               ><select id="target"></select>
@@ -261,11 +258,11 @@
               <label for="property" id="property-label">Metalness</label><output id="property-value" for="property"></output
               ><input type="range" id="property" min="0" max="1" step=".01" />
             </div>
-          </section>
+          </details>
         </div>
         <div id="layers-panel" role="tabpanel" aria-labelledby="layers-tab" hidden>
-          <section class="inspector-section">
-            <h3>Layer stack</h3>
+          <details class="inspector-section fold" id="stack-settings" open>
+            <summary>Layer stack</summary>
             <div class="range-row" id="layer-wheel" title="Scroll to peel or restore one layer. Ctrl + wheel also works over the chip.">
               <label for="layer-depth">Visible layers</label><output id="layer-depth-value" for="layer-depth"></output>
               <input type="range" id="layer-depth" min="0" max="0" value="0" step="1" disabled />
@@ -276,29 +273,30 @@
             <p class="mode-hint">
               Heights are illustrative. Recognized SKY130 masks follow process order. Boundary and annotation layers can be shown individually.
             </p>
-          </section>
+          </details>
         </div>
         <div id="cells-panel" role="tabpanel" aria-labelledby="cells-tab" hidden>
-          <section class="inspector-section">
-            <div class="advanced-only">
-              <h3>Cell browser</h3>
-              <label class="control-label" for="cell-category">Category</label>
-              <select id="cell-category">
-                <option value="all">All cells</option>
-                <option value="top">Top cells</option>
-                <option value="1">Sequential</option>
-                <option value="2">Combinational</option>
-                <option value="0">Unclassified</option>
-              </select>
-              <label class="control-label" for="cell-search">Search cell names</label>
-              <input type="search" id="cell-search" autocomplete="off" />
-              <label class="control-label" for="cell" id="cell-label">Cells</label>
-              <select id="cell" size="6"></select>
-              <div class="cell-actions">
-                <button id="inspect-cell" class="button" disabled>Open cell</button>
-                <button id="whole-chip" class="button" disabled>Whole chip</button>
-              </div>
+          <details class="inspector-section fold advanced-only" id="cell-browser" open>
+            <summary>Cell browser</summary>
+            <label class="control-label" for="cell-category">Category</label>
+            <select id="cell-category">
+              <option value="all">All cells</option>
+              <option value="top">Top cells</option>
+              <option value="1">Sequential</option>
+              <option value="2">Combinational</option>
+              <option value="0">Unclassified</option>
+            </select>
+            <label class="control-label" for="cell-search">Search cell names</label>
+            <input type="search" id="cell-search" autocomplete="off" />
+            <label class="control-label" for="cell" id="cell-label">Cells</label>
+            <select id="cell" size="6"></select>
+            <div class="cell-actions">
+              <button id="inspect-cell" class="button" disabled>Open cell</button>
+              <button id="whole-chip" class="button" disabled>Whole chip</button>
             </div>
+          </details>
+          <details class="inspector-section fold" id="cell-colors" open>
+            <summary>Cell colors</summary>
             <div class="variation">
               <label for="color-mode" class="control-label">Color by</label>
               <button id="shuffle-cell-colors" class="shuffle" disabled><i data-icon="dice"></i>Shuffle colors</button>
@@ -312,28 +310,31 @@
             <p id="color-hint" class="mode-hint" hidden></p>
             <button id="reveal-pe" class="button" title="Toggle the layers above local interconnect" hidden>Reveal PE cells</button>
             <ul id="cell-legend" aria-label="Cell colors" hidden></ul>
-          </section>
+          </details>
         </div>
         <div id="motion-panel" role="tabpanel" aria-labelledby="motion-tab" hidden>
-          <section class="inspector-section">
-            <fieldset id="motion-effects">
-              <legend>Animate</legend>
+          <details class="inspector-section fold" id="motion-settings" open>
+            <summary id="motion-heading">Animate</summary>
+            <fieldset id="motion-effects" aria-labelledby="motion-heading">
               <label><input type="checkbox" role="switch" id="shot-orbit" checked />Turntable</label>
               <label><input type="checkbox" role="switch" id="shot-sun" />Sun sweep</label>
               <label><input type="checkbox" role="switch" id="shot-sea" />Ocean swell · Bryce</label>
               <label><input type="checkbox" role="switch" id="shot-slice" />Follow the slice</label>
               <label><input type="checkbox" role="switch" id="shot-keys" />Camera keyframes</label>
             </fieldset>
-            <div id="key-controls" hidden>
-              <label for="key-list" class="control-label">Camera path</label>
-              <select id="key-list" size="3" aria-describedby="key-hint"></select>
-              <div class="key-actions">
-                <button class="button" id="key-add">Add view</button><button class="button" id="key-update">Update</button
-                ><button class="button" id="key-remove">Remove</button><button class="button" id="key-earlier">Move earlier</button
-                ><button class="button" id="key-later">Move later</button>
-              </div>
-              <p class="mode-hint" id="key-hint">Add two or more views. Select a keyframe to recall its camera.</p>
+          </details>
+          <details class="inspector-section fold" id="key-controls" open hidden>
+            <summary id="camera-path-heading">Camera path</summary>
+            <select id="key-list" size="3" aria-labelledby="camera-path-heading" aria-describedby="key-hint"></select>
+            <div class="key-actions">
+              <button class="button" id="key-add">Add view</button><button class="button" id="key-update">Update</button
+              ><button class="button" id="key-remove">Remove</button><button class="button" id="key-earlier">Move earlier</button
+              ><button class="button" id="key-later">Move later</button>
             </div>
+            <p class="mode-hint" id="key-hint">Add two or more views. Select a keyframe to recall its camera.</p>
+          </details>
+          <details class="inspector-section fold" id="playback-settings" open>
+            <summary>Playback &amp; export</summary>
             <label class="control-label" for="shot-duration">Duration</label>
             <select id="shot-duration">
               <option value="1">1 second</option>
@@ -345,9 +346,9 @@
               <button class="button" id="play-shot">Play</button><button class="button primary" id="record-shot">Export movie</button>
             </div>
             <p id="movie-hint" class="mode-hint"></p>
-          </section>
+          </details>
         </div>
-        <details class="inspector-section scene-section advanced-only" id="scene-settings">
+        <details class="inspector-section fold advanced-only" id="scene-settings" open>
           <summary>Scene settings</summary>
           <div class="variation lighting-toggle">
             <label><input type="checkbox" id="cut-enabled" /> Wiring cutaway</label>
@@ -414,8 +415,8 @@
             ><input type="range" id="exposure" min="0.35" max="2" step=".05" value="1.05" />
           </div>
         </details>
-        <section class="inspector-section advanced-only" id="bryce-variations" hidden>
-          <h3>Bryce environment</h3>
+        <details class="inspector-section fold advanced-only" id="bryce-variations" open hidden>
+          <summary>Bryce environment</summary>
           <div class="variation">
             <button class="shuffle" id="shuffle-sky"><i data-icon="dice"></i>Shuffle sky</button
             ><output id="sky-name" aria-live="polite">Sunset</output>
@@ -424,9 +425,9 @@
             <button class="shuffle" id="shuffle-water"><i data-icon="dice"></i>Shuffle water</button
             ><output id="water-name" aria-live="polite">Sunset ripples</output>
           </div>
-        </section>
-        <section class="inspector-section render-section">
-          <h3>Renderer</h3>
+        </details>
+        <details class="inspector-section render-section fold" id="renderer-settings" open>
+          <summary>Renderer</summary>
           <div class="segmented">
             <button id="preview-mode" class="selected" aria-pressed="true"><i data-icon="cube"></i>Preview</button
             ><button id="trace-mode" aria-pressed="false"><i data-icon="rays"></i>Ray trace</button>
@@ -451,7 +452,7 @@
             </select>
           </div>
           <p class="mode-hint" id="mode-hint" role="status">Checking renderer…</p>
-        </section>
+        </details>
       </aside>
     </main>
     <footer class="statusbar">
