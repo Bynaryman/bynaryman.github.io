@@ -27,11 +27,12 @@ export async function loadPanorama(sky) {
 const fragmentShader = `
 uniform sampler2D panorama, mirrorImage;
 uniform vec4 bands[4];
+uniform float skyTurn,waveTime;
 uniform vec3 waterTint;
 uniform mat4 inverseProjection, cameraWorld, mirrorVP;
 varying vec2 clipXY;
 vec3 sky(vec3 d){
-  vec2 uv=vec2(atan(d.z,d.x)*0.159154943+0.5,asin(clamp(d.y,-1.0,1.0))*0.318309886+0.5);
+  vec2 uv=vec2(atan(d.z,d.x)*0.159154943+0.5+skyTurn,asin(clamp(d.y,-1.0,1.0))*0.318309886+0.5);
   return texture2D(panorama,uv).rgb;
 }
 void main(){
@@ -46,7 +47,7 @@ void main(){
     vec2 slope=vec2(0.);
     for(int i=0;i<4;i++){
       vec4 band=bands[i];
-      slope+=normalize(band.xy)*band.z*cos(dot(p.xz,band.xy)+band.w*warp)/(1.0+t*length(band.xy)*.0008);
+      slope+=normalize(band.xy)*band.z*cos(dot(p.xz,band.xy)+band.w*warp+waveTime*float(i+1))/(1.0+t*length(band.xy)*.0008);
     }
     vec3 n=normalize(vec3(-slope.x,1.,-slope.y));
     vec3 r=reflect(d,n);
@@ -79,6 +80,8 @@ export class OceanPreview {
     this.uniforms = {
       panorama: { value: null },
       bands: { value: new Float32Array(16) },
+      skyTurn: { value: 0 },
+      waveTime: { value: 0 },
       waterTint: { value: new T.Vector3() },
       mirrorImage: { value: this.target.texture },
       inverseProjection: { value: new T.Matrix4() },

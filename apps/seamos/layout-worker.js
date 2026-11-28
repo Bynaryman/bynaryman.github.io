@@ -163,12 +163,14 @@ function meshShared(layout) {
   for (const t of templates) {
     const regular = [],
       mirrored = [];
+    const owners = [[], []];
     const cx = (t.box.left + t.box.right) / 2,
       cy = (t.box.bottom + t.box.top) / 2;
     for (let i = 0; i < t.placements.length; i += 8) {
       const [a, b, c, d, x, y, branch, logic] = t.placements.subarray(i, i + 8);
       const flip = a * d - b * c < 0,
         sign = flip ? -1 : 1;
+      if (t.pe) owners[Number(flip)].push(t.pe[i / 8]);
       (flip ? mirrored : regular).push(
         a * sign,
         -b * sign,
@@ -180,6 +182,7 @@ function meshShared(layout) {
         logic
       );
     }
+    const pe = owners.map((ids) => (ids.length ? new Uint8Array(ids) : undefined));
     const groups = [new Float32Array(regular), new Float32Array(mirrored)];
     for (const source of meshLayout(t, { ...t.box, scale }).layers) {
       // Put upper faces first so a distant preview can skip subpixel walls.
@@ -209,7 +212,7 @@ function meshShared(layout) {
           for (let i = 0; i < positions.length; i += 3) positions[i] *= -1;
           for (let i = 0; i < indices.length; i += 3) [indices[i], indices[i + 1]] = [indices[i + 1], indices[i]];
         }
-        layer.parts.push({ positions, indices, placements, spans: source.spans, surfaceCount });
+        layer.parts.push({ positions, indices, placements, pe: pe[flip], spans: source.spans, surfaceCount });
         layer.count += (source.count * placements.length) / 8;
       }
     }
@@ -231,11 +234,12 @@ self.onmessage = async ({ data }) => {
       postMessage({ type: "catalog", cells, roots });
     });
     const mesh = layout.templates ? meshShared(layout) : meshLayout(layout);
+    mesh.peMapped = !!layout.peMapped;
     mesh.format = new Uint8Array(data.buffer)[0] === 37 ? "OASIS" : "GDSII";
     const buffers = new Set();
     for (const layer of mesh.layers) {
       for (const part of layer.parts ?? [layer]) {
-        for (const array of [part.positions, part.indices, part.spans, part.placements]) if (array) buffers.add(array.buffer);
+        for (const array of [part.positions, part.indices, part.spans, part.placements, part.pe]) if (array) buffers.add(array.buffer);
       }
     }
     postMessage(mesh, [...buffers]);

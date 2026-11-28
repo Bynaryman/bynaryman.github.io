@@ -1,3 +1,4 @@
+import { assignProcessingElements } from "./processing-elements.js";
 import { WASI, File, Fd, PreopenDirectory, ConsoleStdout } from "./lib/wasi.js";
 
 import { logicType } from "./logic-types.js";
@@ -81,12 +82,18 @@ export async function readLayout(buffer, cellName, onCells) {
     const name = cellName ?? cells[0];
     if (!cells.includes(name)) throw new Error("The selected cell is unavailable.");
     const index = all.indexOf(name);
-    const error = api.read_cell(index);
-    if (error && /expands beyond/.test(stringAt(error))) {
+    const checkPE = name === "tt_um_mmalpha" && all.some((n) => n.startsWith("sky130_fd_sc_hd__"));
+    const error = checkPE ? 0 : api.read_cell(index);
+    if (checkPE || (error && /expands beyond/.test(stringAt(error)))) {
       groups.clear();
       check(api.read_shared_cell(index));
-      const parts = Array.from(templates.values(), (t) => ({ layers: Array.from(t.layers.values()), placements: new Float64Array(t.placements) }));
-      return { cells, roots, name, cellNames: all, templates: parts };
+      const peMapped = checkPE && (await assignProcessingElements(templates, all).catch(() => false));
+      const parts = Array.from(templates.values(), (t) => ({
+        pe: t.pe,
+        layers: Array.from(t.layers.values()),
+        placements: new Float64Array(t.placements),
+      }));
+      return { cells, roots, name, cellNames: all, peMapped, templates: parts };
     }
     check(error);
     return { cells, roots, name, cellNames: all, layers: Array.from(groups.values()) };

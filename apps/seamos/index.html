@@ -71,6 +71,7 @@
               <option value="4">4 · Quick</option>
               <option value="16">16 · Balanced</option>
               <option value="64">64 · Fine</option>
+              <option value="256">256 · Ultra · contact shading</option>
             </select>
           </div>
           <label class="control-label" for="export-format">File format</label
@@ -89,6 +90,14 @@
           ><button id="save-image" class="button primary"><i data-icon="download"></i>Download image</button>
         </div>
       </form>
+    </dialog>
+    <dialog id="movie-dialog" aria-labelledby="movie-title">
+      <div class="section-heading">
+        <h2 id="movie-title">Movie preview</h2>
+        <button class="button" id="stop-movie">Stop</button>
+      </div>
+      <canvas id="movie-frame" width="640" height="360" aria-label="Animated chip view"></canvas>
+      <output id="movie-status" role="status"></output>
     </dialog>
     <main class="workspace">
       <div class="work-area">
@@ -157,11 +166,16 @@
         <div class="panel-title">
           <i data-icon="sliders"></i>
           <h2>Inspector</h2>
+          <select id="inspector-depth" aria-label="Inspector controls">
+            <option value="simple">Simple</option>
+            <option value="advanced">Advanced</option>
+          </select>
         </div>
         <div class="tabs" role="tablist" aria-label="Inspector view">
           <button id="material-tab" role="tab" aria-selected="true" aria-controls="material-panel">Material</button>
           <button id="cells-tab" role="tab" aria-selected="false" aria-controls="cells-panel">Cells</button>
           <button id="layers-tab" role="tab" aria-selected="false" aria-controls="layers-panel">Layers <span id="layer-count">–</span></button>
+          <button id="motion-tab" role="tab" aria-selected="false" aria-controls="motion-panel">Motion</button>
         </div>
         <div id="material-panel" role="tabpanel" aria-labelledby="material-tab">
           <section class="inspector-section">
@@ -190,11 +204,11 @@
                 <i data-icon="dice"></i>
               </button>
             </div>
-            <div class="range-row">
+            <div class="range-row advanced-only">
               <label for="rough">Roughness</label><output id="rough-value" for="rough"></output
               ><input type="range" id="rough" min="0" max="1" step=".01" />
             </div>
-            <div class="range-row">
+            <div class="range-row advanced-only">
               <label for="property" id="property-label">Metalness</label><output id="property-value" for="property"></output
               ><input type="range" id="property" min="0" max="1" step=".01" />
             </div>
@@ -217,21 +231,24 @@
         </div>
         <div id="cells-panel" role="tabpanel" aria-labelledby="cells-tab" hidden>
           <section class="inspector-section">
-            <h3>Cell browser</h3>
-            <label class="control-label" for="cell-category">Category</label>
-            <select id="cell-category">
-              <option value="all">All cells</option>
-              <option value="top">Top cells</option>
-              <option value="1">Sequential</option>
-              <option value="2">Combinational</option>
-              <option value="0">Unclassified</option>
-            </select>
-            <label class="control-label" for="cell-search">Search cell names</label>
-            <input type="search" id="cell-search" autocomplete="off" />
-            <label class="control-label" for="cell" id="cell-label">Cells</label>
-            <select id="cell" size="6"></select>
-            <div class="cell-actions">
-              <button id="inspect-cell" class="button" disabled>Open cell</button> <button id="whole-chip" class="button" disabled>Whole chip</button>
+            <div class="advanced-only">
+              <h3>Cell browser</h3>
+              <label class="control-label" for="cell-category">Category</label>
+              <select id="cell-category">
+                <option value="all">All cells</option>
+                <option value="top">Top cells</option>
+                <option value="1">Sequential</option>
+                <option value="2">Combinational</option>
+                <option value="0">Unclassified</option>
+              </select>
+              <label class="control-label" for="cell-search">Search cell names</label>
+              <input type="search" id="cell-search" autocomplete="off" />
+              <label class="control-label" for="cell" id="cell-label">Cells</label>
+              <select id="cell" size="6"></select>
+              <div class="cell-actions">
+                <button id="inspect-cell" class="button" disabled>Open cell</button>
+                <button id="whole-chip" class="button" disabled>Whole chip</button>
+              </div>
             </div>
             <div class="variation">
               <label for="color-mode" class="control-label">Color by</label>
@@ -241,13 +258,53 @@
               <option value="layer">Layer material</option>
               <option value="hierarchy">Layout hierarchy</option>
               <option value="logic">Logic type</option>
+              <option id="pe-option" value="pe" hidden disabled>Processing element</option>
             </select>
             <p id="color-hint" class="mode-hint" hidden></p>
+            <button id="reveal-pe" class="button" title="Toggle the layers above local interconnect" hidden>Reveal PE cells</button>
             <ul id="cell-legend" aria-label="Cell colors" hidden></ul>
           </section>
         </div>
-        <section class="inspector-section scene-section">
-          <h3>Scene settings</h3>
+        <div id="motion-panel" role="tabpanel" aria-labelledby="motion-tab" hidden>
+          <section class="inspector-section">
+            <label for="shot" class="control-label">Movie preset</label>
+            <select id="shot">
+              <option value="orbit">Turntable</option>
+              <option value="sun">Sun sweep</option>
+              <option value="sea" id="sea-shot">Ocean swell · Bryce</option>
+              <option value="slice">Follow the slice</option>
+              <option value="keys">Two camera keyframes</option>
+            </select>
+            <div id="key-controls" hidden>
+              <p class="mode-hint">Frame each view in the viewport and save its camera position.</p>
+              <div class="cell-actions">
+                <button id="key-start" class="button">Set start</button><button id="key-end" class="button">Set end</button>
+              </div>
+              <output id="keys-status" class="mode-hint" aria-live="polite"></output>
+            </div>
+            <div class="export-pair">
+              <label for="shot-duration"
+                >Duration<select id="shot-duration">
+                  <option value="3">3 seconds</option>
+                  <option value="6" selected>6 seconds</option>
+                  <option value="12">12 seconds</option>
+                </select></label
+              >
+              <label for="shot-size"
+                >Movie size<select id="shot-size">
+                  <option value="720">720p</option>
+                  <option value="1080">1080p</option>
+                </select></label
+              >
+            </div>
+            <div class="cell-actions">
+              <button class="button" id="play-shot">Play</button><button class="button primary" id="record-shot">Export movie</button>
+            </div>
+            <p id="movie-hint" class="mode-hint"></p>
+          </section>
+        </div>
+        <details class="inspector-section scene-section advanced-only" id="scene-settings">
+          <summary>Scene settings</summary>
           <div class="variation lighting-toggle">
             <label><input type="checkbox" id="cut-enabled" /> Wiring cutaway</label>
           </div>
@@ -312,8 +369,8 @@
             <label for="exposure">Exposure</label><output for="exposure" id="exposure-value"></output
             ><input type="range" id="exposure" min="0.35" max="2" step=".05" value="1.05" />
           </div>
-        </section>
-        <section class="inspector-section" id="bryce-variations" hidden>
+        </details>
+        <section class="inspector-section advanced-only" id="bryce-variations" hidden>
           <h3>Bryce environment</h3>
           <div class="variation">
             <button class="shuffle" id="shuffle-sky"><i data-icon="dice"></i>Shuffle sky</button
@@ -330,7 +387,7 @@
             <button id="preview-mode" class="selected" aria-pressed="true"><i data-icon="cube"></i>Preview</button
             ><button id="trace-mode" aria-pressed="false"><i data-icon="rays"></i>Ray trace</button>
           </div>
-          <div id="samples-field" hidden>
+          <div id="samples-field" class="advanced-only" hidden>
             <label class="control-label" for="trace-device">Trace device</label>
             <select id="trace-device">
               <option value="auto">Auto · prefer GPU</option>
@@ -341,6 +398,7 @@
               <option value="4">4 · Quick</option>
               <option value="16">16 · Balanced</option>
               <option value="64">64 · Fine</option>
+              <option value="256">256 · Ultra · contact shading</option>
             </select>
             <label class="control-label" for="denoise">Denoise final image</label>
             <select id="denoise">
